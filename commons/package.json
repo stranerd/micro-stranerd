@@ -1,0 +1,25 @@
+{
+  "name": "commons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint src/ --ext .ts,.js --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.4",
+    "@types/node": "^16.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
