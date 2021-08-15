@@ -17,6 +17,8 @@ module.exports = {
 		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
 		'no-tabs': 'off',
+		'no-unused-vars': 0,
+		'@typescript-eslint/no-unused-vars': 0,
 		'no-var': 'error',
 		'accessor-pairs': 'off',
 		indent: ['error', 'tab', { SwitchCase: 1 }],
