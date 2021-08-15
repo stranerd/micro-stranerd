@@ -1,22 +1,19 @@
-import { Request, Response, NextFunction } from 'express'
 import { makeMiddleware, CustomError } from '../'
 
-export const errorHandler = (
-	err: Error,
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => makeMiddleware(
-	req,
-	res,
-	async () => {
+export const errorHandler = makeMiddleware(
+	async (_, err) => {
 		if (err instanceof CustomError) {
-			res.status(err.statusCode).json({ errors: err.serializeErrors() })
-			return
+			return {
+				status: err.statusCode,
+				result: {
+					errors: err.serializeErrors()
+				}
+			}
+		} else return {
+			status: 400,
+			result: {
+				errors: [{ message: 'Something went wrong', data: err }],
+			}
 		}
-		res.status(400).json({
-			errors: [{ message: 'Something went wrong', data: err.message }],
-		})
-	},
-	next
+	}
 )

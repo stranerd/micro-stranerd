@@ -4,16 +4,14 @@
 		"noUnusedLocals": true,
 		"removeComments": true,
 		"noImplicitAny": false,
-		"target": "ES5",
-		"module": "commonjs",
+		"target": "ES2021",
+		"module": "ESNext",
 		"rootDir": "src",
 		"outDir": "lib",
-		"declaration": true,
 		"moduleResolution": "Node",
 		"lib": [
 			"ESNext",
-			"ESNext.AsyncIterable",
-			"DOM"
+			"ESNext.AsyncIterable"
 		],
 		"esModuleInterop": true,
 		"allowJs": false,

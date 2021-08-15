@@ -1,35 +1,42 @@
 import { NextFunction, Request, Response } from 'express'
 import { Request as CustomRequest } from './request'
 
-export const makeController = (
-	req: Request,
-	res: Response,
-	cb: (_: CustomRequest) => Promise<Record<string, any>>,
-	next: NextFunction
-) => {
-	return async () => {
+type CustomResponse = {
+	status?: number,
+	result: Record<string, any>
+}
+
+type CustomMiddlewareResponse = {
+	status?: number,
+	result: Record<string, any>
+} | void
+
+type Callback = (_: CustomRequest) => Promise<CustomResponse>
+type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
+
+export const makeCallback = (cb: Callback) => {
+	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const result = await cb(extractHeaders(req))
-			return res.json(result)
+			const { status = 200, result } = await cb(extractRequest(req))
+			return res.status(status).json(result)
 		} catch (e) { return next(e) }
 	}
 }
 
-export const makeMiddleware = (
-	req: Request,
-	res: Response,
-	cb: (_: CustomRequest) => Promise<void>,
-	next: NextFunction
-) => {
-	return async () => {
+export const makeController = ({ path, cb, method }: { path: string, method: MethodTypes, cb: Callback }) => ({ path, method, controller: makeCallback(cb) })
+
+export const makeMiddleware = (cb: (_: CustomRequest, __?: Error) => Promise<CustomMiddlewareResponse>) => {
+	return async (err: Error, req: Request, res: Response, next: NextFunction) => {
+		if (err) return next(err)
 		try {
-			await cb(extractHeaders(req))
-			return next()
+			const ret = await cb(extractRequest(req), err)
+			if (ret) return res.status(ret.status ?? 200).json(ret.result)
+			else return next()
 		} catch (e) { return next(e) }
 	}
 }
 
-const extractHeaders = (req: Request) => new CustomRequest({
+const extractRequest = (req: Request) => new CustomRequest({
 	body: req.body ?? {},
 	params: req.params ?? {},
 	query: req.query ?? {},
