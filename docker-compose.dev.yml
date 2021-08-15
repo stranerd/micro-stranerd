@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  api:
+    build:
+      target: base
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    command: yarn dev
