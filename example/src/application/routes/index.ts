@@ -1,6 +1,7 @@
 import { makeController, Route } from '../../commons'
-
+import userRoutes from './users'
 export const routes: Route[] = [
+	...userRoutes,
 	{
 		path: '/test',
 		method: 'get',

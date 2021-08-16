@@ -18,7 +18,7 @@ const preRoutes: Route[] = [
 ]
 const postRoutes: Route[] = [
 	{
-		path: '*',
+		path: '',
 		method: 'all',
 		controllers: [notFoundHandler]
 	},
@@ -29,22 +29,31 @@ const postRoutes: Route[] = [
 	}
 ]
 
-export const getNewExpressInstance = (routes: Route[]) => {
+export const getNewServerInstance = (baseUrl: string, routes: Route[]) => {
 	const app = express()
+	app.use(express.json())
+	app.use(express.urlencoded({ extended: false }))
 
-	const router = express.Router()
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
-		if (path) router[method]?.(path, ...controllers)
-		else router.use(...controllers)
+		if (path) app[method]?.(formatPath(baseUrl, path), ...controllers)
+		else app.use(...controllers)
 	})
-	app.use(router)
 
-	const startServer = async (port: number) => {
-		app.listen(port, () => {
-			console.log(`Example app listening at port ${port}`)
+	const start = async (port: number) => {
+		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
+			try {
+				app.listen(port, () => {
+					console.log(`Example app listening at port ${port}`)
+					resolve(true)
+				})
+			} catch (err) { reject(err) }
 		})
 	}
 
-	return { startServer }
+	return { start }
 }
+
+const formatPath = (base: string, path: string) => `/${base}/${path}/`
+	.replaceAll('///', '/')
+	.replaceAll('//', '/')

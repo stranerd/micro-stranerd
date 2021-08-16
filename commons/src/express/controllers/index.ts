@@ -3,7 +3,7 @@ import { Request as CustomRequest } from './request'
 
 type CustomResponse = {
 	status?: number,
-	result: Record<string, any>
+	result: any
 }
 
 export type Controller = Handler | ErrorRequestHandler
@@ -12,7 +12,7 @@ export const makeController = (cb: (_: CustomRequest) => Promise<CustomResponse>
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const { status = 200, result } = await cb(extractRequest(req))
-			res.status(status).json(result)
+			res.status(status).json({ data: result })
 		} catch (e) { next(e) }
 	}
 }

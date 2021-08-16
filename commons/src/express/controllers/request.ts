@@ -8,8 +8,8 @@ export class Request {
 	readonly method: string
 	readonly path: string
 	readonly body: Record<string, any>
-	readonly params: Record<string, any>
-	readonly query: Record<string, any>
+	readonly params: Record<string, string>
+	readonly query: Record<string, string>
 	readonly headers: Record<HeaderTypes, any>
 	user: null | AuthUser = null
 
