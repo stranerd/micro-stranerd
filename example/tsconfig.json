@@ -5,7 +5,7 @@
 		"removeComments": true,
 		"noImplicitAny": false,
 		"target": "ES2021",
-		"module": "ESNext",
+		"module": "commonjs",
 		"rootDir": "src",
 		"outDir": "lib",
 		"moduleResolution": "Node",

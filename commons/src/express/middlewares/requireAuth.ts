@@ -1,4 +1,5 @@
-import { NotAuthorizedError, makeMiddleware } from '../'
+import { makeMiddleware } from '../controllers'
+import { NotAuthorizedError } from '../../errors'
 
 export const requireAuth = makeMiddleware(
 	async (request) => {

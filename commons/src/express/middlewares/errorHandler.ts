@@ -1,6 +1,7 @@
-import { makeMiddleware, CustomError } from '../'
+import { makeErrorMiddleware } from '../controllers'
+import { CustomError } from '../../errors'
 
-export const errorHandler = makeMiddleware(
+export const errorHandler = makeErrorMiddleware(
 	async (_, err) => {
 		if (err instanceof CustomError) {
 			return {

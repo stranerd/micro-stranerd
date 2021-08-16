@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response, Handler, ErrorRequestHandler } from 'express'
 import { Request as CustomRequest } from './request'
 
 type CustomResponse = {
@@ -6,33 +6,32 @@ type CustomResponse = {
 	result: Record<string, any>
 }
 
-type CustomMiddlewareResponse = {
-	status?: number,
-	result: Record<string, any>
-} | void
+export type Controller = Handler | ErrorRequestHandler
 
-type Callback = (_: CustomRequest) => Promise<CustomResponse>
-type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
-
-export const makeCallback = (cb: Callback) => {
+export const makeController = (cb: (_: CustomRequest) => Promise<CustomResponse>) :Controller => {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const { status = 200, result } = await cb(extractRequest(req))
-			return res.status(status).json(result)
+			res.status(status).json(result)
+		} catch (e) { next(e) }
+	}
+}
+
+export const makeMiddleware = (cb: (_: CustomRequest) => Promise<void>) :Controller => {
+	return async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			await cb(extractRequest(req))
+			next()
 		} catch (e) { return next(e) }
 	}
 }
 
-export const makeController = ({ path, cb, method }: { path: string, method: MethodTypes, cb: Callback }) => ({ path, method, controller: makeCallback(cb) })
-
-export const makeMiddleware = (cb: (_: CustomRequest, __?: Error) => Promise<CustomMiddlewareResponse>) => {
-	return async (err: Error, req: Request, res: Response, next: NextFunction) => {
-		if (err) return next(err)
+export const makeErrorMiddleware = (cb: (_: CustomRequest, __: Error) => Promise<CustomResponse>) :Controller => {
+	return async (err: Error, req: Request, res: Response, _: NextFunction) => {
 		try {
 			const ret = await cb(extractRequest(req), err)
-			if (ret) return res.status(ret.status ?? 200).json(ret.result)
-			else return next()
-		} catch (e) { return next(e) }
+			res.status(ret.status ?? 400).json(ret.result)
+		} catch (e) { res.status(400).json({ errors: [{ message: 'Something unexpected happened.' }] }) }
 	}
 }
 

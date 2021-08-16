@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { makeMiddleware } from '../'
+import { makeMiddleware } from '../controllers'
 
 export const parseLoggedInUser = makeMiddleware(
 	async (request) => {

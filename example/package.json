@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
-  "type": "module",
   "scripts": {
     "start": "node lib/index.js",
     "build": "tsc -p .",
@@ -13,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@stranerd/api-commons": "^0.0.1-alpha-1",
+    "@stranerd/api-commons": "^0.0.1-alpha-4",
     "cors": "^2.8.5",
     "express": "^4.17.1"
   },

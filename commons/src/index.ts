@@ -1,3 +1,3 @@
 export * from './errors'
-export * from './middlewares'
+export * from './express/middlewares'
 export * from './express'

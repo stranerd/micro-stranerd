@@ -1,5 +1,7 @@
-import { startServer } from './application/app'
+import { getNewExpressInstance } from './commons'
+import { routes } from './application/routes/'
 
+const app = getNewExpressInstance(routes)
 const port = parseInt(process.env.PORT || '5000')
 
-startServer(port)
+app.startServer(port).then(() => {})
