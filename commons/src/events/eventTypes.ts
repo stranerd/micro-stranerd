@@ -1,6 +1,6 @@
 export enum EventTypes {}
 
 export interface Event<Data> {
-	type: EventTypes;
+	topic: EventTypes;
 	data: Data;
 }

@@ -1,30 +1,32 @@
 import { Event } from './eventTypes'
+import { getRabbitConnection , RabbitMQConfig } from './rabbit'
 
-export abstract class Publisher<T extends Event<any>> {
-	abstract type: T['type']
+export class EventBus {
+	register = 'StranerdExchangeColumn'
 
-	async publish(data: T['data']) {
-		return new Promise((resolve: () => void, reject: (err: Error) => void) => {
-			try {
-				// Logic to publish event
-				console.log(this.type)
-				console.log(JSON.stringify(data))
-				resolve()
-			} catch (err) { reject(err) }
-		})
+	constructor (public config: RabbitMQConfig) {}
+
+	createPublisher<T extends Event<any>> (topic: T['topic']) {
+		const { register, config } = this
+
+		async function publish (data: T['data']) {
+			const conn = await getRabbitConnection(register, config)
+			await conn.publish(topic, JSON.stringify(data))
+		}
+
+		return { publish }
 	}
-}
 
-export abstract class Subscriber<T extends Event<any>> {
-	abstract type: T['type']
-	abstract onMessage: (data: T['data']) => void
+	createSubscriber<T extends Event<any>> (key: string, topic: T['topic'], onMessage: (data: T['data']) => void) {
+		const { register, config } = this
 
-	async listen() {
-		console.log('Listening')
-		console.log(this.type)
-		console.log(this.onMessage)
-		/* subscription.on('message', (msg: Message) => {
-			onMessage(JSON.parse(message))
-		}) */
+		async function subscribe () {
+			const conn = await getRabbitConnection(register, config)
+			await conn.subscribe(key, topic, (data) => {
+				onMessage(JSON.parse(data))
+			})
+		}
+
+		return { subscribe }
 	}
 }
