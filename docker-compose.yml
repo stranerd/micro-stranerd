@@ -29,5 +29,13 @@ services:
       - mongo-db:/data/db
     restart: unless-stopped
 
+  rabbitmq:
+    build:
+      context: ./rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 volumes:
   mongo-db:
