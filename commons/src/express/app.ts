@@ -1,16 +1,22 @@
 import express from 'express'
 import { Controller } from './controllers'
-import { errorHandler, notFoundHandler } from './middlewares'
+import { errorHandler, notFoundHandler, parseLoggedInUser } from './middlewares'
 
-type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all' | 'use'
+type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
 	path: string
 	method: MethodTypes
 	controllers: Controller[]
 }
 
-
-const defaultRoutes: Route[] = [
+const preRoutes: Route[] = [
+	{
+		path: '*',
+		method: 'all',
+		controllers: [parseLoggedInUser]
+	}
+]
+const postRoutes: Route[] = [
 	{
 		path: '*',
 		method: 'all',
@@ -18,7 +24,7 @@ const defaultRoutes: Route[] = [
 	},
 	{
 		path: '',
-		method: 'use',
+		method: 'all',
 		controllers: [errorHandler]
 	}
 ]
@@ -27,7 +33,7 @@ export const getNewExpressInstance = (routes: Route[]) => {
 	const app = express()
 
 	const router = express.Router()
-	const allRoutes = [...routes, ...defaultRoutes]
+	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
 		if (path) router[method]?.(path, ...controllers)
 		else router.use(...controllers)

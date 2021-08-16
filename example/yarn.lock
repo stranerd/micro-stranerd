@@ -90,11 +90,12 @@
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-0.14.0.tgz"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@stranerd/api-commons@^0.0.1-alpha-4":
-  version "0.0.1-alpha-4"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-4.tgz#30185661a98ed303b2079211ec810e02b20a2fd9"
-  integrity sha512-ApPIFX/AgKzrdT4/2Y4/3BYuiVGe7RptTHdzuKaWIWcj17JhiCgbai2PvBacePimwEJ3qJVac2LX9GW/gS1Hcw==
+"@stranerd/api-commons@^0.0.1-alpha-5":
+  version "0.0.1-alpha-5"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-5.tgz#3ac92b2662d31c189589758be45d106d2b82ff17"
+  integrity sha512-b0x8rGM+ieH+TblxdOA0RLz83Y8YZlKmHIbeeuiHyPjM47R2sXsWceQ9Lpd9488qWdEVXQl8rff77ub7aNslFQ==
   dependencies:
+    express "^4.17.1"
     jsonwebtoken "^8.5.1"
 
 "@szmarczak/http-timer@^1.1.2":

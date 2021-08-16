@@ -1,1 +1,1 @@
-export * from '../../commons/src'
+export * from '@stranerd/api-commons'
