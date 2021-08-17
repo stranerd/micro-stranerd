@@ -1,9 +1,12 @@
 import { makeController, Route } from '../../commons'
 import userRoutes from './users'
+import eventRoutes from './events'
+
 export const routes: Route[] = [
 	...userRoutes,
+	...eventRoutes,
 	{
-		path: '/test',
+		path: '/',
 		method: 'get',
 		controllers: [
 			makeController( async () => {

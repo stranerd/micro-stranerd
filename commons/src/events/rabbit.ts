@@ -15,8 +15,7 @@ export const getRabbitConnection = async (register: string, config: RabbitMQConf
 		vHost: '/',
 		authMechanism: ['PLAIN', 'AMQPLAIN', 'EXTERNAL']
 	}
-	const allConfig = { ...defaultConfig, ...config }
-	const connection = await amqp.connect(allConfig)
+	const connection = await amqp.connect({ ...defaultConfig, ...config })
 	const channel = await connection.createChannel()
 
 	await channel.assertExchange(register, 'direct', { durable: true })

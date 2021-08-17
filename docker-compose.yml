@@ -8,6 +8,8 @@ services:
     volumes:
       - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
     restart: unless-stopped
+    depends_on:
+      - example
 
   example:
     build:
@@ -18,8 +20,6 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    ports:
-      - "90:5000"
     command: yarn start
 
   mongodb:
@@ -30,6 +30,8 @@ services:
     volumes:
       - "mongo-db:/data/db"
     restart: unless-stopped
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
     build:

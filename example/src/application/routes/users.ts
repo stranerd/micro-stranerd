@@ -1,4 +1,4 @@
-import { makeController, Route, BadRequestError, NotFoundError } from '../../commons'
+import { makeController, Route, NotFoundError } from '../../commons'
 
 const users = [
 	{
@@ -18,16 +18,10 @@ const getUsers: Route = {
 	method: 'get',
 	controllers: [
 		makeController(async () => {
-			try {
-				// Eg - Call use-case to fetch all users
-				return {
-					status: 200,
-					result: users
-				}
-			} catch (err) {
-				if (err.isCustomError) throw err
-				// throw custom error if something goes wrong
-				else throw new BadRequestError('Unable to fetch users')
+			// Eg - Call use-case to fetch all users
+			return {
+				status: 200,
+				result: users
 			}
 		})
 	]
@@ -38,19 +32,12 @@ const findUser: Route = {
 	method: 'get',
 	controllers: [
 		makeController(async (req) => {
-			try {
-				// Eg - Call use-case to get particular user
-				const user = users.find((u) => u.id === req.params.id)
-				if (user) return {
-					status: 200,
-					result: user
-				}
-				else throw new NotFoundError()
-			} catch (err) {
-				if (err.isCustomError) throw err
-				// throw custom error if something goes wrong
-				else throw new BadRequestError('Unable to fetch users')
+			const user = users.find((u) => u.id === req.params.id)
+			if (user) return {
+				status: 200,
+				result: user
 			}
+			else throw new NotFoundError()
 		})
 	]
 }

@@ -1,4 +1,5 @@
 CUSTOM_FOLDERS = './commons/' './example/'
+args = $(filter-out $@,$(MAKECMDGOALS))
 
 dev-start:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans
