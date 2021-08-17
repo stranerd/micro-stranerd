@@ -1,5 +1,6 @@
 import { makeErrorMiddleware } from '../controllers'
 import { CustomError } from '../../errors'
+import { StatusCodes } from '../statusCodes'
 
 export const errorHandler = makeErrorMiddleware(
 	async (_, err) => {
@@ -12,7 +13,7 @@ export const errorHandler = makeErrorMiddleware(
 				}
 			}
 		} else return {
-			status: 400,
+			status: StatusCodes.BadRequest,
 			result: {
 				errors: [{ message: 'Something went wrong', data: err }],
 			}

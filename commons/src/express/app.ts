@@ -1,6 +1,6 @@
 import express from 'express'
 import { Controller } from './controllers'
-import { errorHandler, notFoundHandler, parseLoggedInUser } from './middlewares'
+import { errorHandler, notFoundHandler } from './middlewares'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -9,13 +9,7 @@ export type Route = {
 	controllers: Controller[]
 }
 
-const preRoutes: Route[] = [
-	{
-		path: '*',
-		method: 'all',
-		controllers: [parseLoggedInUser]
-	}
-]
+const preRoutes: Route[] = []
 const postRoutes: Route[] = [
 	{
 		path: '',

@@ -1,10 +1,12 @@
+import { SupportedStatusCodes } from '../express'
+
 export abstract class CustomError extends Error {
-	abstract statusCode: number;
+	abstract statusCode: SupportedStatusCodes
 	isCustomError = true
 
 	protected constructor (message: string) {
 		super(message)
 	}
 
-	abstract serializeErrors(): { message: string; field?: string }[];
+	abstract serializeErrors(): { message: string; field?: string }[]
 }

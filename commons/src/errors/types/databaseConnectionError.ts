@@ -1,14 +1,16 @@
 import { CustomError } from '../customError'
+import { StatusCodes } from '../../express'
+
+const reason = 'Error connecting to database'
 
 export class DatabaseConnectionError extends CustomError {
-	statusCode = 500;
-	reason = 'Error connecting to database';
+	statusCode = StatusCodes.DatabaseConnectionError
 
 	constructor() {
-		super('Error connecting to db')
+		super(reason)
 	}
 
 	serializeErrors() {
-		return [{ message: this.reason }]
+		return [{ message: reason }]
 	}
 }

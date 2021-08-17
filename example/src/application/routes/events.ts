@@ -1,4 +1,4 @@
-import { makeController, Route } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/commons'
 import { publishers } from '@utils/events'
 
 const fireEvent: Route = {
@@ -8,7 +8,7 @@ const fireEvent: Route = {
 		makeController(async (req) => {
 			await publishers.TEST.publish(req.params.id)
 			return {
-				status: 200,
+				status: StatusCodes.Ok,
 				result: {}
 			}
 		})

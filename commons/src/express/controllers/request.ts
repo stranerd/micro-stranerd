@@ -1,6 +1,4 @@
-type AuthUser = {
-	id: string
-}
+import { AuthUser, RefreshUser } from '../../utils/authUser'
 
 type HeaderTypes = 'AccessToken' | 'RefreshToken' | 'Referer' | 'ContentType' | 'UserAgent'
 
@@ -11,7 +9,8 @@ export class Request {
 	readonly params: Record<string, string>
 	readonly query: Record<string, string>
 	readonly headers: Record<HeaderTypes, any>
-	user: null | AuthUser = null
+	authUser: null | AuthUser = null
+	refreshUser: null | RefreshUser = null
 
 	constructor ({
 		body, params, query,
@@ -20,7 +19,7 @@ export class Request {
 		body: Record<string, any>
 		params: Record<string, any>
 		query: Record<string, any>
-		headers: Record<string, any>
+		headers: Record<HeaderTypes, any>
 		method: string
 		path: string
 	}) {
