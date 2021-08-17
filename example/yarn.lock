@@ -90,10 +90,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@stranerd/api-commons@^0.0.1-alpha-7":
-  version "0.0.1-alpha-7"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-7.tgz#0c571bafc179f99b594610e55d23cfee80b809b4"
-  integrity sha512-8S4PQq1DdSg50pmkcIWrU+Fp+t/irdkF0LN3KXRIFXgdm4vnxTEiIVFYuKEqTCfm/gXXT58Mfk8NSPrZV6cy5Q==
+"@stranerd/api-commons@^0.0.1-alpha-8":
+  version "0.0.1-alpha-8"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-8.tgz#303c59a79bf8a83b20ba04240c1d1ead9ab3058c"
+  integrity sha512-8HQUs4z01/cYoJ24S5+wZu42qIHouEWk8h57zvQ4RoDRFaWhkiJQn5uSROjj4CSqZ/FebiwHsybl8/vKYCtPhg==
   dependencies:
     amqplib "^0.8.0"
     express "^4.17.1"
