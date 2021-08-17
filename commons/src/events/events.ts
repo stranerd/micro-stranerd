@@ -11,7 +11,7 @@ export class EventBus {
 
 		async function publish (data: T['data']) {
 			const conn = await getRabbitConnection(register, config)
-			await conn.publish(topic, JSON.stringify(data))
+			await conn.publish(topic as unknown as string, JSON.stringify(data))
 		}
 
 		return { publish }
@@ -22,7 +22,7 @@ export class EventBus {
 
 		async function subscribe () {
 			const conn = await getRabbitConnection(register, config)
-			await conn.subscribe(key, topic, (data) => {
+			await conn.subscribe(key, topic as unknown as string, (data) => {
 				onMessage(JSON.parse(data))
 			})
 		}

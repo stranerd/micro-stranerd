@@ -3,11 +3,12 @@ import { CustomError } from '../../errors'
 
 export const errorHandler = makeErrorMiddleware(
 	async (_, err) => {
-		if (err instanceof CustomError) {
+		const error = err as CustomError
+		if (error.isCustomError) {
 			return {
-				status: err.statusCode,
+				status: error.statusCode,
 				result: {
-					errors: err.serializeErrors()
+					errors: error.serializeErrors()
 				}
 			}
 		} else return {

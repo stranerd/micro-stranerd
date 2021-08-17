@@ -7,7 +7,7 @@
 
 
 // For development, uncomment this export && comment the other
-export * from '../../commons/src'
+// export * from '../../commons/src'
 
 // For production, uncomment this export && comment the other
-// export * from '@stranerd/api-commons'
+export * from '@stranerd/api-commons'
