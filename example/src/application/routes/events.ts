@@ -1,5 +1,5 @@
-import { makeController, Route } from '../../commons'
-import { publishers } from '../../utils/events'
+import { makeController, Route } from '@utils/commons'
+import { publishers } from '@utils/events'
 
 const fireEvent: Route = {
 	path: '/events/:id',

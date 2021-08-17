@@ -43,10 +43,7 @@ export const getNewServerInstance = (baseUrl: string, routes: Route[]) => {
 	const start = async (port: number) => {
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
-				app.listen(port, () => {
-					console.log(`Example app listening at port ${port}`)
-					resolve(true)
-				})
+				app.listen(port, () => resolve(true ))
 			} catch (err) { reject(err) }
 		})
 	}

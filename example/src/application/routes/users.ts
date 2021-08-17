@@ -1,4 +1,4 @@
-import { makeController, Route, NotFoundError } from '../../commons'
+import { makeController, Route, NotFoundError } from '@utils/commons'
 
 const users = [
 	{

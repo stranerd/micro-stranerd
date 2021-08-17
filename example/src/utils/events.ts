@@ -1,11 +1,12 @@
-import { EventBus, EventTypes } from '../commons'
-import { RabbitMQConfig } from './environment'
+import { EventBus, EventTypes } from '@utils/commons'
+import { RabbitMQConfig } from '@utils/environment'
+import { logger } from '@utils/logger'
 
 const eventBus = new EventBus(RabbitMQConfig)
 
 export const subscribers = {
-	[EventTypes.TEST]: eventBus.createSubscriber('test-subscriber', EventTypes.TEST, (data) => {
-		console.log('Just received test event with value of', data)
+	[EventTypes.TEST]: eventBus.createSubscriber('test-subscriber', EventTypes.TEST, async (data) => {
+		await logger.success('Just received test event with value of', data)
 	})
 }
 

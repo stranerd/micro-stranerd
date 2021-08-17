@@ -1,4 +1,4 @@
-import { makeController, Route } from '../../commons'
+import { makeController, Route } from '@utils/commons'
 import userRoutes from './users'
 import eventRoutes from './events'
 

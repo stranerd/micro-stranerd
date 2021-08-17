@@ -8,3 +8,5 @@ export const RabbitMQConfig = {
 	vHost: '/',
 	authMechanism: ['PLAIN', 'AMQPLAIN', 'EXTERNAL']
 }
+
+export const port = parseInt(process.env.PORT || '5000')

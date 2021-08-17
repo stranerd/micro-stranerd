@@ -7,6 +7,7 @@
 		"target": "ES5",
 		"module": "commonjs",
 		"rootDir": "src",
+		"baseUrl": ".",
 		"outDir": "lib",
 		"declaration": true,
 		"moduleResolution": "Node",
@@ -21,7 +22,6 @@
 		"strict": true,
 		"noEmit": false,
 		"experimentalDecorators": true,
-		"baseUrl": ".",
 		"paths": {},
 		"types": [
 			"@types/node"
