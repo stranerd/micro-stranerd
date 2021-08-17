@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node lib/index.js",
     "build": "tsc -p .",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "lint": "eslint src/ --ext .ts,.js --fix"
   },
   "keywords": [],
   "author": "",

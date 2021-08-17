@@ -1,3 +1,5 @@
+CUSTOM_FOLDERS = './commons/' './example/'
+
 dev-start:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans
 
@@ -12,3 +14,9 @@ watch-logs:
 
 prod-start:
 	docker-compose -f docker-compose.yml up --build
+
+install-all:
+	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd $(var);)
+
+lint-all:
+	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd $(var) lint;)
