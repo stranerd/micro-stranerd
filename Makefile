@@ -1,4 +1,5 @@
-CUSTOM_FOLDERS = './commons/' './example/'
+APPS = 'example'
+CUSTOM_FOLDERS = ${APPS} 'commons'
 args = $(filter-out $@,$(MAKECMDGOALS))
 
 dev-start:
@@ -17,7 +18,10 @@ prod-start:
 	docker-compose -f docker-compose.yml up --build
 
 install-all:
-	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd $(var);)
+	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd ./$(var);)
 
 lint-all:
-	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd $(var) lint;)
+	$(foreach var, $(CUSTOM_FOLDERS), yarn --cwd ./$(var) lint;)
+
+copy-envs:
+	node bin/copy-envs.js $(APPS)
