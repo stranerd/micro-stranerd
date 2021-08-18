@@ -98,13 +98,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^0.0.1-alpha-9":
-  version "0.0.1-alpha-9"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-9.tgz#fd7f488034824351fd8edc3b39af6bab5a3ef4f3"
-  integrity sha512-6h8C/7pxluuI6WlBihb16mm82nkU2wdVkH42HWz5xE5hRhcZkpvIBinrDASkQLTUEM0wtOxTSbftG1Ea3eEuKw==
+"@stranerd/api-commons@^0.0.1-alpha-10":
+  version "0.0.1-alpha-10"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-10.tgz#588a2124f6cb8f707728ab77007c8cb0c848f295"
+  integrity sha512-rlUXH+hDrucFLqfDticXFEUsy8uUFpEfogIuL7Mcn8nhYTDlkR2UJ5PrcxKawo9NjyQ272r8JugcqN+u4LaRCA==
   dependencies:
     amqplib "^0.8.0"
     chalk "^4.1.2"
+    dotenv "^10.0.0"
     express "^4.17.1"
     jsonwebtoken "^8.5.1"
 
@@ -744,6 +745,11 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+dotenv@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
+  integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
 
 dynamic-dedupe@^0.3.0:
   version "0.3.0"

@@ -9,6 +9,7 @@ export const getEnvOrFail = (key: string) => {
 	getNewLoggerInstance()
 		.error(`Environment variable not found: ${key}`)
 		.then(() => process.exit(1))
+	return ''
 }
 
 export const accessTokenKey = getEnvOrFail('ACCESS_TOKEN_KEY') ?? ''
