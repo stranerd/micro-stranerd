@@ -28,9 +28,9 @@ export class RedisCache extends Cache {
 		})
 	}
 
-	async set (key: string, data: string, ttl: number) {
+	async set (key: string, data: string, ttlInSecs: number) {
 		return new Promise((res: (_: void) => void, rej) => {
-			this.client.setex(key, ttl, data, (err) => {
+			this.client.setex(key, ttlInSecs, data, (err) => {
 				if (err) rej(err)
 				res()
 			})
