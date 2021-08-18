@@ -1,4 +1,6 @@
-const RABBITMQCONFIG = JSON.parse(process.env.RABBITMQCONFIG ?? '{}')
+import { getEnvOrFail } from '@utils/commons'
+
+const RABBITMQCONFIG = JSON.parse(getEnvOrFail('RABBITMQCONFIG') ?? '{}')
 export const RabbitMQConfig = {
 	protocol: RABBITMQCONFIG.protocol ?? 'amqp',
 	hostname: RABBITMQCONFIG.hostname ?? 'localhost',
