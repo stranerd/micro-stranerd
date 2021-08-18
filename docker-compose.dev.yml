@@ -4,6 +4,5 @@ services:
     build:
       target: base
     volumes:
-      - "./example:/app"
-      - "/app/node_modules"
+      - "./example/src:/app/src:ro"
     command: yarn dev

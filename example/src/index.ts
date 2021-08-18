@@ -7,7 +7,7 @@ import { routes } from './application/routes'
 const start = async () => {
 	const app = getNewServerInstance('/api/example', routes)
 	await app.start(port)
-	await logger.info('Example api has started listening', port)
+	await logger.info('Example api has started listening on port', port)
 
 	await Promise.all(
 		Object.values(subscribers)
