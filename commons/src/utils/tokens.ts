@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { accessTokenKey, refreshTokenKey } from '../config'
-import { AccessTokenExpired, NotAuthorizedError } from '../errors'
+import { AccessTokenExpired, NotAuthenticatedError } from '../errors'
 import { AuthUser, RefreshUser } from './authUser'
 
 const MINUTE = 60
@@ -14,7 +14,7 @@ export const verifyAccessToken = async (token: string) => {
 		return jwt.verify(token, accessTokenKey) as AuthUser
 	} catch (err) {
 		if (err instanceof jwt.TokenExpiredError) throw new AccessTokenExpired()
-		else throw new NotAuthorizedError()
+		else throw new NotAuthenticatedError()
 	}
 }
 
@@ -22,6 +22,6 @@ export const verifyRefreshToken = async (token: string) => {
 	try {
 		return jwt.verify(token, refreshTokenKey) as RefreshUser
 	} catch (err) {
-		throw new NotAuthorizedError()
+		throw new NotAuthenticatedError()
 	}
 }
