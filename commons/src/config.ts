@@ -15,6 +15,8 @@ export const getEnvOrFail = (key: string) => {
 export const accessTokenKey = getEnvOrFail('ACCESS_TOKEN_KEY') ?? ''
 export const refreshTokenKey = getEnvOrFail('REFRESH_TOKEN_KEY') ?? ''
 
+export const mongoDbURI = getEnvOrFail('MONGODB_URI') ?? ''
+
 const RABBITMQ_CONFIG = JSON.parse(getEnvOrFail('RABBITMQ_CONFIG') ?? '{}')
 export const rabbitMQConfig = {
 	protocol: RABBITMQ_CONFIG.protocol,
