@@ -1,21 +1,8 @@
 import amqp  from 'amqplib'
+import { rabbitMQConfig } from '../config'
 
-export type RabbitMQConfig = {
-	protocol: string,
-	hostname: string,
-	port: number,
-	username: string,
-	password: string,
-	vHost?: string,
-	authMechanism?: string[]
-}
-
-export const getRabbitConnection = async (register: string, config: RabbitMQConfig) => {
-	const defaultConfig = {
-		vHost: '/',
-		authMechanism: ['PLAIN', 'AMQPLAIN', 'EXTERNAL']
-	}
-	const connection = await amqp.connect({ ...defaultConfig, ...config })
+export const getRabbitConnection = async (register: string) => {
+	const connection = await amqp.connect(rabbitMQConfig)
 	const channel = await connection.createChannel()
 
 	await channel.assertExchange(register, 'direct', { durable: true })

@@ -1,4 +1,4 @@
-export * from './parseLoggedInUser'
-export * from './requireAuth'
+export * from './requireAuthUser'
+export * from './requireRefreshUser'
 export * from './notFoundHandler'
 export * from './errorHandler'

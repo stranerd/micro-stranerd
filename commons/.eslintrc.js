@@ -14,8 +14,8 @@ module.exports = {
 		ecmaVersion: 2021
 	},
 	rules: {
-		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+		'no-console': 'error',
+		'no-debugger': 'error',
 		'no-tabs': 'off',
 		'no-unused-vars': 0,
 		'@typescript-eslint/no-unused-vars': 0,
@@ -24,6 +24,7 @@ module.exports = {
 		indent: ['error', 'tab', { SwitchCase: 1 }],
 		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 		semi: ['error', 'never'],
+		'@typescript-eslint/semi': ['error', 'never'],
 		quotes: ['error', 'single'],
 		'prefer-const': ['error'],
 		'arrow-parens': ['error', 'always'],

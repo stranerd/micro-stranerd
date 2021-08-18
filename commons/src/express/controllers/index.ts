@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response, Handler, ErrorRequestHandler } from 'express'
 import { Request as CustomRequest } from './request'
+import { StatusCodes, SupportedStatusCodes } from '../statusCodes'
 
 type CustomResponse = {
-	status?: number,
+	status: SupportedStatusCodes,
 	result: any
 }
 
@@ -30,7 +31,7 @@ export const makeErrorMiddleware = (cb: (_: CustomRequest, __: Error) => Promise
 	return async (err: Error, req: Request, res: Response, _: NextFunction) => {
 		try {
 			const ret = await cb(extractRequest(req), err)
-			res.status(ret.status ?? 400).json(ret.result)
+			res.status(ret.status ?? StatusCodes.BadRequest).json(ret.result)
 		} catch (e) { res.status(400).json({ errors: [{ message: 'Something unexpected happened.' }] }) }
 	}
 }

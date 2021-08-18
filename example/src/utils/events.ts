@@ -1,8 +1,7 @@
 import { EventBus, EventTypes } from '@utils/commons'
-import { RabbitMQConfig } from '@utils/environment'
 import { logger } from '@utils/logger'
 
-const eventBus = new EventBus(RabbitMQConfig)
+const eventBus = new EventBus()
 
 export const subscribers = {
 	[EventTypes.TEST]: eventBus.createSubscriber('test-subscriber', EventTypes.TEST, async (data) => {

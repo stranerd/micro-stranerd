@@ -1,13 +1,16 @@
 import { CustomError } from '../customError'
+import { StatusCodes } from '../../express'
+
+const message = 'Not found'
 
 export class NotFoundError extends CustomError {
-	statusCode = 404;
+	statusCode = StatusCodes.NotFound
 
 	constructor() {
-		super('Route not found')
+		super(message)
 	}
 
 	serializeErrors() {
-		return [{ message: 'Not Found' }]
+		return [{ message }]
 	}
 }

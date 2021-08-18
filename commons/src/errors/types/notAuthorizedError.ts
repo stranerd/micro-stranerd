@@ -1,13 +1,16 @@
 import { CustomError } from '../customError'
+import { StatusCodes } from '../../express'
+
+const message = 'Not authorized'
 
 export class NotAuthorizedError extends CustomError {
-	statusCode = 401;
+	statusCode = StatusCodes.NotAuthorized
 
 	constructor() {
-		super('Not Authorized')
+		super(message)
 	}
 
 	serializeErrors() {
-		return [{ message: 'Not authorized' }]
+		return [{ message }]
 	}
 }

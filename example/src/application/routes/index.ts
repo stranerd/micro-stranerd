@@ -1,4 +1,4 @@
-import { makeController, Route } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/commons'
 import userRoutes from './users'
 import eventRoutes from './events'
 
@@ -11,7 +11,7 @@ export const routes: Route[] = [
 		controllers: [
 			makeController( async () => {
 				return {
-					status: 200,
+					status: StatusCodes.Ok,
 					result: { hello: 'Hello World' }
 				}
 			})

@@ -1,4 +1,4 @@
-import { makeController, Route, NotFoundError } from '@utils/commons'
+import { makeController, Route, NotFoundError, StatusCodes, requireAuthUser } from '@utils/commons'
 
 const users = [
 	{
@@ -20,7 +20,7 @@ const getUsers: Route = {
 		makeController(async () => {
 			// Eg - Call use-case to fetch all users
 			return {
-				status: 200,
+				status: StatusCodes.Ok,
 				result: users
 			}
 		})
@@ -34,7 +34,23 @@ const findUser: Route = {
 		makeController(async (req) => {
 			const user = users.find((u) => u.id === req.params.id)
 			if (user) return {
-				status: 200,
+				status: StatusCodes.Ok,
+				result: user
+			}
+			else throw new NotFoundError()
+		})
+	]
+}
+
+const authUser: Route = {
+	path: '/users/auth/:id',
+	method: 'get',
+	controllers: [
+		requireAuthUser,
+		makeController(async (req) => {
+			const user = users.find((u) => u.id === req.params.id)
+			if (user) return {
+				status: StatusCodes.Ok,
 				result: user
 			}
 			else throw new NotFoundError()
@@ -43,5 +59,5 @@ const findUser: Route = {
 }
 
 
-const routes: Route[]= [getUsers, findUser]
+const routes: Route[]= [getUsers, findUser, authUser]
 export default routes

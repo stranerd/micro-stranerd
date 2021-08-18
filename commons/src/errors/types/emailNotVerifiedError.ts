@@ -1,10 +1,10 @@
 import { CustomError } from '../customError'
 import { StatusCodes } from '../../express'
 
-const message = 'Error connecting to database'
+const message = 'Email address not verified'
 
-export class DatabaseConnectionError extends CustomError {
-	statusCode = StatusCodes.DatabaseConnectionError
+export class EmailNotVerifiedError extends CustomError {
+	statusCode = StatusCodes.EmailNotVerified
 
 	constructor() {
 		super(message)
