@@ -6,3 +6,9 @@ services:
     volumes:
       - "./example/src:/app/src:ro"
     command: yarn dev
+ auth:
+    build:
+      target: base
+    volumes:
+      - "./auth/src:/app/src:ro"
+    command: yarn dev

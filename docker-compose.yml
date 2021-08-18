@@ -22,6 +22,17 @@ services:
       - mongodb
     command: yarn start
 
+    auth:
+    build:
+      context: ./auth
+      target: production
+    restart: unless-stopped
+    ports:
+      - "4000"
+    depends_on:
+      - mongodb
+    command: yarn start
+
   mongodb:
     image: mongo
     environment:
