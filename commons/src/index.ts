@@ -1,3 +1,4 @@
+export * from './cache'
 export * from './errors'
 export * from './express'
 export * from './events'
