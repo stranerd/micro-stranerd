@@ -25,7 +25,10 @@ lint-all:
 	$(foreach folder, $(ALL_FOLDERS), yarn --cwd $(folder) lint;)
 
 publish-commons:
-	yarn --cwd ${COMMONS} pub; $(foreach app, $(APPS), yarn --cwd $(app) add @stranerd/api-commons@latest;)
+	yarn --cwd ${COMMONS} pub;
+
+install-commons:
+	$(foreach app, $(APPS), yarn --cwd $(app) add @stranerd/api-commons@latest;)
 
 copy-envs:
 	node bin/copy-envs.js $(APPS);

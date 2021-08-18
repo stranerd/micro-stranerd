@@ -7,7 +7,7 @@ export class RedisCache extends Cache {
 
 	constructor () {
 		super()
-		this.client = new Redis.createClient(redisURI)
+		this.client = Redis.createClient(redisURI)
 	}
 
 	async delete (key: string) {
