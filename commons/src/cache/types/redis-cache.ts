@@ -1,6 +1,7 @@
 import Redis from 'redis'
 import { Cache } from '../cache'
 import { redisURI } from '../../config'
+import { getNewLoggerInstance } from '../../logger'
 
 export class RedisCache extends Cache {
 	client: Redis.RedisClient
@@ -8,6 +9,10 @@ export class RedisCache extends Cache {
 	constructor () {
 		super()
 		this.client = Redis.createClient(redisURI)
+		this.client.on('error', async function (error) {
+			await getNewLoggerInstance().error('Redis failed with error:', error)
+			process.exit(1)
+		})
 	}
 
 	async delete (key: string) {
