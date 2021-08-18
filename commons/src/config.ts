@@ -28,4 +28,4 @@ export const rabbitMQConfig = {
 	authMechanism: RABBITMQ_CONFIG.authMechanism
 }
 
-export const redisURI = getEnvOrFail('REDIS_CONFIG') ?? ''
+export const redisURI = getEnvOrFail('REDIS_URI') ?? ''
