@@ -7,7 +7,7 @@ export const getEnvOrFail = (key: string) => {
 	const value = process.env[key]
 	if (value) return value
 	getNewLoggerInstance()
-		.error(`Environment variable not found: ${key}`)
+		.error(`Environment variable not found: ${ key }`)
 		.then(() => process.exit(1))
 	return ''
 }
@@ -21,9 +21,11 @@ const RABBITMQ_CONFIG = JSON.parse(getEnvOrFail('RABBITMQ_CONFIG') ?? '{}')
 export const rabbitMQConfig = {
 	protocol: RABBITMQ_CONFIG.protocol,
 	hostname: RABBITMQ_CONFIG.hostname,
-	port:     RABBITMQ_CONFIG.port,
+	port: RABBITMQ_CONFIG.port,
 	username: RABBITMQ_CONFIG.username,
 	password: RABBITMQ_CONFIG.password,
 	vHost: RABBITMQ_CONFIG.vHost,
 	authMechanism: RABBITMQ_CONFIG.authMechanism
 }
+
+export const redisURI = getEnvOrFail('REDIS_CONFIG') ?? ''

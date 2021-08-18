@@ -43,5 +43,8 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  redis:
+    image: redis:6.2.5-alpine
+
 volumes:
   mongo-db:
