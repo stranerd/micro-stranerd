@@ -8,8 +8,6 @@ services:
     volumes:
       - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
     restart: unless-stopped
-    depends_on:
-      - example
 
   example:
     build:
@@ -18,7 +16,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    command: yarn start
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
   mongodb:
     image: mongo

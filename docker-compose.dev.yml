@@ -5,4 +5,4 @@ services:
       target: base
     volumes:
       - "./example/src:/app/src:ro"
-    command: yarn dev
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev
