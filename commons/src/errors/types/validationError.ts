@@ -8,14 +8,10 @@ type Error = {
 
 export class ValidationError extends CustomError {
 	statusCode = StatusCodes.ValidationError
-	errors: Error[]
+	serializedErrors
 
 	constructor (errors: Error[]) {
 		super('Invalid request parameters')
-		this.errors = errors
-	}
-
-	get serializeErrors () {
-		return this.errors
+		this.serializedErrors = errors
 	}
 }

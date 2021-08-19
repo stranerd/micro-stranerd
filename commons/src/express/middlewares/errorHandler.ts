@@ -9,13 +9,13 @@ export const errorHandler = makeErrorMiddleware(
 			return {
 				status: error.statusCode,
 				result: {
-					errors: error.serializeErrors()
+					errors: error.serializedErrors
 				}
 			}
 		} else return {
 			status: StatusCodes.BadRequest,
 			result: {
-				errors: [{ message: 'Something went wrong', data: err }],
+				errors: [{ message: 'Something went wrong', data: err }]
 			}
 		}
 	}
