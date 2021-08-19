@@ -1,4 +1,4 @@
-import { getMongooseConnection } from '../../utils/commons'
+import { getMongooseConnection } from '@utils/commons'
 
 const db = await getMongooseConnection()
 

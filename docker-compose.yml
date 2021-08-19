@@ -18,16 +18,14 @@ services:
       - mongodb
     command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
-    auth:
+  auth:
     build:
-      context: ./_auth
+      context: ./auth
       target: production
     restart: unless-stopped
-    ports:
-      - "4000"
     depends_on:
       - mongodb
-    command: yarn start
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
   mongodb:
     image: mongo

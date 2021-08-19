@@ -1,7 +1,7 @@
 import { getNewServerInstance } from '@utils/commons'
 import { port } from '@utils/environment'
 import { subscribers } from '@utils/events'
-import { logger } from './utils/logger'
+import { logger } from '@utils/logger'
 import { routes } from './server/routes'
 
 const start = async () => {
@@ -17,4 +17,4 @@ const start = async () => {
 	)
 }
 
-start().then(() => {})
+start().then()
