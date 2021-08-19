@@ -10,7 +10,7 @@ dev-start-detach:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
 
 dev-stop:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v --remove-orphans;
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans;
 
 watch-logs:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs -f;

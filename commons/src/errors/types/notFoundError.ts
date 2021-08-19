@@ -5,12 +5,10 @@ const message = 'Not found'
 
 export class NotFoundError extends CustomError {
 	statusCode = StatusCodes.NotFound
+	serializedErrors
 
-	constructor() {
+	constructor () {
 		super(message)
-	}
-
-	serializeErrors() {
-		return [{ message }]
+		this.serializedErrors = [{ message }]
 	}
 }

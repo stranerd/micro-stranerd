@@ -1,7 +1,9 @@
 # Stranerd MicroService Api
 
 ## Development
+
 #### Software requirements: docker, docker-compose, git, make
+
 ```bash
 # Setup
 # clone project
@@ -42,8 +44,9 @@ $ make lint-all
 ```
 
 To make user in rabbitmq:
+
 1. Get containerID by running ```docker container ls``` and copy the id of the container running rabbitmq
 2. Run ```docker exec -it __containerID__ rabbitmqctl add_user username password```
-3. Run ```docker exec -it __containerID__ rabbitmqctl set_user_tags test administrator```
-4. Run ```docker exec -it __containerID__ rabbitmqctl set_permissions -p / test ".*" ".*" ".*"```
+3. Run ```docker exec -it __containerID__ rabbitmqctl set_user_tags username administrator```
+4. Run ```docker exec -it __containerID__ rabbitmqctl set_permissions -p / username ".*" ".*" ".*"```
 5. Update env.json with new rabbitmq username and password and run ```make copy-envs``` to populate all .envs

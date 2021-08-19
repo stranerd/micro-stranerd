@@ -86,10 +86,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^0.0.1-alpha-13":
-  version "0.0.1-alpha-13"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-13.tgz#e078a1e79eb2630249187bd97eee0def4f6c9d29"
-  integrity sha512-oNj0eHzZ3xY7RGVUccrp3efbzy6bwyWbAcOBkFs3e6sOfYuZg1B5DuKWJOHox/cw1X3VUil2c/ZuejpKp5SYCg==
+"@stranerd/api-commons@^0.0.1-alpha-16":
+  version "0.0.1-alpha-16"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-16.tgz#4d60ff9967def05bdede68049e420141a169579d"
+  integrity sha512-FweciewYElTzaFe9bO3TFOI2BSUqD+AAlxoTMV5J4WPXgHkZXaxDwRB7X8MautzJzvX8irYyQjJEwNznHuyYTA==
   dependencies:
     amqplib "^0.8.0"
     chalk "^4.1.2"

@@ -5,7 +5,7 @@ import { logger } from '@utils/logger'
 import { routes } from './application/routes'
 
 const start = async () => {
-	const app = getNewServerInstance('/api/example', routes)
+	const app = getNewServerInstance(routes)
 	await app.start(port)
 	await logger.info('Example api has started listening on port', port)
 
@@ -17,4 +17,4 @@ const start = async () => {
 	)
 }
 
-start().then(() => {})
+start().then()

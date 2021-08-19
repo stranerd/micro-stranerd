@@ -3,14 +3,10 @@ import { StatusCodes } from '../../express'
 
 export class BadRequestError extends CustomError {
 	statusCode = StatusCodes.BadRequest
-	message: string
+	serializedErrors
 
-	constructor(message: string) {
+	constructor (message: string) {
 		super(message)
-		this.message = message
-	}
-
-	serializeErrors() {
-		return [{ message: this.message }]
+		this.serializedErrors = [{ message }]
 	}
 }

@@ -8,19 +8,15 @@ services:
     volumes:
       - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
     restart: unless-stopped
-    depends_on:
-      - example
 
   example:
     build:
       context: ./example
       target: production
     restart: unless-stopped
-    ports:
-      - "3000:5000"
     depends_on:
       - mongodb
-    command: yarn start
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
     auth:
     build:
@@ -41,23 +37,19 @@ services:
     volumes:
       - "mongo-db:/data/db"
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     depends_on:
       - rabbitmq
+      - redis
 
   rabbitmq:
     build:
       context: ./rabbitmq
     restart: unless-stopped
     ports:
-      - "5672:5672"
       - "15672:15672"
 
   redis:
     image: redis:6.2.5-alpine
-    ports:
-      - "6379:6379"
 
 volumes:
   mongo-db:

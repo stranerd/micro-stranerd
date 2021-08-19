@@ -5,12 +5,9 @@ const message = 'Access token expired'
 
 export class AccessTokenExpired extends CustomError {
 	statusCode = StatusCodes.AccessTokenExpired
+	serializedErrors = [{ message }]
 
-	constructor() {
+	constructor () {
 		super(message)
-	}
-
-	serializeErrors() {
-		return [{ message }]
 	}
 }
