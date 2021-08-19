@@ -20,7 +20,7 @@ services:
 
     auth:
     build:
-      context: ./auth
+      context: ./_auth
       target: production
     restart: unless-stopped
     ports:

@@ -1,4 +1,4 @@
-APPS = example auth
+APPS = example _auth
 COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))
