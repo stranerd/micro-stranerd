@@ -6,11 +6,11 @@ const message = 'Email address not verified'
 export class EmailNotVerifiedError extends CustomError {
 	statusCode = StatusCodes.EmailNotVerified
 
-	constructor() {
+	constructor () {
 		super(message)
 	}
 
-	serializeErrors() {
+	get serializeErrors () {
 		return [{ message }]
 	}
 }

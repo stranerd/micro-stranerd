@@ -6,11 +6,11 @@ const message = 'Not authenticated'
 export class NotAuthenticatedError extends CustomError {
 	statusCode = StatusCodes.NotAuthenticated
 
-	constructor() {
+	constructor () {
 		super(message)
 	}
 
-	serializeErrors() {
+	get serializeErrors () {
 		return [{ message }]
 	}
 }

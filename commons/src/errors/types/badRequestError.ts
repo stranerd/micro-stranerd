@@ -5,12 +5,12 @@ export class BadRequestError extends CustomError {
 	statusCode = StatusCodes.BadRequest
 	message: string
 
-	constructor(message: string) {
+	constructor (message: string) {
 		super(message)
 		this.message = message
 	}
 
-	serializeErrors() {
+	get serializeErrors () {
 		return [{ message: this.message }]
 	}
 }

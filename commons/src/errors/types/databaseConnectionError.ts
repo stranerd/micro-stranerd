@@ -6,11 +6,11 @@ const message = 'Error connecting to database'
 export class DatabaseConnectionError extends CustomError {
 	statusCode = StatusCodes.DatabaseConnectionError
 
-	constructor() {
+	constructor () {
 		super(message)
 	}
 
-	serializeErrors() {
+	get serializeErrors () {
 		return [{ message }]
 	}
 }

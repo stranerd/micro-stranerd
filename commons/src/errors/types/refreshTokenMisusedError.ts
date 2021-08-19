@@ -10,7 +10,7 @@ export class RefreshTokenMisusedError extends CustomError {
 		super(message)
 	}
 
-	serializeErrors () {
+	get serializeErrors () {
 		return [{ message }]
 	}
 }

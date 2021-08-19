@@ -10,12 +10,12 @@ export class ValidationError extends CustomError {
 	statusCode = StatusCodes.ValidationError
 	errors: Error[]
 
-	constructor(errors: Error[]) {
+	constructor (errors: Error[]) {
 		super('Invalid request parameters')
 		this.errors = errors
 	}
 
-	serializeErrors() {
+	get serializeErrors () {
 		return this.errors
 	}
 }
