@@ -23,28 +23,30 @@ const postRoutes: Route[] = [
 	}
 ]
 
-export const getNewServerInstance = (baseUrl: string, routes: Route[]) => {
+export const getNewServerInstance = (routes: Route[]) => {
 	const app = express()
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
 
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
-		if (path) app[method]?.(formatPath(baseUrl, path), ...controllers)
+		if (path) app[method]?.(formatPath(path), ...controllers)
 		else app.use(...controllers)
 	})
 
 	const start = async (port: number) => {
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
-				app.listen(port, () => resolve(true ))
-			} catch (err) { reject(err) }
+				app.listen(port, () => resolve(true))
+			} catch (err) {
+				reject(err)
+			}
 		})
 	}
 
 	return { start }
 }
 
-const formatPath = (base: string, path: string) => `/${base}/${path}/`
+const formatPath = (path: string) => `/${ path }/`
 	.replaceAll('///', '/')
 	.replaceAll('//', '/')

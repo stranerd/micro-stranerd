@@ -1,7 +1,16 @@
 import { getMongooseConnection } from '@utils/commons'
 import { logger } from '@utils/logger'
 
-const db = await getMongooseConnection()
-	.catch((err) => logger.error(err))
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
-export default db
+let db = null as ThenArg<ReturnType<typeof getMongooseConnection>> | null
+
+export default async () => {
+	if (db) return db
+	db = await getMongooseConnection()
+		.catch((err) => {
+			logger.error(err)
+			return null
+		})
+	return db
+}
