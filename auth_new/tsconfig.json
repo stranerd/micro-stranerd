@@ -1,0 +1,37 @@
+{
+	"compilerOptions": {
+	    "module": "CommonJS",
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"removeComments": false,
+		"noImplicitAny": false,
+		"target": "ES5",
+		"rootDir": "src",
+		"baseUrl": "./",
+		"outDir": "lib",
+		"moduleResolution": "Node",
+		"lib": [
+			"ESNext",
+			"ESNext.AsyncIterable"
+		],
+		"esModuleInterop": true,
+		"allowJs": false,
+		"sourceMap": false,
+		"strict": true,
+		"noEmit": false,
+		"experimentalDecorators": true,
+		"paths": {
+			"@utils/*" : ["./src/utils/*"]
+		},
+		"types": [
+			"@types/node"
+		]
+	},
+	"include": [
+		"src"
+	],
+	"exclude": [
+		"node_modules",
+		"lib"
+	]
+}
