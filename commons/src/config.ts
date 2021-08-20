@@ -12,8 +12,8 @@ export const getEnvOrFail = (key: string) => {
 	return ''
 }
 
-export const accessTokenKey = getEnvOrFail('ACCESS_TOKEN_KEY') ?? ''
-export const refreshTokenKey = getEnvOrFail('REFRESH_TOKEN_KEY') ?? ''
+export const accessTokenKey = getEnvOrFail('ACCESS_TOKEN_KEY')
+export const refreshTokenKey = getEnvOrFail('REFRESH_TOKEN_KEY')
 
 export const mongoDbURI = getEnvOrFail('MONGODB_URI') ?? ''
 
@@ -28,4 +28,4 @@ export const rabbitMQConfig = {
 	authMechanism: RABBITMQ_CONFIG.authMechanism
 }
 
-export const redisURI = getEnvOrFail('REDIS_URI') ?? ''
+export const redisURI = getEnvOrFail('REDIS_URI')
