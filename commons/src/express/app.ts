@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import fileUpload from 'express-fileupload'
-import path from 'path'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import { isDev } from '../config'
@@ -37,8 +36,7 @@ export const getNewServerInstance = (routes: Route[]) => {
 	app.use(
 		fileUpload({
 			limits: { fileSize: 100 * 1024 * 1024 },
-			useTempFiles: true,
-			tempFileDir: path.join(__dirname, 'storage', 'tmp')
+			useTempFiles: false
 		})
 	)
 
