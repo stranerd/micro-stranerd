@@ -1,5 +1,8 @@
+import { Email } from '../emails'
+
 export enum EventTypes {
-	TEST = 'TEST'
+	TEST = 'TEST',
+	SENDMAIL = 'SENDMAIL'
 }
 
 interface Event<Data> {
@@ -8,8 +11,12 @@ interface Event<Data> {
 }
 
 export interface Events extends Record<EventTypes, Event<any>> {
-	TEST: {
+	[EventTypes.TEST]: {
 		topic: typeof EventTypes.TEST,
 		data: string
+	},
+	[EventTypes.SENDMAIL]: {
+		topic: typeof EventTypes.SENDMAIL,
+		data: Email
 	}
 }
