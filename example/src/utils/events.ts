@@ -9,5 +9,6 @@ export const subscribers = {
 }
 
 export const publishers = {
-	[EventTypes.TEST]: eventBus.createPublisher(EventTypes.TEST)
+	[EventTypes.TEST]: eventBus.createPublisher(EventTypes.TEST),
+	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL)
 }

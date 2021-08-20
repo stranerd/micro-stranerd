@@ -4,10 +4,10 @@ import { getRabbitConnection } from './rabbit'
 export class EventBus {
 	register = 'StranerdExchangeColumn'
 
-	createPublisher<Event extends Events[EventTypes]> (topic: Event['topic']) {
+	createPublisher<EventType extends EventTypes> (topic: EventType) {
 		const { register } = this
 
-		async function publish (data: Event['data']) {
+		async function publish (data: Events[EventType]['data']) {
 			const conn = await getRabbitConnection(register)
 			await conn.publish(topic as unknown as string, JSON.stringify(data))
 		}
@@ -15,7 +15,7 @@ export class EventBus {
 		return { publish }
 	}
 
-	createSubscriber<Event extends Events[EventTypes]> (topic: Event['topic'], onMessage: (data: Event['data']) => void) {
+	createSubscriber<EventType extends EventTypes> (topic: EventType, onMessage: (data: Events[EventType]['data']) => void) {
 		const { register } = this
 
 		async function subscribe () {

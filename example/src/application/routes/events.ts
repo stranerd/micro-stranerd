@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { EventTypes, makeController, Route, StatusCodes } from '@utils/commons'
 import { publishers } from '@utils/events'
 
 const fireEvent: Route = {
@@ -6,7 +6,7 @@ const fireEvent: Route = {
 	method: 'get',
 	controllers: [
 		makeController(async (req) => {
-			await publishers.TEST.publish(req.params.data)
+			await publishers[EventTypes.TEST].publish(req.params.data)
 			return {
 				status: StatusCodes.Ok,
 				result: req.params.data
