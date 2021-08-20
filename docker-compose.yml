@@ -36,6 +36,15 @@ services:
       - mongodb
     command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
+  storage:
+    build:
+      context: ./storage
+      target: production
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+
   mongodb:
     image: mongo
     environment:
