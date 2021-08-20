@@ -1,6 +1,6 @@
 import { UseCase } from '../../base'
 import { Credential, AuthOutput, TokenInput } from '../../domain'
-import { GenerateAuthOutputUseCase } from '../user/generate-auth-output.use-case'
+import { GenerateAuthOutputUseCase } from '../auth/generate-auth-output.use-case'
 import { IUserRepository } from '../../contracts/repository'
 
 export class AuthenticateUserUseCase implements UseCase<Credential, AuthOutput> {
