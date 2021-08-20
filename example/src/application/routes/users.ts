@@ -1,4 +1,4 @@
-import { makeController, Route, NotFoundError, StatusCodes, requireAuthUser } from '@utils/commons'
+import { makeController, NotFoundError, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 
 const users = [
 	{
@@ -58,6 +58,5 @@ const authUser: Route = {
 	]
 }
 
-
-const routes: Route[]= [getUsers, findUser, authUser]
+const routes: Route[] = [getUsers, findUser, authUser]
 export default routes

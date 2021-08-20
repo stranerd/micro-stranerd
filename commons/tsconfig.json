@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"removeComments": true,
 		"noImplicitAny": false,
 		"target": "ES5",

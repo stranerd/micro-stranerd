@@ -1,10 +1,13 @@
 import chalk from 'chalk'
 
 export abstract class Logger {
-	abstract success (...args: any[]) :Promise<void>
-	abstract info (...args: any[]) :Promise<void>
-	abstract warn (...args: any[]) :Promise<void>
-	abstract error (...args: any[]) :Promise<void>
+	abstract success (...args: any[]): Promise<void>
+
+	abstract info (...args: any[]): Promise<void>
+
+	abstract warn (...args: any[]): Promise<void>
+
+	abstract error (...args: any[]): Promise<void>
 }
 
 export class ConsoleLogger extends Logger {

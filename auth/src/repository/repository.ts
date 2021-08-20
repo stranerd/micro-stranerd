@@ -1,177 +1,172 @@
 import { IUserRepository } from '../application/contracts/repository'
-import { Credential, TokenInput, UserModel, Tokens, AuthOutput, RoleInput } from '../application/domain'
+import { AuthOutput, Credential, RoleInput, TokenInput, Tokens, UserModel } from '../application/domain'
 import { UserEntity } from './entities/user.entity'
 import { UserMapper } from './mapper/user.mapper'
-import { exchangeOldForNewTokens, verifyRefreshToken, deleteCachedRefreshToken, deleteCachedAccessToken } from '@utils/commons'
-
+import {
+	deleteCachedAccessToken,
+	deleteCachedRefreshToken,
+	exchangeOldForNewTokens,
+	verifyRefreshToken
+} from '@utils/commons'
 
 const { User } = require('./mongoose-model/user.model')
- 
-export class Repository implements 
- IUserRepository  {
-    
-    private static instance: Repository
-    private userMapper: UserMapper
-	
-	  constructor() {
-		  this.userMapper = new UserMapper() 
-    }
 
-    static getInstance(): Repository {
-		 if(!Repository.instance) {
-			 Repository.instance = new Repository()
-		   } 
-		
-	  return Repository.instance
-    }
+export class Repository implements IUserRepository {
 
-    async addNewUser(user: UserModel): Promise<TokenInput> {
-		 const data: UserEntity = this.userMapper.mapFrom(user)
-		 const userData = await new User(data).save()
+	private static instance: Repository
+	private userMapper: UserMapper
 
-		 if(userData) {
+	constructor () {
+		this.userMapper = new UserMapper()
+	}
 
-			 const tokenPayload: TokenInput = {
-			 id: userData._id,
-			 roles: userData.roles,
-			 isVerified: userData.isVerified,
-			 authTypes: userData.authTypes
-			 }
+	static getInstance (): Repository {
+		if (!Repository.instance) {
+			Repository.instance = new Repository()
+		}
 
-			 // update user lastSignIn
+		return Repository.instance
+	}
 
-			 userData.lastSignedInAt = new Date().getTime()
+	async addNewUser (user: UserModel): Promise<TokenInput> {
+		const data: UserEntity = this.userMapper.mapFrom(user)
+		const userData = await new User(data).save()
 
-			 return  new Promise((resolve) => resolve(tokenPayload))
-        
-			 }
-       
-			 return new Promise((resolve, reject) => reject())
-    }
+		if (userData) {
 
-    async authenticateUser(details: Credential): Promise<TokenInput> {
-		 const user = await User.find(details)
+			const tokenPayload: TokenInput = {
+				id: userData._id,
+				roles: userData.roles,
+				isVerified: userData.isVerified,
+				authTypes: userData.authTypes
+			}
 
-		 if(user) {
+			// update user lastSignIn
 
-			 const tokenPayload: TokenInput = {
-				 id: user._id,
-				 roles: user.roles,
-				 isVerified: user.isVerified,
-				 authTypes: user.authTypes
-			 }
+			userData.lastSignedInAt = new Date().getTime()
 
-			  // update user lastSignIn
+			return new Promise((resolve) => resolve(tokenPayload))
 
-			  user.lastSignedInAt = new Date().getTime()
+		}
 
+		return new Promise((resolve, reject) => reject())
+	}
 
-			 return new Promise((resolve) => resolve(tokenPayload))
-			 }
-			 
-			 return new Promise((resolve, reject) => reject())
-    }
+	async authenticateUser (details: Credential): Promise<TokenInput> {
+		const user = await User.find(details)
 
+		if (user) {
 
-	 async userDetails(userId: string): Promise<UserModel> {
-		 const user = await User.find({_id: userId})
+			const tokenPayload: TokenInput = {
+				id: user._id,
+				roles: user.roles,
+				isVerified: user.isVerified,
+				authTypes: user.authTypes
+			}
 
-		 if(user) {
+			// update user lastSignIn
 
-			 return new Promise((resolve) => resolve(user))
+			user.lastSignedInAt = new Date().getTime()
 
-			 }
-			 
-			 return new Promise((resolve, reject) => reject())
-		 }
-	
-	
-    async userTokenData(id: string): Promise<TokenInput> {
-		 const user = await User.find({_id: id})
-   
-			 if(user) {
+			return new Promise((resolve) => resolve(tokenPayload))
+		}
 
-				 const tokenPayload: TokenInput = {
-					 id: user._id,
-					 roles: user.roles,
-					 isVerified: user.isVerified,
-					 authTypes: user.authTypes
-				 }
-   
-				 return new Promise((resolve) => resolve(tokenPayload))
-   
-				 }
-				
-				 return new Promise((resolve, reject) => reject())
-			 }
+		return new Promise((resolve, reject) => reject())
+	}
 
+	async userDetails (userId: string): Promise<UserModel> {
+		const user = await User.find({ _id: userId })
 
-    async updateUserRole(roleInput: RoleInput): Promise<boolean> {
-		 
-		 const user = await User.find({_id: roleInput.userId})
-   
-			 if(user) {
+		if (user) {
 
-				 const userRoles = {
-					 stranerd: {
-					 isAdmin: roleInput.app == 'stranerd' && roleInput.value && roleInput.role == 'isAdmin',
-					 isModerator: roleInput.app == 'stranerd' && roleInput.value && roleInput.role == 'isModerator'
-				 },
-				 tutorStack: {
-				    isAdmin: roleInput.app == 'tutorStack' && roleInput.value && roleInput.role == 'isAdmin',
-				    isModerator: roleInput.app == 'tutorStack' && roleInput.value && roleInput.role == 'isModerator'
-			     },
-				 brainBox: {
-				    isAdmin: roleInput.app == 'brainBox' && roleInput.value && roleInput.role == 'isAdmin',
-				    isModerator: roleInput.app == 'brainBox' && roleInput.value && roleInput.role == 'isModerator'
-				 }
-			   }
-                
-				 user.roles = userRoles
+			return new Promise((resolve) => resolve(user))
 
-				 // clear accessToken
-				 await deleteCachedAccessToken(roleInput.userId)
-				
-				 return new Promise((resolve) => resolve(true))
-			  }
-					
-				 return new Promise((resolve, reject) => reject(false))
-	 }
+		}
 
+		return new Promise((resolve, reject) => reject())
+	}
 
-    async GetRefreshToken(tokens: Tokens): Promise<AuthOutput> {
+	async userTokenData (id: string): Promise<TokenInput> {
+		const user = await User.find({ _id: id })
 
-		 const newTokens = await exchangeOldForNewTokens(tokens,this.userTokenData)
+		if (user) {
 
-		 const userData = await verifyRefreshToken(tokens.refreshToken) 
+			const tokenPayload: TokenInput = {
+				id: user._id,
+				roles: user.roles,
+				isVerified: user.isVerified,
+				authTypes: user.authTypes
+			}
 
-		 if (newTokens) {
-          
-			 const user = await this.userDetails(userData.id)
+			return new Promise((resolve) => resolve(tokenPayload))
 
-			 const result = {
-				 accessToken: newTokens.accessToken,
-				 refreshToken: newTokens.refreshToken,
-				 user
-			 }
+		}
 
-				 
-		  return  new Promise((resolve) => resolve(result))
-				
-	     }
+		return new Promise((resolve, reject) => reject())
+	}
 
-		 return new Promise((resolve, reject) => reject())
-    }
+	async updateUserRole (roleInput: RoleInput): Promise<boolean> {
 
-	 async clearUserAuthCache(userId: string): Promise<boolean> {
-        
-		 await deleteCachedAccessToken(userId)
-		 await deleteCachedRefreshToken(userId)
-         
-		 return  new Promise((resolve) => resolve(true))
+		const user = await User.find({ _id: roleInput.userId })
 
-		
-	 }
+		if (user) {
 
+			const userRoles = {
+				stranerd: {
+					isAdmin: roleInput.app == 'stranerd' && roleInput.value && roleInput.role == 'isAdmin',
+					isModerator: roleInput.app == 'stranerd' && roleInput.value && roleInput.role == 'isModerator'
+				},
+				tutorStack: {
+					isAdmin: roleInput.app == 'tutorStack' && roleInput.value && roleInput.role == 'isAdmin',
+					isModerator: roleInput.app == 'tutorStack' && roleInput.value && roleInput.role == 'isModerator'
+				},
+				brainBox: {
+					isAdmin: roleInput.app == 'brainBox' && roleInput.value && roleInput.role == 'isAdmin',
+					isModerator: roleInput.app == 'brainBox' && roleInput.value && roleInput.role == 'isModerator'
+				}
+			}
+
+			user.roles = userRoles
+
+			// clear accessToken
+			await deleteCachedAccessToken(roleInput.userId)
+
+			return new Promise((resolve) => resolve(true))
+		}
+
+		return new Promise((resolve, reject) => reject(false))
+	}
+
+	async GetRefreshToken (tokens: Tokens): Promise<AuthOutput> {
+
+		const newTokens = await exchangeOldForNewTokens(tokens, this.userTokenData)
+
+		const userData = await verifyRefreshToken(tokens.refreshToken)
+
+		if (newTokens) {
+
+			const user = await this.userDetails(userData.id)
+
+			const result = {
+				accessToken: newTokens.accessToken,
+				refreshToken: newTokens.refreshToken,
+				user
+			}
+
+			return new Promise((resolve) => resolve(result))
+
+		}
+
+		return new Promise((resolve, reject) => reject())
+	}
+
+	async clearUserAuthCache (userId: string): Promise<boolean> {
+
+		await deleteCachedAccessToken(userId)
+		await deleteCachedRefreshToken(userId)
+
+		return new Promise((resolve) => resolve(true))
+
+	}
 
 }

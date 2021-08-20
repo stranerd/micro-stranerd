@@ -3,7 +3,7 @@ import { UserModel } from '../../application/domain'
 import { UserEntity } from '../entities/user.entity'
 
 export class UserMapper extends Mapper<UserModel, UserEntity> {
-	mapFrom(param: UserModel): UserEntity {
+	mapFrom (param: UserModel): UserEntity {
 		return {
 			_id: null,
 			email: param.email,
@@ -16,9 +16,9 @@ export class UserMapper extends Mapper<UserModel, UserEntity> {
 			lastSignedInAt: param.lastSignedInAt,
 			signedUpAt: param.signedUpAt
 		}
-	}    
-    
-	mapTo(param: UserEntity): UserModel {
+	}
+
+	mapTo (param: UserEntity): UserModel {
 		return {
 			_id: param._id,
 			email: param.email,

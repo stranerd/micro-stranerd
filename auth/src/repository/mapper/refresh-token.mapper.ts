@@ -3,7 +3,7 @@ import { RefreshTokenModel } from '../../application/domain'
 import { RefreshTokenEntity } from '../entities/refresh-token.entity'
 
 export class RefreshTokenMapper extends Mapper<RefreshTokenModel, RefreshTokenEntity> {
-	mapFrom(param: RefreshTokenModel): RefreshTokenEntity {
+	mapFrom (param: RefreshTokenModel): RefreshTokenEntity {
 		return {
 			_id: null,
 			user: param.user,
@@ -11,11 +11,11 @@ export class RefreshTokenMapper extends Mapper<RefreshTokenModel, RefreshTokenEn
 			expires: param.expires,
 			created: param.created,
 			revoked: param.revoked,
-			replacedByToken: param.replacedByToken,
+			replacedByToken: param.replacedByToken
 		}
-	}    
-    
-	mapTo(param: RefreshTokenEntity): RefreshTokenModel {
+	}
+
+	mapTo (param: RefreshTokenEntity): RefreshTokenModel {
 		return {
 			_id: param._id,
 			user: param.user,

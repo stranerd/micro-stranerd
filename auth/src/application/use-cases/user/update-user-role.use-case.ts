@@ -3,22 +3,22 @@ import { RoleInput, SuccessStatus } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
 export class UpdateUserRoleUseCase implements UseCase<RoleInput, SuccessStatus> {
-    repository
+	repository
 
-    constructor(repo: IUserRepository) {
-	     this.repository = repo
-    }
+	constructor (repo: IUserRepository) {
+		this.repository = repo
+	}
 
-    async execute(roleInput: RoleInput): Promise<SuccessStatus> {
+	async execute (roleInput: RoleInput): Promise<SuccessStatus> {
 
-		 const updated = await this.repository.updateUserRole(roleInput)
+		const updated = await this.repository.updateUserRole(roleInput)
 
-		 const response = {
-			 success: updated
-		 }
+		const response = {
+			success: updated
+		}
 
-		 return new Promise((resolve) => resolve(response))
-	
-    }
+		return new Promise((resolve) => resolve(response))
+
+	}
 
 }
