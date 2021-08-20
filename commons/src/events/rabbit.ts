@@ -1,5 +1,5 @@
-import amqp  from 'amqplib'
-import { rabbitMQConfig } from '../config'
+import amqp from 'amqplib'
+import { appId, rabbitMQConfig } from '../config'
 
 export const getRabbitConnection = async (register: string) => {
 	const connection = await amqp.connect(rabbitMQConfig)
@@ -12,10 +12,10 @@ export const getRabbitConnection = async (register: string) => {
 		channel.publish(register, topic, Buffer.from(data), { persistent: true })
 	}
 
-	const subscribe = async (queueKey: string, topic: string, cb: (data: string, topic: string) => void) => {
-		await channel.assertQueue(queueKey, { durable: true })
-		await channel.bindQueue(queueKey, register, topic)
-		channel.consume(queueKey, (msg) => {
+	const subscribe = async (topic: string, cb: (data: string, topic: string) => void) => {
+		await channel.assertQueue(appId, { durable: true })
+		await channel.bindQueue(appId, register, topic)
+		channel.consume(appId, (msg) => {
 			if (msg) {
 				try {
 					cb(msg.content.toString(), msg.fields.routingKey)
@@ -26,7 +26,7 @@ export const getRabbitConnection = async (register: string) => {
 			}
 		}, {
 			noAck: false
-		}).then(() => {})
+		}).then()
 	}
 
 	return { publish, subscribe }

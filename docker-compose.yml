@@ -9,6 +9,24 @@ services:
       - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
     restart: unless-stopped
 
+  auth:
+    build:
+      context: ./auth
+      target: production
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+
+  emails:
+    build:
+      context: ./emails
+      target: production
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+
   example:
     build:
       context: ./example
@@ -17,17 +35,6 @@ services:
     depends_on:
       - mongodb
     command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
-
-    auth:
-    build:
-      context: ./auth
-      target: production
-    restart: unless-stopped
-    ports:
-      - "4000"
-    depends_on:
-      - mongodb
-    command: yarn start
 
   mongodb:
     image: mongo

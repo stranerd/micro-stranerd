@@ -1,8 +1,8 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { mongoDbURI } from '../config'
-import { DatabaseConnectionError } from '../errors'
+import { Logger } from '../logger'
 
-export const getMongooseConnection = async () => {
+export const setupMongooseConnection = async () => {
 	try {
 		return await mongoose.connect(mongoDbURI, {
 			useNewUrlParser: true,
@@ -10,5 +10,10 @@ export const getMongooseConnection = async () => {
 			useFindAndModify: false,
 			useCreateIndex: false
 		})
-	} catch (err) { throw new DatabaseConnectionError() }
+	} catch (error) {
+		await Logger.error('MongoDb failed with error:', error)
+		process.exit(1)
+	}
 }
+
+export { mongoose }

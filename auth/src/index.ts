@@ -1,13 +1,13 @@
-import { getNewServerInstance } from '@utils/commons'
-import { port } from '@utils/environment'
+import { getNewServerInstance, Logger, setupMongooseConnection } from '@utils/commons'
+import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
-import { logger } from './utils/logger'
 import { routes } from './server/routes'
 
 const start = async () => {
+	await setupMongooseConnection()
 	const app = getNewServerInstance(routes)
 	await app.start(port)
-	await logger.info('auth api has started listening on port', port)
+	await Logger.info(`${ appId } api has started listening on port`, port)
 
 	await Promise.all(
 		Object.values(subscribers)
@@ -17,4 +17,4 @@ const start = async () => {
 	)
 }
 
-start().then(() => {})
+start().then()

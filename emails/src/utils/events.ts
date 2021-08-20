@@ -8,6 +8,4 @@ export const subscribers = {
 	})
 }
 
-export const publishers = {
-	[EventTypes.TEST]: eventBus.createPublisher(EventTypes.TEST)
-}
+export const publishers = {}

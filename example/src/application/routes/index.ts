@@ -2,6 +2,7 @@ import { makeController, Route, StatusCodes } from '@utils/commons'
 import userRoutes from './users'
 import eventRoutes from './events'
 import cacheRoutes from './cache'
+import { appId } from '@utils/environment'
 
 export const routes: Route[] = [
 	...userRoutes,
@@ -14,7 +15,7 @@ export const routes: Route[] = [
 			makeController(async () => {
 				return {
 					status: StatusCodes.Ok,
-					result: { hello: 'Hello World' }
+					result: `${ appId } service running`
 				}
 			})
 		]

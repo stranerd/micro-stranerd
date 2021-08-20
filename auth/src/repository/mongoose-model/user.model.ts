@@ -1,5 +1,4 @@
-import { timeStamp } from 'console'
-import mongoose from './index'
+import { mongoose } from '@utils/commons'
 
 const userRoles = {
 	stranerd: {
@@ -44,15 +43,15 @@ const UserSchema = new mongoose.Schema({
 	roles: {
 		type: Object,
 		required: false,
-		default:userRoles
+		default: userRoles
 	},
 	lastSignedInAt: {
-		type: timeStamp,
+		type: Date,
 		required: false
 	},
 	signedUpAt: {
-		type: timeStamp,
-		require: true
+		type: Date,
+		required: true
 	}
 })
 
