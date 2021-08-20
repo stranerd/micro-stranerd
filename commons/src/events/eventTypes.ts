@@ -11,11 +11,11 @@ interface Event<Data> {
 }
 
 export interface Events extends Record<EventTypes, Event<any>> {
-	[EventTypes.TEST]: {
+	TEST: {
 		topic: typeof EventTypes.TEST,
 		data: string
 	},
-	[EventTypes.SENDMAIL]: {
+	SENDMAIL: {
 		topic: typeof EventTypes.SENDMAIL,
 		data: Email
 	}
