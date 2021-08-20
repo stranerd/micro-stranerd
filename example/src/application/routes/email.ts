@@ -7,7 +7,8 @@ const sendMail: Route = {
 	controllers: [
 		makeController(async (req) => {
 			const { email } = req.params
-			const emailContent = await readEmailFromPug('../../emails/test.pug', {
+			// filePath needs to be relative to the root of the microservice which is the part that started the process
+			const emailContent = await readEmailFromPug('src/emails/test.pug', {
 				message: `A sample email was just to ${ email }`
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
@@ -18,7 +19,7 @@ const sendMail: Route = {
 			})
 			return {
 				status: StatusCodes.Ok,
-				result: 'data'
+				result: emailContent
 			}
 		})
 	]
