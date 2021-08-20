@@ -1,15 +1,20 @@
 version: "3.8"
 services:
-  example:
-    build:
-      target: base
-    volumes:
-      - "./example/src:/app/src:ro"
-    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev
   auth:
     build:
       target: base
     volumes:
       - "./auth/src:/app/src:ro"
     command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev
-    
+  emails:
+    build:
+      target: base
+    volumes:
+      - "./emails/src:/app/src:ro"
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev
+  example:
+    build:
+      target: base
+    volumes:
+      - "./example/src:/app/src:ro"
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev

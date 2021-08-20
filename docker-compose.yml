@@ -9,18 +9,27 @@ services:
       - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
     restart: unless-stopped
 
-  example:
+  auth:
     build:
-      context: ./example
+      context: ./auth
       target: production
     restart: unless-stopped
     depends_on:
       - mongodb
     command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
 
-  auth:
+  emails:
     build:
-      context: ./auth
+      context: ./emails
+      target: production
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+
+  example:
+    build:
+      context: ./example
       target: production
     restart: unless-stopped
     depends_on:
