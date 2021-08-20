@@ -1,11 +1,10 @@
-import { EventBus, EventTypes } from '@utils/commons'
-import { logger } from '@utils/logger'
+import { EventBus, EventTypes, Logger } from '@utils/commons'
 
 const eventBus = new EventBus()
 
 export const subscribers = {
 	[EventTypes.TEST]: eventBus.createSubscriber(EventTypes.TEST, async (data) => {
-		await logger.success('Just received test event with value of', data)
+		await Logger.success('Just received test event with value of', data)
 	})
 }
 

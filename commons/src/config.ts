@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
-import { getNewLoggerInstance } from './logger'
+import { Logger } from './logger'
 
 dotenv.config()
 
 export const getEnvOrFail = (key: string) => {
 	const value = process.env[key]
 	if (value) return value
-	getNewLoggerInstance()
+	Logger
 		.error(`Environment variable not found: ${ key }`)
 		.then(() => process.exit(1))
 	return ''

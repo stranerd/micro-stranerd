@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { mongoDbURI } from '../config'
-import { getNewLoggerInstance } from '../logger'
+import { Logger } from '../logger'
 
 export const setupMongooseConnection = async () => {
 	try {
@@ -11,7 +11,7 @@ export const setupMongooseConnection = async () => {
 			useCreateIndex: false
 		})
 	} catch (error) {
-		await getNewLoggerInstance().error('MongoDb failed with error:', error)
+		await Logger.error('MongoDb failed with error:', error)
 		process.exit(1)
 	}
 }

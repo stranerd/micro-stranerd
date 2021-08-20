@@ -1,3 +1,3 @@
-import { ConsoleLogger, Logger } from './logger'
+import { ConsoleLogger, Logger as Log } from './logger'
 
-export const getNewLoggerInstance = () :Logger => new ConsoleLogger()
+export const Logger: Log = new ConsoleLogger()
