@@ -31,3 +31,6 @@ export const rabbitMQConfig = {
 export const redisURI = getEnvOrFail('REDIS_URI')
 
 export const appId = getEnvOrFail('APP_ID')
+
+export const environment = getEnvOrFail('ENVIRONMENT')
+export const isDev = environment === 'development'

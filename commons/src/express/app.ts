@@ -1,6 +1,11 @@
 import express from 'express'
+import cors from 'cors'
+import morgan from 'morgan'
+import fileUpload from 'express-fileupload'
+import path from 'path'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
+import { isDev } from '../config'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -25,8 +30,17 @@ const postRoutes: Route[] = [
 
 export const getNewServerInstance = (routes: Route[]) => {
 	const app = express()
+	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
+	app.use(cors())
+	app.use(
+		fileUpload({
+			limits: { fileSize: 100 * 1024 * 1024 },
+			useTempFiles: true,
+			tempFileDir: path.join(__dirname, 'storage', 'tmp')
+		})
+	)
 
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
