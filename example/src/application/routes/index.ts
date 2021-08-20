@@ -14,7 +14,7 @@ export const routes: Route[] = [
 			makeController(async () => {
 				return {
 					status: StatusCodes.Ok,
-					result: { hello: 'Hello World' }
+					result: 'Example service running'
 				}
 			})
 		]

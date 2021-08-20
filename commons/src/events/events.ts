@@ -15,12 +15,12 @@ export class EventBus {
 		return { publish }
 	}
 
-	createSubscriber<Event extends Events[EventTypes]> (key: string, topic: Event['topic'], onMessage: (data: Event['data']) => void) {
+	createSubscriber<Event extends Events[EventTypes]> (topic: Event['topic'], onMessage: (data: Event['data']) => void) {
 		const { register } = this
 
 		async function subscribe () {
 			const conn = await getRabbitConnection(register)
-			await conn.subscribe(key, topic as unknown as string, (data) => {
+			await conn.subscribe(topic as unknown as string, (data) => {
 				onMessage(JSON.parse(data))
 			})
 		}
