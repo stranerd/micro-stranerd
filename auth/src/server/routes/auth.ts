@@ -1,12 +1,12 @@
-import { makeController, Route, StatusCodes, requireAuthUser } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { AuthController } from '../../controller/auth'
 
-const emailAuthenthecate: Route = {
-	path: '/emailAuthenthecate',
+const emailAuthenticate: Route = {
+	path: '/emailAuthenticate',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			
+
 			const userCredential = {
 				email: req.body.email,
 				password: req.body.password
@@ -20,13 +20,12 @@ const emailAuthenthecate: Route = {
 	]
 }
 
-
 const authenticate: Route = {
 	path: '/authenticate',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			
+
 			const userCredential = {
 				email: req.body.email,
 				name: req.body.name,
@@ -43,7 +42,6 @@ const authenticate: Route = {
 	]
 }
 
-
 const token: Route = {
 	path: '/token',
 	method: 'post',
@@ -52,7 +50,7 @@ const token: Route = {
 
 			const accessToken = req.headers.AccessToken
 			const refreshToken = req.headers.RefreshToken
-			
+
 			const tokens = {
 				accessToken,
 				refreshToken
@@ -67,7 +65,6 @@ const token: Route = {
 	]
 }
 
-
 const logout: Route = {
 	path: '/signout',
 	method: 'post',
@@ -76,7 +73,7 @@ const logout: Route = {
 		makeController(async (req) => {
 
 			const authUser = req.authUser
-			
+
 			const result = await new AuthController().logoutUser(authUser?.id)
 			return {
 				status: StatusCodes.Ok,
@@ -86,6 +83,5 @@ const logout: Route = {
 	]
 }
 
-
-const routes: Route[]= [emailAuthenthecate, authenticate,token, logout]
+const routes: Route[] = [emailAuthenticate, authenticate, token, logout]
 export default routes
