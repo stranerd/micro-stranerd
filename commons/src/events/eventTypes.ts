@@ -1,8 +1,10 @@
 import { Email } from '../emails'
+import { MediaOutput } from '../storage'
 
 export enum EventTypes {
 	TEST = 'TEST',
-	SENDMAIL = 'SENDMAIL'
+	SENDMAIL = 'SENDMAIL',
+	DELETEFILE = 'DELETEFILE'
 }
 
 interface Event<Data> {
@@ -18,5 +20,9 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	SENDMAIL: {
 		topic: typeof EventTypes.SENDMAIL,
 		data: Email
+	},
+	DELETEFILE: {
+		topic: typeof EventTypes.DELETEFILE,
+		data: MediaOutput
 	}
 }

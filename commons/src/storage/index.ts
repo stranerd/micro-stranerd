@@ -5,3 +5,11 @@ export interface StorageFile {
 	isTruncated: boolean
 	data: Buffer
 }
+
+export interface MediaOutput {
+	name: string
+	mimeType: string
+	size: number
+	path: string
+	timestamp: number
+}
