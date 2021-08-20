@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes, requireAuthUser } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { UserController } from '../../controller/user'
 
 const getUserDetails: Route = {
@@ -7,27 +7,25 @@ const getUserDetails: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-			
+
 			const userId = req.authUser?.id
 
-			 if(userId){
+			if (userId) {
 				const result = await new UserController().getUserDetails(userId)
 				return {
 					status: StatusCodes.Ok,
 					result
 				}
-			 }else {
+			} else {
 				return {
 					status: StatusCodes.NotAuthenticated,
-					result:'user not authenticated'
+					result: 'user not authenticated'
 				}
-			 }
+			}
 
-			
 		})
 	]
 }
-
 
 const updateUserRole: Route = {
 	path: '/roles',
@@ -35,7 +33,7 @@ const updateUserRole: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-			
+
 			const roleInput = {
 				app: req.body.app,
 				role: req.body.role,
@@ -50,11 +48,9 @@ const updateUserRole: Route = {
 				result
 			}
 
-
-			
 		})
 	]
 }
 
-const routes: Route[]= [getUserDetails, updateUserRole]
+const routes: Route[] = [getUserDetails, updateUserRole]
 export default routes

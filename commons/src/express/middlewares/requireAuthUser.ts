@@ -1,5 +1,5 @@
 import { makeMiddleware } from '../controllers'
-import { NotAuthenticatedError, EmailNotVerifiedError } from '../../errors'
+import { EmailNotVerifiedError, NotAuthenticatedError } from '../../errors'
 import { verifyAccessToken } from '../../utils/tokens'
 
 export const requireAuthUser = makeMiddleware(

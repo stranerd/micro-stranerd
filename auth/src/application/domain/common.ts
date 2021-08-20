@@ -1,3 +1,3 @@
 export interface SuccessStatus {
-    success: boolean
+	success: boolean
 }
