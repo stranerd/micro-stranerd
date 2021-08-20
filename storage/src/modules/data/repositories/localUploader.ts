@@ -1,6 +1,6 @@
 import { IUploaderRepository } from '../../domain/irepositories/uploader'
 import { MediaInput } from '../models/media'
-import { dirname, resolve } from 'path'
+import { dirname, join, resolve } from 'path'
 import fs from 'fs'
 
 export class LocalUploaderRepository implements IUploaderRepository {
@@ -13,7 +13,7 @@ export class LocalUploaderRepository implements IUploaderRepository {
 		const timestamp = Date.now()
 		media.name = media.name.toLowerCase()
 		const path = `public/storage/${ timestamp }-${ media.name }`
-		const mediaPath = resolve(path)
+		const mediaPath = resolve(join(process.cwd(), path))
 		const folder = dirname(mediaPath)
 		if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
 		fs.writeFileSync(path, media.data)

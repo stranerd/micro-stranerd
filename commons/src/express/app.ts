@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import { isDev } from '../config'
+import path from 'path'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -32,6 +33,7 @@ export const getNewServerInstance = (routes: Route[]) => {
 	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
+	app.use(express.static(path.join(process.cwd(), 'public')))
 	app.use(cors())
 	app.use(
 		fileUpload({
