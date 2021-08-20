@@ -1,4 +1,4 @@
-import { BadRequestError, makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes, ValidationError } from '@utils/commons'
 import { DeleteFile, UploadFile } from '@modules/domain'
 
 const uploadFile: Route = {
@@ -7,8 +7,14 @@ const uploadFile: Route = {
 	controllers: [
 		makeController(async (req) => {
 			const file = req.files[0]
-			if (!file) throw new BadRequestError('No file attached')
-			const res = await UploadFile.call(file)
+			const { path } = req.body
+			if (!file) throw new ValidationError([{ field: 'file', message: 'No file attached' }])
+			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
+			if (file.isTruncated) throw new ValidationError([{
+				field: 'file',
+				message: 'File is larger than allowed limit'
+			}])
+			const res = await UploadFile.call(path, file)
 			return {
 				status: StatusCodes.Ok,
 				result: res
@@ -23,9 +29,15 @@ const uploadFiles: Route = {
 	controllers: [
 		makeController(async (req) => {
 			const file = req.files[0]
-			if (!file) throw new BadRequestError('No file attached')
+			const { path } = req.body
+			if (!file) throw new ValidationError([{ field: 'file', message: 'No file attached' }])
+			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
+			if (req.files.some((f) => f.isTruncated)) throw new ValidationError([{
+				field: 'file',
+				message: 'Some files are larger than allowed limit'
+			}])
 			const res = await Promise.all(
-				req.files.map(async (f) => await UploadFile.call(f))
+				req.files.map(async (f) => await UploadFile.call(path, f))
 			)
 			return {
 				status: StatusCodes.Ok,
@@ -41,11 +53,11 @@ const deleteFile: Route = {
 	controllers: [
 		makeController(async (req) => {
 			const { path } = req.body
-			if (!path) throw new BadRequestError('No path attached')
-			await DeleteFile.call(path)
+			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
+			const res = await DeleteFile.call(path)
 			return {
 				status: StatusCodes.Ok,
-				result: true
+				result: res
 			}
 		})
 	]

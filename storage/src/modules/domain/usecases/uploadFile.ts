@@ -8,7 +8,7 @@ export class UploadFileUseCase {
 		this.uploader = uploader
 	}
 
-	async call (media: MediaInput) {
-		return await this.uploader.upload(media)
+	async call (path: string, media: MediaInput) {
+		return await this.uploader.upload(path, media)
 	}
 }
