@@ -21,7 +21,9 @@
 		"noEmit": false,
 		"experimentalDecorators": true,
 		"paths": {
-			"@utils/*" : ["./src/utils/*"]
+			"@utils/*": [
+				"./src/utils/*"
+			]
 		},
 		"types": [
 			"@types/node"
