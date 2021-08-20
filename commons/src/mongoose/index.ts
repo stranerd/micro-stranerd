@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { mongoDbURI } from '../config'
 import { getNewLoggerInstance } from '../logger'
 
