@@ -1,4 +1,4 @@
-import { UserTypes, UserPhoto } from '../../application/domain'
+import { UserTypes, UserPhoto, AuthTypes } from '../../application/domain'
 
 export interface UserEntity {
 	_id?: string | null;
@@ -9,7 +9,7 @@ export interface UserEntity {
 	lastName: string;
 	photo?: UserPhoto | null;
 	isVerified: boolean;
-	authTypes: string[];
+	authTypes: AuthTypes[];
 	lastSignedInAt?: number | null;
 	signedUpAt: number
 }

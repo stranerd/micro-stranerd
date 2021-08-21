@@ -11,8 +11,8 @@ export class AuthenticateUserUseCase implements UseCase<Credential, AuthOutput> 
 	}
 
 	async execute (params: Credential): Promise<AuthOutput> {
-		
-		const TokenPayload: TokenInput = await this.repository.authenticateUser(params)
+
+		const TokenPayload: TokenInput = await this.repository.authenticateUser(params,true)
 		if (TokenPayload) {
 
 			return new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)

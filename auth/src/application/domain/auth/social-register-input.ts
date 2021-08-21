@@ -1,4 +1,6 @@
 import { UserPhoto } from '../user/photo'
+import { AuthTypes } from '../auth/token-input'
+
 
 export interface SocialRegisterInput {
 	email: string;
@@ -6,5 +8,5 @@ export interface SocialRegisterInput {
 	lastName: string;
 	password?: string | null;
 	photo?: UserPhoto | null;
-	type: string;
+	type: AuthTypes;
 }
