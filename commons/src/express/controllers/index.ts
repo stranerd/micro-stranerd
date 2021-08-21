@@ -22,7 +22,7 @@ export const makeController = (cb: (_: CustomRequest) => Promise<CustomResponse>
 }
 
 export const makeMiddleware = (cb: (_: CustomRequest) => Promise<void>): Controller => {
-	return async (req: Request, res: Response, next: NextFunction) => {
+	return async (req: Request, _: Response, next: NextFunction) => {
 		try {
 			await cb(extractRequest(req))
 			next()

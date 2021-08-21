@@ -13,11 +13,9 @@ export class LogoutAuthUserUseCase implements UseCase<string, SuccessStatus> {
 
 		const cleared: boolean = await this.repository.clearUserAuthCache(userId)
 
-		const response = {
+		return {
 			success: cleared
 		}
-
-		return new Promise((resolve) => resolve(response))
 
 	}
 

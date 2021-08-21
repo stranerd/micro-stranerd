@@ -5,10 +5,9 @@ const message = 'Email address not verified'
 
 export class EmailNotVerifiedError extends CustomError {
 	statusCode = StatusCodes.EmailNotVerified
-	serializedErrors
+	serializedErrors = [{ message }]
 
 	constructor () {
 		super(message)
-		this.serializedErrors = [{ message }]
 	}
 }

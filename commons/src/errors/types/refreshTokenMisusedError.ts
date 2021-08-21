@@ -5,10 +5,9 @@ const message = 'Refresh token misused'
 
 export class RefreshTokenMisusedError extends CustomError {
 	statusCode = StatusCodes.RefreshTokenMisused
-	serializedErrors
+	serializedErrors  = [{ message }]
 
 	constructor () {
 		super(message)
-		this.serializedErrors = [{ message }]
 	}
 }

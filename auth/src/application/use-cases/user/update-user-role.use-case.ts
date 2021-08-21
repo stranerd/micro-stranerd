@@ -13,11 +13,9 @@ export class UpdateUserRoleUseCase implements UseCase<RoleInput, SuccessStatus> 
 
 		const updated = await this.repository.updateUserRole(roleInput)
 
-		const response = {
+		return {
 			success: updated
 		}
-
-		return new Promise((resolve) => resolve(response))
 
 	}
 

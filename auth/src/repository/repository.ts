@@ -45,11 +45,11 @@ export class Repository implements IUserRepository {
 
 			userData.lastSignedInAt = new Date().getTime()
 
-			return new Promise((resolve) => resolve(tokenPayload))
+			return tokenPayload
 
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 	async authenticateUser (details: Credential): Promise<TokenInput> {
@@ -68,10 +68,10 @@ export class Repository implements IUserRepository {
 
 			user.lastSignedInAt = new Date().getTime()
 
-			return new Promise((resolve) => resolve(tokenPayload))
+			return tokenPayload
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 	async userDetails (userId: string): Promise<UserModel> {
@@ -79,11 +79,11 @@ export class Repository implements IUserRepository {
 
 		if (user) {
 
-			return new Promise((resolve) => resolve(user))
+			return user
 
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 	async userTokenData (id: string): Promise<TokenInput> {
@@ -98,11 +98,11 @@ export class Repository implements IUserRepository {
 				authTypes: user.authTypes
 			}
 
-			return new Promise((resolve) => resolve(tokenPayload))
+			return tokenPayload
 
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 	async updateUserRole (roleInput: RoleInput): Promise<boolean> {
@@ -131,10 +131,10 @@ export class Repository implements IUserRepository {
 			// clear accessToken
 			await deleteCachedAccessToken(roleInput.userId)
 
-			return new Promise((resolve) => resolve(true))
+			return true
 		}
 
-		return new Promise((resolve, reject) => reject(false))
+		return Promise.reject(false)
 	}
 
 	async GetRefreshToken (tokens: Tokens): Promise<AuthOutput> {
@@ -153,11 +153,11 @@ export class Repository implements IUserRepository {
 				user
 			}
 
-			return new Promise((resolve) => resolve(result))
+			return result
 
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 	async clearUserAuthCache (userId: string): Promise<boolean> {
@@ -165,7 +165,7 @@ export class Repository implements IUserRepository {
 		await deleteCachedAccessToken(userId)
 		await deleteCachedRefreshToken(userId)
 
-		return new Promise((resolve) => resolve(true))
+		return true
 
 	}
 
