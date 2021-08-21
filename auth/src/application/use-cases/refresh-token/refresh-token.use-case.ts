@@ -14,12 +14,10 @@ export class RefreshTokenUseCase implements UseCase<Tokens, AuthOutput> {
 		const TokenPayload: AuthOutput = await this.repository.GetRefreshToken(tokens)
 
 		if (TokenPayload) {
-
-			return new Promise((resolve) => resolve(TokenPayload))
-
+			return TokenPayload
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 
 	}
 

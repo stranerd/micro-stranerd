@@ -5,10 +5,9 @@ const message = 'Not authorized'
 
 export class NotAuthorizedError extends CustomError {
 	statusCode = StatusCodes.NotAuthorized
-	serializedErrors
+	serializedErrors = [{ message }]
 
 	constructor () {
 		super(message)
-		this.serializedErrors = [{ message }]
 	}
 }

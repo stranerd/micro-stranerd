@@ -18,13 +18,11 @@ export class GenerateAuthOutputUseCase implements UseCase<TokenInput, AuthOutput
 		const refreshToken = await makeRefreshToken({ id: TokenPayload.id })
 		const user = await this.repository.userDetails(TokenPayload.id)
 
-		const response = {
+		return {
 			accessToken: accessToken,
 			refreshToken: refreshToken,
 			user
 		}
-
-		return new Promise((resolve) => resolve(response))
 	}
 
 }

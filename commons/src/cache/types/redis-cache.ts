@@ -17,7 +17,7 @@ export class RedisCache extends Cache {
 
 	async delete (key: string) {
 		return new Promise((res: (_: void) => void, rej) => {
-			this.client.del(key, (err, val) => {
+			this.client.del(key, (err) => {
 				if (err) rej(err)
 				res()
 			})
@@ -25,7 +25,7 @@ export class RedisCache extends Cache {
 	}
 
 	async get (key: string) {
-		return new Promise((res: (_: string | null) => void, rej) => {
+		return new Promise((res: (_: string | null) => void) => {
 			this.client.get(key, (err, val) => {
 				if (err) res(null)
 				res(val)

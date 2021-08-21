@@ -3,6 +3,7 @@ import userRoutes from './users'
 import eventRoutes from './events'
 import cacheRoutes from './cache'
 import emailRoutes from './email'
+import validateRoutes from './validate'
 import { appId } from '@utils/environment'
 
 export const routes: Route[] = [
@@ -10,6 +11,7 @@ export const routes: Route[] = [
 	...eventRoutes,
 	...cacheRoutes,
 	...emailRoutes,
+	...validateRoutes,
 	{
 		path: '/',
 		method: 'get',

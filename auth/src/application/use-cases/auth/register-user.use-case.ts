@@ -1,6 +1,6 @@
 import { UseCase } from '../../base'
 import { AuthOutput, SocialRegisterInput, UserModel, UserTypes } from '../../domain'
-import { GenerateAuthOutputUseCase } from '../auth/generate-auth-output.use-case'
+import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
 import { IUserRepository } from '../../contracts/repository'
 
 export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOutput> {
@@ -41,13 +41,10 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 		const TokenPayload = await this.repository.addNewUser(userModel)
 
 		if (TokenPayload) {
-
-			const response = new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)
-
-			return new Promise((resolve) => resolve(response))
+			return new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)
 		}
 
-		return new Promise((resolve, reject) => reject())
+		return Promise.reject()
 	}
 
 }

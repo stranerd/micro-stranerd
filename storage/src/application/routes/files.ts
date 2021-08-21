@@ -1,5 +1,6 @@
-import { makeController, Route, StatusCodes, ValidationError } from '@utils/commons'
+import { makeController, Route, StatusCodes, validate, ValidationError } from '@utils/commons'
 import { DeleteFile, UploadFile } from '@modules/domain'
+import { Validation } from '@stranerd/api-commons'
 
 const uploadFile: Route = {
 	path: '/file',
@@ -8,13 +9,15 @@ const uploadFile: Route = {
 		makeController(async (req) => {
 			const file = req.files[0]
 			const { path } = req.body
-			if (!file) throw new ValidationError([{ field: 'file', message: 'No file attached' }])
-			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
+			const data = validate({ path, file }, {
+				path: { required: true, rules: [] },
+				file: { required: true, rules: [Validation.isImage] }
+			})
 			if (file.isTruncated) throw new ValidationError([{
 				field: 'file',
-				message: 'File is larger than allowed limit'
+				messages: ['is larger than allowed limit']
 			}])
-			const res = await UploadFile.call(path, file)
+			const res = await UploadFile.call(data.path, data.file)
 			return {
 				status: StatusCodes.Ok,
 				result: res
@@ -28,16 +31,24 @@ const uploadFiles: Route = {
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			const file = req.files[0]
+			const areAllImages = (value: any[]) => {
+				const res = value.map(Validation.isImage)
+				const valid = res.every((r) => r.valid)
+				const error = res.find((r) => r.error)?.error
+				return { valid, error }
+			}
+			const files = req.files
 			const { path } = req.body
-			if (!file) throw new ValidationError([{ field: 'file', message: 'No file attached' }])
-			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
-			if (req.files.some((f) => f.isTruncated)) throw new ValidationError([{
+			const data = validate({ path, files }, {
+				path: { required: true, rules: [] },
+				files: { required: true, rules: [areAllImages] }
+			})
+			if (files.some((f) => f.isTruncated)) throw new ValidationError([{
 				field: 'file',
-				message: 'Some files are larger than allowed limit'
+				messages: ['are larger than allowed limit']
 			}])
 			const res = await Promise.all(
-				req.files.map(async (f) => await UploadFile.call(path, f))
+				data.files.map(async (f) => await UploadFile.call(data.path, f))
 			)
 			return {
 				status: StatusCodes.Ok,
@@ -53,8 +64,10 @@ const deleteFile: Route = {
 	controllers: [
 		makeController(async (req) => {
 			const { path } = req.body
-			if (!path) throw new ValidationError([{ field: 'path', message: 'No path attached' }])
-			const res = await DeleteFile.call(path)
+			const data = validate({ path }, {
+				path: { required: true, rules: [] }
+			})
+			const res = await DeleteFile.call(data.path)
 			return {
 				status: StatusCodes.Ok,
 				result: res

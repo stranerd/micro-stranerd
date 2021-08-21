@@ -14,12 +14,10 @@ export class GetUserDetailsUseCase implements UseCase<string, UserModel> {
 		const userDetails: UserModel = await this.repository.userDetails(userId)
 
 		if (userDetails) {
-
-			return new Promise((resolve) => resolve(userDetails))
-
+			return userDetails
 		}
 
-		return new Promise((res, reject) => reject())
+		return Promise.reject()
 	}
 
 }

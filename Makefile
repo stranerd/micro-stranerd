@@ -24,6 +24,9 @@ install-all:
 lint-all:
 	$(foreach folder, $(ALL_FOLDERS), yarn --cwd $(folder) lint;)
 
+build-all:
+	$(foreach folder, $(ALL_FOLDERS), yarn --cwd $(folder) build;)
+
 publish-commons:
 	yarn --cwd ${COMMONS} pub;
 
