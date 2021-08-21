@@ -1,7 +1,10 @@
+import { UserPhoto } from '../user/photo'
+
 export interface SocialRegisterInput {
 	email: string;
-	name: string;
+	firstName: string;
+	lastName: string;
 	password?: string | null;
-	photoUrl?: string | null;
+	photo?: UserPhoto | null;
 	type: string;
 }

@@ -1,5 +1,6 @@
 import { mongoose } from '@utils/commons'
 
+
 const userRoles = {
 	stranerd: {
 		isAdmin: false,
@@ -24,12 +25,16 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: false
 	},
-	name: {
+	firstName: {
 		type: String,
 		required: true
 	},
-	photoUrl: {
+	lastName: {
 		type: String,
+		required: true
+	},
+	photo: {
+		type: Object,
 		required: false
 	},
 	isVerified: {

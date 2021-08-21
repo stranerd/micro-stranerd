@@ -1,11 +1,11 @@
 import { UseCase } from '../../base'
 import { SuccessStatus } from '../../domain'
-import { IUserRepository } from '../../contracts/repository'
+import { IAuthRepository } from '../../contracts/repository'
 
 export class LogoutAuthUserUseCase implements UseCase<string, SuccessStatus> {
 	repository
 
-	constructor (repo: IUserRepository) {
+	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 

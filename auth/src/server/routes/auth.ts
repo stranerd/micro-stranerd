@@ -1,8 +1,8 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes,Validation, validate, ValidationError } from '@utils/commons'
 import { AuthController } from '../../controller/auth'
 
 const emailAuthenticate: Route = {
-	path: '/emailAuthenticate',
+	path: 'emails/signin',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
@@ -11,11 +11,44 @@ const emailAuthenticate: Route = {
 				email: req.body.email,
 				password: req.body.password
 			}
-			const result = await new AuthController().authenticateUser(userCredential)
-			return {
-				status: StatusCodes.Ok,
-				result
-			}
+
+			const isLongerThan8 = (val: string) => Validation.isLongerThan(val, 8)
+           
+			const validateData = validate(userCredential,{
+				email: { required: true, rules: [Validation.isEmail] },
+				password: {required: true, rules: [isLongerThan8]}
+			})
+
+			 if(validateData){
+
+				const result = await new AuthController().authenticateUser(userCredential)
+				if(result) {
+   
+					return {
+					   status: StatusCodes.Ok,
+					   result
+					 } 
+   
+			   } else {
+   
+				   const error = {
+					   messages: ['credential is incorrect'],
+					   field: 'password'
+				   }
+   
+				   throw new ValidationError([error])
+			   }
+
+			 }else{
+                 
+				const error = {
+					messages: ['validation error'],
+					field: 'password'
+				}
+
+				throw new ValidationError([error])
+			 }
+			
 		})
 	]
 }
@@ -28,7 +61,8 @@ const authenticate: Route = {
 
 			const userCredential = {
 				email: req.body.email,
-				name: req.body.name,
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
 				password: req.body.password,
 				photoUrl: req.body.photoUrl,
 				type: req.body.type

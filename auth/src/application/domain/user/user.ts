@@ -1,12 +1,14 @@
 import { UserTypes } from './user-types'
+import { UserPhoto } from './photo'
 
 export interface UserModel {
 	_id?: string | null;
 	email: string;
 	password?: string | null;
 	roles: UserTypes;
-	name: string;
-	photoUrl?: string | null;
+	firstName: string;
+	lastName: string;
+	photo?: UserPhoto | null;
 	isVerified: boolean;
 	authTypes: string[];
 	lastSignedInAt?: number | null;

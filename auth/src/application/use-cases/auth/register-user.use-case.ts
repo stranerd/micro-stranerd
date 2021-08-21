@@ -1,12 +1,12 @@
 import { UseCase } from '../../base'
 import { AuthOutput, SocialRegisterInput, UserModel, UserTypes } from '../../domain'
 import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
-import { IUserRepository } from '../../contracts/repository'
+import { IAuthRepository } from '../../contracts/repository'
 
 export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOutput> {
 	repository
 
-	constructor (repo: IUserRepository) {
+	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
@@ -28,9 +28,10 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 		}
 
 		const userModel: UserModel = {
-			name: params.name,
+			firstName: params.firstName,
+			lastName: params.lastName,
 			email: params.email,
-			photoUrl: params.photoUrl,
+			photo: params.photo,
 			password: params.password,
 			isVerified: false,
 			authTypes: [params.type],
