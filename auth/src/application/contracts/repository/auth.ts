@@ -1,11 +1,20 @@
 /* eslint-disable no-unused-vars */
-import { AuthOutput, Credential, TokenInput, Tokens, UserModel, PasswordResetInput, PasswordUpdateInput } from '../../domain'
+import {
+	AuthOutput,
+	Credential,
+	PasswordResetInput,
+	PasswordUpdateInput,
+	TokenInput,
+	Tokens,
+	UserModel
+} from '../../domain'
+import { AuthTypes } from '@utils/commons'
 
 export interface IAuthRepository {
 
-	addNewUser (user: UserModel): Promise<TokenInput>;
+	addNewUser (user: UserModel, type: AuthTypes): Promise<TokenInput>;
 
-	authenticateUser (details: Credential,passwordValidate: boolean): Promise<TokenInput>;
+	authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes): Promise<TokenInput>;
 
 	GetRefreshToken (tokens: Tokens): Promise<AuthOutput>;
 

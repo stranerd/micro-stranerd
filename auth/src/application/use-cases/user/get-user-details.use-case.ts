@@ -3,7 +3,7 @@ import { UserModel } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
 export class GetUserDetailsUseCase implements UseCase<string, UserModel> {
-	repository
+	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
 		this.repository = repo

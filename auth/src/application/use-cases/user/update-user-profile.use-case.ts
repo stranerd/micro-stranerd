@@ -3,7 +3,7 @@ import { SuccessStatus, UserUpdateInput } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
 export class UpdateUserProfileUseCase implements UseCase<UserUpdateInput, SuccessStatus> {
-	repository
+	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
 		this.repository = repo

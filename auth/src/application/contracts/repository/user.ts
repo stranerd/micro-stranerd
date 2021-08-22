@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import {  RoleInput, UserModel, SocialRegisterInput, TokenInput, UserUpdateInput } from '../../domain'
+import { RoleInput, SocialRegisterInput, TokenInput, UserModel, UserUpdateInput } from '../../domain'
 
 export interface IUserRepository {
 

@@ -4,7 +4,7 @@ import { IAuthRepository } from '../../contracts/repository'
 import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
 
 export class VerifyEmailUseCase implements UseCase<string, AuthOutput> {
-	repository
+	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo

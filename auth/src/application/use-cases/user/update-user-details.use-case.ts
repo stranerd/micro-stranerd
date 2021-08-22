@@ -1,10 +1,10 @@
 import { UseCase } from '../../base'
-import { SocialRegisterInput, AuthOutput, TokenInput } from '../../domain'
+import { AuthOutput, SocialRegisterInput, TokenInput } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 import { GenerateAuthOutputUseCase } from '../auth/generate-auth-output.use-case'
 
 export class UpdateUserDetailsUseCase implements UseCase<SocialRegisterInput, AuthOutput> {
-	repository
+	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
 		this.repository = repo
@@ -16,7 +16,7 @@ export class UpdateUserDetailsUseCase implements UseCase<SocialRegisterInput, Au
 
 		if (result) {
 
-			 return new GenerateAuthOutputUseCase(this.repository).execute(result)
+			return new GenerateAuthOutputUseCase(this.repository).execute(result)
 		}
 
 		return Promise.reject()

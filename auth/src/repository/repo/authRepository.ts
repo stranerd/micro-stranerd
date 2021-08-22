@@ -52,25 +52,29 @@ export class AuthRepository implements IAuthRepository {
 		return AuthRepository.instance
 	}
 
-	async addNewUser (user: UserModel): Promise<TokenInput> {
+	private static async signInUser (user: UserModel, type: AuthTypes): Promise<TokenInput> {
+		const authTypeExist = user.authTypes.indexOf(AuthTypes.google) > -1
+		if (!authTypeExist) user.authTypes.push(type)
+
+		user.lastSignedInAt = new Date().getTime()
+
+		return {
+			id: user._id!,
+			roles: user.roles,
+			isVerified: user.isVerified,
+			authTypes: user.authTypes
+		}
+	}
+
+	async addNewUser (user: UserModel, type: AuthTypes): Promise<TokenInput> {
 		const data: UserEntity = await this.userMapper.mapFrom(user)
 		data.email = data.email.toLowerCase()
 		const userData = await new User(data).save()
 
-		const tokenPayload: TokenInput = {
-			id: userData._id!,
-			roles: userData.roles,
-			isVerified: userData.isVerified,
-			authTypes: userData.authTypes
-		}
-
-		// update user lastSignIn
-		userData.lastSignedInAt = new Date().getTime()
-
-		return tokenPayload
+		return AuthRepository.signInUser(userData, type)
 	}
 
-	async authenticateUser (details: Credential, passwordValidate: boolean): Promise<TokenInput> {
+	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes): Promise<TokenInput> {
 		details.email = details.email.toLowerCase()
 		const user = await User.findOne({ email: details.email })
 		if (!user) throw new ValidationError([
@@ -82,18 +86,7 @@ export class AuthRepository implements IAuthRepository {
 			{ field: 'password', messages: ['Invalid credentials'] }
 		])
 
-		const tokenPayload: TokenInput = {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
-		}
-
-		// update user lastSignIn
-
-		user.lastSignedInAt = new Date().getTime()
-
-		return tokenPayload
+		return AuthRepository.signInUser(user, type)
 
 	}
 
@@ -308,28 +301,12 @@ export class AuthRepository implements IAuthRepository {
 
 		const userData = await User.findOne({ email })
 
-		let tokenInput: TokenInput
+		if (!userData) return await this.addNewUser(userDataToUse, AuthTypes.google)
 
-		if (userData) {
-
-			const authTypeExist = userData.authTypes.indexOf(AuthTypes.google) > -1
-
-			if (!authTypeExist) {
-				userData.authTypes.push(AuthTypes.google)
-			}
-
-			const credentials: Credential = {
-				email: userData.email,
-				password: ''
-			}
-
-			tokenInput = await this.authenticateUser(credentials, false)
-
-		} else {
-
-			tokenInput = await this.addNewUser(userDataToUse)
+		const credentials: Credential = {
+			email: userData.email,
+			password: ''
 		}
-
-		return tokenInput
+		return await this.authenticateUser(credentials, false, AuthTypes.google)
 	}
 }

@@ -2,7 +2,7 @@ import { IUserRepository } from '../../application/contracts/repository'
 import { RoleInput, SocialRegisterInput, TokenInput, UserModel, UserUpdateInput } from '../../application/domain'
 import { UserMapper } from '../mapper/user.mapper'
 import { UserEntity } from '../entities/user.entity'
-import { deleteCachedAccessToken, EventTypes } from '@utils/commons'
+import { AuthTypes, deleteCachedAccessToken, EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
 import { User } from '../mongoose-model/user.model'
 
@@ -25,13 +25,12 @@ export class UserRepository implements IUserRepository {
 
 	async userDetails (dataVal: string, dataType: string): Promise<UserModel> {
 
-		let user = null
+		let user = null as null | UserModel
 
 		if (dataType == 'email') {
 			user = await User.findOne({ _id: dataVal })
 		} else if (dataType == 'id') {
-
-			user = await User.find({ email: dataVal })
+			user = await User.findOne({ email: dataVal })
 		}
 
 		if (user) {
@@ -45,9 +44,9 @@ export class UserRepository implements IUserRepository {
 		return Promise.reject()
 	}
 
-	async userWithEmailExist (email: string, type: string): Promise<boolean> {
-		const user = await User.find({ email })
-		return user && user.authTypes.indexOf(type) > -1
+	async userWithEmailExist (email: string, type: AuthTypes): Promise<boolean> {
+		const user = await User.findOne({ email })
+		return !!(user && user.authTypes.indexOf(type) > -1)
 	}
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {

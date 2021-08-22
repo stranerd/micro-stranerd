@@ -3,7 +3,7 @@ import { RoleInput, SuccessStatus } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
 export class UpdateUserRoleUseCase implements UseCase<RoleInput, SuccessStatus> {
-	repository
+	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
 		this.repository = repo

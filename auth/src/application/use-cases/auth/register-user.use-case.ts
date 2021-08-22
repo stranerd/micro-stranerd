@@ -25,7 +25,7 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 			lastSignedInAt: new Date().getTime()
 		}
 
-		const TokenPayload = await this.repository.addNewUser(userModel)
+		const TokenPayload = await this.repository.addNewUser(userModel, params.type)
 
 		if (TokenPayload) {
 			return new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)

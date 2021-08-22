@@ -1,9 +1,9 @@
 import { UseCase } from '../../base'
-import { SuccessStatus, PasswordUpdateInput } from '../../domain'
+import { PasswordUpdateInput, SuccessStatus } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
 export class UpdatePasswordUseCase implements UseCase<PasswordUpdateInput, SuccessStatus> {
-	repository
+	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo

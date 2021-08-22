@@ -60,7 +60,7 @@ const emailSignUp: Route = {
 			const emailExist = await new AuthController().emailExist(userCredential.email, userCredential.type)
 
 			const checkEmailExist = (email: string) => {
-				return { valid: emailExist, error: email + ' already exists' }
+				return { valid: emailExist, error: emailExist ? email + ' already exists' : undefined }
 			}
 
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)

@@ -3,7 +3,7 @@ import { SuccessStatus } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
 export class LogoutAuthUserUseCase implements UseCase<string, SuccessStatus> {
-	repository
+	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
