@@ -1,6 +1,16 @@
-import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
+import {
+	BadRequestError,
+	makeController,
+	NotAuthenticatedError,
+	NotAuthorizedError,
+	requireAuthUser,
+	Route,
+	StatusCodes,
+	validate,
+	Validation
+} from '@utils/commons'
 import { UserController } from '../../controller/user'
-import { BadRequestError, NotAuthenticatedError, NotAuthorizedError } from '@stranerd/api-commons'
+import { AuthController } from '../../controller'
 
 const getUserDetails: Route = {
 	path: '/user',
@@ -94,5 +104,23 @@ const updateUserRole: Route = {
 	]
 }
 
-const routes: Route[] = [getUserDetails, updateUserRole, updateUser]
+const logout: Route = {
+	path: '/signout',
+	method: 'post',
+	controllers: [
+		requireAuthUser,
+		makeController(async (req) => {
+
+			const authUser = req.authUser
+
+			const result = await new AuthController().logoutUser(authUser?.id)
+			return {
+				status: StatusCodes.Ok,
+				result
+			}
+		})
+	]
+}
+
+const routes: Route[] = [getUserDetails, updateUserRole, updateUser, logout]
 export default routes

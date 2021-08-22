@@ -2,7 +2,6 @@ import { UserTypes } from './user-types'
 import { UserPhoto } from './photo'
 import { AuthTypes } from '../auth/token-input'
 
-
 export interface UserModel {
 	_id?: string | null;
 	email: string;
@@ -10,9 +9,9 @@ export interface UserModel {
 	roles: UserTypes;
 	firstName: string;
 	lastName: string;
-	photo?: UserPhoto | null;
+	photo: UserPhoto | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];
-	lastSignedInAt?: number | null;
+	lastSignedInAt: number | null;
 	signedUpAt: number
 }

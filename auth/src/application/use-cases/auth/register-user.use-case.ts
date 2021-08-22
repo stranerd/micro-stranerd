@@ -1,5 +1,5 @@
 import { UseCase } from '../../base'
-import { AuthOutput, SocialRegisterInput, UserModel, UserTypes } from '../../domain'
+import { AuthOutput, SocialRegisterInput, UserModel } from '../../domain'
 import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
 import { IAuthRepository } from '../../contracts/repository'
 
@@ -12,21 +12,6 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 
 	async execute (params: SocialRegisterInput): Promise<AuthOutput> {
 
-		const userRole: UserTypes = {
-			stranerd: {
-				isAdmin: false,
-				isModerator: false
-			},
-			brainBox: {
-				isAdmin: false,
-				isModerator: false
-			},
-			tutorStack: {
-				isAdmin: false,
-				isModerator: false
-			}
-		}
-
 		const userModel: UserModel = {
 			firstName: params.firstName,
 			lastName: params.lastName,
@@ -35,7 +20,7 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 			password: params.password,
 			isVerified: false,
 			authTypes: [params.type],
-			roles: userRole,
+			roles: {},
 			signedUpAt: new Date().getTime()
 		}
 

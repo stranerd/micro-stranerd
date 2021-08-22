@@ -48,22 +48,7 @@ export class UserRepository implements IUserRepository {
 
 	async userWithEmailExist (email: string, type: string): Promise<boolean> {
 		const user = await User.find({ email })
-
-		if (user) {
-
-			const authTypeExist = user.authTypes.indexOf(type) > -1
-
-			if (authTypeExist) {
-				return true
-			} else {
-				user.authTypes.push(type)
-				return false
-			}
-
-		} else {
-
-			return false
-		}
+		return user && user.authTypes.indexOf(type) > -1
 	}
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
@@ -100,7 +85,8 @@ export class UserRepository implements IUserRepository {
 				roles: user.roles,
 				password: details.password,
 				photo: details.photo,
-				signedUpAt: user.signedUpAt
+				signedUpAt: user.signedUpAt,
+				lastSignedInAt: user.lastSignedInAt
 			}
 
 			const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
