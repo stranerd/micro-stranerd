@@ -1,12 +1,4 @@
-import {
-	makeController,
-	NotAuthenticatedError,
-	requireAuthUser,
-	Route,
-	StatusCodes,
-	validate,
-	Validation
-} from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
 import { UserController } from '../../controller/user'
 import { AuthController } from '../../controller'
 import { cannotModifyMyRole, isAdminInSpecifiedApp } from '../middlewares'
@@ -18,8 +10,7 @@ const getUserDetails: Route = {
 		requireAuthUser,
 		makeController(async (req) => {
 
-			const userId = req.authUser?.id
-			if (!userId) throw new NotAuthenticatedError()
+			const userId = req.authUser!.id
 
 			const result = await new UserController().getUserDetails(userId)
 			return {
@@ -38,8 +29,7 @@ const updateUser: Route = {
 		requireAuthUser,
 		makeController(async (req) => {
 
-			const userId = req.authUser?.id
-			if (!userId) throw new NotAuthenticatedError()
+			const userId = req.authUser!.id
 
 			const reqData = {
 				firstName: req.body.firstName,
@@ -108,7 +98,7 @@ const logout: Route = {
 
 			const authUser = req.authUser
 
-			const result = await new AuthController().logoutUser(authUser?.id)
+			const result = await new AuthController().logoutUser(authUser!.id)
 			return {
 				status: StatusCodes.Ok,
 				result

@@ -2,11 +2,11 @@ import { RoleInput, SocialRegisterInput, TokenInput, UserModel, UserUpdateInput 
 
 export interface IUserRepository {
 
-	userDetails (userId: string, dataType: string): Promise<UserModel>;
+	userDetails (userId: string, dataType?: string): Promise<UserModel>;
 
 	updateUserRole (roleInput: RoleInput): Promise<boolean>;
 
 	updateDetails (credentials: SocialRegisterInput): Promise<TokenInput>
 
-	updateUserProfile (input: UserUpdateInput, userId: string): Promise<boolean>
+	updateUserProfile (input: UserUpdateInput): Promise<boolean>
 }

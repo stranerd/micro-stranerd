@@ -61,12 +61,12 @@ const updatePassword: Route = {
 		requireAuthUser,
 		makeController(async (req) => {
 
-			const authUser = req.authUser
+			const userId = req.authUser!.id
 
 			const reqData = {
 				oldPassword: req.body.oldPassword,
 				password: req.body.password,
-				userId: authUser?.id
+				userId
 			}
 
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
@@ -84,7 +84,8 @@ const updatePassword: Route = {
 				status: StatusCodes.Ok,
 				result
 			}
-		})
+		}
+		)
 	]
 }
 

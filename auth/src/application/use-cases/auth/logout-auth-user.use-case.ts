@@ -9,7 +9,7 @@ export class LogoutAuthUserUseCase implements UseCase<string, SuccessStatus> {
 		this.repository = repo
 	}
 
-	async execute (userId: string | undefined): Promise<SuccessStatus> {
+	async execute (userId: string): Promise<SuccessStatus> {
 
 		const cleared: boolean = await this.repository.clearUserAuthCache(userId)
 

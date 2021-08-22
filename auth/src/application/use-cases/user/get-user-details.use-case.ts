@@ -11,13 +11,7 @@ export class GetUserDetailsUseCase implements UseCase<string, UserModel> {
 
 	async execute (userId: string): Promise<UserModel> {
 
-		const userDetails: UserModel = await this.repository.userDetails(userId)
-
-		if (userDetails) {
-			return userDetails
-		}
-
-		return Promise.reject()
+		return await this.repository.userDetails(userId)
 	}
 
 }

@@ -23,23 +23,11 @@ export class UserRepository implements IUserRepository {
 		return UserRepository.instance
 	}
 
-	async userDetails (dataVal: string, dataType: string): Promise<UserModel> {
+	async userDetails (dataVal: string, dataType = 'id'): Promise<UserModel> {
 
-		let user = null as null | UserModel
+		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
 
-		if (dataType == 'email') {
-			user = await User.findOne({ _id: dataVal })
-		} else if (dataType == 'id') {
-			user = await User.findOne({ email: dataVal })
-		}
-
-		if (user) {
-
-			const result = this.userMapper.mapTo(user)
-
-			return result
-
-		}
+		if (user) return this.userMapper.mapTo(user)
 
 		return Promise.reject()
 	}

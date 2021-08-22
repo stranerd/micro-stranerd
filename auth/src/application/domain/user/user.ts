@@ -10,6 +10,6 @@ export interface UserModel {
 	photo: MediaOutput | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];
-	lastSignedInAt: number | null;
+	lastSignedInAt: number;
 	signedUpAt: number
 }

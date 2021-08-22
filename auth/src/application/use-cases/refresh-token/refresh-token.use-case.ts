@@ -11,14 +11,7 @@ export class RefreshTokenUseCase implements UseCase<Tokens, AuthOutput> {
 
 	async execute (tokens: Tokens): Promise<AuthOutput> {
 
-		const TokenPayload: AuthOutput = await this.repository.GetRefreshToken(tokens)
-
-		if (TokenPayload) {
-			return TokenPayload
-		}
-
-		return Promise.reject()
-
+		return await this.repository.GetRefreshToken(tokens)
 	}
 
 }

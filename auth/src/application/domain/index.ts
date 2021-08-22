@@ -1,11 +1,7 @@
 // User Types
 export * from './user/user'
-export * from './user/user-types'
 export * from './user/role-input'
 export * from './user/update-input'
-
-// Refresh Token Types
-export * from './refresh-token/refresh-token'
 
 // Auth types
 export * from './auth/credential'

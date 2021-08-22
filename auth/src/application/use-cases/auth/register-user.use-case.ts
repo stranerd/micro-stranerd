@@ -1,16 +1,15 @@
 import { UseCase } from '../../base'
-import { AuthOutput, SocialRegisterInput, UserModel } from '../../domain'
-import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
+import { SocialRegisterInput, TokenInput, UserModel } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
-export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOutput> {
-	repository
+export class RegisterUserUseCase implements UseCase<SocialRegisterInput, TokenInput> {
+	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (params: SocialRegisterInput): Promise<AuthOutput> {
+	async execute (params: SocialRegisterInput): Promise<TokenInput> {
 
 		const userModel: UserModel = {
 			firstName: params.firstName,
@@ -25,13 +24,7 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 			lastSignedInAt: new Date().getTime()
 		}
 
-		const TokenPayload = await this.repository.addNewUser(userModel, params.type)
-
-		if (TokenPayload) {
-			return new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)
-		}
-
-		return Promise.reject()
+		return await this.repository.addNewUser(userModel, params.type)
 	}
 
 }

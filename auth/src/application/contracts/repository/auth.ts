@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
 	AuthOutput,
 	Credential,
@@ -18,7 +17,7 @@ export interface IAuthRepository {
 
 	GetRefreshToken (tokens: Tokens): Promise<AuthOutput>;
 
-	clearUserAuthCache (userId: string | null): Promise<boolean>;
+	clearUserAuthCache (userId: string): Promise<boolean>;
 
 	userTokenData (userId: string): Promise<TokenInput>;
 
