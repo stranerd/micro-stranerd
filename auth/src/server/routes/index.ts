@@ -1,11 +1,17 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import authRoutes from './auth'
+import emailRoutes from './emails'
+import passwordRoutes from './passwords'
 import userRoutes from './user'
+import tokenRoutes from './token'
+import identityRoutes from './identities'
 import { appId } from '@utils/environment'
 
 export const routes: Route[] = [
-	...authRoutes,
+	...emailRoutes,
+	...passwordRoutes,
 	...userRoutes,
+	...tokenRoutes,
+	...identityRoutes,
 	{
 		path: '/',
 		method: 'get',

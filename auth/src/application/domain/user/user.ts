@@ -1,14 +1,15 @@
-import { UserTypes } from './user-types'
+import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
-export interface UserModel {
-	_id?: string | null;
+export interface UserEntity {
+	id: string;
 	email: string;
-	password?: string | null;
-	roles: UserTypes;
-	name: string;
-	photoUrl?: string | null;
+	password: string;
+	roles: AuthRoles;
+	firstName: string;
+	lastName: string;
+	photo: MediaOutput | null;
 	isVerified: boolean;
-	authTypes: string[];
-	lastSignedInAt?: number | null;
+	authTypes: AuthTypes[];
+	lastSignedInAt: number;
 	signedUpAt: number
 }

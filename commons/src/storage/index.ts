@@ -1,6 +1,6 @@
 export interface StorageFile {
-	name: string,
-	mimeType: string
+	name: string
+	type: string
 	size: number
 	isTruncated: boolean
 	data: Buffer
@@ -8,7 +8,7 @@ export interface StorageFile {
 
 export interface MediaOutput {
 	name: string
-	mimeType: string
+	type: string
 	size: number
 	path: string
 	timestamp: number

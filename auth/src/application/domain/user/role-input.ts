@@ -1,3 +1,5 @@
+import { AuthUser } from '@utils/commons'
+
 export interface RoleInput {
 	app: AppTypes;
 	userId: string;
@@ -5,5 +7,5 @@ export interface RoleInput {
 	value: boolean;
 }
 
-export type RoleTypes = 'isModerator' | 'isAdmin'
-export type AppTypes = 'stranerd' | 'tutorStack' | 'brainBox'
+export type RoleTypes = keyof AuthUser['roles'][AppTypes]
+export type AppTypes = keyof AuthUser['roles']

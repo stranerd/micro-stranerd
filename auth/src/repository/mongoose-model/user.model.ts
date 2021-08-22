@@ -1,35 +1,26 @@
 import { mongoose } from '@utils/commons'
+import { UserFromModel } from '../models'
 
-const userRoles = {
-	stranerd: {
-		isAdmin: false,
-		isModerator: false
-	},
-	tutorStack: {
-		isAdmin: false,
-		isModerator: false
-	},
-	brainBox: {
-		isAdmin: false,
-		isModerator: false
-	}
-}
-
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
 		type: String,
+		unique: true,
 		required: true
 	},
 	password: {
 		type: String,
 		required: false
 	},
-	name: {
+	firstName: {
 		type: String,
 		required: true
 	},
-	photoUrl: {
+	lastName: {
 		type: String,
+		required: true
+	},
+	photo: {
+		type: Object,
 		required: false
 	},
 	isVerified: {
@@ -43,18 +34,18 @@ const UserSchema = new mongoose.Schema({
 	roles: {
 		type: Object,
 		required: false,
-		default: userRoles
+		default: {}
 	},
 	lastSignedInAt: {
-		type: Date,
-		required: false
+		type: Number,
+		required: false,
+		default: Date.now
 	},
 	signedUpAt: {
 		type: Date,
-		required: true
+		required: false,
+		default: Date.now
 	}
 })
 
-const User = mongoose.model('User', UserSchema)
-
-module.exports = { User }
+export const User = mongoose.model<UserFromModel>('User', UserSchema)

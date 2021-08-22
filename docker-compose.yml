@@ -2,6 +2,8 @@ version: "3.8"
 services:
   nginx:
     image: nginx:1.21.1-alpine
+    container_name: nginx
+    hostname: nginx
     ports:
       - "80:80"
       - "443:443"
@@ -13,6 +15,8 @@ services:
     build:
       context: ./auth
       target: production
+    container_name: auth
+    hostname: auth
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -22,6 +26,8 @@ services:
     build:
       context: ./emails
       target: production
+    container_name: emails
+    hostname: emails
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -31,6 +37,8 @@ services:
     build:
       context: ./example
       target: production
+    container_name: example
+    hostname: example
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -40,6 +48,8 @@ services:
     build:
       context: ./storage
       target: production
+    container_name: storage
+    hostname: storage
     restart: unless-stopped
     depends_on:
       - mongodb
@@ -47,6 +57,8 @@ services:
 
   mongodb:
     image: mongo
+    container_name: mongodb
+    hostname: mongodb
     volumes:
       - "mongo-db:/data/db"
     restart: unless-stopped
@@ -55,16 +67,22 @@ services:
   rabbitmq:
     build:
       context: ./rabbitmq
+    container_name: rabbitmq
+    hostname: rabbitmq
     restart: unless-stopped
     ports:
       - "15672:15672"
 
   redis:
     image: redis:6.2.5-alpine
+    container_name: redis
+    hostname: redis
 
   rsinit:
     build:
       context: ./mongo
+    container_name: rsinit
+    hostname: rsinit
     depends_on:
       - mongodb
     restart: on-failure

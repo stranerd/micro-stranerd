@@ -1,16 +1,17 @@
 import { Mapper } from '../../application/base'
-import { UserModel } from '../../application/domain'
-import { UserEntity } from '../entities/user.entity'
+import { UserEntity } from '../../application/domain'
+import { UserFromModel, UserToModel } from '../models/user'
 
-export class UserMapper extends Mapper<UserModel, UserEntity> {
-	mapFrom (param: UserModel): UserEntity {
-		return {
-			_id: null,
+export class UserMapper extends Mapper<UserFromModel, UserToModel, UserEntity> {
+	mapFrom (param) {
+		return !param ? null : {
+			id: param._id,
 			email: param.email,
 			password: param.password,
 			roles: param.roles,
-			name: param.name,
-			photoUrl: param.photoUrl,
+			firstName: param.firstName,
+			lastName: param.lastName,
+			photo: param.photo,
 			isVerified: param.isVerified,
 			authTypes: param.authTypes,
 			lastSignedInAt: param.lastSignedInAt,
@@ -18,14 +19,14 @@ export class UserMapper extends Mapper<UserModel, UserEntity> {
 		}
 	}
 
-	mapTo (param: UserEntity): UserModel {
+	mapTo (param) {
 		return {
-			_id: param._id,
 			email: param.email,
 			password: param.password,
 			roles: param.roles,
-			name: param.name,
-			photoUrl: param.photoUrl,
+			firstName: param.firstName,
+			lastName: param.lastName,
+			photo: param.photo,
 			isVerified: param.isVerified,
 			authTypes: param.authTypes,
 			lastSignedInAt: param.lastSignedInAt,

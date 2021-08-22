@@ -1,50 +1,32 @@
 import { UseCase } from '../../base'
-import { AuthOutput, SocialRegisterInput, UserModel, UserTypes } from '../../domain'
-import { GenerateAuthOutputUseCase } from './generate-auth-output.use-case'
-import { IUserRepository } from '../../contracts/repository'
+import { RegisterInput, TokenInput } from '../../domain'
+import { IAuthRepository } from '../../contracts/repository'
+import { UserToModel } from '../../../repository/models'
+import { AuthTypes } from '@utils/commons'
 
-export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOutput> {
-	repository
+export class RegisterUserUseCase implements UseCase<RegisterInput, TokenInput> {
+	repository: IAuthRepository
 
-	constructor (repo: IUserRepository) {
+	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (params: SocialRegisterInput): Promise<AuthOutput> {
+	async execute (params: RegisterInput): Promise<TokenInput> {
 
-		const userRole: UserTypes = {
-			stranerd: {
-				isAdmin: false,
-				isModerator: false
-			},
-			brainBox: {
-				isAdmin: false,
-				isModerator: false
-			},
-			tutorStack: {
-				isAdmin: false,
-				isModerator: false
-			}
-		}
-
-		const userModel: UserModel = {
-			name: params.name,
-			email: params.email,
-			photoUrl: params.photoUrl,
+		const userModel: UserToModel = {
+			firstName: params.firstName,
+			lastName: params.lastName,
 			password: params.password,
+			email: params.email,
+			photo: params.photo,
 			isVerified: false,
-			authTypes: [params.type],
-			roles: userRole,
-			signedUpAt: new Date().getTime()
+			authTypes: [AuthTypes.email],
+			roles: {},
+			signedUpAt: new Date().getTime(),
+			lastSignedInAt: new Date().getTime()
 		}
 
-		const TokenPayload = await this.repository.addNewUser(userModel)
-
-		if (TokenPayload) {
-			return new GenerateAuthOutputUseCase(this.repository).execute(TokenPayload)
-		}
-
-		return Promise.reject()
+		return await this.repository.addNewUser(userModel, AuthTypes.email)
 	}
 
 }

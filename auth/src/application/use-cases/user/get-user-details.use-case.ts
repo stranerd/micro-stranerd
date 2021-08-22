@@ -1,23 +1,17 @@
 import { UseCase } from '../../base'
-import { UserModel } from '../../domain'
+import { UserEntity } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
-export class GetUserDetailsUseCase implements UseCase<string, UserModel> {
-	repository
+export class GetUserDetailsUseCase implements UseCase<{ key: 'email' | 'id', value: string }, UserEntity | null> {
+	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
 		this.repository = repo
 	}
 
-	async execute (userId: string): Promise<UserModel> {
+	async execute (data) {
 
-		const userDetails: UserModel = await this.repository.userDetails(userId)
-
-		if (userDetails) {
-			return userDetails
-		}
-
-		return Promise.reject()
+		return await this.repository.userDetails(data.value, data.key)
 	}
 
 }

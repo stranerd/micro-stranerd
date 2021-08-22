@@ -8,7 +8,7 @@ export const setupMongooseConnection = async () => {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			useFindAndModify: false,
-			useCreateIndex: false
+			useCreateIndex: true
 		})
 	} catch (error) {
 		await Logger.error('MongoDb failed with error:', error)

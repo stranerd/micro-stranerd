@@ -1,21 +1,31 @@
-import { RoleInput, SuccessStatus, UserModel } from '../../application/domain'
-import { Repository } from '../../repository'
-import { GetUserDetailsUseCase, UpdateUserRoleUseCase } from '../../application/use-cases'
+import { RoleInput, SuccessStatus, UserEntity, UserUpdateInput } from '../../application/domain'
+import { UserRepository } from '../../repository'
+import { GetUserDetailsUseCase, UpdateUserProfileUseCase, UpdateUserRoleUseCase } from '../../application/use-cases'
 
 export class UserController {
 
-	async getUserDetails (userId: string): Promise<UserModel> {
-		const repo = Repository.getInstance()
+	async getUserDetails (userId: string): Promise<UserEntity | null> {
+		const repo = UserRepository.getInstance()
 		const useCase = new GetUserDetailsUseCase(repo)
-		const data = await useCase.execute(userId)
-		return data
+		return await useCase.execute({ value: userId, key: 'id' })
+	}
+
+	async getUserDetailsWithEmail (email: string): Promise<UserEntity | null> {
+		const repo = UserRepository.getInstance()
+		const useCase = new GetUserDetailsUseCase(repo)
+		return await useCase.execute({ value: email, key: 'email' })
 	}
 
 	async updateUserRole (role: RoleInput): Promise<SuccessStatus> {
-		const repo = Repository.getInstance()
+		const repo = UserRepository.getInstance()
 		const useCase = new UpdateUserRoleUseCase(repo)
-		const data = await useCase.execute(role)
-		return data
+		return await useCase.execute(role)
+	}
+
+	async updateUserProfile (role: UserUpdateInput): Promise<SuccessStatus> {
+		const repo = UserRepository.getInstance()
+		const useCase = new UpdateUserProfileUseCase(repo)
+		return await useCase.execute(role)
 	}
 
 }
