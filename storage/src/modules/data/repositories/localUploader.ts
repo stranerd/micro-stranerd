@@ -20,7 +20,7 @@ export class LocalUploaderRepository implements IUploaderRepository {
 		fs.writeFileSync(mediaPath, media.data)
 		return {
 			name: media.name,
-			mimeType: media.mimeType,
+			type: media.type,
 			size: media.size,
 			path: encodeURI(`/${ path }`), timestamp
 		}
