@@ -1,6 +1,6 @@
 // Auth
 export * from './auth/authenticate-user.use-case'
-export * from './auth/generate-auth-output.use-case'
+export * from './user/generate-auth-output.use-case'
 export * from './auth/register-user.use-case'
 export * from './auth/logout-auth-user.use-case'
 export * from './auth/google-sign-in.use-case'

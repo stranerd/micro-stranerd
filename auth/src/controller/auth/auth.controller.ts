@@ -3,7 +3,7 @@ import {
 	Credential,
 	PasswordResetInput,
 	PasswordUpdateInput,
-	SocialRegisterInput,
+	RegisterInput,
 	SuccessStatus,
 	Tokens
 } from '../../application/domain'
@@ -31,14 +31,14 @@ export class AuthController {
 		this.generateTokenUseCase = new GenerateAuthOutputUseCase(UserRepository.getInstance())
 	}
 
-	async registerUser (user: SocialRegisterInput): Promise<AuthOutput> {
+	async registerUser (user: RegisterInput): Promise<AuthOutput> {
 		const repo = AuthRepository.getInstance()
 		const useCase = new RegisterUserUseCase(repo)
 		const data = await useCase.execute(user)
 		return await this.generateTokenUseCase.execute(data)
 	}
 
-	async updateUserDetails (user: SocialRegisterInput): Promise<AuthOutput> {
+	async updateUserDetails (user: RegisterInput): Promise<AuthOutput> {
 		const repo = UserRepository.getInstance()
 		const useCase = new UpdateUserDetailsUseCase(repo)
 		const data = await useCase.execute(user)

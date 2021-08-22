@@ -1,12 +1,12 @@
-import { RoleInput, SocialRegisterInput, TokenInput, UserModel, UserUpdateInput } from '../../domain'
+import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../domain'
 
 export interface IUserRepository {
 
-	userDetails (userId: string, dataType?: string): Promise<UserModel>;
+	userDetails (userId: string, dataType?: string): Promise<UserEntity>;
 
 	updateUserRole (roleInput: RoleInput): Promise<boolean>;
 
-	updateDetails (credentials: SocialRegisterInput): Promise<TokenInput>
+	updateDetails (credentials: RegisterInput): Promise<TokenInput>
 
 	updateUserProfile (input: UserUpdateInput): Promise<boolean>
 }

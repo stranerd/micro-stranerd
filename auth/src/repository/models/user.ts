@@ -1,9 +1,12 @@
 import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
-export interface UserEntity {
-	_id?: string;
+export interface UserFromModel extends UserToModel {
+	_id: string;
+}
+
+export interface UserToModel {
 	email: string;
-	password: string | null;
+	password: string;
 	roles: AuthRoles;
 	firstName: string;
 	lastName: string;

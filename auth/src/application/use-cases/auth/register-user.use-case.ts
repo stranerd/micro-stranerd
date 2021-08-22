@@ -1,30 +1,32 @@
 import { UseCase } from '../../base'
-import { SocialRegisterInput, TokenInput, UserModel } from '../../domain'
+import { RegisterInput, TokenInput } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
+import { UserToModel } from '../../../repository/models'
+import { AuthTypes } from '@utils/commons'
 
-export class RegisterUserUseCase implements UseCase<SocialRegisterInput, TokenInput> {
+export class RegisterUserUseCase implements UseCase<RegisterInput, TokenInput> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (params: SocialRegisterInput): Promise<TokenInput> {
+	async execute (params: RegisterInput): Promise<TokenInput> {
 
-		const userModel: UserModel = {
+		const userModel: UserToModel = {
 			firstName: params.firstName,
 			lastName: params.lastName,
+			password: params.password,
 			email: params.email,
 			photo: params.photo,
-			password: params.password,
 			isVerified: false,
-			authTypes: [params.type],
+			authTypes: [AuthTypes.email],
 			roles: {},
 			signedUpAt: new Date().getTime(),
 			lastSignedInAt: new Date().getTime()
 		}
 
-		return await this.repository.addNewUser(userModel, params.type)
+		return await this.repository.addNewUser(userModel, AuthTypes.email)
 	}
 
 }

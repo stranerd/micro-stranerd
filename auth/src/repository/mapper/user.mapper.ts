@@ -1,21 +1,13 @@
 import { Mapper } from '../../application/base'
-import { UserModel } from '../../application/domain'
-import { UserEntity } from '../entities/user.entity'
-import * as bcrypt from 'bcrypt'
+import { UserEntity } from '../../application/domain'
+import { UserFromModel, UserToModel } from '../models/user'
 
-const saltRounds = 10
-
-const hashPassword = async (password: string | null, saltRounds: number) => {
-	if (!password) return null
-	return await bcrypt.hash(password, saltRounds)
-}
-
-export class UserMapper extends Mapper<UserModel, UserEntity> {
-	async mapFrom (param: UserModel): Promise<UserEntity> {
+export class UserMapper extends Mapper<UserFromModel, UserToModel, UserEntity> {
+	mapFrom (param: UserFromModel) {
 		return {
-			_id: param.id,
+			id: param._id,
 			email: param.email,
-			password: await hashPassword(param.password, saltRounds),
+			password: param.password,
 			roles: param.roles,
 			firstName: param.firstName,
 			lastName: param.lastName,
@@ -27,9 +19,8 @@ export class UserMapper extends Mapper<UserModel, UserEntity> {
 		}
 	}
 
-	async mapTo (param: UserEntity): Promise<UserModel> {
+	mapTo (param: UserEntity) {
 		return {
-			id: param._id!,
 			email: param.email,
 			password: param.password,
 			roles: param.roles,

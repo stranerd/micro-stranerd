@@ -1,7 +1,7 @@
 import { AuthTypes, makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
 import { AuthController } from '../../controller/auth'
 import { UserController } from '../../controller/user'
-import { SocialRegisterInput } from '../../application/domain'
+import { RegisterInput } from '../../application/domain'
 
 const emailSignIn: Route = {
 	path: '/emails/signin',
@@ -48,16 +48,15 @@ const emailSignUp: Route = {
 	controllers: [
 		makeController(async (req) => {
 
-			const userCredential: SocialRegisterInput = {
+			const userCredential: RegisterInput = {
 				email: req.body.email,
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				password: req.body.password,
-				photo: req.body.photo,
-				type: AuthTypes.email
+				photo: req.body.photo
 			}
 
-			const emailExist = await new AuthController().emailExist(userCredential.email, userCredential.type)
+			const emailExist = await new AuthController().emailExist(userCredential.email, AuthTypes.email)
 
 			const checkEmailExist = (email: string) => {
 				return { valid: emailExist, error: emailExist ? email + ' already exists' : undefined }
@@ -73,8 +72,7 @@ const emailSignUp: Route = {
 				password: { required: true, rules: [isLongerThan7, isShorterThan17] },
 				photo: { required: false, rules: [Validation.isImage] },
 				firstName: { required: true, rules: [isLongerThan2] },
-				lastName: { required: true, rules: [isLongerThan2] },
-				type: { required: true, rules: [] }
+				lastName: { required: true, rules: [isLongerThan2] }
 			})
 
 			const userData = await new UserController().getUserDetailsWithEmail(validateData.email)

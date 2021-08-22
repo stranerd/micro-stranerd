@@ -1,7 +1,7 @@
 import { mongoose } from '@utils/commons'
-import { UserModel } from '../../application/domain'
+import { UserFromModel } from '../models'
 
-const UserSchema = new mongoose.Schema<UserModel>({
+const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
 		type: String,
 		unique: true,
@@ -48,4 +48,4 @@ const UserSchema = new mongoose.Schema<UserModel>({
 	}
 })
 
-export const User = mongoose.model<UserModel>('User', UserSchema)
+export const User = mongoose.model<UserFromModel>('User', UserSchema)

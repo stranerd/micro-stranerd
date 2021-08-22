@@ -7,7 +7,7 @@ export const isAdminInSpecifiedApp = makeMiddleware(
 
 		const appType = request.body.app
 
-		if (userId && !request.authUser?.roles[appType]?.isAdmin) throw new NotAuthorizedError()
+		if (userId && !request.authUser?.roles[appType]?.['isAdmin']) throw new NotAuthorizedError()
 		else throw new NotAuthenticatedError()
 	}
 )

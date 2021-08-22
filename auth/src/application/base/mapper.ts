@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-export abstract class Mapper<Input, Output> {
-	abstract mapFrom (param: Input): Promise<Output>
+export abstract class Mapper<From, To, Entity> {
+	abstract mapFrom (param: From): Entity
 
-	abstract mapTo (param: Output): Promise<Input>
+	abstract mapTo (param: Entity): To
 }

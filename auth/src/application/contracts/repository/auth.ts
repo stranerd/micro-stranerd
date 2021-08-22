@@ -1,17 +1,10 @@
-import {
-	AuthOutput,
-	Credential,
-	PasswordResetInput,
-	PasswordUpdateInput,
-	TokenInput,
-	Tokens,
-	UserModel
-} from '../../domain'
+import { AuthOutput, Credential, PasswordResetInput, PasswordUpdateInput, TokenInput, Tokens } from '../../domain'
 import { AuthTypes } from '@utils/commons'
+import { UserToModel } from '../../../repository/models'
 
 export interface IAuthRepository {
 
-	addNewUser (user: UserModel, type: AuthTypes): Promise<TokenInput>;
+	addNewUser (user: UserToModel, type: AuthTypes): Promise<TokenInput>;
 
 	authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes): Promise<TokenInput>;
 
