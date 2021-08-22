@@ -3,8 +3,8 @@ import { UserEntity } from '../../application/domain'
 import { UserFromModel, UserToModel } from '../models/user'
 
 export class UserMapper extends Mapper<UserFromModel, UserToModel, UserEntity> {
-	mapFrom (param: UserFromModel) {
-		return {
+	mapFrom (param) {
+		return !param ? null : {
 			id: param._id,
 			email: param.email,
 			password: param.password,
@@ -19,7 +19,7 @@ export class UserMapper extends Mapper<UserFromModel, UserToModel, UserEntity> {
 		}
 	}
 
-	mapTo (param: UserEntity) {
+	mapTo (param) {
 		return {
 			email: param.email,
 			password: param.password,

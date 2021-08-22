@@ -4,15 +4,16 @@ import { GetUserDetailsUseCase, UpdateUserProfileUseCase, UpdateUserRoleUseCase 
 
 export class UserController {
 
-	async getUserDetails (userId: string): Promise<UserEntity> {
+	async getUserDetails (userId: string): Promise<UserEntity | null> {
 		const repo = UserRepository.getInstance()
 		const useCase = new GetUserDetailsUseCase(repo)
-		return await useCase.execute(userId)
+		return await useCase.execute({ value: userId, key: 'id' })
 	}
 
-	async getUserDetailsWithEmail (email: string): Promise<UserEntity> {
+	async getUserDetailsWithEmail (email: string): Promise<UserEntity | null> {
 		const repo = UserRepository.getInstance()
-		return await repo.userDetails(email, 'email')
+		const useCase = new GetUserDetailsUseCase(repo)
+		return await useCase.execute({ value: email, key: 'email' })
 	}
 
 	async updateUserRole (role: RoleInput): Promise<SuccessStatus> {

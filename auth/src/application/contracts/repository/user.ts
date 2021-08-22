@@ -2,7 +2,7 @@ import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } fro
 
 export interface IUserRepository {
 
-	userDetails (userId: string, dataType?: string): Promise<UserEntity>;
+	userDetails (userId: string, dataType: string): Promise<UserEntity | null>;
 
 	updateUserRole (roleInput: RoleInput): Promise<boolean>;
 

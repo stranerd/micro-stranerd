@@ -23,11 +23,9 @@ export class UserRepository implements IUserRepository {
 		return UserRepository.instance
 	}
 
-	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity> {
+	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity | null> {
 
 		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
-		if (!user) throw new NotFoundError()
-
 		return this.userMapper.mapFrom(user)
 	}
 
