@@ -29,7 +29,7 @@ export class UserRepository implements IUserRepository {
 		let user = null
 
 		if (dataType == 'email') {
-			user = await User.find({ _id: dataVal })
+			user = await User.findOne({ _id: dataVal })
 		} else if (dataType == 'id') {
 
 			user = await User.find({ email: dataVal })
@@ -53,7 +53,7 @@ export class UserRepository implements IUserRepository {
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
 
-		const user = await User.find({ _id: input.userId })
+		const user = await User.findOne({ _id: input.userId })
 
 		if (user) {
 
@@ -72,7 +72,7 @@ export class UserRepository implements IUserRepository {
 
 	async updateDetails (details: SocialRegisterInput): Promise<TokenInput> {
 
-		const user = await User.find({ email: details.email })
+		const user = await User.findOne({ email: details.email })
 
 		if (user) {
 
@@ -115,7 +115,7 @@ export class UserRepository implements IUserRepository {
 
 	async updateUserRole (roleInput: RoleInput): Promise<boolean> {
 
-		const user = await User.find({ _id: roleInput.userId })
+		const user = await User.findOne({ _id: roleInput.userId })
 
 		if (user) {
 			const roles = user.roles
