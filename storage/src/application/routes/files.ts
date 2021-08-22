@@ -31,8 +31,8 @@ const uploadFiles: Route = {
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			const areAllImages = (value: any[]) => {
-				const res = value.map(Validation.isImage)
+			const areAllFiles = (value: any[]) => {
+				const res = value.map(Validation.isFile)
 				const valid = res.every((r) => r.valid)
 				const error = res.find((r) => r.error)?.error
 				return { valid, error }
@@ -41,7 +41,7 @@ const uploadFiles: Route = {
 			const { path } = req.body
 			const data = validate({ path, files }, {
 				path: { required: true, rules: [] },
-				files: { required: true, rules: [areAllImages] }
+				files: { required: true, rules: [areAllFiles] }
 			})
 			if (files.some((f) => f.isTruncated)) throw new ValidationError([{
 				field: 'file',
