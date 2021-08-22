@@ -54,6 +54,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async addNewUser (user: UserModel): Promise<TokenInput> {
 		const data: UserEntity = await this.userMapper.mapFrom(user)
+		data.email = data.email.toLowerCase()
 		const userData = await new User(data).save()
 
 		const tokenPayload: TokenInput = {
@@ -70,7 +71,7 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async authenticateUser (details: Credential, passwordValidate: boolean): Promise<TokenInput> {
-
+		details.email = details.email.toLowerCase()
 		const user = await User.findOne({ email: details.email })
 		if (!user) throw new ValidationError([
 			{ field: 'email', messages: ['No account with such email exists'] }
@@ -139,7 +140,7 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async sendVerificationMail (email: string): Promise<boolean> {
-
+		email = email.toLowerCase()
 		const user = await User.findOne({ email })
 		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
@@ -184,7 +185,7 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async sendPasswordResetMail (email: string): Promise<boolean> {
-
+		email = email.toLowerCase()
 		const user = await User.findOne({ email })
 		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
@@ -286,13 +287,14 @@ export class AuthRepository implements IAuthRepository {
 		if (!user) throw new InvalidToken()
 
 		const [firstName = '', lastName = ''] = (user.name ?? '').split(' ')
+		const email = user.email!.toLowerCase()
 
 		const userPhoto: MediaOutput | null = user.picture ? {
 			link: user.picture
 		} as unknown as MediaOutput : null
 
 		const userDataToUse: UserModel = {
-			email: user.email!,
+			email,
 			authTypes: [AuthTypes.google],
 			firstName,
 			lastName,
@@ -304,7 +306,7 @@ export class AuthRepository implements IAuthRepository {
 			lastSignedInAt: new Date().getTime()
 		}
 
-		const userData = await User.findOne({ email: user.email })
+		const userData = await User.findOne({ email })
 
 		let tokenInput: TokenInput
 
