@@ -31,11 +31,11 @@ const uploadFiles: Route = {
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			const areAllFiles = (value: any[]) => {
+			const areAllFiles: Validation.Rule = (value: any[]) => {
 				const res = value.map(Validation.isFile)
 				const valid = res.every((r) => r.valid)
-				const error = res.find((r) => r.error)?.error
-				return { valid, error }
+				const error = res.find((r) => r.error)?.error!
+				return valid ? { valid: true, error: undefined } : { valid: false, error }
 			}
 			const files = req.files
 			const { path } = req.body

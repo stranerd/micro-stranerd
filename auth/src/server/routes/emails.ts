@@ -58,14 +58,12 @@ const emailSignUp: Route = {
 
 			const emailExist = await new AuthController().emailExist(userCredential.email, AuthTypes.email)
 
-			const checkEmailExist = (email: string) => {
-				return { valid: emailExist, error: emailExist ? email + ' already exists' : undefined }
-			}
-
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
 			const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 			const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-			const isUniqueInDb = (email: string) => checkEmailExist(email)
+			const isUniqueInDb: Validation.Rule = (_: string) => {
+				return emailExist ? { valid: false, error: 'email already in use' } : { valid: true, error: undefined }
+			}
 
 			const validateData = validate(userCredential, {
 				email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
