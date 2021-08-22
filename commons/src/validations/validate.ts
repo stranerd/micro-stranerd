@@ -14,9 +14,12 @@ export function validate<Keys extends Record<string, any>> (data: Keys, rules: R
 			key,
 			valid: Validation.Validator.single(value, rules[key].rules, rules[key].required)
 		}))
-		.map(({ key, valid }) => ({ field: key, messages: valid.errors }))
 
-	if (errors.length > 0) throw new ValidationError(errors)
+	const failed = errors.some(({ valid }) => !valid.isValid)
+
+	if (failed) throw new ValidationError(
+		errors.map(({ key, valid }) => ({ field: key, messages: valid.errors }))
+	)
 
 	return data
 }

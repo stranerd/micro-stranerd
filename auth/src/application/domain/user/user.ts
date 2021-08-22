@@ -1,10 +1,10 @@
-import { AuthTypes, AuthUser, MediaOutput } from '@utils/commons'
+import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
 export interface UserModel {
 	_id?: string | null;
 	email: string;
 	password: string | null;
-	roles: AuthUser['roles'];
+	roles: AuthRoles;
 	firstName: string;
 	lastName: string;
 	photo: MediaOutput | null;

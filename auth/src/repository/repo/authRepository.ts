@@ -12,6 +12,7 @@ import { UserEntity } from '../entities/user.entity'
 import { UserMapper } from '../mapper/user.mapper'
 import {
 	AuthTypes,
+	BadRequestError,
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
 	Emails,
@@ -55,76 +56,58 @@ export class AuthRepository implements IAuthRepository {
 		const data: UserEntity = await this.userMapper.mapFrom(user)
 		const userData = await new User(data).save()
 
-		if (userData) {
-
-			const tokenPayload: TokenInput = {
-				id: userData._id!,
-				roles: userData.roles,
-				isVerified: userData.isVerified,
-				authTypes: userData.authTypes
-			}
-
-			// update user lastSignIn
-
-			userData.lastSignedInAt = new Date().getTime()
-
-			return tokenPayload
-
+		const tokenPayload: TokenInput = {
+			id: userData._id!,
+			roles: userData.roles,
+			isVerified: userData.isVerified,
+			authTypes: userData.authTypes
 		}
 
-		return Promise.reject()
+		// update user lastSignIn
+		userData.lastSignedInAt = new Date().getTime()
+
+		return tokenPayload
 	}
 
 	async authenticateUser (details: Credential, passwordValidate: boolean): Promise<TokenInput> {
 
 		const user = await User.findOne({ email: details.email })
+		if (!user) throw new ValidationError([
+			{ field: 'email', messages: ['No account with such email exists'] }
+		])
 
-		if (user) {
+		const match = passwordValidate ? await bcrypt.compare(details.password, user.password ?? '') : true
+		if (!match) throw new ValidationError([
+			{ field: 'password', messages: ['Invalid credentials'] }
+		])
 
-			let match = true
-
-			if (passwordValidate) {
-
-				match = await bcrypt.compare(details.password, user.password ?? '')
-			}
-
-			if (match) {
-				const tokenPayload: TokenInput = {
-					id: user._id,
-					roles: user.roles,
-					isVerified: user.isVerified,
-					authTypes: user.authTypes
-				}
-
-				// update user lastSignIn
-
-				user.lastSignedInAt = new Date().getTime()
-
-				return tokenPayload
-			}
-
+		const tokenPayload: TokenInput = {
+			id: user._id,
+			roles: user.roles,
+			isVerified: user.isVerified,
+			authTypes: user.authTypes
 		}
 
-		return Promise.reject()
+		// update user lastSignIn
+
+		user.lastSignedInAt = new Date().getTime()
+
+		return tokenPayload
+
 	}
 
 	async userTokenData (id: string): Promise<TokenInput> {
 		const user = await User.findOne({ _id: id })
+		if (!user) throw new BadRequestError('No account with such id exists')
 
-		if (user) {
-
-			const tokenPayload: TokenInput = {
-				id: user._id,
-				roles: user.roles,
-				isVerified: user.isVerified,
-				authTypes: user.authTypes
-			}
-
-			return tokenPayload
-
+		const tokenPayload: TokenInput = {
+			id: user._id,
+			roles: user.roles,
+			isVerified: user.isVerified,
+			authTypes: user.authTypes
 		}
 
-		return Promise.reject()
+		return tokenPayload
 	}
 
 	async GetRefreshToken (tokens: Tokens): Promise<AuthOutput> {
@@ -133,23 +116,17 @@ export class AuthRepository implements IAuthRepository {
 
 		const userData = await verifyRefreshToken(tokens.refreshToken)
 
-		if (newTokens) {
+		const repository = UserRepository.getInstance()
 
-			const repository = UserRepository.getInstance()
+		const user = await repository.userDetails(userData.id, 'id')
 
-			const user = await repository.userDetails(userData.id, 'id')
-
-			const result = {
-				accessToken: newTokens.accessToken,
-				refreshToken: newTokens.refreshToken,
-				user
-			}
-
-			return result
-
+		const result = {
+			accessToken: newTokens.accessToken,
+			refreshToken: newTokens.refreshToken,
+			user
 		}
 
-		return Promise.reject()
+		return result
 	}
 
 	async clearUserAuthCache (userId: string): Promise<boolean> {
@@ -162,6 +139,9 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async sendVerificationMail (email: string): Promise<boolean> {
+
+		const user = await User.findOne({ email })
+		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
 		const token = crypto.randomBytes(40).toString('hex')
 
@@ -186,35 +166,27 @@ export class AuthRepository implements IAuthRepository {
 
 		// check token in cache
 		const userEmail = await getCacheInstance.get('verification-token-' + token)
+		if (!userEmail) throw new InvalidToken()
 
-		if (userEmail) {
+		const user = await User.findOne({ email: userEmail })
+		if (!user) throw new BadRequestError('No account with saved email exists')
 
-			const user = await User.findOne({ email: userEmail })
+		user.isVerified = true
 
-			if (user) {
-
-				user.isVerified = true
-
-				const tokenPayload: TokenInput = {
-					id: user._id,
-					roles: user.roles,
-					isVerified: user.isVerified,
-					authTypes: user.authTypes
-				}
-
-				return tokenPayload
-
-			}
-		} else {
-
-			throw new InvalidToken()
+		const tokenPayload: TokenInput = {
+			id: user._id,
+			roles: user.roles,
+			isVerified: user.isVerified,
+			authTypes: user.authTypes
 		}
 
-		return Promise.reject()
-
+		return tokenPayload
 	}
 
 	async sendPasswordResetMail (email: string): Promise<boolean> {
+
+		const user = await User.findOne({ email })
+		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
 		const token = crypto.randomBytes(40).toString('hex')
 
@@ -238,88 +210,67 @@ export class AuthRepository implements IAuthRepository {
 	async resetPassword (input: PasswordResetInput): Promise<TokenInput> {
 
 		// check token in cache
-
 		const userEmail = await getCacheInstance.get('password-reset-token-' + input.token)
+		if (!userEmail) throw new InvalidToken()
 
-		if (userEmail) {
+		const user = await User.findOne({ email: userEmail })
+		if (!user) throw new BadRequestError('No account with saved email exists')
 
-			const user = await User.findOne({ email: userEmail })
-
-			if (user) {
-
-				const userDataToUpdate: UserModel = {
-					email: user.email,
-					authTypes: user.authTypes,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					isVerified: user.isVerified,
-					roles: user.roles,
-					password: input.password,
-					photo: user.photo,
-					signedUpAt: user.signedUpAt,
-					lastSignedInAt: new Date().getTime()
-				}
-
-				const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
-
-				const userData = await new User(data).save()
-
-				const tokenPayload: TokenInput = {
-					id: userData._id!,
-					roles: userData.roles,
-					isVerified: userData.isVerified,
-					authTypes: userData.authTypes
-				}
-
-				return tokenPayload
-
-			}
-		} else {
-
-			throw new InvalidToken()
+		const userDataToUpdate: UserModel = {
+			email: user.email,
+			authTypes: user.authTypes,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			isVerified: user.isVerified,
+			roles: user.roles,
+			password: input.password,
+			photo: user.photo,
+			signedUpAt: user.signedUpAt,
+			lastSignedInAt: new Date().getTime()
 		}
 
-		return Promise.reject()
+		const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
 
+		const userData = await new User(data).save()
+
+		const tokenPayload: TokenInput = {
+			id: userData._id!,
+			roles: userData.roles,
+			isVerified: userData.isVerified,
+			authTypes: userData.authTypes
+		}
+
+		return tokenPayload
 	}
 
 	async updatePassword (input: PasswordUpdateInput): Promise<boolean> {
 
 		const user = await User.findOne({ _id: input.userId })
+		if (!user) throw new ValidationError([
+			{ field: 'id', messages: ['No account with such id exists'] }
+		])
 
-		if (user) {
+		const match = await bcrypt.compare(input.oldPassword, user.password ?? '')
+		if (!match) throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
 
-			const match = await bcrypt.compare(input.oldPassword, user.password ?? '')
-
-			if (match) {
-
-				const userDataToUpdate: UserModel = {
-					email: user.email,
-					authTypes: user.authTypes,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					isVerified: user.isVerified,
-					roles: user.roles,
-					password: input.password,
-					photo: user.photo,
-					signedUpAt: user.signedUpAt,
-					lastSignedInAt: user.lastSignedInAt
-				}
-
-				const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
-
-				await new User(data).save()
-
-				return true
-
-			}
-
-			throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
-
+		const userDataToUpdate: UserModel = {
+			email: user.email,
+			authTypes: user.authTypes,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			isVerified: user.isVerified,
+			roles: user.roles,
+			password: input.password,
+			photo: user.photo,
+			signedUpAt: user.signedUpAt,
+			lastSignedInAt: user.lastSignedInAt
 		}
 
-		return Promise.reject()
+		const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
 
+		await new User(data).save()
+
+		return true
 	}
 
 	async googleSignIn (tokenId: string): Promise<TokenInput> {
@@ -332,59 +283,51 @@ export class AuthRepository implements IAuthRepository {
 		})
 
 		const user = ticket.getPayload()
-		if (!user) return Promise.reject()
+		if (!user) throw new InvalidToken()
 
-		const fullName = user?.name
+		const [firstName = '', lastName = ''] = (user.name ?? '').split(' ')
 
-		if (fullName && user?.email) {
-			const [firstName = '', lastName = ''] = fullName.split(' ')
+		const userPhoto: MediaOutput | null = user.picture ? {
+			link: user.picture
+		} as unknown as MediaOutput : null
 
-			const userPhoto: MediaOutput | null = user.picture ? {
-				link: user.picture
-			} as unknown as MediaOutput : null
-
-			const userDataToUse: UserModel = {
-				email: user.email,
-				authTypes: [AuthTypes.google],
-				firstName,
-				lastName,
-				isVerified: true,
-				roles: {},
-				password: null,
-				photo: userPhoto,
-				signedUpAt: new Date().getTime(),
-				lastSignedInAt: new Date().getTime()
-			}
-
-			const userData = await User.findOne({ email: user.email })
-
-			let tokenInput: TokenInput
-
-			if (userData) {
-
-				const authTypeExist = userData.authTypes.indexOf(AuthTypes.google) > -1
-
-				if (!authTypeExist) {
-					userData.authTypes.push(AuthTypes.google)
-				}
-
-				const credentials: Credential = {
-					email: userData.email,
-					password: ''
-				}
-
-				tokenInput = await this.authenticateUser(credentials, false)
-
-			} else {
-
-				tokenInput = await this.addNewUser(userDataToUse)
-			}
-
-			return tokenInput
-
+		const userDataToUse: UserModel = {
+			email: user.email!,
+			authTypes: [AuthTypes.google],
+			firstName,
+			lastName,
+			isVerified: true,
+			roles: {},
+			password: null,
+			photo: userPhoto,
+			signedUpAt: new Date().getTime(),
+			lastSignedInAt: new Date().getTime()
 		}
 
-		return Promise.reject()
-	}
+		const userData = await User.findOne({ email: user.email })
 
+		let tokenInput: TokenInput
+
+		if (userData) {
+
+			const authTypeExist = userData.authTypes.indexOf(AuthTypes.google) > -1
+
+			if (!authTypeExist) {
+				userData.authTypes.push(AuthTypes.google)
+			}
+
+			const credentials: Credential = {
+				email: userData.email,
+				password: ''
+			}
+
+			tokenInput = await this.authenticateUser(credentials, false)
+
+		} else {
+
+			tokenInput = await this.addNewUser(userDataToUse)
+		}
+
+		return tokenInput
+	}
 }
