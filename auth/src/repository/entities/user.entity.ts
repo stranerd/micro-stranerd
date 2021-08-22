@@ -1,7 +1,7 @@
 import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
 export interface UserEntity {
-	_id?: string | null;
+	_id?: string;
 	email: string;
 	password: string | null;
 	roles: AuthRoles;

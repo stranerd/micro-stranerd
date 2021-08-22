@@ -13,7 +13,7 @@ const hashPassword = async (password: string | null, saltRounds: number) => {
 export class UserMapper extends Mapper<UserModel, UserEntity> {
 	async mapFrom (param: UserModel): Promise<UserEntity> {
 		return {
-			_id: null,
+			_id: param.id,
 			email: param.email,
 			password: await hashPassword(param.password, saltRounds),
 			roles: param.roles,
@@ -29,7 +29,7 @@ export class UserMapper extends Mapper<UserModel, UserEntity> {
 
 	async mapTo (param: UserEntity): Promise<UserModel> {
 		return {
-			_id: param._id,
+			id: param._id!,
 			email: param.email,
 			password: param.password,
 			roles: param.roles,

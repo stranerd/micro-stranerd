@@ -1,7 +1,7 @@
 import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
 export interface UserModel {
-	_id?: string | null;
+	id: string;
 	email: string;
 	password: string | null;
 	roles: AuthRoles;

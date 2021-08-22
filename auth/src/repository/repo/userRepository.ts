@@ -62,7 +62,7 @@ export class UserRepository implements IUserRepository {
 
 		if (user) {
 
-			const userDataToUpdate: UserModel = {
+			const userDataToUpdate: UserEntity = {
 				email: user.email,
 				authTypes: user.authTypes,
 				firstName: details.firstName,
