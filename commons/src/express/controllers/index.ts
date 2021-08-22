@@ -56,7 +56,7 @@ const extractRequest = (req: Request) => {
 	if (file) {
 		if (Array.isArray(file)) file.forEach((f) => fileArray.push({
 			name: f.name,
-			mimeType: f.mimetype,
+			type: f.mimetype,
 			size: f.size,
 			isTruncated: f.truncated,
 			data: f.data
@@ -64,7 +64,7 @@ const extractRequest = (req: Request) => {
 		else {
 			fileArray.push({
 				name: file.name,
-				mimeType: file.mimetype,
+				type: file.mimetype,
 				size: file.size,
 				isTruncated: file.truncated,
 				data: file.data

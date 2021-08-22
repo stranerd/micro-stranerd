@@ -11,7 +11,7 @@ const uploadFile: Route = {
 			const { path } = req.body
 			const data = validate({ path, file }, {
 				path: { required: true, rules: [] },
-				file: { required: true, rules: [Validation.isImage] }
+				file: { required: true, rules: [Validation.isFile] }
 			})
 			if (file.isTruncated) throw new ValidationError([{
 				field: 'file',
