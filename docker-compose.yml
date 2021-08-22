@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   emails:
     build:
@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   example:
     build:
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   storage:
     build:
@@ -43,19 +43,14 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
-    command: sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   mongodb:
     image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - "mongo-db:/data/db"
     restart: unless-stopped
-    depends_on:
-      - rabbitmq
-      - redis
+    command: "--quiet --bind_ip_all --replSet rs0"
 
   rabbitmq:
     build:
@@ -66,6 +61,14 @@ services:
 
   redis:
     image: redis:6.2.5-alpine
+
+  rsinit:
+    build:
+      context: ./mongo
+    depends_on:
+      - mongodb
+    restart: on-failure
+    entrypoint: "sh -c rs.sh"
 
 volumes:
   mongo-db:
