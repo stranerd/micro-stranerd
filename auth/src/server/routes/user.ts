@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes, Validation, validate } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
 import { UserController } from '../../controller/user'
+import { BadRequestError, NotAuthenticatedError, NotAuthorizedError } from '@stranerd/api-commons'
 
 const getUserDetails: Route = {
 	path: '/user',
@@ -9,24 +10,17 @@ const getUserDetails: Route = {
 		makeController(async (req) => {
 
 			const userId = req.authUser?.id
+			if (!userId) throw new NotAuthenticatedError()
 
-			if (userId) {
-				const result = await new UserController().getUserDetails(userId)
-				return {
-					status: StatusCodes.Ok,
-					result
-				}
-			} else {
-				return {
-					status: StatusCodes.NotAuthenticated,
-					result: 'user not authenticated'
-				}
+			const result = await new UserController().getUserDetails(userId)
+			return {
+				status: StatusCodes.Ok,
+				result
 			}
 
 		})
 	]
 }
-
 
 const updateUser: Route = {
 	path: '/user',
@@ -36,34 +30,28 @@ const updateUser: Route = {
 		makeController(async (req) => {
 
 			const userId = req.authUser?.id
+			if (!userId) throw new NotAuthenticatedError()
 
 			const reqData = {
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				photo: req.body.photo,
-				userId: req.authUser?.id
+				userId
 			}
 
 			const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 
-			const validateData = validate(reqData,{
+			const validateData = validate(reqData, {
 				firstName: { required: true, rules: [isLongerThan2] },
 				lastName: { required: true, rules: [isLongerThan2] },
-				photo: { required: true, rules: [] },
+				photo: { required: false, rules: [Validation.isImage] },
 				userId: { required: true, rules: [] }
 			})
 
-			if (userId) {
-				const result = await new UserController().updateUserProfile(validateData)
-				return {
-					status: StatusCodes.Ok,
-					result
-				}
-			} else {
-				return {
-					status: StatusCodes.NotAuthenticated,
-					result: 'user not authenticated'
-				}
+			const result = await new UserController().updateUserProfile(validateData)
+			return {
+				status: StatusCodes.Ok,
+				result
 			}
 
 		})
@@ -75,6 +63,10 @@ const updateUserRole: Route = {
 	method: 'post',
 	controllers: [
 		requireAuthUser,
+		(req) => {
+			if (req.authUser?.id === req.body.userId) throw new BadRequestError('You cannot modify your own roles')
+			if (!req.authUser?.roles[req.body.app]?.isAdmin) throw new NotAuthorizedError()
+		},
 		makeController(async (req) => {
 
 			const reqData = {
@@ -84,15 +76,8 @@ const updateUserRole: Route = {
 				value: req.body.value
 			}
 
-			const checkAppType = (app: string) => {
-				return {valid: app == 'stranerd', error: app + ' update is not allowed'}
-			}
-
-			const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-			const isAStranerdApp = (val: string) => checkAppType(val)
-
-			const validateData = validate(reqData,{
-				app: { required: true, rules: [isLongerThan2,isAStranerdApp] },
+			const validateData = validate(reqData, {
+				app: { required: true, rules: [] },
 				role: { required: true, rules: [] },
 				value: { required: true, rules: [] },
 				userId: { required: true, rules: [] }

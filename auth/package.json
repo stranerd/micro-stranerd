@@ -19,6 +19,7 @@
 		"google-auth-library": "^7.6.2"
 	},
 	"devDependencies": {
+		"@types/bcrypt": "^5.0.0",
 		"@types/node": "^16.6.1",
 		"@typescript-eslint/eslint-plugin": "^4.29.1",
 		"@typescript-eslint/parser": "^4.29.1",

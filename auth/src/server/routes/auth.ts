@@ -1,10 +1,18 @@
-import { makeController, requireAuthUser, Route, StatusCodes,Validation, validate, ValidationError } from '@utils/commons'
+import {
+	makeController,
+	requireAuthUser,
+	Route,
+	StatusCodes,
+	validate,
+	Validation,
+	ValidationError
+} from '@utils/commons'
 import { AuthController } from '../../controller/auth'
 import { UserController } from '../../controller/user'
-import { SocialRegisterInput, UserPhoto } from '../../application/domain'
+import { SocialRegisterInput } from '../../application/domain'
 
 const emailSignIn: Route = {
-	path: 'emails/signin',
+	path: '/emails/signin',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
@@ -13,37 +21,34 @@ const emailSignIn: Route = {
 				email: req.body.email,
 				password: req.body.password
 			}
-           
-			const validateData = validate(userCredential,{
-				email: { required: true, rules: [Validation.isEmail] },
-				password: {required: true, rules: []}
-			})
-			
-			const result = await new AuthController().authenticateUser(validateData)
-			
-				 if(result) {
-   
-					 return {
-					   status: StatusCodes.Ok,
-					   result
-					 } 
-   
-			   } else {
-   
-				   const error = {
-					   messages: ['credential is incorrect'],
-					   field: 'password'
-				   }
-   
-				   throw new ValidationError([error])
-			   }
 
-			
+			const validateData = validate(userCredential, {
+				email: { required: true, rules: [Validation.isEmail] },
+				password: { required: true, rules: [] }
+			})
+
+			const result = await new AuthController().authenticateUser(validateData)
+
+			if (result) {
+
+				return {
+					status: StatusCodes.Ok,
+					result
+				}
+
+			} else {
+
+				const error = {
+					messages: ['credential is incorrect'],
+					field: 'password'
+				}
+
+				throw new ValidationError([error])
+			}
+
 		})
 	]
 }
-
-
 
 const emailSignUp: Route = {
 	path: '/emails/signup',
@@ -51,52 +56,44 @@ const emailSignUp: Route = {
 	controllers: [
 		makeController(async (req) => {
 
-			const userPhoto: UserPhoto = {
-				link: '',
-				name: '',
-				path: '',
-				type: ''
-			}
-
 			const userCredential: SocialRegisterInput = {
 				email: req.body.email,
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				password: req.body.password,
-				photo: userPhoto,
+				photo: null,
 				type: 'email'
 			}
 
-			const emailExist = await new AuthController().emailExist(userCredential.email,userCredential.type)
+			const emailExist = await new AuthController().emailExist(userCredential.email, userCredential.type)
 
 			const checkEmailExist = (email: string) => {
-				return {valid: emailExist, error: email + ' already exists'}
+				return { valid: emailExist, error: email + ' already exists' }
 			}
 
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
 			const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 			const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-			const isUniqueInDb =  (email: string) => checkEmailExist(email)
+			const isUniqueInDb = (email: string) => checkEmailExist(email)
 
-			const validateData = validate(userCredential,{
+			const validateData = validate(userCredential, {
 				email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
-				password: {required: true, rules: [isLongerThan7,isShorterThan17]},
-				photo: {required: false, rules: []},
-				firstName: {required: true, rules: [isLongerThan2]},
-				lastName: {required: true, rules: [isLongerThan2]},
-				type: {required: true, rules: [isLongerThan2]}
+				password: { required: true, rules: [isLongerThan7, isShorterThan17] },
+				photo: { required: false, rules: [] },
+				firstName: { required: true, rules: [isLongerThan2] },
+				lastName: { required: true, rules: [isLongerThan2] },
+				type: { required: true, rules: [isLongerThan2] }
 			})
 
 			const userData = await new UserController().getUserDetailsWithEmail(validateData.email)
-             
+
 			let result = {}
 
-			 if (userData) {
+			if (userData) {
 				result = await new AuthController().updateUserDetails(validateData)
-			 } else {
+			} else {
 				result = await new AuthController().registerUser(validateData)
-			 }
-
+			}
 
 			return {
 				status: StatusCodes.Ok,
@@ -106,7 +103,6 @@ const emailSignUp: Route = {
 	]
 }
 
-
 const sendVerificationEmail: Route = {
 	path: '/emails/sendVerificationMail',
 	method: 'post',
@@ -114,10 +110,10 @@ const sendVerificationEmail: Route = {
 		makeController(async (req) => {
 
 			const reqData = {
-				email: req.body.email,
+				email: req.body.email
 			}
-           
-			const validateData = validate(reqData,{
+
+			const validateData = validate(reqData, {
 				email: { required: true, rules: [Validation.isEmail] }
 			})
 
@@ -128,9 +124,8 @@ const sendVerificationEmail: Route = {
 			}
 		})
 	]
-	
-}
 
+}
 
 const verifyEmail: Route = {
 	path: '/emails/verify',
@@ -139,10 +134,10 @@ const verifyEmail: Route = {
 		makeController(async (req) => {
 
 			const reqData = {
-				token: req.body.token,
+				token: req.body.token
 			}
-           
-			const validateData = validate(reqData,{
+
+			const validateData = validate(reqData, {
 				token: { required: true, rules: [] }
 			})
 
@@ -156,7 +151,6 @@ const verifyEmail: Route = {
 	]
 }
 
-
 const resetPasswordEmail: Route = {
 	path: '/passwords/sendResetMail',
 	method: 'post',
@@ -164,10 +158,10 @@ const resetPasswordEmail: Route = {
 		makeController(async (req) => {
 
 			const reqData = {
-				email: req.body.email,
+				email: req.body.email
 			}
-           
-			const validateData = validate(reqData,{
+
+			const validateData = validate(reqData, {
 				email: { required: true, rules: [Validation.isEmail] }
 			})
 
@@ -180,7 +174,6 @@ const resetPasswordEmail: Route = {
 		})
 	]
 }
-
 
 const resetPassword: Route = {
 	path: '/passwords/reset',
@@ -195,10 +188,10 @@ const resetPassword: Route = {
 
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
 			const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-           
-			const validateData = validate(reqData,{
+
+			const validateData = validate(reqData, {
 				token: { required: true, rules: [] },
-				password: {required: true, rules: [isLongerThan7,isShorterThan17]}
+				password: { required: true, rules: [isLongerThan7, isShorterThan17] }
 			})
 
 			const result = await new AuthController().resetPassword(validateData)
@@ -217,7 +210,7 @@ const updatePassword: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-            
+
 			const authUser = req.authUser
 
 			const reqData = {
@@ -228,10 +221,10 @@ const updatePassword: Route = {
 
 			const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
 			const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-           
-			const validateData = validate(reqData,{
+
+			const validateData = validate(reqData, {
 				oldPassword: { required: true, rules: [] },
-				password: {required: true, rules: [isLongerThan7,isShorterThan17]},
+				password: { required: true, rules: [isLongerThan7, isShorterThan17] },
 				userId: { required: true, rules: [] }
 			})
 
@@ -245,18 +238,17 @@ const updatePassword: Route = {
 	]
 }
 
-
 const googleSignIn: Route = {
 	path: '/identities/google',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-            
+
 			const reqData = {
-				idToken: req.body.idToken,
+				idToken: req.body.idToken
 			}
 
-			const validateData = validate(reqData,{
+			const validateData = validate(reqData, {
 				idToken: { required: true, rules: [] }
 			})
 
@@ -269,7 +261,6 @@ const googleSignIn: Route = {
 		})
 	]
 }
-
 
 const token: Route = {
 	path: '/token',
@@ -313,11 +304,11 @@ const logout: Route = {
 }
 
 const routes: Route[] = [
-	emailSignIn, 
-	emailSignUp, 
-	token, 
-	logout, 
-	sendVerificationEmail, 
+	emailSignIn,
+	emailSignUp,
+	token,
+	logout,
+	sendVerificationEmail,
 	verifyEmail,
 	resetPasswordEmail,
 	resetPassword,

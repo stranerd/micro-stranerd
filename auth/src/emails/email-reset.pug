@@ -5,4 +5,5 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
     body(style="font-family: Helvetica;margin:0;padding:1rem;width:100vw;min-height:100vh;box-sizing: border-box;")
         h3 Reset Your Password
-        p #{message}
+        p A password reset was recently requested from your account. If it wasn't you, kindly ignore this email
+        a(href=domain + '/passwords/reset?token=' + token) Click here to reset your password

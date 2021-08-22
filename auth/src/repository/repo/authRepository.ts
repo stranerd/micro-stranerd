@@ -1,31 +1,37 @@
 import { IAuthRepository } from '../../application/contracts/repository'
-import { AuthOutput, Credential, TokenInput, Tokens, UserModel, PasswordResetInput, PasswordUpdateInput, UserPhoto } from '../../application/domain'
+import {
+	AuthOutput,
+	Credential,
+	PasswordResetInput,
+	PasswordUpdateInput,
+	TokenInput,
+	Tokens,
+	UserModel,
+	UserPhoto
+} from '../../application/domain'
 import { UserEntity } from '../entities/user.entity'
 import { UserMapper } from '../mapper/user.mapper'
 import {
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
-	exchangeOldForNewTokens,
-	verifyRefreshToken,
-	getCacheInstance,
-	readEmailFromPug,
-	EventTypes,
 	Emails,
+	EventTypes,
+	exchangeOldForNewTokens,
+	getCacheInstance,
 	InvalidToken,
+	readEmailFromPug,
 	ValidationError,
-	getEnvOrFail
+	verifyRefreshToken
 } from '@utils/commons'
 import { UserRepository } from './userRepository'
 import * as bcrypt from 'bcrypt'
 import * as crypto from 'crypto'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
+import { User } from '../mongoose-model/user.model'
+import { domain, googleClientId } from '@utils/environment'
 
-
-
-const MINUTE_IN_SECS = 60 * 5
-
-const { User } = require('./mongoose-model/user.model')
+const FIVE_MINUTE_IN_SECS = 60 * 5
 
 export class AuthRepository implements IAuthRepository {
 
@@ -68,35 +74,33 @@ export class AuthRepository implements IAuthRepository {
 		return Promise.reject()
 	}
 
-	async authenticateUser (details: Credential,passwordValidate: boolean): Promise<TokenInput> {
+	async authenticateUser (details: Credential, passwordValidate: boolean): Promise<TokenInput> {
 
-           
-		const user = await User.find({email: details.email})
+		const user = await User.find({ email: details.email })
 
 		if (user) {
 
 			let match = true
-			
+
 			if (passwordValidate) {
 
-			    match = await bcrypt.compare(details.password, user.password)
-			 }
+				match = await bcrypt.compare(details.password, user.password)
+			}
 
-
-			 if(match) {
+			if (match) {
 				const tokenPayload: TokenInput = {
 					id: user._id,
 					roles: user.roles,
 					isVerified: user.isVerified,
 					authTypes: user.authTypes
 				}
-	
+
 				// update user lastSignIn
-	
+
 				user.lastSignedInAt = new Date().getTime()
-	
+
 				return tokenPayload
-			 }
+			}
 
 		}
 
@@ -132,7 +136,7 @@ export class AuthRepository implements IAuthRepository {
 
 			const repository = UserRepository.getInstance()
 
-			const user = await repository.userDetails(userData.id,'id')
+			const user = await repository.userDetails(userData.id, 'id')
 
 			const result = {
 				accessToken: newTokens.accessToken,
@@ -158,21 +162,13 @@ export class AuthRepository implements IAuthRepository {
 
 	async sendVerificationMail (email: string): Promise<boolean> {
 
-		 const token = crypto.randomBytes(40).toString('hex')
+		const token = crypto.randomBytes(40).toString('hex')
 
-		 // save to cache
-		 await getCacheInstance.set(token,email,MINUTE_IN_SECS)
+		// save to cache
+		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
-		 // send verification mail
-		const emailContent = await readEmailFromPug('../emails/email-verification.pug', {
-			message: `An account was recently created on Stranerd with your email address. If it wasn't you,
-			kindly ignore this email and the account will be deleted after 3 days.
-			|
-			|
-			|
-			a(href='https://stranerd.com/emails/verify?token=${ token }') Click here to continue verification
-			`
-		})
+		// send verification mail
+		const emailContent = await readEmailFromPug('src/emails/email-verification.pug', { domain, token })
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
@@ -188,28 +184,27 @@ export class AuthRepository implements IAuthRepository {
 	async verifyEmail (token: string): Promise<TokenInput> {
 
 		// check token in cache
+		const userEmail = await getCacheInstance.get('verification-token-' + token)
 
-		const userEmail = await getCacheInstance.get(token)
+		if (userEmail) {
 
-		if(userEmail) {
-           
 			const user = await User.find({ email: userEmail })
 
-		 if (user) {
+			if (user) {
 
-			 user.isVerified = true
+				user.isVerified = true
 
-			 const tokenPayload: TokenInput = {
-				 id: user._id,
-				 roles: user.roles,
-				 isVerified: user.isVerified,
-				 authTypes: user.authTypes
-			 }
-            
-			 return tokenPayload
-	        
+				const tokenPayload: TokenInput = {
+					id: user._id,
+					roles: user.roles,
+					isVerified: user.isVerified,
+					authTypes: user.authTypes
+				}
+
+				return tokenPayload
+
 			}
-		}else {
+		} else {
 
 			throw new InvalidToken()
 		}
@@ -223,28 +218,19 @@ export class AuthRepository implements IAuthRepository {
 		const token = crypto.randomBytes(40).toString('hex')
 
 		// save to cache
-		await getCacheInstance.set(token,email,MINUTE_IN_SECS)
+		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send reset password mail
-	   const emailContent = await readEmailFromPug('../emails/email-reset.pug', {
-		   message: `A password reset was recently requested from your account. If it wasn't you,
-		   kindly ignore this email.
-		   |
-		   |
-		   |
-		   a(href='https://stranerd.com/passwords/reset?token=${ token }') Click here to reset your password
-		   `
-	   })
+		const emailContent = await readEmailFromPug('src/emails/email-reset.pug', { domain, token })
 
-	   await publishers[EventTypes.SENDMAIL].publish({
-		   to: email,
-		   subject: 'Reset Your Password',
-		   from: Emails.NO_REPLY,
-		   content: emailContent
-	   })
+		await publishers[EventTypes.SENDMAIL].publish({
+			to: email,
+			subject: 'Reset Your Password',
+			from: Emails.NO_REPLY,
+			content: emailContent
+		})
 
-	   return true
-
+		return true
 
 	}
 
@@ -252,61 +238,13 @@ export class AuthRepository implements IAuthRepository {
 
 		// check token in cache
 
-		const userEmail = await getCacheInstance.get(input.token)
+		const userEmail = await getCacheInstance.get('password-reset-token-' + input.token)
 
-		if(userEmail) {
-           
+		if (userEmail) {
+
 			const user = await User.find({ email: userEmail })
 
-		 if (user) {
-
-			 const userDataToUpdate: UserModel = {
-			   email: user.email,
-			   authTypes: user.authTypes,
-			   firstName: user.firstName,
-			   lastName: user.lastName,
-			   isVerified: user.isVerified,
-			   roles: user.roles,
-			   password: input.password,
-			   photo: user.photo,
-			   signedUpAt: user.signedUpAt
-			 }
-           
-			 const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
-
-		    const userData = await new User(data).save()
-
-
-			 const tokenPayload: TokenInput = {
-				 id: userData._id,
-				 roles: userData.roles,
-				 isVerified: userData.isVerified,
-				 authTypes: userData.authTypes
-			 }
-            
-			 return tokenPayload
-	        
-			}
-		}else {
-
-			throw new InvalidToken()
-		}
-
-		return Promise.reject()
-
-
-	}
-
-
-	async updatePassword (input: PasswordUpdateInput): Promise<boolean> {
-
-		const user = await User.find({_id: input.userId})
-
-		if (user) {
-
-			const match = await bcrypt.compare(input.oldPassword, user.password)
-
-			 if(match) {
+			if (user) {
 
 				const userDataToUpdate: UserModel = {
 					email: user.email,
@@ -318,17 +256,62 @@ export class AuthRepository implements IAuthRepository {
 					password: input.password,
 					photo: user.photo,
 					signedUpAt: user.signedUpAt
-				  }
-				
-				  const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
-	 
-				  await new User(data).save()
+				}
 
-				  return true
-				
-			 }
+				const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
 
-			 throw new ValidationError([{messages:['old password does not match'],field:'oldPassword'}])
+				const userData = await new User(data).save()
+
+				const tokenPayload: TokenInput = {
+					id: userData._id,
+					roles: userData.roles,
+					isVerified: userData.isVerified,
+					authTypes: userData.authTypes
+				}
+
+				return tokenPayload
+
+			}
+		} else {
+
+			throw new InvalidToken()
+		}
+
+		return Promise.reject()
+
+	}
+
+	async updatePassword (input: PasswordUpdateInput): Promise<boolean> {
+
+		const user = await User.find({ _id: input.userId })
+
+		if (user) {
+
+			const match = await bcrypt.compare(input.oldPassword, user.password)
+
+			if (match) {
+
+				const userDataToUpdate: UserModel = {
+					email: user.email,
+					authTypes: user.authTypes,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					isVerified: user.isVerified,
+					roles: user.roles,
+					password: input.password,
+					photo: user.photo,
+					signedUpAt: user.signedUpAt
+				}
+
+				const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
+
+				await new User(data).save()
+
+				return true
+
+			}
+
+			throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
 
 		}
 
@@ -338,86 +321,69 @@ export class AuthRepository implements IAuthRepository {
 
 	async googleSignIn (tokenId: string): Promise<TokenInput> {
 
-		 const CLIENT_ID = getEnvOrFail('GOOGLE_CLIENTID')
+		const client = new OAuth2Client(googleClientId)
 
-		const client = new OAuth2Client(CLIENT_ID)
-          
 		const ticket = await client.verifyIdToken({
 			idToken: tokenId,
-			audience: CLIENT_ID
+			audience: googleClientId
 		})
 
 		const user = ticket.getPayload()
 		const fullName = user?.name
-		
+
 		let firstName = ''
 		let lastName = ''
-           
-		if(fullName && user.email) {
-		   const nameToArray = fullName.split(' ')
-		   firstName = nameToArray[0]
-		   lastName = nameToArray[1]
 
-		   const userRoles = {
-			 stranerd: {
-				 isAdmin: false,
-				 isModerator: false
-			 },
-			 tutorStack: {
-				 isAdmin: false,
-				 isModerator: false
-			 },
-			 brainBox: {
-				 isAdmin: false,
-				 isModerator: false
-			 }
-		 }
+		if (fullName && user?.email) {
+			const nameToArray = fullName.split(' ')
+			firstName = nameToArray[0]
+			lastName = nameToArray[1]
 
-		 const userPhoto: UserPhoto = {
-			 link: user.picture,
-			 name: '',
-			 path: '',
-			 type: ''
-		 }
-		
+			const userPhoto: UserPhoto = {
+				link: user.picture,
+				name: '',
+				path: '',
+				type: ''
+			}
 
-		 const userDataToUse: UserModel = {
-			 email: user.email,
-			 authTypes: ['google'],
-			 firstName,
-			 lastName,
-			 isVerified: true,
-			 roles: userRoles,
-			 password: undefined,
-			 photo:userPhoto,
-			 signedUpAt: new Date().getTime()
-		 }
+			const userDataToUse: UserModel = {
+				email: user.email,
+				authTypes: ['google'],
+				firstName,
+				lastName,
+				isVerified: true,
+				roles: {},
+				password: undefined,
+				photo: userPhoto,
+				signedUpAt: new Date().getTime(),
+				lastSignedInAt: new Date().getTime()
+			}
 
-		   const userData = await User.find({ email: user.email })
+			const userData = await User.find({ email: user.email })
 
-		   let tokenInput: TokenInput
+			let tokenInput: TokenInput
 
-		   if (userData) {
+			if (userData) {
 
-			 const authTypeExist = userData.authTypes.indexOf('google') > -1
+				const authTypeExist = userData.authTypes.indexOf('google') > -1
 
-			 if (!authTypeExist) {
-				 userData.authTypes.push('google')
-			 }
+				if (!authTypeExist) {
+					userData.authTypes.push('google')
+				}
 
-			 const credentials: Credential = {
-				 email: userData.email,
-				 password: ''
-			 }
+				const credentials: Credential = {
+					email: userData.email,
+					password: ''
+				}
 
-			 tokenInput = await this.authenticateUser(credentials,false)
+				tokenInput = await this.authenticateUser(credentials, false)
 
-		   }else {
+			} else {
 
-			 tokenInput = await this.addNewUser(userDataToUse)
-		   }
+				tokenInput = await this.addNewUser(userDataToUse)
+			}
 
-		 return tokenInput
+			return tokenInput
 
 		}
 

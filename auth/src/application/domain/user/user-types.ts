@@ -3,8 +3,5 @@ interface AccessType {
 	isModerator: boolean,
 }
 
-export interface UserTypes {
-	stranerd: AccessType;
-	tutorStack: AccessType;
-	brainBox: AccessType;
+export interface UserTypes extends Record<string, AccessType> {
 }

@@ -1,20 +1,5 @@
 import { mongoose } from '@utils/commons'
-
-
-const userRoles = {
-	stranerd: {
-		isAdmin: false,
-		isModerator: false
-	},
-	tutorStack: {
-		isAdmin: false,
-		isModerator: false
-	},
-	brainBox: {
-		isAdmin: false,
-		isModerator: false
-	}
-}
+import { UserModel } from '../../application/domain'
 
 const UserSchema = new mongoose.Schema({
 	email: {
@@ -48,7 +33,7 @@ const UserSchema = new mongoose.Schema({
 	roles: {
 		type: Object,
 		required: false,
-		default: userRoles
+		default: {}
 	},
 	lastSignedInAt: {
 		type: Date,
@@ -60,6 +45,6 @@ const UserSchema = new mongoose.Schema({
 	}
 })
 
-const User = mongoose.model('User', UserSchema)
+const User = mongoose.model<UserModel>('User', UserSchema)
 
 module.exports = { User }
