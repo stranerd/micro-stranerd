@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
+import { AuthTypes, makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
 import { AuthController } from '../../controller/auth'
 import { UserController } from '../../controller/user'
 import { SocialRegisterInput } from '../../application/domain'
@@ -54,7 +54,7 @@ const emailSignUp: Route = {
 				lastName: req.body.lastName,
 				password: req.body.password,
 				photo: req.body.photo,
-				type: 'email'
+				type: AuthTypes.email
 			}
 
 			const emailExist = await new AuthController().emailExist(userCredential.email, userCredential.type)

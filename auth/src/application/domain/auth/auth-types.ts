@@ -1,1 +1,0 @@
-export type AuthTypes = 'email' | 'google' | 'twitter'

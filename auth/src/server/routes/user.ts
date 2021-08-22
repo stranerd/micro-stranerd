@@ -1,6 +1,7 @@
 import {
 	BadRequestError,
 	makeController,
+	makeMiddleware,
 	NotAuthenticatedError,
 	NotAuthorizedError,
 	requireAuthUser,
@@ -73,10 +74,10 @@ const updateUserRole: Route = {
 	method: 'post',
 	controllers: [
 		requireAuthUser,
-		(req) => {
+		makeMiddleware(async (req) => {
 			if (req.authUser?.id === req.body.userId) throw new BadRequestError('You cannot modify your own roles')
 			if (!req.authUser?.roles[req.body.app]?.isAdmin) throw new NotAuthorizedError()
-		},
+		}),
 		makeController(async (req) => {
 
 			const reqData = {

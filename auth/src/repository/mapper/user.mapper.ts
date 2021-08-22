@@ -5,29 +5,17 @@ import * as bcrypt from 'bcrypt'
 
 const saltRounds = 10
 
-const hashPassword = function (password: string | undefined | null,saltRounds:number)  {
-	
-	 if(password != null && password != undefined){
-
-		 bcrypt.hash(password, saltRounds, function(err, hash) {
-			if(err){
-				return ''
-			}
-			return hash
-		})
-	 }else {
-		 return ''
-	 }
-
-	 return
+const hashPassword = async (password: string | null, saltRounds: number) => {
+	if (!password) return null
+	return await bcrypt.hash(password, saltRounds)
 }
 
 export class UserMapper extends Mapper<UserModel, UserEntity> {
-	mapFrom (param: UserModel): UserEntity {
+	async mapFrom (param: UserModel): Promise<UserEntity> {
 		return {
 			_id: null,
 			email: param.email,
-			password: hashPassword(param.password,saltRounds),
+			password: await hashPassword(param.password, saltRounds),
 			roles: param.roles,
 			firstName: param.firstName,
 			lastName: param.lastName,
@@ -39,7 +27,7 @@ export class UserMapper extends Mapper<UserModel, UserEntity> {
 		}
 	}
 
-	mapTo (param: UserEntity): UserModel {
+	async mapTo (param: UserEntity): Promise<UserModel> {
 		return {
 			_id: param._id,
 			email: param.email,

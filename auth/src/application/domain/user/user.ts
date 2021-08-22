@@ -1,15 +1,13 @@
-import { UserTypes } from './user-types'
-import { UserPhoto } from './photo'
-import { AuthTypes } from '../auth/token-input'
+import { AuthTypes, AuthUser, MediaOutput } from '@utils/commons'
 
 export interface UserModel {
 	_id?: string | null;
 	email: string;
-	password?: string | null;
-	roles: UserTypes;
+	password: string | null;
+	roles: AuthUser['roles'];
 	firstName: string;
 	lastName: string;
-	photo: UserPhoto | null;
+	photo: MediaOutput | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];
 	lastSignedInAt: number | null;

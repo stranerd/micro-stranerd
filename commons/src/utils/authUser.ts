@@ -6,22 +6,14 @@ export type AuthUser = {
 	id: string
 	isVerified: boolean
 	authTypes: AuthTypes[]
-	roles: {
-		stranerd: {
-			isAdmin: boolean
-			isModerator: boolean
-		},
-		tutorStack: {
-			isAdmin: boolean
-			isModerator: boolean
-		},
-		brainBox: {
-			isAdmin: boolean
-			isModerator: boolean
-		}
-	}
+	roles: AuthRoles
 }
 
-export type AuthTypes = 'google' | 'email' | 'facebook' | 'twitter'
+export enum AuthTypes {
+	google = 'google',
+	email = 'email',
+	facebook = 'facebook',
+	twitter = 'twitter'
+}
 
-export type RoleApps = keyof AuthUser['roles']
+export type AuthRoles = Record<string, Record<string, boolean>>

@@ -1,11 +1,10 @@
-import { UserPhoto } from '../user/photo'
-import { AuthTypes } from '../auth/token-input'
+import { AuthTypes, MediaOutput } from '@utils/commons'
 
 export interface SocialRegisterInput {
 	email: string;
 	firstName: string;
 	lastName: string;
-	password?: string | null;
-	photo: UserPhoto | null;
+	password: string | null;
+	photo: MediaOutput | null;
 	type: AuthTypes;
 }

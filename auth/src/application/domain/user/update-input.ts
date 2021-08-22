@@ -1,8 +1,8 @@
-import { UserPhoto } from './photo'
+import { MediaOutput } from '@utils/commons'
 
 export interface UserUpdateInput {
 	firstName: string;
 	lastName: string;
-	photo: UserPhoto;
+	photo: MediaOutput;
 	userId?: string;
 }

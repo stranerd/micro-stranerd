@@ -89,7 +89,7 @@ export class UserRepository implements IUserRepository {
 				lastSignedInAt: user.lastSignedInAt
 			}
 
-			const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
+			const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
 
 			const userData = await new User(data).save()
 

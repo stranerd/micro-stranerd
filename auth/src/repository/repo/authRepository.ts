@@ -6,12 +6,12 @@ import {
 	PasswordUpdateInput,
 	TokenInput,
 	Tokens,
-	UserModel,
-	UserPhoto
+	UserModel
 } from '../../application/domain'
 import { UserEntity } from '../entities/user.entity'
 import { UserMapper } from '../mapper/user.mapper'
 import {
+	AuthTypes,
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
 	Emails,
@@ -19,6 +19,7 @@ import {
 	exchangeOldForNewTokens,
 	getCacheInstance,
 	InvalidToken,
+	MediaOutput,
 	readEmailFromPug,
 	ValidationError,
 	verifyRefreshToken
@@ -51,13 +52,13 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async addNewUser (user: UserModel): Promise<TokenInput> {
-		const data: UserEntity = this.userMapper.mapFrom(user)
+		const data: UserEntity = await this.userMapper.mapFrom(user)
 		const userData = await new User(data).save()
 
 		if (userData) {
 
 			const tokenPayload: TokenInput = {
-				id: userData._id,
+				id: userData._id!,
 				roles: userData.roles,
 				isVerified: userData.isVerified,
 				authTypes: userData.authTypes
@@ -76,7 +77,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async authenticateUser (details: Credential, passwordValidate: boolean): Promise<TokenInput> {
 
-		const user = await User.find({ email: details.email })
+		const user = await User.findOne({ email: details.email })
 
 		if (user) {
 
@@ -84,7 +85,7 @@ export class AuthRepository implements IAuthRepository {
 
 			if (passwordValidate) {
 
-				match = await bcrypt.compare(details.password, user.password)
+				match = await bcrypt.compare(details.password, user.password ?? '')
 			}
 
 			if (match) {
@@ -108,7 +109,7 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async userTokenData (id: string): Promise<TokenInput> {
-		const user = await User.find({ _id: id })
+		const user = await User.findOne({ _id: id })
 
 		if (user) {
 
@@ -188,7 +189,7 @@ export class AuthRepository implements IAuthRepository {
 
 		if (userEmail) {
 
-			const user = await User.find({ email: userEmail })
+			const user = await User.findOne({ email: userEmail })
 
 			if (user) {
 
@@ -242,7 +243,7 @@ export class AuthRepository implements IAuthRepository {
 
 		if (userEmail) {
 
-			const user = await User.find({ email: userEmail })
+			const user = await User.findOne({ email: userEmail })
 
 			if (user) {
 
@@ -255,15 +256,16 @@ export class AuthRepository implements IAuthRepository {
 					roles: user.roles,
 					password: input.password,
 					photo: user.photo,
-					signedUpAt: user.signedUpAt
+					signedUpAt: user.signedUpAt,
+					lastSignedInAt: new Date().getTime()
 				}
 
-				const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
+				const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
 
 				const userData = await new User(data).save()
 
 				const tokenPayload: TokenInput = {
-					id: userData._id,
+					id: userData._id!,
 					roles: userData.roles,
 					isVerified: userData.isVerified,
 					authTypes: userData.authTypes
@@ -283,11 +285,11 @@ export class AuthRepository implements IAuthRepository {
 
 	async updatePassword (input: PasswordUpdateInput): Promise<boolean> {
 
-		const user = await User.find({ _id: input.userId })
+		const user = await User.findOne({ _id: input.userId })
 
 		if (user) {
 
-			const match = await bcrypt.compare(input.oldPassword, user.password)
+			const match = await bcrypt.compare(input.oldPassword, user.password ?? '')
 
 			if (match) {
 
@@ -300,10 +302,11 @@ export class AuthRepository implements IAuthRepository {
 					roles: user.roles,
 					password: input.password,
 					photo: user.photo,
-					signedUpAt: user.signedUpAt
+					signedUpAt: user.signedUpAt,
+					lastSignedInAt: user.lastSignedInAt
 				}
 
-				const data: UserEntity = this.userMapper.mapFrom(userDataToUpdate)
+				const data: UserEntity = await this.userMapper.mapFrom(userDataToUpdate)
 
 				await new User(data).save()
 
@@ -329,46 +332,40 @@ export class AuthRepository implements IAuthRepository {
 		})
 
 		const user = ticket.getPayload()
+		if (!user) return Promise.reject()
+
 		const fullName = user?.name
 
-		let firstName = ''
-		let lastName = ''
-
 		if (fullName && user?.email) {
-			const nameToArray = fullName.split(' ')
-			firstName = nameToArray[0]
-			lastName = nameToArray[1]
+			const [firstName = '', lastName = ''] = fullName.split(' ')
 
-			const userPhoto: UserPhoto = {
-				link: user.picture,
-				name: '',
-				path: '',
-				type: ''
-			}
+			const userPhoto: MediaOutput | null = user.picture ? {
+				link: user.picture
+			} as unknown as MediaOutput : null
 
 			const userDataToUse: UserModel = {
 				email: user.email,
-				authTypes: ['google'],
+				authTypes: [AuthTypes.google],
 				firstName,
 				lastName,
 				isVerified: true,
 				roles: {},
-				password: undefined,
+				password: null,
 				photo: userPhoto,
 				signedUpAt: new Date().getTime(),
 				lastSignedInAt: new Date().getTime()
 			}
 
-			const userData = await User.find({ email: user.email })
+			const userData = await User.findOne({ email: user.email })
 
 			let tokenInput: TokenInput
 
 			if (userData) {
 
-				const authTypeExist = userData.authTypes.indexOf('google') > -1
+				const authTypeExist = userData.authTypes.indexOf(AuthTypes.google) > -1
 
 				if (!authTypeExist) {
-					userData.authTypes.push('google')
+					userData.authTypes.push(AuthTypes.google)
 				}
 
 				const credentials: Credential = {

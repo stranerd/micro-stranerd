@@ -1,9 +1,10 @@
 import { mongoose } from '@utils/commons'
 import { UserModel } from '../../application/domain'
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema<UserModel>({
 	email: {
 		type: String,
+		unique: true,
 		required: true
 	},
 	password: {
@@ -36,15 +37,15 @@ const UserSchema = new mongoose.Schema({
 		default: {}
 	},
 	lastSignedInAt: {
-		type: Date,
-		required: false
+		type: Number,
+		required: false,
+		default: Date.now
 	},
 	signedUpAt: {
 		type: Date,
-		required: true
+		required: false,
+		default: Date.now
 	}
 })
 
-const User = mongoose.model<UserModel>('User', UserSchema)
-
-module.exports = { User }
+export const User = mongoose.model<UserModel>('User', UserSchema)

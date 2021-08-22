@@ -1,15 +1,15 @@
-import { UserTypes, UserPhoto, AuthTypes } from '../../application/domain'
+import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
 
 export interface UserEntity {
 	_id?: string | null;
 	email: string;
-	password?: string | null;
-	roles: UserTypes;
+	password: string | null;
+	roles: AuthRoles;
 	firstName: string;
 	lastName: string;
-	photo?: UserPhoto | null;
+	photo: MediaOutput | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];
-	lastSignedInAt?: number | null;
+	lastSignedInAt: number | null;
 	signedUpAt: number
 }

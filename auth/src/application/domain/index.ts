@@ -2,7 +2,6 @@
 export * from './user/user'
 export * from './user/user-types'
 export * from './user/role-input'
-export * from './user/photo'
 export * from './user/update-input'
 
 // Refresh Token Types

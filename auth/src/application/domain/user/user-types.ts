@@ -1,7 +1,3 @@
-interface AccessType {
-	isAdmin: boolean,
-	isModerator: boolean,
-}
+import { AuthUser } from '@utils/commons'
 
-export interface UserTypes extends Record<string, AccessType> {
-}
+export type UserTypes = AuthUser['roles']

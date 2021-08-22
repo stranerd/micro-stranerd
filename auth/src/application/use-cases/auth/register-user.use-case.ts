@@ -21,7 +21,8 @@ export class RegisterUserUseCase implements UseCase<SocialRegisterInput, AuthOut
 			isVerified: false,
 			authTypes: [params.type],
 			roles: {},
-			signedUpAt: new Date().getTime()
+			signedUpAt: new Date().getTime(),
+			lastSignedInAt: new Date().getTime()
 		}
 
 		const TokenPayload = await this.repository.addNewUser(userModel)
