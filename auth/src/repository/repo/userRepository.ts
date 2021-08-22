@@ -4,8 +4,7 @@ import { UserMapper } from '../mapper/user.mapper'
 import { UserEntity } from '../entities/user.entity'
 import { deleteCachedAccessToken, EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
-
-const { User } = require('./mongoose-model/user.model')
+import { User } from '../mongoose-model/user.model'
 
 export class UserRepository implements IUserRepository {
 
