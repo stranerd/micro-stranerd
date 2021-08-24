@@ -48,4 +48,4 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	}
 })
 
-export const User = mongoose.model<UserFromModel>('User', UserSchema)
+export const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
