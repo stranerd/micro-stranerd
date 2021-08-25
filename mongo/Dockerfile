@@ -1,5 +1,4 @@
 FROM mongo
+WORKDIR /app
 
-ADD rs.sh /usr/local/bin/
-
-RUN chmod +x /usr/local/bin/rs.sh
+COPY rs.sh ./

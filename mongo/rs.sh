@@ -1,21 +1,33 @@
 #!/bin/bash
 
-echo "prepare rs initiating"
+#MONGODB1=`ping -c 1 mongo1 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
 
-check_db_status() {
-  mongo1=$(mongo --host mongodb --port 27017 --eval "db.stats().ok" | tail -n1 | grep -E '(^|\s)1($|\s)')
-  if [[ $mongo1 == 1 ]]; then
-    init_rs
-  else
-    check_db_status
-  fi
-}
+MONGODB1=mongodb
 
-init_rs() {
-  ret=$(mongo --host mongodb --port 27017 --eval "rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongodb:27017' }] })")
-}
+echo "**********************************************" ${MONGODB1}
+echo "Waiting for startup.."
+until curl http://${MONGODB1}:27017/serverStatus\?text\=1 2>&1 | grep uptime | head -1; do
+  printf '.'
+  sleep 1
+done
 
-check_db_status
 
-echo "rs initiating finished"
-exit 0
+mongo --host ${MONGODB1}:27017 <<EOF
+var cfg = {
+    "_id": "rs0",
+    "protocolVersion": 1,
+    "version": 1,
+    "members": [
+        {
+            "_id": 0,
+            "host": "${MONGODB1}:27017",
+            "priority": 2
+        }
+    ],settings: {chainingAllowed: true}
+};
+rs.initiate(cfg, { force: true });
+rs.reconfig(cfg, { force: true });
+rs.slaveOk();
+db.getMongo().setReadPref('nearest');
+db.getMongo().setSlaveOk();
+EOF
