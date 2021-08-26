@@ -7,7 +7,6 @@ import User from '../mongoose-model/user.model'
 import { hash } from '@utils/hash'
 
 export class UserRepository implements IUserRepository {
-
 	private static instance: UserRepository
 	private userMapper: UserMapper
 
@@ -16,26 +15,21 @@ export class UserRepository implements IUserRepository {
 	}
 
 	static getInstance (): UserRepository {
-		if (!UserRepository.instance) {
-			UserRepository.instance = new UserRepository()
-		}
-
+		if (!UserRepository.instance) UserRepository.instance = new UserRepository()
 		return UserRepository.instance
 	}
 
 	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity | null> {
-
 		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
 		return this.userMapper.mapFrom(user)
 	}
 
 	async userWithEmailExist (email: string, type: AuthTypes): Promise<boolean> {
-		const user = await User.findOne({ email })
-		return (user?.authTypes?.indexOf?.(type) ?? -1) > -1
+		const user = await User.findOne({ email, authTypes: type })
+		return !!user
 	}
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
-
 		const user = await User.findOne({ _id: input.userId })
 		if (!user) throw new NotFoundError()
 
@@ -44,6 +38,8 @@ export class UserRepository implements IUserRepository {
 		user.firstName = input.firstName
 		user.lastName = input.lastName
 		user.photo = input.photo
+
+		user.save()
 
 		return true
 	}
@@ -71,6 +67,8 @@ export class UserRepository implements IUserRepository {
 		// update user lastSignIn
 		user.lastSignedInAt = new Date().getTime()
 
+		user.save()
+
 		return tokenPayload
 
 	}
@@ -83,6 +81,8 @@ export class UserRepository implements IUserRepository {
 		const roles = user.roles
 		roles[roleInput.app][roleInput.role] = roleInput.value
 		user.roles = roles
+
+		user.save()
 
 		// clear accessToken
 		await deleteCachedAccessToken(roleInput.userId)

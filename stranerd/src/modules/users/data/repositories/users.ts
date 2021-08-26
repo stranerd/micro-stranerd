@@ -17,32 +17,15 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async createUserWithBio (userId: string, data: UserBio) {
-		const user = await User.findById(userId)
-		if (!user) {
-			const newUser = new User()
-			newUser._id = userId
-			newUser.bio.email = data.email
-			newUser.bio.firstName = data.firstName
-			newUser.bio.lastName = data.lastName
-			newUser.bio.photo = data.photo
-			await newUser.save()
-		} else {
-			user._id = userId
-			user.bio.email = data.email
-			user.bio.firstName = data.firstName
-			user.bio.lastName = data.lastName
-			user.bio.photo = data.photo
-		}
+		await User.findByIdAndUpdate(userId, {
+			$set: { bio: data }
+		}, { upsert: true })
 	}
 
 	async updateUserWithBio (userId: string, data: UserBio) {
-		const user = await User.findById(userId)
-		if (user) {
-			user.bio.email = data.email
-			user.bio.firstName = data.firstName
-			user.bio.lastName = data.lastName
-			user.bio.photo = data.photo
-		}
+		await User.findByIdAndUpdate(userId, {
+			$set: { bio: data }
+		}, { upsert: true })
 	}
 
 	async findUser (userId: string) {
@@ -51,12 +34,14 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async markUserAsDeleted (userId: string) {
-		const user = await User.findById(userId)
-		if (user) user.dates.deletedAt = Date.now()
+		await User.findByIdAndUpdate(userId, {
+			$set: { 'dates.deletedAt': Date.now() }
+		}, { upsert: true })
 	}
 
 	async updateUserWithRoles (userId: string, data: UserRoles) {
-		const user = await User.findById(userId)
-		if (user) user.roles = data
+		await User.findByIdAndUpdate(userId, {
+			$set: { roles: data }
+		}, { upsert: true })
 	}
 }

@@ -1,5 +1,13 @@
 import { IAuthRepository } from '../../contracts/repository'
 import { AuthOutput, Credential, PasswordResetInput, PasswordUpdateInput, TokenInput, Tokens } from '../../domain'
+import * as bcrypt from 'bcrypt'
+import * as crypto from 'crypto'
+import { publishers } from '@utils/events'
+import { OAuth2Client } from 'google-auth-library'
+import User from '../mongoose-model/user.model'
+import { domain, googleClientId } from '@utils/environment'
+import { UserFromModel, UserToModel } from '../models'
+import { hash, hashCompare } from '@utils/hash'
 import {
 	AuthTypes,
 	BadRequestError,
@@ -11,17 +19,10 @@ import {
 	getCacheInstance,
 	InvalidToken,
 	MediaOutput,
+	mongoose,
 	readEmailFromPug,
 	ValidationError
 } from '@utils/commons'
-import * as bcrypt from 'bcrypt'
-import * as crypto from 'crypto'
-import { publishers } from '@utils/events'
-import { OAuth2Client } from 'google-auth-library'
-import User from '../mongoose-model/user.model'
-import { domain, googleClientId } from '@utils/environment'
-import { UserFromModel, UserToModel } from '../models'
-import { hash, hashCompare } from '@utils/hash'
 
 const FIVE_MINUTE_IN_SECS = 60 * 5
 
@@ -30,24 +31,21 @@ export class AuthRepository implements IAuthRepository {
 	private static instance: AuthRepository
 
 	static getInstance (): AuthRepository {
-		if (!AuthRepository.instance) {
-			AuthRepository.instance = new AuthRepository()
-		}
-
+		if (!AuthRepository.instance) AuthRepository.instance = new AuthRepository()
 		return AuthRepository.instance
 	}
 
-	private static async signInUser (user: UserFromModel, type: AuthTypes): Promise<TokenInput> {
-		const authTypeExist = user.authTypes.indexOf(type) > -1
-		if (!authTypeExist) user.authTypes.push(type)
-
-		user.lastSignedInAt = new Date().getTime()
+	private static async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes): Promise<TokenInput> {
+		const userUpdated = await User.findByIdAndUpdate(user._id, {
+			$currentDate: { lastSignedInAt: { $type: 'timestamp' } },
+			$addToSet: { authTypes: [type] }
+		}, { new: true })
 
 		return {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
+			id: userUpdated._id,
+			roles: userUpdated.roles,
+			isVerified: userUpdated.isVerified,
+			authTypes: userUpdated.authTypes
 		}
 	}
 
@@ -133,6 +131,7 @@ export class AuthRepository implements IAuthRepository {
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
 		user.isVerified = true
+		await user.save()
 
 		const tokenPayload: TokenInput = {
 			id: user._id,
@@ -178,6 +177,7 @@ export class AuthRepository implements IAuthRepository {
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
 		user.password = await hash(input.password)
+		await user.save()
 
 		return {
 			id: user._id!,
@@ -197,6 +197,7 @@ export class AuthRepository implements IAuthRepository {
 		if (!match) throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
 
 		user.password = await hash(input.password)
+		await user.save()
 		return true
 	}
 
