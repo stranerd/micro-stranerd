@@ -1,5 +1,6 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
+import { monitorUserEvent } from '../change-streams'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
@@ -48,4 +49,31 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	}
 })
 
-export const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
+const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
+
+const pipelineUser = [
+	{
+		$match: {
+			$or: [
+				{ operationType: 'insert' },
+				{
+					$and: [
+						{ operationType: 'update' },
+						{
+							$or: [
+								{ 'updateDescription.updatedFields.firstName': { $exists: true } },
+								{ 'updateDescription.updatedFields.lastName': { $exists: true } },
+								{ 'updateDescription.updatedFields.email': { $exists: true } },
+								{ 'updateDescription.updatedFields.photo': { $exists: true } }
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+]
+
+monitorUserEvent(User, pipelineUser)
+
+export default User

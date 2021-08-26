@@ -68,8 +68,8 @@ services:
     container_name: mongodb
     hostname: mongodb
     volumes:
-      - "./mongo/data1/db:/data/db"
-      - "./mongo/data1/configdb:/data/configdb"
+      - "./mongo/data/mongo1/db:/data/db"
+      - "./mongo/data/mongo1/configdb:/data/configdb"
     restart: unless-stopped
     command: "--quiet --bind_ip_all --replSet rs0"
 
