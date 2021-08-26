@@ -1,6 +1,6 @@
 import { Email } from '../emails'
 import { MediaOutput } from '../storage'
-import { AuthUserChange, AuthUserDeleted } from './types/auth'
+import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 
 export enum EventTypes {
 	TEST = 'TEST',
@@ -8,6 +8,7 @@ export enum EventTypes {
 	DELETEFILE = 'DELETEFILE',
 	AUTHUSERCREATED = 'AUTHUSERCREATED',
 	AUTHUSERUPDATED = 'AUTHUSERUPDATED',
+	AUTHROLESUPDATED = 'AUTHROLESUPDATED',
 	AUTHUSERDELETED = 'AUTHUSERDELETED'
 }
 
@@ -36,6 +37,10 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	AUTHUSERUPDATED: {
 		topic: typeof EventTypes.AUTHUSERUPDATED,
 		data: AuthUserChange
+	},
+	AUTHROLESUPDATED: {
+		topic: typeof EventTypes.AUTHROLESUPDATED,
+		data: AuthRoleChange
 	},
 	AUTHUSERDELETED: {
 		topic: typeof EventTypes.AUTHUSERDELETED,

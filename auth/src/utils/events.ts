@@ -13,5 +13,6 @@ export const publishers = {
 	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createPublisher(EventTypes.AUTHUSERCREATED),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createPublisher(EventTypes.AUTHUSERUPDATED),
+	[EventTypes.AUTHROLESUPDATED]: eventBus.createPublisher(EventTypes.AUTHROLESUPDATED),
 	[EventTypes.AUTHUSERDELETED]: eventBus.createPublisher(EventTypes.AUTHUSERDELETED)
 }

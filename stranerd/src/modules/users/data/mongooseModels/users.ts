@@ -3,32 +3,22 @@ import { UserFromModel } from '../models/users'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {
-		email: {
-			type: String,
-			unique: true,
-			required: true
-		},
-		firstName: {
-			type: String,
-			required: true
-		},
-		lastName: {
-			type: String,
-			required: true
-		},
-		photo: {
-			type: Object,
-			required: false
-		}
+		type: Object,
+		required: true
+	},
+	roles: {
+		type: Object,
+		required: false,
+		default: {}
 	},
 	dates: {
-		signedUpAt: {
-			type: Number,
+		createdAt: {
+			type: Date,
 			required: false,
 			default: Date.now
 		},
 		deletedAt: {
-			type: Number,
+			type: Date,
 			required: false,
 			default: Date.now
 		}

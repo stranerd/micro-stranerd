@@ -1,4 +1,5 @@
 import { MediaOutput } from '../../storage'
+import { AuthRoles } from '../../utils/authUser'
 
 export type AuthUserChange = {
 	id: string
@@ -8,6 +9,11 @@ export type AuthUserChange = {
 		email: string
 		photo: MediaOutput | null
 	}
+}
+
+export type AuthRoleChange = {
+	id: string
+	data: AuthRoles
 }
 
 export type AuthUserDeleted = {

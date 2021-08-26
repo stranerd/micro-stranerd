@@ -17,6 +17,16 @@ export const handleUserBioUpdatedEvent = (collection: mongoose.Model<UserFromMod
 	})
 }
 
+export const handleUserRoleUpdatedEvent = (collection: mongoose.Model<UserFromModel>, pipeline = [{}]) => {
+	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
+	changeStream.on('change', async (data) => {
+		if (data.operationType === 'update') await publishers[EventTypes.AUTHROLESUPDATED].publish({
+			id: data.fullDocument._id,
+			data: data.fullDocument.roles
+		})
+	})
+}
+
 export const handleUserDeletedEvent = (collection: mongoose.Model<UserFromModel>, pipeline = [{}]) => {
 	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
 	changeStream.on('change', async (data) => {

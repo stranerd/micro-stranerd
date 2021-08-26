@@ -1,4 +1,4 @@
-import { MediaOutput } from '@utils/commons'
+import { AuthRoles, MediaOutput } from '@utils/commons'
 
 export type UserBio = {
 	email: string
@@ -7,7 +7,9 @@ export type UserBio = {
 	photo: MediaOutput | null
 }
 
+export type UserRoles = AuthRoles
+
 export type UserDates = {
-	signedUpAt: number
+	createdAt: number
 	deletedAt: number
 }

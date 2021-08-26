@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserBio } from '../../domain/types/users'
+import { UserBio, UserRoles } from '../../domain/types/users'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 
@@ -53,5 +53,10 @@ export class UserRepository implements IUserRepository {
 	async markUserAsDeleted (userId: string) {
 		const user = await User.findById(userId)
 		if (user) user.dates.deletedAt = Date.now()
+	}
+
+	async updateUserWithRoles (userId: string, data: UserRoles) {
+		const user = await User.findById(userId)
+		if (user) user.roles = data
 	}
 }
