@@ -51,27 +51,29 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 
 const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
 
-const pipelineInsertUser = [
+const pipelineUser = [
 	{
-		'$match': {
-			'operationType': 'insert',
+		$match: {
+			$or: [
+				{ operationType: 'insert' },
+				{
+					$and: [
+						{ operationType: 'update' },
+						{
+							$or: [
+								{ 'updateDescription.updatedFields.firstName': { $exists: true } },
+								{ 'updateDescription.updatedFields.lastName': { $exists: true } },
+								{ 'updateDescription.updatedFields.email': { $exists: true } },
+								{ 'updateDescription.updatedFields.photo': { $exists: true } }
+							]
+						}
+					]
+				}
+			]
 		}
 	}
 ]
 
-const pipelineUpdateUser = [
-	{
-		'$match': {
-			'operationType': 'update'
-		}
-	}
-]
-
-// monitor user insert 
-monitorUserEvent(User,pipelineInsertUser,'insert')
-
-// monitor user update
-monitorUserEvent(User,pipelineUpdateUser,'update')
-
+monitorUserEvent(User, pipelineUser)
 
 export default User

@@ -6,7 +6,7 @@
 // For production or in docker, everything is exported from the latest version of the commons package published to npm-js
 
 // When running in standalone mode, uncomment this export && comment the other
-export * from '../../../commons/src'
+// export * from '../../../commons/src'
 
 // For production or in docker, uncomment this export && comment the other
-//export * from '@stranerd/api-commons'
+export * from '@stranerd/api-commons'
