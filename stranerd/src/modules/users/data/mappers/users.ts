@@ -6,13 +6,17 @@ export class UserMapper extends BaseMapper<UserFromModel, UserToModel, UserEntit
 	mapFrom (param) {
 		return !param ? null : new UserEntity({
 			id: param._id,
-			bio: param.bio
+			bio: param.bio,
+			dates: param.dates,
+			roles: param.roles
 		})
 	}
 
 	mapTo (param) {
 		return {
-			bio: param.bio
+			bio: param.bio,
+			dates: param.dates,
+			roles: param.roles
 		}
 	}
 }
