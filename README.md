@@ -6,18 +6,22 @@
 
 ```bash
 # Setup
+
 # clone project
 $ git clone https://github.com/stranerd/micro-stranerd
+# setup git hooks
+$ npx husky install
 # install dependencies for all microservices
 $ make install-all
-# copy env.example.json to env.json
-# fill in all env values in env.json
+# copy env.example.json to env.json & fill in all env values in env.json
+$ cp env.example.json env.json
 # run to populate .envs in all services with values from env.json
 $ make copy-envs
 ```
 
 ```bash
-# Running project
+# Run project
+
 # start all containers without detach
 $ make dev-start
 # start all containers in detach mode
