@@ -63,6 +63,19 @@ services:
       - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
+  stranerd:
+    build:
+      context: ./stranerd
+      target: production
+    container_name: stranerd
+    hostname: stranerd
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+
   mongodb:
     image: mongo
     container_name: mongodb
