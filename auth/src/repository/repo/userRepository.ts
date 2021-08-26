@@ -3,7 +3,7 @@ import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } fro
 import { UserMapper } from '../mapper/user.mapper'
 import { AuthTypes, deleteCachedAccessToken, EventTypes, NotFoundError } from '@utils/commons'
 import { publishers } from '@utils/events'
-import  User  from '../mongoose-model/user.model'
+import User from '../mongoose-model/user.model'
 import { hash } from '@utils/hash'
 
 export class UserRepository implements IUserRepository {
@@ -11,7 +11,7 @@ export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
 	private userMapper: UserMapper
 
-	constructor () {
+	private constructor () {
 		this.userMapper = new UserMapper()
 	}
 
