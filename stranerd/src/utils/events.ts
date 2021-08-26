@@ -1,5 +1,5 @@
 import { EventBus, EventTypes, Logger } from '@utils/commons'
-import { CreateUserWithBio, UpdateUserWithBio } from '../modules/users'
+import { CreateUserWithBio, MarkUserAsDeleted, UpdateUserWithBio } from '../modules/users'
 
 const eventBus = new EventBus()
 
@@ -12,6 +12,9 @@ export const subscribers = {
 	}),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createSubscriber(EventTypes.AUTHUSERUPDATED, async (data) => {
 		await UpdateUserWithBio.execute({ id: data.id, data: data.data })
+	}),
+	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
+		await MarkUserAsDeleted.execute(data.id)
 	})
 }
 

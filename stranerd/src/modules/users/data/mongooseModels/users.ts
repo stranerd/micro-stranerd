@@ -20,6 +20,18 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			type: Object,
 			required: false
 		}
+	},
+	dates: {
+		signedUpAt: {
+			type: Number,
+			required: false,
+			default: Date.now
+		},
+		deletedAt: {
+			type: Number,
+			required: false,
+			default: Date.now
+		}
 	}
 })
 

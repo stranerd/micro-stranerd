@@ -6,5 +6,7 @@ export interface IUserRepository {
 
 	updateUserWithBio (userId: string, data: UserBio): Promise<void>
 
+	markUserAsDeleted (userId: string): Promise<void>
+
 	findUser (userId: string): Promise<UserEntity | null>
 }

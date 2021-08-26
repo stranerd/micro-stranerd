@@ -6,3 +6,8 @@ export type UserBio = {
 	lastName: string
 	photo: MediaOutput | null
 }
+
+export type UserDates = {
+	signedUpAt: number
+	deletedAt: number
+}

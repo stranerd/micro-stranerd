@@ -50,4 +50,8 @@ export class UserRepository implements IUserRepository {
 		return this.mapper.mapFrom(user)
 	}
 
+	async markUserAsDeleted (userId: string) {
+		const user = await User.findById(userId)
+		if (user) user.dates.deletedAt = Date.now()
+	}
 }
