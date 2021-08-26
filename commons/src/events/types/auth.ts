@@ -9,3 +9,7 @@ export type AuthUserChange = {
 		photo: MediaOutput | null
 	}
 }
+
+export type AuthUserDeleted = {
+	id: string
+}

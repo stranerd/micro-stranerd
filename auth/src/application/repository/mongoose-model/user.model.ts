@@ -1,6 +1,6 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
-import { monitorUserEvent } from '../change-streams'
+import { handleUserBioUpdatedEvent, handleUserDeletedEvent } from '../change-streams'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 
 const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
 
-const pipelineUser = [
+const userBioUpdatedPipeline = [
 	{
 		$match: {
 			$or: [
@@ -74,6 +74,11 @@ const pipelineUser = [
 	}
 ]
 
-monitorUserEvent(User, pipelineUser)
+const userDeletedPipeline = [
+	{ $match: { operationType: 'delete' } }
+]
+
+handleUserBioUpdatedEvent(User, userBioUpdatedPipeline)
+handleUserDeletedEvent(User, userDeletedPipeline)
 
 export default User
