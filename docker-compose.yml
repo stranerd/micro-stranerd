@@ -20,6 +20,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
+      - redis
+      - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   emails:
@@ -31,6 +33,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
+      - redis
+      - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   example:
@@ -42,6 +46,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
+      - redis
+      - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   storage:
@@ -53,6 +59,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mongodb
+      - redis
+      - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
   mongodb:
@@ -60,7 +68,8 @@ services:
     container_name: mongodb
     hostname: mongodb
     volumes:
-      - "mongo-db:/data/db"
+      - "./mongo/data/mongo1/db:/data/db"
+      - "./mongo/data/mongo1/configdb:/data/configdb"
     restart: unless-stopped
     command: "--quiet --bind_ip_all --replSet rs0"
 
@@ -86,7 +95,4 @@ services:
     depends_on:
       - mongodb
     restart: on-failure
-    entrypoint: "sh -c rs.sh"
-
-volumes:
-  mongo-db:
+    entrypoint: "bash ./rs.sh"
