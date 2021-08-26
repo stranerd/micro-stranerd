@@ -11,6 +11,18 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		required: false,
 		default: {}
 	},
+	tutor: {
+		strongestSubject: {
+			type: String,
+			required: false,
+			default: null
+		},
+		weakerSubjects: {
+			type: Array,
+			required: false,
+			default: []
+		}
+	},
 	dates: {
 		createdAt: {
 			type: Date,
@@ -18,6 +30,18 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: Date.now
 		},
 		deletedAt: {
+			type: Date,
+			required: false,
+			default: Date.now
+		}
+	},
+	status: {
+		connections: {
+			type: Object,
+			required: false,
+			default: {}
+		},
+		lastUpdatedAt: {
 			type: Date,
 			required: false,
 			default: Date.now

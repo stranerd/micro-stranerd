@@ -13,3 +13,13 @@ export type UserDates = {
 	createdAt: number
 	deletedAt: number
 }
+
+export type UserTutor = {
+	strongestSubject: string | null,
+	weakerSubjects: string[]
+}
+
+export type UserStatus = {
+	connections: Record<string, boolean>
+	lastUpdatedAt: number
+}
