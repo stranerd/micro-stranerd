@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { SuccessStatus } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
-export class LogoutAuthUserUseCase implements UseCase<string, SuccessStatus> {
+export class LogoutAuthUserUseCase implements BaseUseCase<string, SuccessStatus> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

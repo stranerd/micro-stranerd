@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes, validate } from '@utils/commons'
-import { AuthController } from '../../controller/auth'
+import { AuthController } from '../controller/auth'
 
 const googleSignIn: Route = {
 	path: '/identities/google',

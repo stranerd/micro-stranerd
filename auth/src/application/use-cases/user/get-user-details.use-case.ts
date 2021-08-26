@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { UserEntity } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
-export class GetUserDetailsUseCase implements UseCase<{ key: 'email' | 'id', value: string }, UserEntity | null> {
+export class GetUserDetailsUseCase implements BaseUseCase<{ key: 'email' | 'id', value: string }, UserEntity | null> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

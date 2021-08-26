@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { SuccessStatus, UserUpdateInput } from '../../domain'
 import { IUserRepository } from '../../contracts/repository'
 
-export class UpdateUserProfileUseCase implements UseCase<UserUpdateInput, SuccessStatus> {
+export class UpdateUserProfileUseCase implements BaseUseCase<UserUpdateInput, SuccessStatus> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

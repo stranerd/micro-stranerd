@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { AuthController } from '../../controller/auth'
+import { AuthController } from '../controller/auth'
 
 const token: Route = {
 	path: '/token',

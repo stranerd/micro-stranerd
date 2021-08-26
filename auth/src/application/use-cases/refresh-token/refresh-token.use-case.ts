@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { IAuthRepository } from '../../contracts/repository'
 import { AuthOutput, Tokens } from '../../domain'
 
-export class RefreshTokenUseCase implements UseCase<Tokens, AuthOutput> {
+export class RefreshTokenUseCase implements BaseUseCase<Tokens, AuthOutput> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

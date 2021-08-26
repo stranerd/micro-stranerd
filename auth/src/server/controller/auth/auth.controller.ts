@@ -6,8 +6,8 @@ import {
 	RegisterInput,
 	SuccessStatus,
 	Tokens
-} from '../../application/domain'
-import { AuthRepository, UserRepository } from '../../repository'
+} from '../../../application/domain'
+import { AuthRepository, UserRepository } from '../../../application/repository'
 import {
 	AuthenticateUserUseCase,
 	GenerateAuthOutputUseCase,
@@ -21,7 +21,7 @@ import {
 	UpdatePasswordUseCase,
 	UpdateUserDetailsUseCase,
 	VerifyEmailUseCase
-} from '../../application/use-cases'
+} from '../../../application/use-cases'
 import { AuthTypes } from '@utils/commons'
 
 export class AuthController {

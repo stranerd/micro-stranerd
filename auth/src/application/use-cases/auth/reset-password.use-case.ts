@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { PasswordResetInput, TokenInput } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
-export class ResetPasswordUseCase implements UseCase<PasswordResetInput, TokenInput> {
+export class ResetPasswordUseCase implements BaseUseCase<PasswordResetInput, TokenInput> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

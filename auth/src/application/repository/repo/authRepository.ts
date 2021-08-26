@@ -1,12 +1,5 @@
-import { IAuthRepository } from '../../application/contracts/repository'
-import {
-	AuthOutput,
-	Credential,
-	PasswordResetInput,
-	PasswordUpdateInput,
-	TokenInput,
-	Tokens
-} from '../../application/domain'
+import { IAuthRepository } from '../../contracts/repository'
+import { AuthOutput, Credential, PasswordResetInput, PasswordUpdateInput, TokenInput, Tokens } from '../../domain'
 import {
 	AuthTypes,
 	BadRequestError,
@@ -25,7 +18,7 @@ import * as bcrypt from 'bcrypt'
 import * as crypto from 'crypto'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
-import  User  from '../mongoose-model/user.model'
+import User from '../mongoose-model/user.model'
 import { domain, googleClientId } from '@utils/environment'
 import { UserFromModel, UserToModel } from '../models'
 import { hash, hashCompare } from '@utils/hash'

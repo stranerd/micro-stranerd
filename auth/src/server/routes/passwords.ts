@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
-import { AuthController } from '../../controller/auth'
+import { AuthController } from '../controller/auth'
 
 const resetPasswordEmail: Route = {
 	path: '/passwords/sendResetMail',

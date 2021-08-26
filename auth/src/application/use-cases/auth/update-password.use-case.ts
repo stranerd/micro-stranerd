@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { PasswordUpdateInput, SuccessStatus } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
-export class UpdatePasswordUseCase implements UseCase<PasswordUpdateInput, SuccessStatus> {
+export class UpdatePasswordUseCase implements BaseUseCase<PasswordUpdateInput, SuccessStatus> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

@@ -1,8 +1,8 @@
-import { Mapper } from '../../application/base'
-import { UserEntity } from '../../application/domain'
+import { BaseMapper } from '@utils/commons'
+import { UserEntity } from '../../domain'
 import { UserFromModel, UserToModel } from '../models/user'
 
-export class UserMapper extends Mapper<UserFromModel, UserToModel, UserEntity> {
+export class UserMapper extends BaseMapper<UserFromModel, UserToModel, UserEntity> {
 	mapFrom (param) {
 		return !param ? null : {
 			id: param._id,

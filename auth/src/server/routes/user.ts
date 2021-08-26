@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
-import { UserController } from '../../controller/user'
-import { AuthController } from '../../controller'
+import { UserController } from '../controller/user'
+import { AuthController } from '../controller'
 import { cannotModifyMyRole, isAdminInSpecifiedApp } from '../middlewares'
 
 const getUserDetails: Route = {

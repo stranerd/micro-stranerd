@@ -1,6 +1,6 @@
 import { AuthTypes, makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
-import { AuthController } from '../../controller/auth'
-import { UserController } from '../../controller/user'
+import { AuthController } from '../controller/auth'
+import { UserController } from '../controller/user'
 import { RegisterInput } from '../../application/domain'
 
 const emailSignIn: Route = {

@@ -1,8 +1,8 @@
-import { UseCase } from '../../base'
+import { BaseUseCase } from '@utils/commons'
 import { TokenInput } from '../../domain'
 import { IAuthRepository } from '../../contracts/repository'
 
-export class VerifyEmailUseCase implements UseCase<string, TokenInput> {
+export class VerifyEmailUseCase implements BaseUseCase<string, TokenInput> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

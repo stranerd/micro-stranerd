@@ -1,6 +1,6 @@
 import { AuthOutput, Credential, PasswordResetInput, PasswordUpdateInput, TokenInput, Tokens } from '../../domain'
 import { AuthTypes } from '@utils/commons'
-import { UserToModel } from '../../../repository/models'
+import { UserToModel } from '../../repository/models'
 
 export interface IAuthRepository {
 

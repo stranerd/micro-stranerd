@@ -1,10 +1,10 @@
-import { UseCase } from '@utils/commons'
+import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
 import { UserBio } from '../../types/users'
 
 type Input = { id: string, data: UserBio }
 
-export class UpdateUserWithBioUseCase implements UseCase<Input, void> {
+export class UpdateUserWithBioUseCase implements BaseUseCase<Input, void> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

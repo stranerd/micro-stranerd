@@ -1,5 +1,5 @@
-import { IUserRepository } from '../../application/contracts/repository'
-import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../application/domain'
+import { IUserRepository } from '../../contracts/repository'
+import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../domain'
 import { UserMapper } from '../mapper/user.mapper'
 import { AuthTypes, deleteCachedAccessToken, EventTypes, NotFoundError } from '@utils/commons'
 import { publishers } from '@utils/events'
