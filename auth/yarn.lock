@@ -114,12 +114,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^0.0.1-alpha-51":
-  version "0.0.1-alpha-51"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-51.tgz#3f398605fc7ff851753be3252505c996ea25ef87"
-  integrity sha512-2Hn7/5Nf+LRpHNeJvcFSNDTEfsDoPIwPtZYtjX+jmyipx8hDGIUXGImSHkR+4t/AHzWtN41UY24l1pXUY0tJkg==
+"@stranerd/api-commons@^0.0.1-alpha-52":
+  version "0.0.1-alpha-52"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-52.tgz#a82f501bd267a5f6cce0b611868535df67df7c56"
+  integrity sha512-Dn8brLnHKYF/Ej95AGQmqYKh2b/a1JfXMv0MyQ28P+ASWDg4qwzqr6NsL3hb+pbYMuktP6JBsVwq62imQAl6VQ==
   dependencies:
-    "@stranerd/validate" "^1.1.5"
+    "@stranerd/validate" "^1.1.6"
     amqplib "^0.8.0"
     chalk "^4.1.2"
     cors "^2.8.5"
@@ -128,14 +128,15 @@
     express-fileupload "^1.2.1"
     jsonwebtoken "^8.5.1"
     mongoose "^5.13.7"
+    mongoose-paginate-v2 "^1.4.2"
     morgan "^1.10.0"
     pug "^3.0.2"
     redis "^3.1.2"
 
-"@stranerd/validate@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.1.5.tgz#f6809c385fd234da65a8f8a97e30403dcc2d7f27"
-  integrity sha512-J+/oMgSrQ03uUpMtqgQz+o76gtgE/2Ck7uPe2wSxCKdD272wHWCQ73CEY0HKGcXmw7rPix0M4QBB0/P1nbzzig==
+"@stranerd/validate@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.1.6.tgz#11ca8c7a04c6872b24c737ac420fca3a41a1ff42"
+  integrity sha512-oPljcOHEXfUVVfqY0a/x/Gez+HL9E5c0nTZ6Tl9p2KP+rpm/KAPWUa3j+cJipFmYlh9+qgbRF5CUvEPhFzgSWA==
 
 "@types/bcrypt@^5.0.0":
   version "5.0.0"
@@ -2218,6 +2219,11 @@ mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
+
+mongoose-paginate-v2@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.4.2.tgz#482cea73f4a0bd49131ef9004694c73cae93b73e"
+  integrity sha512-b7FBe7fasJazhlTIfMSPyIST04yvobASXKmUt3ducnvYThulCyGSPhPcSYOzXcPmqBR4tpMnafIJxv+8GjM+UA==
 
 mongoose@^5.13.7:
   version "5.13.7"
