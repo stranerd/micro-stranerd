@@ -1,5 +1,6 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models/users'
+import { setupChangeStreams } from '../changeStreams/users'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {
@@ -79,3 +80,5 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 })
 
 export const User = mongoose.model<UserFromModel>('User', UserSchema)
+
+setupChangeStreams()

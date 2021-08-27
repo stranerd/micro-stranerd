@@ -1,5 +1,6 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
+import { setupChangeStreams } from '../change-streams'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
@@ -55,5 +56,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 })
 
 export const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
+
+setupChangeStreams()
 
 export default User
