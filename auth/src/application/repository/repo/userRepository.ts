@@ -20,7 +20,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity | null> {
-		if (dataType === 'id' && !mongoose.Types.ObjectId.isValid(dataVal)) return
+		if (dataType === 'id' && !mongoose.Types.ObjectId.isValid(dataVal)) return null
 		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
 		return this.userMapper.mapFrom(user)
 	}
@@ -77,20 +77,13 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateUserRole (roleInput: RoleInput): Promise<boolean> {
-
-		const user = await User.findOne({ _id: roleInput.userId })
-		if (!user) throw new NotFoundError()
-
-		const roles = user.roles
-		roles[roleInput.app][roleInput.role] = roleInput.value
-		user.roles = roles
-
-		user.save()
-
+		await User.findByIdAndUpdate(roleInput.userId, {
+			$set: {
+				[`roles.${ roleInput.app }.${ roleInput.value }`]: roleInput.value
+			}
+		})
 		// clear accessToken
 		await deleteCachedAccessToken(roleInput.userId)
-
 		return true
 	}
-
 }

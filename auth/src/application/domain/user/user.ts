@@ -9,6 +9,7 @@ export class UserEntity extends BaseEntity {
 	public photo: MediaOutput | null
 	public isVerified: boolean
 	public authTypes: AuthTypes[]
+	public roles: AuthRoles
 	public lastSignedInAt: number
 	public signedUpAt: number
 
@@ -22,6 +23,7 @@ export class UserEntity extends BaseEntity {
 		this.photo = data.photo
 		this.isVerified = data.isVerified
 		this.authTypes = data.authTypes
+		this.roles = data.roles
 		this.lastSignedInAt = data.lastSignedInAt
 		this.signedUpAt = data.signedUpAt
 	}
