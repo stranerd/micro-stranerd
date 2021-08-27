@@ -16,13 +16,13 @@ export class UserRepository implements IUserRepository {
 		return UserRepository.instance
 	}
 
-	async createUserWithBio (userId: string, data: UserBio) {
+	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
 		await User.findByIdAndUpdate(userId, {
-			$set: { bio: data }
+			$set: { bio: data, 'dates.createdAt': timestamp }
 		}, { upsert: true })
 	}
 
-	async updateUserWithBio (userId: string, data: UserBio) {
+	async updateUserWithBio (userId: string, data: UserBio, _: number) {
 		await User.findByIdAndUpdate(userId, {
 			$set: { bio: data }
 		}, { upsert: true })
@@ -33,9 +33,9 @@ export class UserRepository implements IUserRepository {
 		return this.mapper.mapFrom(user)
 	}
 
-	async markUserAsDeleted (userId: string) {
+	async markUserAsDeleted (userId: string, timestamp: number) {
 		await User.findByIdAndUpdate(userId, {
-			$set: { 'dates.deletedAt': Date.now() }
+			$set: { 'dates.deletedAt': timestamp }
 		}, { upsert: true })
 	}
 

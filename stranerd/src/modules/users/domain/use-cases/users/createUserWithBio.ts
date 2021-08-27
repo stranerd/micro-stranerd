@@ -2,7 +2,7 @@ import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
 import { UserBio } from '../../types/users'
 
-type Input = { id: string, data: UserBio }
+type Input = { id: string, data: UserBio, timestamp: number }
 
 export class CreateUserWithBioUseCase implements BaseUseCase<Input, void> {
 	repository: IUserRepository
@@ -12,6 +12,6 @@ export class CreateUserWithBioUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (params: Input) {
-		return await this.repository.createUserWithBio(params.id, params.data)
+		return await this.repository.createUserWithBio(params.id, params.data, params.timestamp)
 	}
 }

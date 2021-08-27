@@ -12,7 +12,8 @@ export const handleUserBioUpdatedEvent = (collection: mongoose.Model<UserFromMod
 				lastName: data.fullDocument.lastName,
 				email: data.fullDocument.email,
 				photo: data.fullDocument.photo
-			}
+			},
+			timestamp: data.operationType === 'insert' ? data.fullDocument.signedUpAt : Date.now()
 		})
 	})
 }
@@ -22,7 +23,8 @@ export const handleUserRoleUpdatedEvent = (collection: mongoose.Model<UserFromMo
 	changeStream.on('change', async (data) => {
 		if (data.operationType === 'update') await publishers[EventTypes.AUTHROLESUPDATED].publish({
 			id: data.fullDocument._id,
-			data: data.fullDocument.roles
+			data: data.fullDocument.roles,
+			timestamp: Date.now()
 		})
 	})
 }
@@ -31,7 +33,8 @@ export const handleUserDeletedEvent = (collection: mongoose.Model<UserFromModel>
 	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
 	changeStream.on('change', async (data) => {
 		if (data.operationType === 'delete') await publishers[EventTypes.AUTHUSERDELETED].publish({
-			id: data.documentKey._id.toString()
+			id: data.documentKey._id.toString(),
+			timestamp: Date.now()
 		})
 	})
 }

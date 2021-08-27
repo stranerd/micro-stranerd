@@ -8,13 +8,13 @@ export const subscribers = {
 		await Logger.success('Just received test event with value of', data)
 	}),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createSubscriber(EventTypes.AUTHUSERCREATED, async (data) => {
-		await CreateUserWithBio.execute({ id: data.id, data: data.data })
+		await CreateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
 	}),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createSubscriber(EventTypes.AUTHUSERUPDATED, async (data) => {
-		await UpdateUserWithBio.execute({ id: data.id, data: data.data })
+		await UpdateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
 	}),
 	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
-		await MarkUserAsDeleted.execute(data.id)
+		await MarkUserAsDeleted.execute({ id: data.id, timestamp: data.timestamp })
 	})
 }
 

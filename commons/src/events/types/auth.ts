@@ -8,14 +8,17 @@ export type AuthUserChange = {
 		lastName: string
 		email: string
 		photo: MediaOutput | null
-	}
+	},
+	timestamp: number
 }
 
 export type AuthRoleChange = {
 	id: string
-	data: AuthRoles
+	data: AuthRoles,
+	timestamp: number
 }
 
 export type AuthUserDeleted = {
-	id: string
+	id: string,
+	timestamp: number
 }
