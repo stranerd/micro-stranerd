@@ -1,6 +1,6 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
-import { setupChangeStreams } from '../change-streams'
+import { setupChangeStreams } from '../changeStreams'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {

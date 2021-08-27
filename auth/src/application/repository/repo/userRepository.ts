@@ -1,9 +1,9 @@
 import { IUserRepository } from '../../contracts/repository'
 import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../domain'
 import { UserMapper } from '../mapper/user.mapper'
-import { AuthTypes, deleteCachedAccessToken, EventTypes, NotFoundError } from '@utils/commons'
+import { AuthTypes, deleteCachedAccessToken, EventTypes, mongoose, NotFoundError } from '@utils/commons'
 import { publishers } from '@utils/events'
-import User from '../mongoose-model/user.model'
+import User from '../mongooseModels/user.model'
 import { hash } from '@utils/hash'
 
 export class UserRepository implements IUserRepository {
@@ -20,18 +20,21 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity | null> {
+		if (dataType === 'id' && !mongoose.Types.ObjectId.isValid(dataVal)) return
 		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
 		return this.userMapper.mapFrom(user)
 	}
 
 	async userWithEmailExist (email: string, type: AuthTypes): Promise<boolean> {
+		email = email.toLowerCase()
 		const user = await User.findOne({ email, authTypes: type })
 		return !!user
 	}
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
+		if (!mongoose.Types.ObjectId.isValid(input.userId)) return false
 		const user = await User.findOne({ _id: input.userId })
-		if (!user) throw new NotFoundError()
+		if (!user) return false
 
 		if (user.photo && user.photo.path != input.photo.path) await publishers[EventTypes.DELETEFILE].publish(user.photo)
 
