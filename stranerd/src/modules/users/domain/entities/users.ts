@@ -2,13 +2,13 @@ import { UserAccount, UserBio, UserDates, UserRoles, UserStatus, UserTutor } fro
 import { BaseEntity } from '@utils/commons'
 
 export class UserEntity extends BaseEntity {
-	public id: string
-	public bio: UserBio
-	public roles: UserRoles
-	public dates: UserDates
-	public tutor: UserTutor
-	public status: UserStatus
-	public account: UserAccount
+	public readonly id: string
+	public readonly bio: UserBio
+	public readonly roles: UserRoles
+	public readonly dates: UserDates
+	public readonly tutor: UserTutor
+	public readonly status: UserStatus
+	public readonly account: UserAccount
 
 	constructor ({ id, bio, roles, dates, tutor, status, account }: UserConstructorArgs) {
 		super()

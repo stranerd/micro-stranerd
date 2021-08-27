@@ -1,17 +1,17 @@
 import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/commons'
 
 export class UserEntity extends BaseEntity {
-	public id: string
-	public email: string
-	public password: string
-	public firstName: string
-	public lastName: string
-	public photo: MediaOutput | null
-	public isVerified: boolean
-	public authTypes: AuthTypes[]
-	public roles: AuthRoles
-	public lastSignedInAt: number
-	public signedUpAt: number
+	public readonly id: string
+	public readonly email: string
+	public readonly password: string
+	public readonly firstName: string
+	public readonly lastName: string
+	public readonly photo: MediaOutput | null
+	public readonly isVerified: boolean
+	public readonly authTypes: AuthTypes[]
+	public readonly roles: AuthRoles
+	public readonly lastSignedInAt: number
+	public readonly signedUpAt: number
 
 	constructor (data: UserConstructorArgs) {
 		super()
