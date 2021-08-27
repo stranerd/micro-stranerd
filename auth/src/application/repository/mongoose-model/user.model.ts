@@ -34,11 +34,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	authTypes: {
 		type: Array,
+		set: (types: string[]) => Array.from(new Set(types)),
 		required: true
 	},
 	roles: {
 		type: Object,
-		set: (types: string[]) => Array.from(new Set(types)),
 		required: false,
 		default: {}
 	},

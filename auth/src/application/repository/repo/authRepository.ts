@@ -42,10 +42,10 @@ export class AuthRepository implements IAuthRepository {
 		}, { new: true })
 
 		return {
-			id: userUpdated._id,
-			roles: userUpdated.roles,
-			isVerified: userUpdated.isVerified,
-			authTypes: userUpdated.authTypes
+			id: userUpdated!._id,
+			roles: userUpdated!.roles,
+			isVerified: userUpdated!.isVerified,
+			authTypes: userUpdated!.authTypes
 		}
 	}
 

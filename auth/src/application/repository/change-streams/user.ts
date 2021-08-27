@@ -67,7 +67,7 @@ const userDeletedPipeline = [
 User.watch(userDeletedPipeline, { fullDocument: 'updateLookup' })
 	.on('change', async (data) => {
 		if (data.operationType === 'delete') await publishers[EventTypes.AUTHUSERDELETED].publish({
-			id: data.documentKey._id.toString(),
+			id: (data.documentKey._id as string).toString(),
 			timestamp: Date.now()
 		})
 	})

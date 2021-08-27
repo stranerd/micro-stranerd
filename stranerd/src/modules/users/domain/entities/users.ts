@@ -2,6 +2,7 @@ import { UserAccount, UserBio, UserDates, UserRoles, UserStatus, UserTutor } fro
 import { BaseEntity } from '@utils/commons'
 
 export class UserEntity extends BaseEntity {
+	public id: string
 	public bio: UserBio
 	public roles: UserRoles
 	public dates: UserDates
@@ -9,8 +10,9 @@ export class UserEntity extends BaseEntity {
 	public status: UserStatus
 	public account: UserAccount
 
-	constructor ({ bio, roles, dates, tutor, status, account }: UserConstructorArgs) {
+	constructor ({ id, bio, roles, dates, tutor, status, account }: UserConstructorArgs) {
 		super()
+		this.id = id
 		this.bio = bio
 		this.roles = roles
 		this.dates = dates
@@ -21,6 +23,7 @@ export class UserEntity extends BaseEntity {
 }
 
 type UserConstructorArgs = {
+	id: string
 	bio: UserBio
 	roles: UserRoles
 	dates: UserDates

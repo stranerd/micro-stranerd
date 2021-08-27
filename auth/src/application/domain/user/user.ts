@@ -1,6 +1,33 @@
-import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
+import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/commons'
 
-export interface UserEntity {
+export class UserEntity extends BaseEntity {
+	public id: string
+	public email: string
+	public password: string
+	public firstName: string
+	public lastName: string
+	public photo: MediaOutput | null
+	public isVerified: boolean
+	public authTypes: AuthTypes[]
+	public lastSignedInAt: number
+	public signedUpAt: number
+
+	constructor (data: UserConstructorArgs) {
+		super()
+		this.id = data.id
+		this.email = data.email
+		this.password = data.password
+		this.firstName = data.firstName
+		this.lastName = data.lastName
+		this.photo = data.photo
+		this.isVerified = data.isVerified
+		this.authTypes = data.authTypes
+		this.lastSignedInAt = data.lastSignedInAt
+		this.signedUpAt = data.signedUpAt
+	}
+}
+
+export interface UserConstructorArgs {
 	id: string;
 	email: string;
 	password: string;
