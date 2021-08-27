@@ -1,10 +1,31 @@
-import { EventTypes, mongoose } from '@utils/commons'
+import { EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
-import { UserFromModel } from '../models'
+import { User } from '../mongoose-model/user.model'
 
-export const handleUserBioUpdatedEvent = (collection: mongoose.Model<UserFromModel>, pipeline = [{}]) => {
-	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
-	changeStream.on('change', async (data) => {
+const userBioUpdatedPipeline = [
+	{
+		$match: {
+			$or: [
+				{ operationType: 'insert' },
+				{
+					$and: [
+						{ operationType: 'update' },
+						{
+							$or: [
+								{ 'updateDescription.updatedFields.firstName': { $exists: true } },
+								{ 'updateDescription.updatedFields.lastName': { $exists: true } },
+								{ 'updateDescription.updatedFields.email': { $exists: true } },
+								{ 'updateDescription.updatedFields.photo': { $exists: true } }
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+]
+User.watch(userBioUpdatedPipeline, { fullDocument: 'updateLookup' })
+	.on('change', async (data) => {
 		if (data.operationType === 'insert' || data.operationType === 'update') await publishers[EventTypes.AUTHUSERCREATED].publish({
 			id: data.fullDocument._id,
 			data: {
@@ -16,25 +37,37 @@ export const handleUserBioUpdatedEvent = (collection: mongoose.Model<UserFromMod
 			timestamp: data.operationType === 'insert' ? data.fullDocument.signedUpAt : Date.now()
 		})
 	})
-}
 
-export const handleUserRoleUpdatedEvent = (collection: mongoose.Model<UserFromModel>, pipeline = [{}]) => {
-	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
-	changeStream.on('change', async (data) => {
+const userRolesUpdatedPipeline = [
+	{
+		$match: {
+			$and: [
+				{ operationType: 'update' },
+				{
+					$or: [
+						{ 'updateDescription.updatedFields.roles': { $exists: true } }
+					]
+				}
+			]
+		}
+	}
+]
+User.watch(userRolesUpdatedPipeline, { fullDocument: 'updateLookup' })
+	.on('change', async (data) => {
 		if (data.operationType === 'update') await publishers[EventTypes.AUTHROLESUPDATED].publish({
 			id: data.fullDocument._id,
 			data: data.fullDocument.roles,
 			timestamp: Date.now()
 		})
 	})
-}
 
-export const handleUserDeletedEvent = (collection: mongoose.Model<UserFromModel>, pipeline = [{}]) => {
-	const changeStream = collection.watch(pipeline, { fullDocument: 'updateLookup' })
-	changeStream.on('change', async (data) => {
+const userDeletedPipeline = [
+	{ $match: { operationType: 'delete' } }
+]
+User.watch(userDeletedPipeline, { fullDocument: 'updateLookup' })
+	.on('change', async (data) => {
 		if (data.operationType === 'delete') await publishers[EventTypes.AUTHUSERDELETED].publish({
 			id: data.documentKey._id.toString(),
 			timestamp: Date.now()
 		})
 	})
-}

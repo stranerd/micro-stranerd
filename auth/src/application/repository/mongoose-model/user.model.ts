@@ -1,6 +1,5 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
-import { handleUserBioUpdatedEvent, handleUserDeletedEvent, handleUserRoleUpdatedEvent } from '../change-streams'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
@@ -55,52 +54,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	}
 })
 
-const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
-
-const userBioUpdatedPipeline = [
-	{
-		$match: {
-			$or: [
-				{ operationType: 'insert' },
-				{
-					$and: [
-						{ operationType: 'update' },
-						{
-							$or: [
-								{ 'updateDescription.updatedFields.firstName': { $exists: true } },
-								{ 'updateDescription.updatedFields.lastName': { $exists: true } },
-								{ 'updateDescription.updatedFields.email': { $exists: true } },
-								{ 'updateDescription.updatedFields.photo': { $exists: true } }
-							]
-						}
-					]
-				}
-			]
-		}
-	}
-]
-
-const userRolesUpdatedPipeline = [
-	{
-		$match: {
-			$and: [
-				{ operationType: 'update' },
-				{
-					$or: [
-						{ 'updateDescription.updatedFields.roles': { $exists: true } }
-					]
-				}
-			]
-		}
-	}
-]
-
-const userDeletedPipeline = [
-	{ $match: { operationType: 'delete' } }
-]
-
-handleUserBioUpdatedEvent(User, userBioUpdatedPipeline)
-handleUserRoleUpdatedEvent(User, userRolesUpdatedPipeline)
-handleUserDeletedEvent(User, userDeletedPipeline)
+export const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
 
 export default User
