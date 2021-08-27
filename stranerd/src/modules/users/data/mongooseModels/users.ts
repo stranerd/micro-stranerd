@@ -46,6 +46,35 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			required: false,
 			default: Date.now
 		}
+	},
+	account: {
+		rank: {
+			type: Number,
+			required: false,
+			default: 1
+		},
+		coins: {
+			gold: {
+				type: Number,
+				required: false,
+				default: 0
+			},
+			bronze: {
+				type: Number,
+				required: false,
+				default: 0
+			}
+		},
+		meta: {
+			type: Object,
+			required: false,
+			default: {}
+		},
+		ratings: {
+			type: Object,
+			required: false,
+			default: { count: 0, total: 0 }
+		}
 	}
 })
 

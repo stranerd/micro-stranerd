@@ -5,6 +5,7 @@ import { handleUserBioUpdatedEvent, handleUserDeletedEvent, handleUserRoleUpdate
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
 		type: String,
+		set: (email: string) => email.toLowerCase(),
 		unique: true,
 		required: true
 	},
@@ -15,10 +16,12 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	firstName: {
 		type: String,
+		set: (name: string) => name.toLowerCase(),
 		required: true
 	},
 	lastName: {
 		type: String,
+		set: (name: string) => name.toLowerCase(),
 		required: true
 	},
 	photo: {
@@ -36,6 +39,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	roles: {
 		type: Object,
+		set: (types: string[]) => Array.from(new Set(types)),
 		required: false,
 		default: {}
 	},

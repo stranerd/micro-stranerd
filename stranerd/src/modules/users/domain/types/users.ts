@@ -23,3 +23,19 @@ export type UserStatus = {
 	connections: Record<string, boolean>
 	lastUpdatedAt: number
 }
+
+export type UserAccount = {
+	score: number
+	coins: {
+		gold: number,
+		bronze: number
+	},
+	meta: {
+		questions: number
+		answers: number
+	},
+	ratings: {
+		total: number
+		count: number
+	}
+}
