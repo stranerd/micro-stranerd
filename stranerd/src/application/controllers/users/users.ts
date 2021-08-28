@@ -1,4 +1,4 @@
-import { FindUser } from '../../modules/users'
+import { FindUser } from '@modules/users'
 import { Request } from '@utils/commons'
 
 export class UsersController {

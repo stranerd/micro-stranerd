@@ -5,7 +5,7 @@ import * as crypto from 'crypto'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/user.model'
-import { domain, googleClientId } from '@utils/environment'
+import { clientDomain, googleClientId, logo } from '@utils/environment'
 import { UserFromModel, UserToModel } from '../models'
 import { hash, hashCompare } from '@utils/hash'
 import {
@@ -108,7 +108,10 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send verification mail
-		const emailContent = await readEmailFromPug('src/emails/email-verification.pug', { domain, token })
+		const emailContent = await readEmailFromPug('src/emails/email-verification.pug', {
+			meta: { clientDomain, logo },
+			token
+		})
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
@@ -154,7 +157,10 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send reset password mail
-		const emailContent = await readEmailFromPug('src/emails/email-reset.pug', { domain, token })
+		const emailContent = await readEmailFromPug('src/emails/email-reset.pug', {
+			meta: { clientDomain, logo },
+			token
+		})
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,

@@ -22,6 +22,9 @@
 		"noEmit": false,
 		"experimentalDecorators": true,
 		"paths": {
+			"@modules/*": [
+				"./src/modules/*"
+			],
 			"@utils/*": [
 				"./src/utils/*"
 			]

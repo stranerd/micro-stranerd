@@ -3,6 +3,7 @@ import { mongoDbURI } from '../config'
 import { Logger } from '../logger'
 
 export * from './plugins'
+export * from './query'
 
 export const setupMongooseConnection = async () => {
 	try {

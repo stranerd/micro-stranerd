@@ -26,14 +26,14 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	dates: {
 		createdAt: {
-			type: Date,
+			type: Number,
 			required: false,
 			default: Date.now
 		},
 		deletedAt: {
-			type: Date,
+			type: Number,
 			required: false,
-			default: Date.now
+			default: null
 		}
 	},
 	status: {
@@ -43,9 +43,9 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: {}
 		},
 		lastUpdatedAt: {
-			type: Date,
+			type: Number,
 			required: false,
-			default: Date.now
+			default: 0
 		}
 	},
 	account: {

@@ -19,8 +19,18 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-}, { timestamps: true })
+}, { timestamps: { currentTime: Date.now } })
 
 export const Notification = mongoose.model<NotificationFromModel>('Notification', NotificationSchema)
 

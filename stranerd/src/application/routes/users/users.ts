@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { UsersController } from '../controllers/users'
+import { UsersController } from '../../controllers/users/users'
 
 export const usersRoutes: Route[] = [
 	{
