@@ -1,4 +1,4 @@
-import { FindNotification, GetNotifications, MarkNotificationSeen } from '../../modules/users'
+import { FindNotification, GetNotifications, MarkNotificationSeen } from '@modules/users'
 import { Conditions, QueryParams, Request, validate } from '@utils/commons'
 
 export class NotificationsController {

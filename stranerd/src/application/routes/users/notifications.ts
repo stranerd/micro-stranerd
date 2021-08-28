@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { NotificationsController } from '../controllers/notifications'
+import { NotificationsController } from '../../controllers/users/notifications'
 
 export const notificationsRoutes: Route[] = [
 	{
