@@ -1,8 +1,8 @@
 import { INotificationRepository } from '../../domain/i-repositories/notifications'
 import { NotificationMapper } from '../mappers/notifications'
 import { Notification } from '../mongooseModels/notifications'
-import { mongoose } from '@utils/commons'
-import { NotificationToModel } from '../models/notifications'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { NotificationFromModel, NotificationToModel } from '../models/notifications'
 
 export class NotificationRepository implements INotificationRepository {
 	private static instance: NotificationRepository
@@ -11,6 +11,14 @@ export class NotificationRepository implements INotificationRepository {
 	static getInstance (): NotificationRepository {
 		if (!NotificationRepository.instance) NotificationRepository.instance = new NotificationRepository()
 		return NotificationRepository.instance
+	}
+
+	async getNotifications (query: QueryParams) {
+		const data = await parseQueryParams<NotificationFromModel>(Notification, query)
+		return {
+			...data,
+			results: data.results.map((n) => this.mapper.mapFrom(n)!)
+		}
 	}
 
 	async findNotification (data: { userId: string, id: string }) {

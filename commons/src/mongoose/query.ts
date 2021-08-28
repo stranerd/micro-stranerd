@@ -12,10 +12,10 @@ export type QueryParams = {
 	page?: number
 }
 
-export async function parseQueryParams<Model> (collection: mongoose.Model<Model | {}>, params: Record<string, any>): Promise<QueryResults<Model>> {
+export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
 	// Handle where clauses
-	const whereType = ['and', 'or'].indexOf(params.whereType) !== -1 ? params.whereType : 'and'
-	const where = ((params.where ?? []) as { condition: string, value: any, field: string }[])
+	const whereType = ['and', 'or'].indexOf(params.whereType as string) !== -1 ? params.whereType : 'and'
+	const where = (params.where ?? [])
 		.filter(({ field, condition, value }) => !!field && !!condition && !!value)
 		.map(({ field, value, condition }) => {
 			const checkedField = field === 'id' ? '_id' : (field ?? '')
@@ -23,7 +23,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 			const checkedValue = field === 'id'
 				? mongoose.Types.ObjectId.isValid(parsedValue) ? parsedValue : new mongoose.Types.ObjectId()
 				: parsedValue
-			const checkedCondition = Object.keys(Conditions).indexOf(condition) > -1 ? condition : Conditions.eq
+			const checkedCondition = Object.keys(Conditions).indexOf(condition as unknown as string) > -1 ? condition : Conditions.eq
 			return ({
 				field: checkedField,
 				value: checkedValue,
