@@ -1,5 +1,7 @@
+import { GetClause } from '@utils/paginator'
 import { TagEntity } from '../entities/tag'
+import { PaginateResult } from 'mongoose'
 
 export interface ITagRepository {
-	get: (tagIds?: string[]) => Promise<TagEntity[]>
+	get: (condition: GetClause) => Promise<PaginateResult<TagEntity> | null>
 }

@@ -1,6 +1,5 @@
-import { FirestoreGetClauses } from '@modules/core'
-import { PAGINATION_LIMIT } from '@utils/constants'
-import { IQuestionRepository } from '../../irepositories/iquestion'
+import { GetClause } from '@utils/paginator'
+import { IQuestionRepository } from '../../i-repositories/question'
 
 export class GetQuestionsUseCase {
 	private repository: IQuestionRepository
@@ -9,13 +8,7 @@ export class GetQuestionsUseCase {
 		this.repository = repository
 	}
 
-	async call (date?: Date) {
-		const conditions: FirestoreGetClauses = {
-			order: { field: 'dates.createdAt', desc: true },
-			limit: PAGINATION_LIMIT + 1
-		}
-		if (date) conditions.where = [{ field: 'dates.createdAt', condition: '<', value: date }]
-
+	async call (conditions: GetClause) {
 		return await this.repository.get(conditions)
 	}
 }

@@ -1,5 +1,5 @@
-import { IQuestionRepository } from '../../irepositories/iquestion'
-import { QuestionFactory } from '../../factories/question'
+import { QuestionToModel } from 'src/modules/questions/data/models'
+import { IQuestionRepository } from '../../i-repositories/question'
 
 export class AddQuestionUseCase {
 	private repository: IQuestionRepository
@@ -8,7 +8,7 @@ export class AddQuestionUseCase {
 		this.repository = repository
 	}
 
-	async call (factory: QuestionFactory) {
-		return await this.repository.add(await factory.toModel())
+	async call (data: QuestionToModel) {
+		return await this.repository.add(data)
 	}
 }

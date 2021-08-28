@@ -3,6 +3,9 @@ import { ISubjectRepository } from '../../domain/i-repositories/subject'
 import { SubjectMapper } from '../mappers'
 import { SubjectToModel, SubjectFromModel } from '../models/subject'
 import { Subjects } from '../mongooseModels'
+import { GetClause } from '@utils/paginator'
+import { PaginateResult } from 'mongoose'
+import { generatePaginateResult } from '@utils/paginator'
 
 export class SubjectRepository implements ISubjectRepository {
 	private static instance: SubjectRepository
@@ -17,36 +20,25 @@ export class SubjectRepository implements ISubjectRepository {
 		return SubjectRepository.instance
 	}
 
-	async get (subjectIds?: string[]): Promise<SubjectEntity[]> {
+	async get (condition: GetClause): Promise<PaginateResult<SubjectEntity> | null> {
+
 		const subjects: SubjectEntity[] = []
+		const subjectRaw: PaginateResult<SubjectFromModel> = await Subjects.paginate(condition.query,condition.options)
 
-		if(subjectIds == undefined) {
+		if(subjectRaw) {
 
-		 const subjectsRaw: SubjectFromModel[] | null = await Subjects.find({})
-		 if(subjectsRaw) {
+			 const returnData = subjectRaw.docs
 
-			 for (let index = 0; index < subjectsRaw.length; index++) {
-				 const subjectData = subjectsRaw[index]
-				 const subject: SubjectEntity = this.mapper.mapFrom(subjectData)
-				 subjects.push(subject)
+			  returnData.forEach((data) => {
+				const subject: SubjectEntity = this.mapper.mapFrom(data)
+				subjects.push(subject)
+			  })
+
+			  const finalResult: PaginateResult<SubjectEntity> = generatePaginateResult(subjects,subjectRaw)
+
+			 return finalResult
 			 }
-
-		   } 
-
-		} else { 
-		
-		 for (let index = 0; index < subjectIds.length; index++) {
-			 const subjectId = subjectIds[index]
-			 const subjectRaw: SubjectFromModel | null = await Subjects.findById(subjectId)
-			
-			 if(subjectRaw) {
-				 const subject: SubjectEntity = this.mapper.mapFrom(subjectRaw)
-				 subjects.push(subject)
-			 }
-		 }
-	 }
-         
-		 return subjects
+		 return null
 	}
 
 	async delete (id: string): Promise<boolean> {

@@ -1,5 +1,5 @@
-import { DatabaseGetClauses } from '@modules/core'
-import { ISubjectRepository } from '../../irepositories/isubject'
+import { GetClause } from '@utils/paginator'
+import { ISubjectRepository } from '../../i-repositories/subject'
 
 export class GetSubjectsUseCase {
 	private repository: ISubjectRepository
@@ -8,10 +8,7 @@ export class GetSubjectsUseCase {
 		this.repository = repository
 	}
 
-	async call () {
-		const conditions: DatabaseGetClauses = {
-			order: { field: 'name' }
-		}
+	async call (conditions: GetClause) {
 		return await this.repository.get(conditions)
 	}
 }

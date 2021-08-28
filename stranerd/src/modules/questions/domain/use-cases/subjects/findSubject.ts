@@ -1,4 +1,4 @@
-import { ISubjectRepository } from '../../irepositories/isubject'
+import { ISubjectRepository } from '../../i-repositories/subject'
 
 export class FindSubjectUseCase {
 	private repository: ISubjectRepository

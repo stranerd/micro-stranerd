@@ -1,4 +1,4 @@
-import { IAnswerRepository } from '../../irepositories/ianswer'
+import { IAnswerRepository } from '../../i-repositories/answer'
 
 export class MarkAsBestAnswerUseCase {
 	private repository: IAnswerRepository

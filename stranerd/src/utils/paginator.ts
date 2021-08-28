@@ -20,3 +20,23 @@ export const CustomLabels = {
 	pagingCounter: 'slNo',
 	meta: 'paginator'
 }
+
+export const generatePaginateResult = (dataArray,dataRaw) => {
+
+	return {
+		docs: dataArray,
+		hasNextPage: dataRaw.hasNextPage,
+		hasPrevPage: dataRaw.hasNextPage,
+		totalDocs: dataRaw.totalDocs,
+		limit: dataRaw.limit,
+		page: dataRaw.page,
+		totalPages: dataRaw.totalPages,
+		nextPage: dataRaw.nextPage,
+		prevPage: dataRaw.prevPage,
+		pagingCounter: dataRaw.pagingCounter,
+		meta: dataRaw.meta
+	}
+		
+}
+
+

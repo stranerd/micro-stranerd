@@ -1,6 +1,6 @@
 import { AnswerToModel } from '../../data/models/answer'
 import { AnswerEntity } from '../entities/answer'
-import { GetClause } from '@utils/base-types'
+import { GetClause } from '@utils/paginator'
 import { PaginateResult } from 'mongoose'
 
 export interface IAnswerRepository {

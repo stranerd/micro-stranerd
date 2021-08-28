@@ -4,8 +4,9 @@ import { AnswerFromModel, AnswerToModel } from '../models/answer'
 import { Answers } from '../mongooseModels'
 import { AnswerEntity } from '../../domain/entities'
 import { User } from 'src/modules/users/data/mongooseModels/users'
-import { GetClause } from '@utils/base-types'
+import { GetClause } from '@utils/paginator'
 import { PaginateResult } from 'mongoose'
+import { generatePaginateResult } from '@utils/paginator'
 
 
 export class AnswerRepository implements IAnswerRepository {
@@ -34,21 +35,9 @@ export class AnswerRepository implements IAnswerRepository {
 			  returnData.forEach((answerData) => {
 				const answer: AnswerEntity = this.mapper.mapFrom(answerData)
 				answers.push(answer)
-			  })
+			  })  
 
-			 const finalResult: PaginateResult<AnswerEntity> = {
-				 docs: answers,
-				 hasNextPage: answersRaw.hasNextPage,
-				 hasPrevPage: answersRaw.hasNextPage,
-				 totalDocs: answersRaw.totalDocs,
-				 limit: answersRaw.limit,
-				 page: answersRaw.page,
-				 totalPages: answersRaw.totalPages,
-				 nextPage: answersRaw.nextPage,
-				 prevPage: answersRaw.prevPage,
-				 pagingCounter: answersRaw.pagingCounter,
-				 meta: answersRaw.meta
-			 }
+			 const finalResult: PaginateResult<AnswerEntity> = generatePaginateResult(answers,answersRaw)
 
 			 return finalResult
 			 }

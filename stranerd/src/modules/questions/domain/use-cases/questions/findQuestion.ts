@@ -1,4 +1,4 @@
-import { IQuestionRepository } from '../../irepositories/iquestion'
+import { IQuestionRepository } from '../../i-repositories/question'
 
 export class FindQuestionUseCase {
 	private repository: IQuestionRepository

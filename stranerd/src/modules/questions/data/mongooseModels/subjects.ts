@@ -18,4 +18,4 @@ Schema.plugin(mongoosePaginate)
 
 interface SubjectsModel<T extends Document> extends PaginateModel<T> {}
 
-export const Questions: SubjectsModel<SubjectFromModel> = model('Subjects', Schema) as SubjectsModel<SubjectFromModel>
+export const Subjects: SubjectsModel<SubjectFromModel> = model('Subjects', Schema) as SubjectsModel<SubjectFromModel>

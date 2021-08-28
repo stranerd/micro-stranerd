@@ -3,6 +3,10 @@ import { QuestionEntity } from '../../domain/entities/question'
 import { QuestionMapper } from '../mappers'
 import { QuestionFromModel, QuestionToModel } from '../models/question'
 import { Questions } from '../mongooseModels'
+import { GetClause } from '@utils/paginator'
+import { PaginateResult } from 'mongoose'
+import { generatePaginateResult } from '@utils/paginator'
+
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -17,40 +21,25 @@ export class QuestionRepository implements IQuestionRepository {
 		return QuestionRepository.instance
 	}
 
-	async get (baseId: string, filterType: string, questionIds?: string[]): Promise<QuestionEntity[]> {
+	async get (condition: GetClause): Promise<PaginateResult<QuestionEntity> | null> {
 
 		const questions: QuestionEntity[] = []
+		const questionRaw: PaginateResult<QuestionFromModel> = await Questions.paginate(condition.query,condition.options)
 
-		if(questionIds == undefined) {
+		if(questionRaw) {
 
-		 let questionRaw: QuestionFromModel[] | null = await Questions.find({userId: baseId})
+			 const returnData = questionRaw.docs
 
-		 if(filterType == 'subject')  questionRaw = await Questions.find({subjectId: baseId})
+			  returnData.forEach((data) => {
+				const question: QuestionEntity = this.mapper.mapFrom(data)
+				questions.push(question)
+			  })
 
-		 if(questionRaw) {
+			  const finalResult: PaginateResult<QuestionEntity> = generatePaginateResult(questions,questionRaw)
 
-			 for (let index = 0; index < questionRaw.length; index++) {
-				 const questionData = questionRaw[index]
-				 const question: QuestionEntity = this.mapper.mapFrom(questionData)
-				 questions.push(question)
+			 return finalResult
 			 }
-
-		   } 
-
-		} else { 
-		
-		 for (let index = 0; index < questionIds.length; index++) {
-			 const questionId = questionIds[index]
-			 const questionRaw: QuestionFromModel | null = await Questions.findById(questionId)
-			
-			 if(questionRaw) {
-				 const question: QuestionEntity = this.mapper.mapFrom(questionRaw)
-				 questions.push(question)
-			 }
-		 }
-	 }
-         
-		 return questions
+		 return null
 	}
 
 	async add (data: QuestionToModel): Promise<boolean> {
@@ -70,6 +59,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async update (id: string, data: Partial<QuestionToModel>): Promise<boolean> {
+
 		const questionData = await Questions.findById(id)
 		if(questionData) {
 		   questionData.coins = data.coins ? data.coins : questionData.coins

@@ -1,25 +1,15 @@
-import { ICommentRepository } from '../../irepositories/icomment'
+import { ICommentRepository } from '../../i-repositories/comment'
+import { GetClause } from '@utils/base-types'
 
-export class GetQuestionCommentsUseCase {
+export class GetCommentsUseCase {
 	private repository: ICommentRepository
 
 	constructor (repository: ICommentRepository) {
 		this.repository = repository
 	}
 
-	async call (questionId: string) {
-		return await this.repository.get(questionId)
-	}
-}
+	async call (conditions: GetClause) {
 
-export class GetAnswerCommentsUseCase {
-	private repository: ICommentRepository
-
-	constructor (repository: ICommentRepository) {
-		this.repository = repository
-	}
-
-	async call (answerId: string) {
-		return await this.repository.get(answerId)
+		return await this.repository.get(conditions)
 	}
 }

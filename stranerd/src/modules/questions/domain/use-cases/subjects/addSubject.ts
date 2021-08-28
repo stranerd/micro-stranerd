@@ -1,5 +1,5 @@
-import { ISubjectRepository } from '../../irepositories/isubject'
-import { SubjectFactory } from '../../factories/subject'
+import { SubjectToModel } from 'src/modules/questions/data/models'
+import { ISubjectRepository } from '../../i-repositories/subject'
 
 export class AddSubjectUseCase {
 	private repository: ISubjectRepository
@@ -8,7 +8,7 @@ export class AddSubjectUseCase {
 		this.repository = repository
 	}
 
-	async call (factory: SubjectFactory) {
-		return await this.repository.add(await factory.toModel())
+	async call (data: SubjectToModel) {
+		return await this.repository.add(data)
 	}
 }

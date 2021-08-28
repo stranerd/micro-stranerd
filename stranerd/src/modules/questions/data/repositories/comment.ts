@@ -3,6 +3,9 @@ import { CommentEntity } from '../../domain/entities/comment'
 import { CommentMapper } from '../mappers'
 import { CommentFromModel, CommentToModel } from '../models'
 import { Comments } from '../mongooseModels'
+import { GetClause } from '@utils/paginator'
+import { PaginateResult } from 'mongoose'
+import { generatePaginateResult } from '@utils/paginator'
 
 export class CommentRepository implements ICommentRepository {
 	private static instance: CommentRepository
@@ -17,38 +20,25 @@ export class CommentRepository implements ICommentRepository {
 		return CommentRepository.instance
 	}
 
-	async get (baseId: string, commentIds?: string[]): Promise<CommentEntity[] | null> {
+	async get (condition: GetClause): Promise<PaginateResult<CommentEntity> | null> {
 
 		const comments: CommentEntity[] = []
+		const commentRaw: PaginateResult<CommentFromModel> = await Comments.paginate(condition.query,condition.options)
 
-		if(commentIds == undefined) {
+		if(commentRaw) {
 
-		 const commentsRaw: CommentFromModel[] | null = await Comments.find({baseId})
-		 if(commentsRaw) {
+			 const returnData = commentRaw.docs
 
-			 for (let index = 0; index < commentsRaw.length; index++) {
-				 const commentData = commentsRaw[index]
-				 const comment: CommentEntity = this.mapper.mapFrom(commentData)
-				 comments.push(comment)
+			  returnData.forEach((commentData) => {
+				const comment: CommentEntity = this.mapper.mapFrom(commentData)
+				comments.push(comment)
+			  })
+
+			  const finalResult: PaginateResult<CommentEntity> = generatePaginateResult(comments,commentRaw)
+
+			 return finalResult
 			 }
-
-		   } 
-
-		} else { 
-		
-		 for (let index = 0; index < commentIds.length; index++) {
-			 const commentId = commentIds[index]
-			 const commentRaw: CommentFromModel | null = await Comments.findById(commentId)
-			
-			 if(commentRaw) {
-				 const comment: CommentEntity = this.mapper.mapFrom(commentRaw)
-				 comments.push(comment)
-			 }
-		 }
-	 }
-         
-		 return comments
-
+		 return null
 	}
 
 	async add (data: CommentToModel): Promise<boolean> {
