@@ -86,10 +86,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/validate@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.1.5.tgz#f6809c385fd234da65a8f8a97e30403dcc2d7f27"
-  integrity sha512-J+/oMgSrQ03uUpMtqgQz+o76gtgE/2Ck7uPe2wSxCKdD272wHWCQ73CEY0HKGcXmw7rPix0M4QBB0/P1nbzzig==
+"@stranerd/validate@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.1.6.tgz#11ca8c7a04c6872b24c737ac420fca3a41a1ff42"
+  integrity sha512-oPljcOHEXfUVVfqY0a/x/Gez+HL9E5c0nTZ6Tl9p2KP+rpm/KAPWUa3j+cJipFmYlh9+qgbRF5CUvEPhFzgSWA==
 
 "@types/amqplib@^0.8.1":
   version "0.8.2"
@@ -1448,6 +1448,11 @@ mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
+
+mongoose-paginate-v2@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.4.2.tgz#482cea73f4a0bd49131ef9004694c73cae93b73e"
+  integrity sha512-b7FBe7fasJazhlTIfMSPyIST04yvobASXKmUt3ducnvYThulCyGSPhPcSYOzXcPmqBR4tpMnafIJxv+8GjM+UA==
 
 mongoose@^5.13.7:
   version "5.13.7"

@@ -1,26 +1,84 @@
 import { mongoose } from '@utils/commons'
 import { UserFromModel } from '../models/users'
+import { setupChangeStreams } from '../changeStreams/users'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {
-		email: {
+		type: Object,
+		required: true
+	},
+	roles: {
+		type: Object,
+		required: false,
+		default: {}
+	},
+	tutor: {
+		strongestSubject: {
 			type: String,
-			unique: true,
-			required: true
+			required: false,
+			default: null
 		},
-		firstName: {
-			type: String,
-			required: true
+		weakerSubjects: {
+			type: Array,
+			required: false,
+			default: []
+		}
+	},
+	dates: {
+		createdAt: {
+			type: Date,
+			required: false,
+			default: Date.now
 		},
-		lastName: {
-			type: String,
-			required: true
-		},
-		photo: {
+		deletedAt: {
+			type: Date,
+			required: false,
+			default: Date.now
+		}
+	},
+	status: {
+		connections: {
 			type: Object,
-			required: false
+			required: false,
+			default: {}
+		},
+		lastUpdatedAt: {
+			type: Date,
+			required: false,
+			default: Date.now
+		}
+	},
+	account: {
+		rank: {
+			type: Number,
+			required: false,
+			default: 1
+		},
+		coins: {
+			gold: {
+				type: Number,
+				required: false,
+				default: 0
+			},
+			bronze: {
+				type: Number,
+				required: false,
+				default: 0
+			}
+		},
+		meta: {
+			type: Object,
+			required: false,
+			default: {}
+		},
+		ratings: {
+			type: Object,
+			required: false,
+			default: { count: 0, total: 0 }
 		}
 	}
 })
 
 export const User = mongoose.model<UserFromModel>('User', UserSchema)
+
+setupChangeStreams()

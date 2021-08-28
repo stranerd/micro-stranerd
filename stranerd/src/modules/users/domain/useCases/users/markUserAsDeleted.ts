@@ -1,10 +1,9 @@
 import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
-import { UserBio } from '../../types/users'
 
-type Input = { id: string, data: UserBio }
+type Input = { id: string, timestamp: number }
 
-export class CreateUserWithBioUseCase implements BaseUseCase<Input, void> {
+export class MarkUserAsDeletedUseCase implements BaseUseCase<Input, void> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {
@@ -12,6 +11,6 @@ export class CreateUserWithBioUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (params: Input) {
-		return await this.repository.createUserWithBio(params.id, params.data)
+		return await this.repository.markUserAsDeleted(params.id, params.timestamp)
 	}
 }

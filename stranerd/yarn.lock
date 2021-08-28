@@ -99,6 +99,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+<<<<<<< HEAD
 "@stranerd/api-commons@^0.0.1-alpha-47":
   "integrity" "sha512-+4nb3o7fN1jNYf1E2yKGCm/ngxEu+BSNoV5ubdlG4TOdA5An1EAyMoKN2xMKfQGOGm5I9KaEU8bneVIJmEKfTA=="
   "resolved" "https://registry.npmjs.org/@stranerd/api-commons/-/api-commons-0.0.1-alpha-47.tgz"
@@ -121,6 +122,31 @@
   "integrity" "sha512-J+/oMgSrQ03uUpMtqgQz+o76gtgE/2Ck7uPe2wSxCKdD272wHWCQ73CEY0HKGcXmw7rPix0M4QBB0/P1nbzzig=="
   "resolved" "https://registry.npmjs.org/@stranerd/validate/-/validate-1.1.5.tgz"
   "version" "1.1.5"
+=======
+"@stranerd/api-commons@^0.0.1-alpha-52":
+  version "0.0.1-alpha-52"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-52.tgz#a82f501bd267a5f6cce0b611868535df67df7c56"
+  integrity sha512-Dn8brLnHKYF/Ej95AGQmqYKh2b/a1JfXMv0MyQ28P+ASWDg4qwzqr6NsL3hb+pbYMuktP6JBsVwq62imQAl6VQ==
+  dependencies:
+    "@stranerd/validate" "^1.1.6"
+    amqplib "^0.8.0"
+    chalk "^4.1.2"
+    cors "^2.8.5"
+    dotenv "^10.0.0"
+    express "^4.17.1"
+    express-fileupload "^1.2.1"
+    jsonwebtoken "^8.5.1"
+    mongoose "^5.13.7"
+    mongoose-paginate-v2 "^1.4.2"
+    morgan "^1.10.0"
+    pug "^3.0.2"
+    redis "^3.1.2"
+
+"@stranerd/validate@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.1.6.tgz#11ca8c7a04c6872b24c737ac420fca3a41a1ff42"
+  integrity sha512-oPljcOHEXfUVVfqY0a/x/Gez+HL9E5c0nTZ6Tl9p2KP+rpm/KAPWUa3j+cJipFmYlh9+qgbRF5CUvEPhFzgSWA==
+>>>>>>> 8bcbd5f621d99796cc184d5cc2bf1adc1339cde3
 
 "@types/bson@*":
   "integrity" "sha512-vVLwMUqhYJSQ/WKcE60eFqcyuWse5fGH+NMAXHuKrUAPoryq3ATxk5o4bgYNtg5aOM4APVg7Hnb3ASqUYG0PKg=="
@@ -2056,10 +2082,22 @@
   "resolved" "https://registry.npmjs.org/mongoose-paginate-v2/-/mongoose-paginate-v2-1.4.2.tgz"
   "version" "1.4.2"
 
+<<<<<<< HEAD
 "mongoose@*", "mongoose@^5.13.7":
   "integrity" "sha512-z3d+qei9Dem/LxRcJi0cdGPKzQnYk71oHEsEfYm17JA/vLiAbJiGuBS2hW7vkd9afkPAqu3KsPZh2ax0c5iPQw=="
   "resolved" "https://registry.npmjs.org/mongoose/-/mongoose-5.13.8.tgz"
   "version" "5.13.8"
+=======
+mongoose-paginate-v2@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.4.2.tgz#482cea73f4a0bd49131ef9004694c73cae93b73e"
+  integrity sha512-b7FBe7fasJazhlTIfMSPyIST04yvobASXKmUt3ducnvYThulCyGSPhPcSYOzXcPmqBR4tpMnafIJxv+8GjM+UA==
+
+mongoose@^5.13.7:
+  version "5.13.7"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.13.7.tgz#b6938390e93807a6f2ea91a054af2faa67f17218"
+  integrity sha512-ADIvftZ+KfoTALMZ0n8HvBlezFhcUd73hQaHQDwQ+3X+JZlqE47fUy9yhFZ2SjT+qzmuaCcIXCfhewIc38t2fQ==
+>>>>>>> 8bcbd5f621d99796cc184d5cc2bf1adc1339cde3
   dependencies:
     "@types/mongodb" "^3.5.27"
     "bson" "^1.1.4"

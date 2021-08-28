@@ -5,14 +5,24 @@ import { UserFromModel, UserToModel } from '../models/users'
 export class UserMapper extends BaseMapper<UserFromModel, UserToModel, UserEntity> {
 	mapFrom (param) {
 		return !param ? null : new UserEntity({
-			id: param._id,
-			bio: param.bio
+			id: param._id.toString(),
+			bio: param.bio,
+			dates: param.dates,
+			roles: param.roles,
+			tutor: param.tutor,
+			status: param.status,
+			account: param.account
 		})
 	}
 
 	mapTo (param) {
 		return {
-			bio: param.bio
+			bio: param.bio,
+			dates: param.dates,
+			roles: param.roles,
+			tutor: param.tutor,
+			status: param.status,
+			account: param.account
 		}
 	}
 }

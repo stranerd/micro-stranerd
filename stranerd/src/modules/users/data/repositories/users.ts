@@ -1,53 +1,49 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserBio } from '../../domain/types/users'
+import { UserBio, UserRoles } from '../../domain/types/users'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
+import { mongoose } from '@utils/commons'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
-	private mapper: UserMapper
-
-	private constructor () {
-		this.mapper = new UserMapper()
-	}
+	private mapper = new UserMapper()
 
 	static getInstance (): UserRepository {
 		if (!UserRepository.instance) UserRepository.instance = new UserRepository()
 		return UserRepository.instance
 	}
 
-	async createUserWithBio (userId: string, data: UserBio) {
-		const user = await User.findById(userId)
-		if (!user) {
-			const newUser = new User()
-			newUser._id = userId
-			newUser.bio.email = data.email
-			newUser.bio.firstName = data.firstName
-			newUser.bio.lastName = data.lastName
-			newUser.bio.photo = data.photo
-			await newUser.save()
-		} else {
-			user._id = userId
-			user.bio.email = data.email
-			user.bio.firstName = data.firstName
-			user.bio.lastName = data.lastName
-			user.bio.photo = data.photo
-		}
+	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) return
+		await User.findByIdAndUpdate(userId, {
+			$set: { bio: data, 'dates.createdAt': timestamp, _id: userId }
+		}, { upsert: true })
 	}
 
-	async updateUserWithBio (userId: string, data: UserBio) {
-		const user = await User.findById(userId)
-		if (user) {
-			user.bio.email = data.email
-			user.bio.firstName = data.firstName
-			user.bio.lastName = data.lastName
-			user.bio.photo = data.photo
-		}
+	async updateUserWithBio (userId: string, data: UserBio, _: number) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) return
+		await User.findByIdAndUpdate(userId, {
+			$set: { bio: data, _id: userId }
+		}, { upsert: true })
 	}
 
 	async findUser (userId: string) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) return null
 		const user = await User.findById(userId)
 		return this.mapper.mapFrom(user)
 	}
 
+	async markUserAsDeleted (userId: string, timestamp: number) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) return
+		await User.findByIdAndUpdate(userId, {
+			$set: { 'dates.deletedAt': timestamp }
+		}, { upsert: true })
+	}
+
+	async updateUserWithRoles (userId: string, data: UserRoles) {
+		if (!mongoose.Types.ObjectId.isValid(userId)) return
+		await User.findByIdAndUpdate(userId, {
+			$set: { roles: data }
+		}, { upsert: true })
+	}
 }

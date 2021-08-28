@@ -21,8 +21,8 @@ export class RegisterUserUseCase implements BaseUseCase<RegisterInput, TokenInpu
 			isVerified: false,
 			authTypes: [AuthTypes.email],
 			roles: {},
-			signedUpAt: new Date().getTime(),
-			lastSignedInAt: new Date().getTime()
+			signedUpAt: Date.now(),
+			lastSignedInAt: Date.now()
 		}
 
 		return await this.repository.addNewUser(userModel, AuthTypes.email)

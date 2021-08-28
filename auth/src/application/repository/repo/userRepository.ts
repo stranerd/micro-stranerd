@@ -1,13 +1,12 @@
 import { IUserRepository } from '../../contracts/repository'
 import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../domain'
 import { UserMapper } from '../mapper/user.mapper'
-import { AuthTypes, deleteCachedAccessToken, EventTypes, NotFoundError } from '@utils/commons'
+import { AuthTypes, deleteCachedAccessToken, EventTypes, mongoose, NotFoundError } from '@utils/commons'
 import { publishers } from '@utils/events'
-import User from '../mongoose-model/user.model'
+import User from '../mongooseModels/user.model'
 import { hash } from '@utils/hash'
 
 export class UserRepository implements IUserRepository {
-
 	private static instance: UserRepository
 	private userMapper: UserMapper
 
@@ -16,34 +15,34 @@ export class UserRepository implements IUserRepository {
 	}
 
 	static getInstance (): UserRepository {
-		if (!UserRepository.instance) {
-			UserRepository.instance = new UserRepository()
-		}
-
+		if (!UserRepository.instance) UserRepository.instance = new UserRepository()
 		return UserRepository.instance
 	}
 
 	async userDetails (dataVal: string, dataType = 'id'): Promise<UserEntity | null> {
-
+		if (dataType === 'id' && !mongoose.Types.ObjectId.isValid(dataVal)) return null
 		const user = await User.findOne({ [dataType === 'email' ? 'email' : '_id']: dataVal })
 		return this.userMapper.mapFrom(user)
 	}
 
 	async userWithEmailExist (email: string, type: AuthTypes): Promise<boolean> {
-		const user = await User.findOne({ email })
-		return (user?.authTypes?.indexOf?.(type) ?? -1) > -1
+		email = email.toLowerCase()
+		const user = await User.findOne({ email, authTypes: type })
+		return !!user
 	}
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
-
+		if (!mongoose.Types.ObjectId.isValid(input.userId)) return false
 		const user = await User.findOne({ _id: input.userId })
-		if (!user) throw new NotFoundError()
+		if (!user) return false
 
 		if (user.photo && user.photo.path != input.photo.path) await publishers[EventTypes.DELETEFILE].publish(user.photo)
 
 		user.firstName = input.firstName
 		user.lastName = input.lastName
 		user.photo = input.photo
+
+		user.save()
 
 		return true
 	}
@@ -71,23 +70,20 @@ export class UserRepository implements IUserRepository {
 		// update user lastSignIn
 		user.lastSignedInAt = new Date().getTime()
 
+		user.save()
+
 		return tokenPayload
 
 	}
 
 	async updateUserRole (roleInput: RoleInput): Promise<boolean> {
-
-		const user = await User.findOne({ _id: roleInput.userId })
-		if (!user) throw new NotFoundError()
-
-		const roles = user.roles
-		roles[roleInput.app][roleInput.role] = roleInput.value
-		user.roles = roles
-
+		await User.findByIdAndUpdate(roleInput.userId, {
+			$set: {
+				[`roles.${ roleInput.app }.${ roleInput.value }`]: roleInput.value
+			}
+		})
 		// clear accessToken
 		await deleteCachedAccessToken(roleInput.userId)
-
 		return true
 	}
-
 }

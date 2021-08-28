@@ -2,6 +2,8 @@ import mongoose from 'mongoose'
 import { mongoDbURI } from '../config'
 import { Logger } from '../logger'
 
+export * from './plugins'
+
 export const setupMongooseConnection = async () => {
 	try {
 		return await mongoose.connect(mongoDbURI, {
