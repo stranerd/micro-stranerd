@@ -13,7 +13,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^0.0.1-alpha-47"
+		"@stranerd/api-commons": "^0.0.1-alpha-47",
+		"@types/mongoose-paginate-v2": "^1.3.11",
+		"mongoose": "^6.0.2",
+		"mongoose-paginate-v2": "^1.4.2"
 	},
 	"devDependencies": {
 		"@types/node": "^16.6.1",

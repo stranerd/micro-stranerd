@@ -7,3 +7,4 @@ export interface UserFromModel extends UserToModel {
 export interface UserToModel {
 	bio: UserBio
 }
+
