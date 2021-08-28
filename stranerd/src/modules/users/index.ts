@@ -9,6 +9,7 @@ import { FindNotificationUseCase } from './domain/useCases/notifications/findNot
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
 import { MarkNotificationSeenUseCase } from './domain/useCases/notifications/markNotificationSeen'
 import { DeleteOldSeenNotificationsUseCase } from './domain/useCases/notifications/deleteOldSeenNotifications'
+import { GetNotificationsUseCase } from './domain/useCases/notifications/getNotifications'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
@@ -19,6 +20,7 @@ export const UpdateUserWithBio = new UpdateUserWithBioUseCase(userRepository)
 export const UpdateUserWithRoles = new UpdateUserWithRolesUseCase(userRepository)
 export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
 
+export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
 export const CreateNotification = new CreateNotificationUseCase(notificationRepository)
 export const MarkNotificationSeen = new MarkNotificationSeenUseCase(notificationRepository)
