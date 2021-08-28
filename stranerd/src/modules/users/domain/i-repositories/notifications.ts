@@ -7,4 +7,6 @@ export interface INotificationRepository {
 	createNotification (data: NotificationToModel): Promise<NotificationEntity | null>
 
 	markNotificationSeen (data: { userId: string, id: string, seen: boolean }): Promise<void>
+
+	deleteOldSeenNotifications (): Promise<void>
 }

@@ -31,4 +31,12 @@ export class NotificationRepository implements INotificationRepository {
 		if (!mongoose.Types.ObjectId.isValid(data.userId)) return
 		await Notification.findOneAndUpdate({ _id: data.id, userId: data.userId }, { seen: data.seen })
 	}
+
+	async deleteOldSeenNotifications () {
+		const weekInMs = 1000 * 60 * 60 * 24 * 7
+		await Notification.deleteMany({
+			seen: true,
+			createdAt: { $lte: Date.now() - weekInMs }
+		})
+	}
 }
