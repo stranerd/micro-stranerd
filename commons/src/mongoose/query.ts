@@ -4,6 +4,14 @@ export enum Conditions {
 	'lt', 'lte', 'gt', 'gte', 'eq', 'ne', 'in', 'nin'
 }
 
+export type QueryParams = {
+	where?: { field: string, value: any, condition: Conditions }[]
+	whereType?: 'and' | 'or'
+	sort?: { field: string, order?: 1 | -1 }
+	limit?: number
+	page?: number
+}
+
 export async function parseQueryParams<Model> (collection: mongoose.Model<Model | {}>, params: Record<string, any>): Promise<QueryResults<Model>> {
 	// Handle where clauses
 	const whereType = ['and', 'or'].indexOf(params.whereType) !== -1 ? params.whereType : 'and'
