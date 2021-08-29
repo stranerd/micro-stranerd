@@ -30,7 +30,7 @@ export class AuthRepository implements IAuthRepository {
 
 	private static instance: AuthRepository
 
-	static getInstance (): AuthRepository {
+	static getInstance () {
 		if (!AuthRepository.instance) AuthRepository.instance = new AuthRepository()
 		return AuthRepository.instance
 	}
@@ -108,7 +108,7 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send verification mail
-		const emailContent = await readEmailFromPug('src/emails/email-verification.pug', {
+		const emailContent = await readEmailFromPug('emails/email-verification.pug', {
 			meta: { clientDomain, logo },
 			token
 		})
@@ -157,7 +157,7 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send reset password mail
-		const emailContent = await readEmailFromPug('src/emails/email-reset.pug', {
+		const emailContent = await readEmailFromPug('emails/email-reset.pug', {
 			meta: { clientDomain, logo },
 			token
 		})
