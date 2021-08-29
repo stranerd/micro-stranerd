@@ -30,7 +30,7 @@ export class AuthRepository implements IAuthRepository {
 
 	private static instance: AuthRepository
 
-	static getInstance (): AuthRepository {
+	static getInstance () {
 		if (!AuthRepository.instance) AuthRepository.instance = new AuthRepository()
 		return AuthRepository.instance
 	}
