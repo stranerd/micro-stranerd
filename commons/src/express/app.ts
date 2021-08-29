@@ -66,7 +66,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 		})
 	}
 
-	return { start, socket, app }
+	return { start, socket }
 }
 
 const formatPath = (path: string) => `/${ path }/`
