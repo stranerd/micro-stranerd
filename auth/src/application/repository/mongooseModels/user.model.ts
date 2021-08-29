@@ -31,12 +31,14 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	isVerified: {
 		type: Boolean,
-		required: true
+		required: false,
+		default: false
 	},
 	authTypes: {
 		type: Array,
 		set: (types: string[]) => Array.from(new Set(types)),
-		required: true
+		required: false,
+		default: []
 	},
 	roles: {
 		type: Object,
