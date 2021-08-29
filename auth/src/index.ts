@@ -5,7 +5,7 @@ import { routes } from './server/routes'
 
 const start = async () => {
 	await setupMongooseConnection()
-	const app = getNewServerInstance(routes)
+	const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] })
 	await app.start(port)
 	await Logger.info(`${ appId } api has started listening on port`, port)
 
