@@ -8,7 +8,7 @@ import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import { isDev } from '../config'
 import path from 'path'
-import { setupSocketConnection, SocketParams } from './sockets'
+import { setupSocketConnection, SocketEmitter, SocketParams } from '../sockets'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -66,7 +66,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 		})
 	}
 
-	return { start, socket }
+	return { start, socketEmitter: new SocketEmitter(socket) }
 }
 
 const formatPath = (path: string) => `/${ path }/`

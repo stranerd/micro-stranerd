@@ -1,5 +1,5 @@
 import io from 'socket.io'
-import { StatusCodes } from './statusCodes'
+import { StatusCodes } from '../express'
 import { verifyAccessToken } from '../utils/tokens'
 
 export type SocketParams = {
