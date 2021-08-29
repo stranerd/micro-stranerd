@@ -3,9 +3,8 @@ import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class QuestionController {
-
 	static async FindQuestion (req: Request) {
-		return await FindQuestion.execute({id:req.params.id})
+		return await FindQuestion.execute({ id: req.params.id })
 	}
 
 	static async GetQuestion (req: Request) {
@@ -14,12 +13,11 @@ export class QuestionController {
 	}
 
 	static async UpdateQuestion (req: Request) {
-
 		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val,2)
+		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 		const isLessThan100 = (val: number) => Validation.isLessThan(val, 101)
 		const isLessThan4 = (val: string[]) => Validation.isLessThan(val.length, 5)
-		const isGreaterThan20 = (val: number) => Validation.isMoreThan(val,20)
+		const isGreaterThan20 = (val: number) => Validation.isMoreThan(val, 20)
 
 		const data = validate({
 			body: req.body.body,
@@ -29,28 +27,27 @@ export class QuestionController {
 		}, {
 			body: { required: true, rules: [isLongerThan2] },
 			subjectId: { required: true, rules: [] },
-			coins: { required: true, rules: [isGreaterThan20,isLessThan100] },
-			tags: { required: true, rules: [isMoreThan0,isLessThan4]  }
+			coins: { required: true, rules: [isGreaterThan20, isLessThan100] },
+			tags: { required: true, rules: [isMoreThan0, isLessThan4] }
 		})
 
 		const authUserId = req.authUser?.id
 
-		const updatedQuestion = await UpdateQuestion.execute({id: req.params.id,userId: authUserId,data})
+		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
-		if(updatedQuestion){
+		if (updatedQuestion) {
 			return updatedQuestion
 		}
 
 		throw new NotAuthorizedError()
-		
 	}
 
 	static async CreateQuestion (req: Request) {
 		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val,2)
+		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 		const isLessThan100 = (val: number) => Validation.isLessThan(val, 101)
 		const isLessThan4 = (val: string[]) => Validation.isLessThan(val.length, 5)
-		const isGreaterThan20 = (val: number) => Validation.isMoreThan(val,20)
+		const isGreaterThan20 = (val: number) => Validation.isMoreThan(val, 20)
 
 		const data = validate({
 			body: req.body.body,
@@ -60,15 +57,15 @@ export class QuestionController {
 		}, {
 			body: { required: true, rules: [isLongerThan2] },
 			subjectId: { required: true, rules: [] },
-			coins: { required: true, rules: [isGreaterThan20,isLessThan100] },
-			tags: { required: true, rules: [isMoreThan0,isLessThan4]  }
+			coins: { required: true, rules: [isGreaterThan20, isLessThan100] },
+			tags: { required: true, rules: [isMoreThan0, isLessThan4] }
 		})
 
 		const authUserId = req.authUser?.id
 
 		const user = await FindUser.execute(authUserId)
 
-		if(user){
+		if (user) {
 			return await AddQuestion.execute({
 				...data,
 				userBio: user.bio,
@@ -77,14 +74,12 @@ export class QuestionController {
 		}
 
 		throw new NotFoundError()
-
 	}
 
 	static async DeleteQuestion (req: Request) {
 		const isDeleted = await DeleteQuestion.execute(req.params.id)
 
-		if (isDeleted) return {success: isDeleted}
+		if (isDeleted) return { success: isDeleted }
 		throw new NotAuthorizedError()
 	}
-	
 }

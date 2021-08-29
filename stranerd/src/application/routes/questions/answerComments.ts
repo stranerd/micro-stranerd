@@ -3,7 +3,7 @@ import { AnswerCommentController } from '../../controllers/questions'
 
 export const answerCommentsRoutes: Route[] = [
 	{
-		path: '/comments',
+		path: '/answerComments',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const answerCommentsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/comments/:id',
+		path: '/answerComments/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -27,7 +27,7 @@ export const answerCommentsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/comments',
+		path: '/answerComments',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
