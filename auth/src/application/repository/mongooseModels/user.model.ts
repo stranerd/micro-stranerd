@@ -44,12 +44,12 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		default: {}
 	},
 	lastSignedInAt: {
-		type: Date,
+		type: Number,
 		required: false,
 		default: Date.now
 	},
 	signedUpAt: {
-		type: Date,
+		type: Number,
 		required: false,
 		default: Date.now
 	}

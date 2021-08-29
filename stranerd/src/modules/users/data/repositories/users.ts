@@ -15,9 +15,12 @@ export class UserRepository implements IUserRepository {
 
 	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
 		if (!mongoose.Types.ObjectId.isValid(userId)) return
-		await User.findByIdAndUpdate(userId, {
-			$set: { bio: data, 'dates.createdAt': timestamp, _id: userId }
-		}, { upsert: true })
+		let user = await User.findById(userId)
+		if (!user) user = new User()
+		user._id = userId
+		user.bio = data
+		user.dates.createdAt = timestamp
+		await user.save()
 	}
 
 	async updateUserWithBio (userId: string, data: UserBio, _: number) {
