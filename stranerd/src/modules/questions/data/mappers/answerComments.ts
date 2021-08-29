@@ -3,7 +3,8 @@ import { AnswerCommentEntity } from '../../domain/entities'
 import { BaseMapper } from '@utils/commons'
 
 export class AnswerCommentMapper extends BaseMapper<AnswerCommentFromModel, AnswerCommentToModel, AnswerCommentEntity> {
-	mapFrom (model: AnswerCommentFromModel) {
+	mapFrom (model) {
+		if (!model) return null
 		const {
 			_id: id, body, userId, userBio, answerId,
 			createdAt, updatedAt
@@ -14,7 +15,7 @@ export class AnswerCommentMapper extends BaseMapper<AnswerCommentFromModel, Answ
 		})
 	}
 
-	mapTo (entity: AnswerCommentEntity): AnswerCommentToModel {
+	mapTo (entity) {
 		return {
 			body: entity.body,
 			userId: entity.userId,

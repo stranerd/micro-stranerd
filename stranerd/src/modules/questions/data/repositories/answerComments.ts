@@ -1,4 +1,4 @@
-import { IAnswerCommentRepository } from '../../domain/irepositories/comments'
+import { IAnswerCommentRepository } from '../../domain/irepositories/answerComments'
 import { AnswerCommentMapper } from '../mappers'
 import { AnswerCommentFromModel, AnswerCommentToModel } from '../models'
 import { parseQueryParams, QueryParams } from '@utils/commons'

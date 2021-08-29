@@ -4,14 +4,15 @@ import { BaseMapper } from '@utils/commons'
 
 export class SubjectMapper extends BaseMapper<SubjectFromModel, SubjectToModel, SubjectEntity> {
 
-	mapFrom (model: SubjectFromModel) {
+	mapFrom (model) {
+		if (!model) return null
 		const { _id: id, name, createdAt, updatedAt } = model
 		return new SubjectEntity({
 			id, name, createdAt, updatedAt
 		})
 	}
 
-	mapTo (entity: SubjectEntity): SubjectToModel {
+	mapTo (entity) {
 		return {
 			name: entity.name
 		}
