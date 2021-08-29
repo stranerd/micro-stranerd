@@ -22,8 +22,17 @@
 		"noEmit": false,
 		"experimentalDecorators": true,
 		"paths": {
+			"@application/*": [
+				"./src/application/*"
+			],
+			"@modules/*": [
+				"./src/modules/*"
+			],
 			"@utils/*": [
 				"./src/utils/*"
+			],
+			"@index": [
+				"./src/index.ts"
 			]
 		},
 		"types": [
