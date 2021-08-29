@@ -1,5 +1,5 @@
 export * from './answers'
-export * from './comments'
+export * from './answerComments'
 export * from './questions'
 export * from './subjects'
 export * from './tags'
