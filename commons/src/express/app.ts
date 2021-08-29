@@ -1,4 +1,6 @@
 import express from 'express'
+import http from 'http'
+import io from 'socket.io'
 import cors from 'cors'
 import morgan from 'morgan'
 import fileUpload from 'express-fileupload'
@@ -30,6 +32,8 @@ const postRoutes: Route[] = [
 
 export const getNewServerInstance = (routes: Route[]) => {
 	const app = express()
+	const server = http.createServer(app)
+	const socket = new io.Server(server)
 	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
@@ -58,7 +62,7 @@ export const getNewServerInstance = (routes: Route[]) => {
 		})
 	}
 
-	return { start }
+	return { start, socket, app }
 }
 
 const formatPath = (path: string) => `/${ path }/`
