@@ -1,6 +1,6 @@
-import { RoleInput, SuccessStatus, UserEntity, UserUpdateInput } from '../../../application/domain'
-import { UserRepository } from '../../../application/repository'
-import { GetUserDetailsUseCase, UpdateUserProfileUseCase, UpdateUserRoleUseCase } from '../../../application/use-cases'
+import { RoleInput, SuccessStatus, UserEntity, UserUpdateInput } from '@modules/domain'
+import { UserRepository } from '@modules/repository'
+import { GetUserDetailsUseCase, UpdateUserProfileUseCase, UpdateUserRoleUseCase } from '@modules/use-cases'
 
 export class UserController {
 
