@@ -1,6 +1,6 @@
-import { mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { NotificationFromModel } from '../models/notifications'
-import { setupChangeStreams } from '../changeStreams/notifications'
+import { NotificationChangeStreamCallbacks } from '@utils/changeStreams/users/notifications'
 
 const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 	body: {
@@ -34,4 +34,4 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 
 export const Notification = mongoose.model<NotificationFromModel>('Notification', NotificationSchema)
 
-setupChangeStreams()
+generateChangeStreams<NotificationFromModel>(Notification, NotificationChangeStreamCallbacks).then()

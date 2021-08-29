@@ -1,6 +1,6 @@
-import { mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ReviewFromModel } from '../models/reviews'
-import { setupChangeStreams } from '../changeStreams/reviews'
+import { ReviewChangeStreamCallbacks } from '@utils/changeStreams/users/reviews'
 
 const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 	review: {
@@ -37,4 +37,4 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 
 export const Review = mongoose.model<ReviewFromModel>('Review', ReviewSchema)
 
-setupChangeStreams()
+generateChangeStreams<ReviewFromModel>(Review, ReviewChangeStreamCallbacks).then()

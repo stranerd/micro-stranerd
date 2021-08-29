@@ -4,6 +4,7 @@ import { Logger } from '../logger'
 
 export * from './plugins'
 export * from './query'
+export * from './changeStreams'
 
 export const setupMongooseConnection = async () => {
 	try {

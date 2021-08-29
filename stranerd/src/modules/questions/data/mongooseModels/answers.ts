@@ -1,5 +1,6 @@
-import { mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerFromModel } from '../models'
+import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
 
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	title: {
@@ -45,4 +46,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 })
 
 export const Answer = mongoose.model<AnswerFromModel>('Answer', Schema)
+
+generateChangeStreams<AnswerFromModel>(Answer, AnswerChangeStreamCallbacks).then()
 

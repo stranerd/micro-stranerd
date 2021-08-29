@@ -1,6 +1,6 @@
-import { mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { UserFromModel } from '../models'
-import { setupChangeStreams } from '../changeStreams'
+import { UserChangeStreamCallbacks } from '@utils/changeStreams/users'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	email: {
@@ -59,6 +59,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 
 export const User = mongoose.model<UserFromModel>('AuthUser', UserSchema)
 
-setupChangeStreams()
+generateChangeStreams<UserFromModel>(User, UserChangeStreamCallbacks).then()
 
 export default User
