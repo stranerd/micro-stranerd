@@ -1,6 +1,6 @@
 import { DatabaseGetClauses } from '@modules/core'
 import { ITagRepository } from '../../irepositories/itag'
-import { TagEntity } from '../../entities/tag'
+import { TagEntity } from '../../entities/tags'
 
 export class ListenToTagsUseCase {
 	private repository: ITagRepository

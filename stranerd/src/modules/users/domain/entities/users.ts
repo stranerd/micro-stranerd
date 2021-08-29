@@ -1,6 +1,5 @@
 import { UserAccount, UserBio, UserDates, UserRoles, UserStatus, UserTutor } from '../types/users'
 import { BaseEntity } from '@utils/commons'
-import { capitalize } from '@utils/commons'
 
 export class UserEntity extends BaseEntity {
 	public readonly id: string
@@ -31,14 +30,4 @@ type UserConstructorArgs = {
 	tutor: UserTutor
 	status: UserStatus
 	account: UserAccount
-}
-
-
-export const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
-	const first = capitalize(bio?.firstName ?? 'Anon')
-	const last = capitalize(bio?.lastName ?? 'Ymous')
-	const email = bio?.email ?? 'anon@ymous.com'
-	const avatar = bio?.photo ?? null
-
-	return { firstName: first, lastName: last, email, photo: avatar }
 }

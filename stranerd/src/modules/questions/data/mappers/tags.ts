@@ -1,13 +1,13 @@
 import { TagFromModel, TagToModel } from '../models'
-import { TagEntity } from '../../domain/entities/tag'
-import { BaseMapper } from '@stranerd/api-commons'
+import { TagEntity } from '../../domain/entities/tags'
+import { BaseMapper } from '@utils/commons'
 
 export class TagMapper extends BaseMapper<TagFromModel, TagToModel, TagEntity> {
 
 	mapFrom (model: TagFromModel) {
-		const { _id: id, count } = model
+		const { _id: id, count, createdAt, updatedAt } = model
 		return new TagEntity({
-			id, count
+			id, count, createdAt, updatedAt
 		})
 	}
 

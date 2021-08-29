@@ -1,18 +1,16 @@
 import { mongoose } from '@utils/commons'
 import { QuestionFromModel } from '../models'
-import { PaginateModel,model, Document } from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate-v2'
 
-const Schema = new mongoose.Schema({
+const Schema = new mongoose.Schema<QuestionFromModel>({
 	body: {
 		type: String,
 		required: true
 	},
-	coin: {
+	coins: {
 		type: Number,
 		required: true
 	},
-	tag: {
+	tags: {
 		type: Array,
 		required: true
 	},
@@ -24,30 +22,26 @@ const Schema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	user: {
+	userBio: {
 		type: Object,
-		required: true
+		required: false,
+		default: {}
 	},
-	answerId: {
-		type: Object,
-		required: false
+	bestAnswers: {
+		type: Array,
+		required: false,
+		default: []
 	},
-	answers: {
+	answersCount: {
 		type: Number,
-		required: false
+		required: false,
+		default: 0
 	},
-	comments: {
-		type: Object,
-		required: false
-	},
-	dates: {
-		type: Object,
-		required: true
+	commentsCount: {
+		type: Number,
+		required: false,
+		default: 0
 	}
 })
 
-Schema.plugin(mongoosePaginate)
-
-interface QuestionsModel<T extends Document> extends PaginateModel<T> {}
-
-export const Questions: QuestionsModel<QuestionFromModel> = model('Questions', Schema) as QuestionsModel<QuestionFromModel>
+export const Question = mongoose.model<QuestionFromModel>('Question', Schema)
