@@ -2,7 +2,7 @@ import io from 'socket.io'
 import { StatusCodes } from './statusCodes'
 import { verifyAccessToken } from '../utils/tokens'
 
-type Params = {
+export type SocketParams = {
 	open: string[]
 	mine: string[]
 	admin: string[]
@@ -14,7 +14,7 @@ type Callback = (params: { code: StatusCodes, message: string, channel: string }
 
 const channelExists = (channels: string[], channel: string) => channels.some((c) => channel.startsWith(c))
 
-export const setupSocketConnection = (socketInstance: io.Server, params: Params) => {
+export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams) => {
 	socketInstance.on('connection', (socket) => {
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, _, callback: Callback) => {

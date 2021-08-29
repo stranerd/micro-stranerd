@@ -8,7 +8,7 @@ export const sendNotification = async (data: NotificationToModel, title?: string
 	if (title) {
 		const user = await FindUser.execute(data.userId)
 		if (user) {
-			const content = await readEmailFromPug('src/emails/newNotification.pug', {
+			const content = await readEmailFromPug('emails/newNotification.pug', {
 				notification: { ...data, title },
 				meta: { logo, clientDomain }
 			})
