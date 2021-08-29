@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import { mongoDbURI } from '../config'
 import { Logger } from '../logger'
 
-export * from './plugins'
 export * from './query'
 export * from './changeStreams'
 
