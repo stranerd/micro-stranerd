@@ -2,6 +2,24 @@ import { generateChangeStreams, mongoose } from '@utils/commons'
 import { UserFromModel } from '../models/users'
 import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
 
+const UserMeta = {
+	questionsCount: {
+		type: Number,
+		required: false,
+		default: 0
+	},
+	answersCount: {
+		type: Number,
+		required: false,
+		default: 0
+	},
+	answerCommentsCount: {
+		type: Number,
+		required: false,
+		default: 0
+	}
+}
+
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {
 		type: Object,
@@ -66,11 +84,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 				default: 0
 			}
 		},
-		meta: {
-			type: Object,
-			required: false,
-			default: {}
-		},
+		meta: UserMeta,
 		ratings: {
 			type: Object,
 			required: false,

@@ -49,4 +49,8 @@ export class UserRepository implements IUserRepository {
 			$set: { roles: data }
 		}, { upsert: true })
 	}
+
+	async incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1) {
+		await User.findByIdAndUpdate(userId, { $inc: { [`meta/${ propertyName }`]: value } })
+	}
 }

@@ -4,6 +4,9 @@ import { CreateUserWithBioUseCase } from './domain/useCases/users/createUserWith
 import { UpdateUserWithBioUseCase } from './domain/useCases/users/updateUserWithBio'
 import { MarkUserAsDeletedUseCase } from './domain/useCases/users/markUserAsDeleted'
 import { UpdateUserWithRolesUseCase } from './domain/useCases/users/updateUserWithRoles'
+import { IncrementUserQuestionsCountUseCase } from './domain/useCases/users/incrementUserQuestionsCount'
+import { IncrementUserAnswersCountUseCase } from './domain/useCases/users/incrementUserAnswersCount'
+import { IncrementUserAnswerCommentsCountUseCase } from './domain/useCases/users/incrementUserAnswerCommentsCount'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
@@ -24,6 +27,9 @@ export const CreateUserWithBio = new CreateUserWithBioUseCase(userRepository)
 export const UpdateUserWithBio = new UpdateUserWithBioUseCase(userRepository)
 export const UpdateUserWithRoles = new UpdateUserWithRolesUseCase(userRepository)
 export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
+export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCase(userRepository)
+export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
+export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

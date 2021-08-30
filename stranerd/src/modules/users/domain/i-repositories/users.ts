@@ -11,4 +11,6 @@ export interface IUserRepository {
 	markUserAsDeleted (userId: string, timestamp: number): Promise<void>
 
 	findUser (userId: string): Promise<UserEntity | null>
+
+	incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1): Promise<void>
 }
