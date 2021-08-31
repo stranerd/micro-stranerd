@@ -7,8 +7,18 @@ const Schema = new mongoose.Schema<TagFromModel>({
 		type: Number,
 		required: false,
 		default: 0
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const Tag = mongoose.model<TagFromModel>('Tag', Schema)
 

@@ -1,5 +1,6 @@
 export * from './answers'
 export * from './answerComments'
+export * from './answerUpvotes'
 export * from './questions'
 export * from './subjects'
 export * from './tags'

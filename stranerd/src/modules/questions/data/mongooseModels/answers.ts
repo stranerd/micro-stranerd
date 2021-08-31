@@ -12,11 +12,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: true
 	},
 	questionId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userBio: {
@@ -33,17 +33,34 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: false
 	},
-	ratings: {
-		type: Object,
-		required: false,
-		default: { total: 0, count: 0 }
+	votes: {
+		upvotes: {
+			type: Number,
+			required: false,
+			default: 0
+		},
+		downvotes: {
+			type: Number,
+			required: false,
+			default: 0
+		}
 	},
 	commentsCount: {
 		type: Number,
 		required: false,
 		default: 0
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const Answer = mongoose.model<AnswerFromModel>('Answer', Schema)
 

@@ -9,7 +9,7 @@ export class FindUserUseCase implements BaseUseCase<string, UserEntity | null> {
 		this.repository = repo
 	}
 
-	async execute (id) {
+	async execute (id: string) {
 		return await this.repository.findUser(id)
 	}
 }

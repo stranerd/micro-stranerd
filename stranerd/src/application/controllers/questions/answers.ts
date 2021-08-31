@@ -23,7 +23,7 @@ export class AnswerController {
 			body: { required: true, rules: [] }
 		})
 
-		const authUserId = req.authUser?.id
+		const authUserId = req.authUser?.id!
 
 		const updatedAnswer = await UpdateAnswer.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -47,7 +47,7 @@ export class AnswerController {
 			questionId: { required: true, rules: [] }
 		})
 
-		const authUserId = req.authUser?.id
+		const authUserId = req.authUser!.id
 
 		const user = await FindUser.execute(authUserId)
 		const questionData = await FindQuestion.execute(req.body.questionId)
@@ -55,7 +55,7 @@ export class AnswerController {
 		if (user && questionData) {
 			return await AddAnswer.execute({
 				...data,
-				coins: questionData.coins,
+				coins: questionData.creditable,
 				userBio: user.bio,
 				userId: req.authUser!.id
 			})
@@ -78,7 +78,7 @@ export class AnswerController {
 	}
 
 	static async DeleteAnswer (req: Request) {
-		const isDeleted = await DeleteAnswer.execute(req.params.id)
+		const isDeleted = await DeleteAnswer.execute({ id: req.params.id, userId: req.authUser!.id })
 
 		if (isDeleted) return { success: isDeleted }
 		throw new NotAuthorizedError()

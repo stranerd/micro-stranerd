@@ -1,16 +1,15 @@
 import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
 import { Request, validate, Validation } from '@utils/commons'
+import { QueryParams } from '@stranerd/api-commons'
+import { UserBio } from '@modules/users/domain/types/users'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
-		return await GetReviews.execute(req.body)
+		return await GetReviews.execute(req.body as QueryParams)
 	}
 
 	static async findReview (req: Request) {
-		return await FindReview.execute({
-			id: req.params.id,
-			userId: req.authUser!.id
-		})
+		return await FindReview.execute(req.params.id)
 	}
 
 	static async createReview (req: Request) {
@@ -30,7 +29,7 @@ export class ReviewsController {
 
 		return await CreateReview.execute({
 			...data,
-			userBio: user?.bio ?? {},
+			userBio: user?.bio ?? {} as UserBio,
 			userId: req.authUser!.id
 		})
 	}

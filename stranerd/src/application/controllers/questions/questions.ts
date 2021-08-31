@@ -4,7 +4,7 @@ import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Vali
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
-		return await FindQuestion.execute({ id: req.params.id })
+		return await FindQuestion.execute(req.params.id)
 	}
 
 	static async GetQuestion (req: Request) {
@@ -31,7 +31,7 @@ export class QuestionController {
 			tags: { required: true, rules: [isMoreThan0, isLessThan4] }
 		})
 
-		const authUserId = req.authUser?.id
+		const authUserId = req.authUser!.id
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -61,7 +61,7 @@ export class QuestionController {
 			tags: { required: true, rules: [isMoreThan0, isLessThan4] }
 		})
 
-		const authUserId = req.authUser?.id
+		const authUserId = req.authUser!.id
 
 		const user = await FindUser.execute(authUserId)
 
@@ -69,7 +69,7 @@ export class QuestionController {
 			return await AddQuestion.execute({
 				...data,
 				userBio: user.bio,
-				userId: req.authUser!.id
+				userId: authUserId
 			})
 		}
 
@@ -105,7 +105,8 @@ export class QuestionController {
 
 
 	static async DeleteQuestion (req: Request) {
-		const isDeleted = await DeleteQuestion.execute(req.params.id)
+		const authUserId = req.authUser!.id
+		const isDeleted = await DeleteQuestion.execute({ id: req.params.id, userId: authUserId })
 
 		if (isDeleted) return { success: isDeleted }
 		throw new NotAuthorizedError()

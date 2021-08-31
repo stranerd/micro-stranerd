@@ -37,7 +37,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return this.mapper.mapFrom(answer)
 	}
 
-	async update (id: string, userId, data: AnswerToModel) {
+	async update (id: string, userId, data: Partial<AnswerToModel>) {
 		const answer = await Answer.findOneAndUpdate({ _id: id, userId }, data, { new: true })
 		return this.mapper.mapFrom(answer)!
 	}
@@ -47,28 +47,18 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answer
 	}
 
-	async rate (id: string, rating: number) {
-		const answer = await Answer.findByIdAndUpdate(id, {
-			$inc: {
-				'ratings.total': rating,
-				'ratings.count': 1
-			}
-		}, { new: true })
-		return !!answer
-	}
-
 	async modifyCommentCount (id: string, increment: boolean) {
 		const answer = await Answer.findById(id)
-		if(!answer) return false
-		if(increment) answer.commentsCount = answer.commentsCount + 1
+		if (!answer) return false
+		if (increment) answer.commentsCount = answer.commentsCount + 1
 		else answer.commentsCount = answer.commentsCount - 1
 		await answer.save()
-		return true	
+		return true
 	}
 
 	async updateAnswerUserBio (userId: string, userBio: UserBio) {
-		const answers = await Answer.updateMany({userId},{userBio})
-		if(answers.n == 0) return false
+		const answers = await Answer.updateMany({ userId }, { userBio })
+		if (answers.n === 0) return false
 		return true
 	}
 

@@ -13,7 +13,7 @@ export class UpdateSubjectUseCase extends BaseUseCase<Input, SubjectEntity> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.update(input.id, input.data)
 	}
 }

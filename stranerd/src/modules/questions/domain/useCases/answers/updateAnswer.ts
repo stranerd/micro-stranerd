@@ -3,7 +3,7 @@ import { BaseUseCase } from '@utils/commons'
 import { AnswerToModel } from '../../../data/models'
 import { AnswerEntity } from '../../entities'
 
-type Input = { id: string, userId: string, data: AnswerToModel }
+type Input = { id: string, userId: string, data: Partial<AnswerToModel> }
 
 export class UpdateAnswerUseCase extends BaseUseCase<Input, AnswerEntity> {
 	private repository: IAnswerRepository
@@ -13,7 +13,7 @@ export class UpdateAnswerUseCase extends BaseUseCase<Input, AnswerEntity> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 }

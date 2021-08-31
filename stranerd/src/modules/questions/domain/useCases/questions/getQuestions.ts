@@ -10,7 +10,7 @@ export class GetQuestionsUseCase extends BaseUseCase<QueryParams, QueryResults<Q
 		this.repository = repository
 	}
 
-	async execute (query) {
+	async execute (query: QueryParams) {
 		return await this.repository.get(query)
 	}
 }

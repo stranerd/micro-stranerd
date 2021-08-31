@@ -5,10 +5,10 @@ export class NotificationsController {
 	static async getNotifications (req: Request) {
 		const query = req.body as QueryParams
 		if (!query.where) query.where = []
-		const byUser = query.where.find((q) => q.field === 'userId')
-		if (byUser) {
-			byUser.condition = Conditions.eq
-			byUser.value = req.authUser!.id
+		const ofUser = query.where.find((q) => q.field === 'userId')
+		if (ofUser) {
+			ofUser.condition = Conditions.eq
+			ofUser.value = req.authUser!.id
 		} else query.where.push({
 			field: 'userId', condition: Conditions.eq, value: req.authUser!.id
 		})

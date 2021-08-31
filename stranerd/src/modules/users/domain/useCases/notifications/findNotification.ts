@@ -11,7 +11,7 @@ export class FindNotificationUseCase implements BaseUseCase<Input, NotificationE
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.findNotification(input)
 	}
 }

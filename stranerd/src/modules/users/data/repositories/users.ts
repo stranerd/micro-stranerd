@@ -49,4 +49,21 @@ export class UserRepository implements IUserRepository {
 			$set: { roles: data }
 		}, { upsert: true })
 	}
+
+	async incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1) {
+		await User.findByIdAndUpdate(userId, {
+			$inc: {
+				[`meta/${ propertyName }`]: value
+			}
+		})
+	}
+
+	async addUserCoins (userId: string, coins: { gold: number, bronze: number }) {
+		await User.findById(userId, {
+			$inc: {
+				'account.account.coins.gold': coins.gold,
+				'account.account.coins.bronze': coins.bronze
+			}
+		})
+	}
 }

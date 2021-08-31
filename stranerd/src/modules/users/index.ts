@@ -4,6 +4,10 @@ import { CreateUserWithBioUseCase } from './domain/useCases/users/createUserWith
 import { UpdateUserWithBioUseCase } from './domain/useCases/users/updateUserWithBio'
 import { MarkUserAsDeletedUseCase } from './domain/useCases/users/markUserAsDeleted'
 import { UpdateUserWithRolesUseCase } from './domain/useCases/users/updateUserWithRoles'
+import { IncrementUserQuestionsCountUseCase } from './domain/useCases/users/incrementUserQuestionsCount'
+import { IncrementUserAnswersCountUseCase } from './domain/useCases/users/incrementUserAnswersCount'
+import { IncrementUserAnswerCommentsCountUseCase } from './domain/useCases/users/incrementUserAnswerCommentsCount'
+import { AddUserCoinsUseCase } from './domain/useCases/users/addUserCoins'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
@@ -14,16 +18,25 @@ import { ReviewRepository } from './data/repositories/reviews'
 import { GetReviewsUseCase } from './domain/useCases/reviews/getReviews'
 import { FindReviewUseCase } from './domain/useCases/reviews/findReview'
 import { CreateReviewUseCase } from './domain/useCases/reviews/createReview'
+import { TransactionRepository } from './data/repositories/transactions'
+import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransactions'
+import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
+import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
+const transactionRepository = TransactionRepository.getInstance()
 
 export const FindUser = new FindUserUseCase(userRepository)
 export const CreateUserWithBio = new CreateUserWithBioUseCase(userRepository)
 export const UpdateUserWithBio = new UpdateUserWithBioUseCase(userRepository)
 export const UpdateUserWithRoles = new UpdateUserWithRolesUseCase(userRepository)
 export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
+export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCase(userRepository)
+export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
+export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
+export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
@@ -34,3 +47,7 @@ export const DeleteOldSeenNotifications = new DeleteOldSeenNotificationsUseCase(
 export const GetReviews = new GetReviewsUseCase(reviewRepository)
 export const FindReview = new FindReviewUseCase(reviewRepository)
 export const CreateReview = new CreateReviewUseCase(reviewRepository)
+
+export const GetTransactions = new GetTransactionsUseCase(transactionRepository)
+export const FindTransaction = new FindTransactionUseCase(transactionRepository)
+export const CreateTransaction = new CreateTransactionUseCase(transactionRepository)

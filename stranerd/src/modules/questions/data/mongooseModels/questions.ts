@@ -16,11 +16,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	subjectId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userBio: {
@@ -42,8 +42,18 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		type: Number,
 		required: false,
 		default: 0
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const Question = mongoose.model<QuestionFromModel>('Question', Schema)
 

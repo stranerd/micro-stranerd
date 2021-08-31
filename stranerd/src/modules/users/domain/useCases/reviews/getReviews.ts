@@ -9,7 +9,7 @@ export class GetReviewsUseCase implements BaseUseCase<QueryParams, QueryResults<
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: QueryParams) {
 		return await this.repository.getReviews(input)
 	}
 }
