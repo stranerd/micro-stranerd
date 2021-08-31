@@ -31,7 +31,7 @@ export class NotificationRepository implements INotificationRepository {
 	async createNotification (data: NotificationToModel) {
 		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const notification = await new Notification(data).save()
-		return this.mapper.mapFrom(notification)
+		return this.mapper.mapFrom(notification)!
 	}
 
 	async markNotificationSeen (data: { userId: string, id: string, seen: boolean }) {

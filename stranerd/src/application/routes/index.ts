@@ -2,19 +2,15 @@ import { makeController, Route, StatusCodes } from '@utils/commons'
 import { appId } from '@utils/environment'
 import { usersRoutes } from './users/users'
 import { notificationsRoutes } from './users/notifications'
-import { 
-	answerCommentsRoutes,
-	answersRoutes,
-	questionsRoutes,
-	subjectsRoutes,
-	tagsRoutes
-} from './questions'
+import { answerCommentsRoutes, answersRoutes, questionsRoutes, subjectsRoutes, tagsRoutes } from './questions'
 import { reviewsRoutes } from './users/reviews'
+import { transactionsRoutes } from './users/transactions'
 
 export const routes: Route[] = [
 	...usersRoutes,
 	...notificationsRoutes,
 	...reviewsRoutes,
+	...transactionsRoutes,
 	...answersRoutes,
 	...answerCommentsRoutes,
 	...questionsRoutes,

@@ -30,6 +30,6 @@ export class ReviewRepository implements IReviewRepository {
 	async createReview (data: ReviewToModel) {
 		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const review = await new Review(data).save()
-		return this.mapper.mapFrom(review)
+		return this.mapper.mapFrom(review)!
 	}
 }

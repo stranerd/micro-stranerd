@@ -3,7 +3,7 @@ import { IReviewRepository } from '../../i-repositories/reviews'
 import { ReviewToModel } from '../../../data/models/reviews'
 import { ReviewEntity } from '../../entities/reviews'
 
-export class CreateReviewUseCase implements BaseUseCase<ReviewToModel, ReviewEntity | null> {
+export class CreateReviewUseCase implements BaseUseCase<ReviewToModel, ReviewEntity> {
 	repository: IReviewRepository
 
 	constructor (repo: IReviewRepository) {

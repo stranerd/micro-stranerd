@@ -17,10 +17,15 @@ import { ReviewRepository } from './data/repositories/reviews'
 import { GetReviewsUseCase } from './domain/useCases/reviews/getReviews'
 import { FindReviewUseCase } from './domain/useCases/reviews/findReview'
 import { CreateReviewUseCase } from './domain/useCases/reviews/createReview'
+import { TransactionRepository } from './data/repositories/transactions'
+import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransactions'
+import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
+import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
+const transactionRepository = TransactionRepository.getInstance()
 
 export const FindUser = new FindUserUseCase(userRepository)
 export const CreateUserWithBio = new CreateUserWithBioUseCase(userRepository)
@@ -40,3 +45,7 @@ export const DeleteOldSeenNotifications = new DeleteOldSeenNotificationsUseCase(
 export const GetReviews = new GetReviewsUseCase(reviewRepository)
 export const FindReview = new FindReviewUseCase(reviewRepository)
 export const CreateReview = new CreateReviewUseCase(reviewRepository)
+
+export const GetTransactions = new GetTransactionsUseCase(transactionRepository)
+export const FindTransaction = new FindTransactionUseCase(transactionRepository)
+export const CreateTransaction = new CreateTransactionUseCase(transactionRepository)
