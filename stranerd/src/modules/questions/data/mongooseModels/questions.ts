@@ -16,11 +16,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	subjectId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userBio: {

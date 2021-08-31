@@ -10,7 +10,7 @@ export class CreateNotificationUseCase implements BaseUseCase<NotificationToMode
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: NotificationToModel) {
 		return await this.repository.createNotification(input)
 	}
 }

@@ -9,7 +9,7 @@ export class FindReviewUseCase implements BaseUseCase<string, ReviewEntity | nul
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: string) {
 		return await this.repository.findReview(input)
 	}
 }

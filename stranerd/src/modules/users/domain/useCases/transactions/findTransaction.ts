@@ -11,7 +11,7 @@ export class FindTransactionUseCase implements BaseUseCase<Input, TransactionEnt
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.findTransaction(input)
 	}
 }

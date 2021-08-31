@@ -7,6 +7,7 @@ import { UpdateUserWithRolesUseCase } from './domain/useCases/users/updateUserWi
 import { IncrementUserQuestionsCountUseCase } from './domain/useCases/users/incrementUserQuestionsCount'
 import { IncrementUserAnswersCountUseCase } from './domain/useCases/users/incrementUserAnswersCount'
 import { IncrementUserAnswerCommentsCountUseCase } from './domain/useCases/users/incrementUserAnswerCommentsCount'
+import { AddUserCoinsUseCase } from './domain/useCases/users/addUserCoins'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
@@ -35,6 +36,7 @@ export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
 export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCase(userRepository)
 export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
 export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
+export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

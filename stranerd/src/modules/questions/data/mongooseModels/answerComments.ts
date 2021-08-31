@@ -8,7 +8,7 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: true
 	},
 	userId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	answerId: {

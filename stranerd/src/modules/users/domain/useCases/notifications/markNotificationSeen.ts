@@ -10,7 +10,7 @@ export class MarkNotificationSeenUseCase implements BaseUseCase<Input, void> {
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.markNotificationSeen(input)
 	}
 }

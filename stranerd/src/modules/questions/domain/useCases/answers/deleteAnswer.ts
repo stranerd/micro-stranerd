@@ -11,7 +11,7 @@ export class DeleteAnswerUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.delete(input.id, input.userId)
 	}
 }

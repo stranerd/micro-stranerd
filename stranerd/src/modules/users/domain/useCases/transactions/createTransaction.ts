@@ -10,7 +10,7 @@ export class CreateTransactionUseCase implements BaseUseCase<TransactionToModel,
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: TransactionToModel) {
 		return await this.repository.createTransaction(input)
 	}
 }

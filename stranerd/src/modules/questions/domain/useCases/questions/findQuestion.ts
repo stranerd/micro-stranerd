@@ -10,7 +10,7 @@ export class FindQuestionUseCase extends BaseUseCase<string, QuestionEntity | nu
 		this.repository = repository
 	}
 
-	async execute (input) {
-		return await this.repository.find(input.id,input.userId)
+	async execute (id: string) {
+		return await this.repository.find(id)
 	}
 }

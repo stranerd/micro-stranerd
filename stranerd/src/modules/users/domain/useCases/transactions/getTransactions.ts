@@ -9,7 +9,7 @@ export class GetTransactionsUseCase implements BaseUseCase<QueryParams, QueryRes
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: QueryParams) {
 		return await this.repository.getTransactions(input)
 	}
 }

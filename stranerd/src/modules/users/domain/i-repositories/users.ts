@@ -13,4 +13,6 @@ export interface IUserRepository {
 	findUser (userId: string): Promise<UserEntity | null>
 
 	incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1): Promise<void>
+
+	addUserCoins (userId: string, coins: { gold: number, bronze: number })
 }

@@ -9,7 +9,7 @@ export class GetNotificationsUseCase implements BaseUseCase<QueryParams, QueryRe
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: QueryParams) {
 		return await this.repository.getNotifications(input)
 	}
 }

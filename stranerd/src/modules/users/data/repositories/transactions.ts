@@ -29,7 +29,6 @@ export class TransactionRepository implements ITransactionRepository {
 	}
 
 	async createTransaction (data: TransactionToModel) {
-		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const transaction = await new Transaction(data).save()
 		return this.mapper.mapFrom(transaction)!
 	}

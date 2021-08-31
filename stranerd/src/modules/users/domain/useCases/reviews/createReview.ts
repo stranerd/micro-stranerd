@@ -10,7 +10,7 @@ export class CreateReviewUseCase implements BaseUseCase<ReviewToModel, ReviewEnt
 		this.repository = repo
 	}
 
-	async execute (input) {
+	async execute (input: ReviewToModel) {
 		return await this.repository.createReview(input)
 	}
 }

@@ -31,17 +31,9 @@ export class QuestionRepository implements IQuestionRepository {
 		return this.mapper.mapFrom(question)!
 	}
 
-	async find (id: string, userId: string | null) {
-		
-		 if(userId) {
-			 const question = await Question.findOne({_id: id,userId})
-			 return this.mapper.mapFrom(question)
-		 } 
-		 else  {
-			const question = await Question.findById(id)
-			return this.mapper.mapFrom(question)
-		 }
-		
+	async find (id: string) {
+		const question = await Question.findById(id)
+		return this.mapper.mapFrom(question)
 	}
 
 	async update (id: string, userId: string, data: QuestionToModel) {

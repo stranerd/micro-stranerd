@@ -11,7 +11,7 @@ export class RateAnswerUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.rate(input.id, input.rating)
 	}
 }
