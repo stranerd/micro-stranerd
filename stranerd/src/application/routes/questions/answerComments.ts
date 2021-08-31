@@ -38,5 +38,18 @@ export const answerCommentsRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/answerComments/:answerId',
+		method: 'delete',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnswerCommentController.DeleteAnswerComments(req)
+				}
+			})
+		]
 	}
 ]

@@ -1,4 +1,4 @@
-import { AddQuestion, DeleteQuestion, FindQuestion, GetQuestions, UpdateQuestion } from '@modules/questions'
+import { AddQuestion, DeleteQuestion, FindQuestion, GetQuestions, MarkBestAnswer, ModifyAnswerCount, RemoveBestAnswers, UpdateAnswerUserBio, UpdateQuestion } from '@modules/questions'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -75,6 +75,34 @@ export class QuestionController {
 
 		throw new NotFoundError()
 	}
+    
+
+	static async MarkBestAnswer (req: Request) {
+
+		const authUserId = req.authUser?.id
+		const question = await FindQuestion.execute({ id: req.params.id, userId: authUserId})
+
+		 if(question){
+			 return await MarkBestAnswer.execute({id: req.params.id, answerId: req.body.answerId})
+		 }
+
+		 throw new NotAuthorizedError()
+	}
+
+
+	static async ModifyAnswerCount (req: Request) {
+		return await ModifyAnswerCount.execute({id: req.params.id, increment: req.body.type})
+	}
+  
+	static async RemoveBestAnswer (req: Request) {
+		return await RemoveBestAnswers.execute({id: req.params.id, answerId: req.body.answerId})
+	}
+
+	static async UpdateQuestionUserBio (req: Request) {
+		const authUserId = req.authUser?.id
+		return await UpdateAnswerUserBio.execute({userId: authUserId, userBio: req.body.newbio})
+	}
+
 
 	static async DeleteQuestion (req: Request) {
 		const isDeleted = await DeleteQuestion.execute(req.params.id)

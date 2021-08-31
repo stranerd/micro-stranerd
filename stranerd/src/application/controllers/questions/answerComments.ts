@@ -1,4 +1,4 @@
-import { AddAnswerComment, FindAnswerComment, GetAnswerComments } from '@modules/questions'
+import { AddAnswerComment, DeletAnswerComments, FindAnswerComment, GetAnswerComments } from '@modules/questions'
 import { FindUser } from '@modules/users'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -10,6 +10,10 @@ export class AnswerCommentController {
 	static async GetAnswerComments (req: Request) {
 		const query = req.body as QueryParams
 		return await GetAnswerComments.execute(query)
+	}
+
+	static async DeleteAnswerComments (req: Request) {
+		return await DeletAnswerComments.execute({answerId: req.params.answerId})
 	}
 
 	static async CreateAnswerComment (req: Request) {

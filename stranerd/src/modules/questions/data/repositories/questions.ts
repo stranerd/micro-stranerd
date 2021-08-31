@@ -1,8 +1,9 @@
 import { IQuestionRepository } from '../../domain/irepositories/questions'
 import { QuestionMapper } from '../mappers'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
-import { Question } from '../mongooseModels'
+import { Answer, Question } from '../mongooseModels'
 import { parseQueryParams, QueryParams } from '@utils/commons'
+import { UserBio } from '@modules/questions/domain/types/users'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -47,6 +48,44 @@ export class QuestionRepository implements IQuestionRepository {
 	async update (id: string, userId: string, data: QuestionToModel) {
 		const question = await Question.findOneAndUpdate({ _id: id, userId }, data, { new: true })
 		return this.mapper.mapFrom(question)!
+	}
+
+
+	async markBestAnswer (id: string, answerId: string) {
+		const question = await Question.findById(id)
+		if(!question) return false
+		if(question.bestAnswers.length < 1) return false
+		if(question.bestAnswers.includes(answerId)) return false
+		const answer = await Answer.findById(answerId)
+		if(answer) {
+			  answer.best = true
+			  question.bestAnswers.push(answerId)
+			  answer.save()
+			  question.save()
+		}
+		return true
+	}
+
+	async modifyAnswerCount (id: string, increment: boolean) {
+		const question = await Question.findById(id)
+		if(!question) return false
+		if(increment) question.answersCount = question.answersCount + 1
+		else question.answersCount = question.answersCount - 1
+		await question.save()
+		return true
+		
+	}
+
+	async updateQuestionUserBio (userId: string, userBio: UserBio) {
+		const questions = await Question.updateMany({userId},{userBio})
+		if(questions.n == 0) return false
+		return true
+	}
+
+	async removeBestAnswers (id: string, answerId: string) {
+		const question = await Question.findOneAndUpdate({_id: id}, { $pull: {bestAnswers: answerId }})
+		if(!question) return false
+		return true
 	}
 
 	async delete (id: string, userId: string) {

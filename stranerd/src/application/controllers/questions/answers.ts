@@ -1,4 +1,4 @@
-import { AddAnswer, DeleteAnswer, FindAnswer, FindQuestion, GetAnswers, UpdateAnswer } from '@modules/questions'
+import { AddAnswer, DeleteAnswer, DeletQuestionAnswers, FindAnswer, FindQuestion, GetAnswers, ModifyCommentCount, UpdateAnswer, UpdateAnswerUserBio } from '@modules/questions'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -62,6 +62,19 @@ export class AnswerController {
 		}
 
 		throw new NotFoundError()
+	}
+
+	static async ModifyCommentCount (req: Request) {
+		return await ModifyCommentCount.execute({id: req.params.id, increment: req.body.type})
+	}
+
+	static async UpdateUserBio (req: Request) {
+		const authUserId = req.authUser?.id
+		return await UpdateAnswerUserBio.execute({userId: authUserId, userBio: req.body.newbio})
+	}
+
+	static async DeleteQuestionAnswers (req: Request) {
+		return await DeletQuestionAnswers.execute({questionId: req.params.questionId})
 	}
 
 	static async DeleteAnswer (req: Request) {

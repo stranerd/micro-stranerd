@@ -65,4 +65,43 @@ export const answersRoutes: Route[] = [
 			})
 		]
 	},
+	{
+		path: '/answers/:id/comment_count',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnswerController.ModifyCommentCount(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/answers/user_bio',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnswerController.UpdateUserBio(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/answers/:questionId/question',
+		method: 'delete',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnswerController.DeleteQuestionAnswers(req)
+				}
+			})
+		]
+	},
 ]
