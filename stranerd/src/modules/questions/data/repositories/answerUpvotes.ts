@@ -28,42 +28,42 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 
 	async add (data: AnswerUpvoteToModel) {
 		const session = await mongoose.startSession()
-		const upvote = await session.withTransaction(async () => {
-			let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId })
-			if (!upvote) {
+		try {
+			let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId }).session(session)
+			if (!upvote || upvote.answerId !== data.answerId) {
 				upvote = new AnswerUpvote(data)
 				await Answer.findByIdAndUpdate(data.answerId, {
 					$inc: {
-						votes: {
-							[upvote.vote === 1 ? 'upvotes' : 'downvotes']: 1
-						}
+						[upvote.vote === 1 ? 'votes.upvotes' : 'votes.downvotes']: 1
 					}
-				})
+				}, { session })
 			}
 			// the vote didnt change
-			else if (upvote.vote === data.vote) return upvote
+			else if (upvote.vote === data.vote) return this.mapper.mapFrom(upvote)!
 			// change answer upvote to downvote
 			else if (upvote.vote === 1) await Answer.findByIdAndUpdate(data.answerId, {
 				$inc: {
-					votes: {
-						upvotes: -1,
-						downvotes: 1
-					}
+					'votes.upvotes': -1,
+					'votes.downvotes': 1
 				}
-			})
+			}, { session })
 			// change answer downvote to upvote
 			else if (upvote.vote === -1) await Answer.findByIdAndUpdate(data.answerId, {
 				$inc: {
-					votes: {
-						upvotes: 1,
-						downvotes: -1
-					}
+					'votes.upvotes': 1,
+					'votes.downvotes': -1
 				}
-			})
+			}, { session })
 			upvote.vote = data.vote
-			return await upvote.save()
-		})
-		return this.mapper.mapFrom(upvote)!
+			await upvote.save({ session })
+			await session.commitTransaction()
+			session.endSession()
+			return this.mapper.mapFrom(upvote)!
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
 	}
 
 	async find (id: string) {

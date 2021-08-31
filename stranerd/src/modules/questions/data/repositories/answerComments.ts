@@ -35,4 +35,9 @@ export class AnswerCommentRepository implements IAnswerCommentRepository {
 		const comment = await AnswerComment.findById(id)
 		return this.mapper.mapFrom(comment)
 	}
+
+	async deleteAnswerComments (answerId: string) {
+		const comments = await AnswerComment.deleteMany({ answerId })
+		return !!comments.ok
+	}
 }

@@ -65,4 +65,17 @@ export const questionsRoutes: Route[] = [
 			})
 		]
 	},
+	{
+		path: '/questions/:id/best',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await QuestionController.MarkBestAnswer(req)
+				}
+			})
+		]
+	}
 ]

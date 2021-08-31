@@ -1,4 +1,11 @@
-import { AddQuestion, DeleteQuestion, FindQuestion, GetQuestions, UpdateQuestion } from '@modules/questions'
+import {
+	AddQuestion,
+	DeleteQuestion,
+	FindQuestion,
+	GetQuestions,
+	MarkBestAnswer,
+	UpdateQuestion
+} from '@modules/questions'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -35,10 +42,7 @@ export class QuestionController {
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
-		if (updatedQuestion) {
-			return updatedQuestion
-		}
-
+		if (updatedQuestion) return updatedQuestion
 		throw new NotAuthorizedError()
 	}
 
@@ -65,21 +69,26 @@ export class QuestionController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) {
-			return await AddQuestion.execute({
-				...data,
-				userBio: user.bio,
-				userId: authUserId
-			})
-		}
-
+		if (user) return await AddQuestion.execute({
+			...data,
+			userBio: user.bio,
+			userId: authUserId
+		})
 		throw new NotFoundError()
+	}
+
+	static async MarkBestAnswer (req: Request) {
+		const authUserId = req.authUser!.id
+		await MarkBestAnswer.execute({
+			id: req.params.id,
+			answerId: req.body.answerId,
+			userId: authUserId
+		})
 	}
 
 	static async DeleteQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 		const isDeleted = await DeleteQuestion.execute({ id: req.params.id, userId: authUserId })
-
 		if (isDeleted) return { success: isDeleted }
 		throw new NotAuthorizedError()
 	}

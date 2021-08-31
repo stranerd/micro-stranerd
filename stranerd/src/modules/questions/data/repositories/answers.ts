@@ -3,6 +3,7 @@ import { AnswerMapper } from '../mappers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels'
 import { parseQueryParams, QueryParams } from '@utils/commons'
+import { UserBio } from '@modules/questions/domain/types/users'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository
@@ -44,5 +45,23 @@ export class AnswerRepository implements IAnswerRepository {
 	async delete (id: string, userId: string) {
 		const answer = await Answer.findOneAndDelete({ _id: id, userId })
 		return !!answer
+	}
+
+	async modifyCommentsCount (id: string, increment: boolean) {
+		const answer = await Answer.findByIdAndUpdate(id, {
+			$inc: { commentsCount: increment ? 1 : -1 }
+		})
+		return !!answer
+	}
+
+	async updateAnswersUserBio (userId: string, userBio: UserBio) {
+		const answers = await Answer.updateMany({ userId }, { userBio })
+		return !!answers.ok
+
+	}
+
+	async deleteQuestionAnswers (questionId: string) {
+		const answers = await Answer.deleteMany({ questionId })
+		return !!answers.ok
 	}
 }

@@ -1,7 +1,9 @@
 import { ITagRepository } from '../../irepositories/tags'
 import { BaseUseCase } from '@utils/commons'
 
-export class DecrementTagCountUseCase extends BaseUseCase<string, boolean> {
+type Input = { tagIds: string[], increment: boolean }
+
+export class UpdateCountUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ITagRepository
 
 	constructor (repository: ITagRepository) {
@@ -9,7 +11,7 @@ export class DecrementTagCountUseCase extends BaseUseCase<string, boolean> {
 		this.repository = repository
 	}
 
-	async execute (id: string) {
-		return await this.repository.decrementCount(id)
+	async execute (input) {
+		return await this.repository.updateTagsCount(input.tagIds, input.increment)
 	}
 }

@@ -66,7 +66,6 @@ export class AnswerController {
 
 	static async DeleteAnswer (req: Request) {
 		const isDeleted = await DeleteAnswer.execute({ id: req.params.id, userId: req.authUser!.id })
-
 		if (isDeleted) return { success: isDeleted }
 		throw new NotAuthorizedError()
 	}
