@@ -99,10 +99,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^0.0.1-alpha-63":
-  version "0.0.1-alpha-63"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-63.tgz#52af60d0a54a33e06b2c30d26d62eb792b3d760e"
-  integrity sha512-CdzzdWNULDWmW92GTtfpXyRZCEiu++Dss34G70F74uQGa0Uq8F8PzMH8TnqfK8brec4l38g5cjKq33zjssElJg==
+"@stranerd/api-commons@^0.0.1-alpha-64":
+  version "0.0.1-alpha-64"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-64.tgz#b5be378be079c89583ce9d36e23b1b843ebcc40b"
+  integrity sha512-v7CAGronjZTRy3C1TI7abRVJYRPjUK69ZNRjyr4k60CSVIiTw7TlUeNM0GNkcTqAgBX9mBszFYgcM6TZvxBYsQ==
   dependencies:
     "@stranerd/validate" "^1.1.6"
     amqplib "^0.8.0"
@@ -113,7 +113,6 @@
     express-fileupload "^1.2.1"
     jsonwebtoken "^8.5.1"
     mongoose "^5.13.7"
-    mongoose-paginate-v2 "^1.4.2"
     morgan "^1.10.0"
     pug "^3.0.2"
     redis "^3.1.2"
@@ -2013,11 +2012,6 @@ mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
-
-mongoose-paginate-v2@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.4.2.tgz#482cea73f4a0bd49131ef9004694c73cae93b73e"
-  integrity sha512-b7FBe7fasJazhlTIfMSPyIST04yvobASXKmUt3ducnvYThulCyGSPhPcSYOzXcPmqBR4tpMnafIJxv+8GjM+UA==
 
 mongoose@^5.13.7:
   version "5.13.7"
