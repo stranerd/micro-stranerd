@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/commons'
 import { UserBio } from '../types/users'
+import { BEST_ANSWERS_COUNT, QUESTION_DISCOUNT } from '@utils/constants'
 
 export class QuestionEntity extends BaseEntity {
 	public readonly id: string
@@ -33,6 +34,10 @@ export class QuestionEntity extends BaseEntity {
 		this.commentsCount = commentsCount ?? 0
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
+	}
+
+	get creditable () {
+		return Math.floor(this.coins * QUESTION_DISCOUNT / BEST_ANSWERS_COUNT)
 	}
 }
 

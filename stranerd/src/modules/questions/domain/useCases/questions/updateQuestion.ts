@@ -3,7 +3,7 @@ import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase } from '@utils/commons'
 import { QuestionEntity } from '../../entities'
 
-type Input = { id: string, userId: string, data: QuestionToModel }
+type Input = { id: string, userId: string, data: Partial<QuestionToModel> }
 
 export class UpdateQuestionUseCase extends BaseUseCase<Input, QuestionEntity> {
 	private repository: IQuestionRepository

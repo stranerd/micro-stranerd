@@ -36,7 +36,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return this.mapper.mapFrom(answer)
 	}
 
-	async update (id: string, userId, data: AnswerToModel) {
+	async update (id: string, userId, data: Partial<AnswerToModel>) {
 		const answer = await Answer.findOneAndUpdate({ _id: id, userId }, data, { new: true })
 		return this.mapper.mapFrom(answer)!
 	}
@@ -53,11 +53,6 @@ export class AnswerRepository implements IAnswerRepository {
 				'ratings.count': 1
 			}
 		}, { new: true })
-		return !!answer
-	}
-
-	async markAsBestAnswer (questionId: string, answerId: string): Promise<boolean> {
-		const answer = await Answer.findOneAndUpdate({ _id: answerId, questionId }, { best: true }, { new: true })
 		return !!answer
 	}
 }

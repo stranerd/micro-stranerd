@@ -23,7 +23,7 @@ export class AnswerCommentController {
 			answerId: { required: true, rules: [] }
 		})
 
-		const authUserId = req.authUser?.id
+		const authUserId = req.authUser!.id
 
 		const user = await FindUser.execute(authUserId)
 

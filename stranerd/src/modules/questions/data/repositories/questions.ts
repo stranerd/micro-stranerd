@@ -36,7 +36,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return this.mapper.mapFrom(question)
 	}
 
-	async update (id: string, userId: string, data: QuestionToModel) {
+	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
 		const question = await Question.findOneAndUpdate({ _id: id, userId }, data, { new: true })
 		return this.mapper.mapFrom(question)!
 	}

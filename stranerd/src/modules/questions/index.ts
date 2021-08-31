@@ -21,7 +21,6 @@ import { GetAnswersUseCase } from './domain/useCases/answers/getAnswers'
 import { AddAnswerUseCase } from './domain/useCases/answers/addAnswer'
 import { FindAnswerUseCase } from './domain/useCases/answers/findAnswer'
 import { DeleteAnswerUseCase } from './domain/useCases/answers/deleteAnswer'
-import { MarkAsBestAnswerUseCase } from './domain/useCases/answers/markAsBestAnswer'
 import { RateAnswerUseCase } from './domain/useCases/answers/rateAnswer'
 import { UpdateAnswerUseCase } from './domain/useCases/answers/updateAnswer'
 import { GetQuestionsUseCase } from './domain/useCases/questions/getQuestions'
@@ -56,7 +55,6 @@ export const FindAnswer = new FindAnswerUseCase(answerRepository)
 export const AddAnswer = new AddAnswerUseCase(answerRepository)
 export const UpdateAnswer = new UpdateAnswerUseCase(answerRepository)
 export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
-export const MarkAsBestAnswer = new MarkAsBestAnswerUseCase(answerRepository)
 export const RateAnswer = new RateAnswerUseCase(answerRepository)
 
 export const GetQuestions = new GetQuestionsUseCase(questionRepository)
