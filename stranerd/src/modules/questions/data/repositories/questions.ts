@@ -6,6 +6,7 @@ import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types/users'
 import { UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
+import { IncrementUserQuestionsCount } from '@modules/users'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -102,6 +103,9 @@ export class QuestionRepository implements IQuestionRepository {
 				tagIds: question.tags,
 				increment: false
 			})
+
+			await IncrementUserQuestionsCount.execute({ id: question.userId, value: -1 })
+			// TODO: remove from users question list
 		}
 		return !!question
 	}

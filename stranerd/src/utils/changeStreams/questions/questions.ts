@@ -23,7 +23,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			increment: true
 		})
 
-		await IncrementUserQuestionsCount.execute({ id: question.id, value: 1 })
+		await IncrementUserQuestionsCount.execute({ id: question.userId, value: 1 })
 
 		// TODO: add to users question list
 
@@ -32,12 +32,14 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 				{ field: 'tutor.strongestSubject', value: question.subjectId, condition: Conditions.eq }
 			]
 		})
-		tutors.results.map((t) => t.id).map((id) => {
-			sendNotification(id, {
-				body: 'A new question was just asked on Stranerd that you might be interested in. Go check it out',
-				action: `/questions/${ question.id }`
-			}, 'New Question')
-		})
+		await Promise.all([
+			tutors.results.map((t) => t.id).map(async (id) => {
+				await sendNotification(id, {
+					body: 'A new question was just asked on Stranerd that you might be interested in. Go check it out',
+					action: `/questions/${ question.id }`
+				}, 'New Question')
+			})
+		])
 	},
 	updated: async (questionModel) => {
 		const question = new QuestionMapper().mapFrom(questionModel)!
@@ -47,10 +49,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	deleted: async (questionModel) => {
 		await getSocketEmitter().emitDeleted('questions', { id: questionModel._id })
 		await getSocketEmitter().emitDeleted(`questions/${ questionModel._id }`, { id: questionModel._id })
-
-		await IncrementUserQuestionsCount.execute({ id: questionModel._id, value: -1 })
-
-		// TODO: remove from users question list
 
 		await DeleteQuestionAnswers.execute({ questionId: questionModel._id })
 	}
