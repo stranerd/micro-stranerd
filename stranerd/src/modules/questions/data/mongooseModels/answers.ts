@@ -33,10 +33,17 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: false
 	},
-	ratings: {
-		type: Object,
-		required: false,
-		default: { total: 0, count: 0 }
+	votes: {
+		upvotes: {
+			type: Number,
+			required: false,
+			default: 0
+		},
+		downvotes: {
+			type: Number,
+			required: false,
+			default: 0
+		}
 	},
 	commentsCount: {
 		type: Number,

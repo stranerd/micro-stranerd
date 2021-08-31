@@ -1,8 +1,8 @@
 import { IAnswerUpvoteRepository } from '../../domain/irepositories/answerUpvotes'
 import { AnswerUpvoteMapper } from '../mappers'
 import { AnswerUpvoteFromModel, AnswerUpvoteToModel } from '../models'
-import { parseQueryParams, QueryParams } from '@utils/commons'
-import { AnswerUpvote } from '@modules/questions/data/mongooseModels'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { Answer, AnswerUpvote } from '../mongooseModels'
 
 export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 	private static instance: AnswerUpvoteRepository
@@ -27,10 +27,42 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 	}
 
 	async add (data: AnswerUpvoteToModel) {
-		let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId })
-		if (!upvote) upvote = new AnswerUpvote(data)
-		upvote.vote = data.vote
-		await upvote.save()
+		const session = await mongoose.startSession()
+		const upvote = await session.withTransaction(async () => {
+			let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId })
+			if (!upvote) {
+				upvote = new AnswerUpvote(data)
+				await Answer.findByIdAndUpdate(data.answerId, {
+					$inc: {
+						votes: {
+							[upvote.vote === 1 ? 'upvotes' : 'downvotes']: 1
+						}
+					}
+				})
+			}
+			// the vote didnt change
+			else if (upvote.vote === data.vote) return upvote
+			// change answer upvote to downvote
+			else if (upvote.vote === 1) await Answer.findByIdAndUpdate(data.answerId, {
+				$inc: {
+					votes: {
+						upvotes: -1,
+						downvotes: 1
+					}
+				}
+			})
+			// change answer downvote to upvote
+			else if (upvote.vote === -1) await Answer.findByIdAndUpdate(data.answerId, {
+				$inc: {
+					votes: {
+						upvotes: 1,
+						downvotes: -1
+					}
+				}
+			})
+			upvote.vote = data.vote
+			return await upvote.save()
+		})
 		return this.mapper.mapFrom(upvote)!
 	}
 

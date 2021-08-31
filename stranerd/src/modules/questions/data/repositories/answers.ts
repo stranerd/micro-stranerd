@@ -45,14 +45,4 @@ export class AnswerRepository implements IAnswerRepository {
 		const answer = await Answer.findOneAndDelete({ _id: id, userId })
 		return !!answer
 	}
-
-	async rate (id: string, rating: number) {
-		const answer = await Answer.findByIdAndUpdate(id, {
-			$inc: {
-				'ratings.total': rating,
-				'ratings.count': 1
-			}
-		}, { new: true })
-		return !!answer
-	}
 }
