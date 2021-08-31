@@ -27,18 +27,18 @@ import { FindQuestionUseCase } from './domain/useCases/questions/findQuestion'
 import { AddQuestionUseCase } from './domain/useCases/questions/addQuestion'
 import { UpdateQuestionUseCase } from './domain/useCases/questions/updateQuestion'
 import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestion'
-import { DeletQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
-import { ModifyCommentCountUseCase } from './domain/useCases/answers/modifyCommentCount'
-import { UpdateAnswerUserBioUseCase } from './domain/useCases/answers/updateAnswerUserBio'
+import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
+import { ModifyCommentsCountUseCase } from './domain/useCases/answers/modifyCommentsCount'
+import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
 import { MarkBestAnswerUseCase } from './domain/useCases/questions/markBestAnswer'
-import { ModifyAnswerCountUseCase } from './domain/useCases/questions/modifyAnswerCount'
-import { RemoveBestAnswersUseCase } from './domain/useCases/questions/removeBestAnswers'
-import { UpdateQuestionUserBioUseCase } from './domain/useCases/questions/updateQuestionUserBio'
+import { ModifyAnswersCountUseCase } from './domain/useCases/questions/modifyAnswersCount'
+import { RemoveBestAnswerUseCase } from './domain/useCases/questions/removeBestAnswer'
+import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updateQuestionsUserBio'
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
 import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
 import { CreateAnswerDownvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerDownvote'
-import { DeleteAnswerCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComment'
+import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
 
 const tagRepository = TagRepository.getInstance()
 const subjectRepository = SubjectRepository.getInstance()
@@ -60,16 +60,16 @@ export const UpdateSubject = new UpdateSubjectUseCase(subjectRepository)
 export const GetAnswerComments = new GetAnswerCommentsUseCase(answerCommentRepository)
 export const FindAnswerComment = new FindAnswerCommentUseCase(answerCommentRepository)
 export const AddAnswerComment = new AddAnswerCommentUseCase(answerCommentRepository)
-export const DeleteAnswerComments = new DeleteAnswerCommentsUseCase(answerCommentRepository)
+export const DeleteAnswerComments = new DeleteAnswersCommentsUseCase(answerCommentRepository)
 
 export const GetAnswers = new GetAnswersUseCase(answerRepository)
 export const FindAnswer = new FindAnswerUseCase(answerRepository)
 export const AddAnswer = new AddAnswerUseCase(answerRepository)
 export const UpdateAnswer = new UpdateAnswerUseCase(answerRepository)
 export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
-export const DeleteQuestionAnswers = new DeletQuestionAnswersUseCase(answerRepository)
-export const ModifyCommentCount = new ModifyCommentCountUseCase(answerRepository)
-export const UpdateAnswerUserBio = new UpdateAnswerUserBioUseCase(answerRepository)
+export const DeleteQuestionAnswers = new DeleteQuestionAnswersUseCase(answerRepository)
+export const ModifyCommentsCount = new ModifyCommentsCountUseCase(answerRepository)
+export const UpdateAnswersUserBio = new UpdateAnswersUserBioUseCase(answerRepository)
 
 export const GetQuestions = new GetQuestionsUseCase(questionRepository)
 export const FindQuestion = new FindQuestionUseCase(questionRepository)
@@ -77,9 +77,9 @@ export const AddQuestion = new AddQuestionUseCase(questionRepository)
 export const UpdateQuestion = new UpdateQuestionUseCase(questionRepository)
 export const DeleteQuestion = new DeleteQuestionUseCase(questionRepository)
 export const MarkBestAnswer = new MarkBestAnswerUseCase(questionRepository)
-export const ModifyAnswerCount = new ModifyAnswerCountUseCase(questionRepository)
-export const RemoveBestAnswers = new RemoveBestAnswersUseCase(questionRepository)
-export const UpdateQuestionUserBio = new UpdateQuestionUserBioUseCase(questionRepository)
+export const ModifyAnswersCount = new ModifyAnswersCountUseCase(questionRepository)
+export const RemoveBestAnswer = new RemoveBestAnswerUseCase(questionRepository)
+export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(questionRepository)
 
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)

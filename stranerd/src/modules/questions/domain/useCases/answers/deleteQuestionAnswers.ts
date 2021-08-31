@@ -3,7 +3,7 @@ import { BaseUseCase } from '@utils/commons'
 
 type Input = { questionId: string }
 
-export class DeletQuestionAnswersUseCase extends BaseUseCase<Input, boolean> {
+export class DeleteQuestionAnswersUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IAnswerRepository
 
 	constructor (repository: IAnswerRepository) {

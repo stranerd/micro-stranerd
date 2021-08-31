@@ -1,9 +1,9 @@
 import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { id: string, answerId: string }
+type Input = { id: string, increment: boolean }
 
-export class RemoveBestAnswersUseCase extends BaseUseCase<Input, boolean> {
+export class ModifyAnswersCountUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IQuestionRepository
 
 	constructor (repository: IQuestionRepository) {
@@ -12,6 +12,6 @@ export class RemoveBestAnswersUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input) {
-		return await this.repository.removeBestAnswers(input.id,input.answerId)
+		return await this.repository.modifyAnswersCount(input.id, input.increment)
 	}
 }

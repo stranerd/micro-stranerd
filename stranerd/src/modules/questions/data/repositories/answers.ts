@@ -47,23 +47,21 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answer
 	}
 
-	async modifyCommentCount (id: string, increment: boolean) {
-		const answer = await Answer.findById(id)
-		if (!answer) return false
-		if (increment) answer.commentsCount = answer.commentsCount + 1
-		else answer.commentsCount = answer.commentsCount - 1
-		await answer.save()
-		return true
+	async modifyCommentsCount (id: string, increment: boolean) {
+		const answer = await Answer.findByIdAndUpdate(id, {
+			$inc: { commentsCount: increment ? 1 : -1 }
+		})
+		return !!answer
 	}
 
-	async updateAnswerUserBio (userId: string, userBio: UserBio) {
+	async updateAnswersUserBio (userId: string, userBio: UserBio) {
 		const answers = await Answer.updateMany({ userId }, { userBio })
-		if (answers.n === 0) return false
-		return true
+		return answers.ok === 1
+
 	}
 
 	async deleteQuestionAnswers (questionId: string) {
 		const answers = await Answer.deleteMany({ questionId })
-		return !!answers
+		return answers.ok
 	}
 }

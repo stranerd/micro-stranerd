@@ -3,7 +3,7 @@ import { BaseUseCase } from '@utils/commons'
 
 type Input = { answerId: string }
 
-export class DeleteAnswerCommentsUseCase extends BaseUseCase<Input, boolean> {
+export class DeleteAnswersCommentsUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IAnswerCommentRepository
 
 	constructor (repository: IAnswerCommentRepository) {
@@ -12,6 +12,6 @@ export class DeleteAnswerCommentsUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input) {
-		return await this.repository.deleteAnswerComment(input.answerId)
+		return await this.repository.deleteAnswerComments(input.answerId)
 	}
 }

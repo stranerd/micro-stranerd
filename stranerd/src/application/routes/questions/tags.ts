@@ -25,17 +25,5 @@ export const tagsRoutes: Route[] = [
 				}
 			})
 		]
-	},
-	{
-		path: '/tags/count',
-		method: 'put',
-		controllers: [
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await TagController.ModifyTagCounts(req)
-				}
-			})
-		]
 	}
 ]

@@ -1,9 +1,10 @@
 import { IAnswerRepository } from '../../irepositories/answers'
 import { BaseUseCase } from '@utils/commons'
+import { UserBio } from '../../types/users'
 
-type Input = { id: string, increment: boolean }
+type Input = { userId: string, userBio: UserBio }
 
-export class ModifyCommentCountUseCase extends BaseUseCase<Input, boolean> {
+export class UpdateAnswersUserBioUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IAnswerRepository
 
 	constructor (repository: IAnswerRepository) {
@@ -12,6 +13,6 @@ export class ModifyCommentCountUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input) {
-		return await this.repository.modifyCommentCount(input.id,input.increment)
+		return await this.repository.updateAnswersUserBio(input.userId, input.userBio)
 	}
 }

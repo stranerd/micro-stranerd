@@ -4,5 +4,5 @@ import { TagEntity } from '../entities/tags'
 export interface ITagRepository {
 	get: (query: QueryParams) => Promise<QueryResults<TagEntity>>
 	find: (id: string) => Promise<TagEntity | null>
-	updateTagCount: (tagIds: string[], increment: boolean) => Promise<boolean>
+	updateTagsCount: (tagIds: string[], increment: boolean) => Promise<boolean>
 }

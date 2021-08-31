@@ -6,5 +6,5 @@ export interface IAnswerCommentRepository {
 	add: (data: AnswerCommentToModel) => Promise<AnswerCommentEntity>
 	get: (query: QueryParams) => Promise<QueryResults<AnswerCommentEntity>>
 	find: (id: string) => Promise<AnswerCommentEntity | null>
-	deleteAnswerComment: (answerId: string) => Promise<boolean>
+	deleteAnswerComments: (answerId: string) => Promise<boolean>
 }

@@ -12,6 +12,6 @@ export class UpdateCountUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input) {
-		return await this.repository.updateTagCount(input.tagIds,input.increment)
+		return await this.repository.updateTagsCount(input.tagIds, input.increment)
 	}
 }

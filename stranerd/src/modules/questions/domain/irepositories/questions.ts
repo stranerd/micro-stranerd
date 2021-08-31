@@ -9,8 +9,8 @@ export interface IQuestionRepository {
 	find: (id: string) => Promise<QuestionEntity | null>
 	update: (id: string, userId: string, data: Partial<QuestionToModel>) => Promise<QuestionEntity>
 	delete: (id: string, userId: string) => Promise<boolean>
-	removeBestAnswers: (id: string, answerId: string) => Promise<boolean>
-	updateQuestionUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
-	modifyAnswerCount: (id: string, increment: boolean) => Promise<boolean>
-	markBestAnswer: (id: string, answerId: string) => Promise<boolean>
+	removeBestAnswer: (id: string, answerId: string) => Promise<boolean>
+	updateQuestionsUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
+	modifyAnswersCount: (id: string, increment: boolean) => Promise<boolean>
+	markBestAnswer: (id: string, answerId: string, userId: string) => Promise<boolean>
 }
