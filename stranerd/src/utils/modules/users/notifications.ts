@@ -4,9 +4,9 @@ import { publishers } from '@utils/events'
 import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain, logo } from '@utils/environment'
 
-export const sendNotification = async (data: NotificationToModel, title?: string) => {
+export const sendNotification = async (userId: string, data: Omit<NotificationToModel, 'userId'>, title?: string) => {
 	if (title) {
-		const user = await FindUser.execute(data.userId)
+		const user = await FindUser.execute(userId)
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
 				notification: { ...data, title },
@@ -19,5 +19,5 @@ export const sendNotification = async (data: NotificationToModel, title?: string
 				content
 			})
 		}
-	} else await CreateNotification.execute(data)
+	} else await CreateNotification.execute({ ...data, userId })
 }

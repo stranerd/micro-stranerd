@@ -22,12 +22,14 @@ import { TransactionRepository } from './data/repositories/transactions'
 import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransactions'
 import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
 import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
+import { GetUsersUseCase } from '@modules/users/domain/useCases/users/getUsers'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
 const transactionRepository = TransactionRepository.getInstance()
 
+export const GetUsers = new GetUsersUseCase(userRepository)
 export const FindUser = new FindUserUseCase(userRepository)
 export const CreateUserWithBio = new CreateUserWithBioUseCase(userRepository)
 export const UpdateUserWithBio = new UpdateUserWithBioUseCase(userRepository)

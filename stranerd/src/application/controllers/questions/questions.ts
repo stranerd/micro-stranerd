@@ -20,22 +20,16 @@ export class QuestionController {
 	}
 
 	static async UpdateQuestion (req: Request) {
-		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
 		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
 		const isLessThan100 = (val: number) => Validation.isLessThan(val, 101)
-		const isLessThan4 = (val: string[]) => Validation.isLessThan(val.length, 5)
 		const isGreaterThan20 = (val: number) => Validation.isMoreThan(val, 20)
 
 		const data = validate({
 			body: req.body.body,
-			subjectId: req.body.subjectId,
-			coins: req.body.coin,
-			tags: req.body.tags
+			coins: req.body.coins
 		}, {
 			body: { required: true, rules: [isLongerThan2] },
-			subjectId: { required: true, rules: [] },
-			coins: { required: true, rules: [isGreaterThan20, isLessThan100] },
-			tags: { required: true, rules: [isMoreThan0, isLessThan4] }
+			coins: { required: true, rules: [isGreaterThan20, isLessThan100] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -56,7 +50,7 @@ export class QuestionController {
 		const data = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
-			coins: req.body.coin,
+			coins: req.body.coins,
 			tags: req.body.tags
 		}, {
 			body: { required: true, rules: [isLongerThan2] },

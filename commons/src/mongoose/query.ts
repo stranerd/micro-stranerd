@@ -1,7 +1,8 @@
 import { mongoose } from './index'
 
 export enum Conditions {
-	'lt', 'lte', 'gt', 'gte', 'eq', 'ne', 'in', 'nin'
+	'lt' = 'lt', 'lte' = 'lte', 'gt' = 'gt', 'gte' = 'gte',
+	'eq' = 'eq', 'ne' = 'ne', 'in' = 'in', 'nin' = 'nin'
 }
 
 export type QueryParams = {

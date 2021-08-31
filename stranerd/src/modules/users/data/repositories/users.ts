@@ -2,7 +2,8 @@ import { IUserRepository } from '../../domain/i-repositories/users'
 import { UserBio, UserRoles } from '../../domain/types/users'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
-import { mongoose } from '@utils/commons'
+import { mongoose, parseQueryParams } from '@utils/commons'
+import { UserFromModel } from '../models/users'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
@@ -11,6 +12,14 @@ export class UserRepository implements IUserRepository {
 	static getInstance (): UserRepository {
 		if (!UserRepository.instance) UserRepository.instance = new UserRepository()
 		return UserRepository.instance
+	}
+
+	async getUsers (query) {
+		const data = await parseQueryParams<UserFromModel>(User, query)
+		return {
+			...data,
+			results: data.results.map((u) => this.mapper.mapFrom(u)!)
+		}
 	}
 
 	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
