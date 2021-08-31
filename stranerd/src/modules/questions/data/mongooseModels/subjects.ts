@@ -6,8 +6,18 @@ const Schema = new mongoose.Schema<SubjectFromModel>({
 	name: {
 		type: String,
 		required: true
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const Subject = mongoose.model<SubjectFromModel>('Subject', Schema)
 

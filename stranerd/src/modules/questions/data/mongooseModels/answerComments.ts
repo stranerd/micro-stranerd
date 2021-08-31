@@ -19,8 +19,18 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		type: Object,
 		required: false,
 		default: {}
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const AnswerComment = mongoose.model<AnswerCommentFromModel>('AnswerComment', Schema)
 

@@ -1,6 +1,7 @@
 import {
 	AnswerCommentRepository,
 	AnswerRepository,
+	AnswerUpvoteRepository,
 	QuestionRepository,
 	SubjectRepository,
 	TagRepository
@@ -14,9 +15,9 @@ import { DeleteSubjectUseCase } from './domain/useCases/subjects/deleteSubject'
 import { FindSubjectUseCase } from './domain/useCases/subjects/findSubject'
 import { GetSubjectsUseCase } from './domain/useCases/subjects/getSubjects'
 import { UpdateSubjectUseCase } from './domain/useCases/subjects/updateSubject'
-import { GetAnswerCommentsUseCase } from './domain/useCases/comments/getAnswerComments'
-import { FindAnswerCommentUseCase } from './domain/useCases/comments/findAnswerComment'
-import { AddAnswerCommentUseCase } from './domain/useCases/comments/addAnswerComment'
+import { GetAnswerCommentsUseCase } from './domain/useCases/answerComments/getAnswerComments'
+import { FindAnswerCommentUseCase } from './domain/useCases/answerComments/findAnswerComment'
+import { AddAnswerCommentUseCase } from './domain/useCases/answerComments/addAnswerComment'
 import { GetAnswersUseCase } from './domain/useCases/answers/getAnswers'
 import { AddAnswerUseCase } from './domain/useCases/answers/addAnswer'
 import { FindAnswerUseCase } from './domain/useCases/answers/findAnswer'
@@ -28,12 +29,17 @@ import { FindQuestionUseCase } from './domain/useCases/questions/findQuestion'
 import { AddQuestionUseCase } from './domain/useCases/questions/addQuestion'
 import { UpdateQuestionUseCase } from './domain/useCases/questions/updateQuestion'
 import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestion'
+import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
+import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
+import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
+import { CreateAnswerDownvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerDownvote'
 
 const tagRepository = TagRepository.getInstance()
 const subjectRepository = SubjectRepository.getInstance()
 const answerCommentRepository = AnswerCommentRepository.getInstance()
 const answerRepository = AnswerRepository.getInstance()
 const questionRepository = QuestionRepository.getInstance()
+const answerUpvoteRepository = AnswerUpvoteRepository.getInstance()
 
 export const FindTag = new FindTagUseCase(tagRepository)
 export const GetTags = new GetTagsUseCase(tagRepository)
@@ -62,3 +68,8 @@ export const FindQuestion = new FindQuestionUseCase(questionRepository)
 export const AddQuestion = new AddQuestionUseCase(questionRepository)
 export const UpdateQuestion = new UpdateQuestionUseCase(questionRepository)
 export const DeleteQuestion = new DeleteQuestionUseCase(questionRepository)
+
+export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
+export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)
+export const CreateAnswerUpvote = new CreateAnswerUpvoteUseCase(answerUpvoteRepository)
+export const CreateAnswerDownvote = new CreateAnswerDownvoteUseCase(answerUpvoteRepository)

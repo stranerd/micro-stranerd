@@ -42,8 +42,18 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: Number,
 		required: false,
 		default: 0
+	},
+	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
+	},
+	updatedAt: {
+		type: Number,
+		required: false,
+		default: Date.now()
 	}
-})
+}, { timestamps: { currentTime: Date.now } })
 
 export const Answer = mongoose.model<AnswerFromModel>('Answer', Schema)
 
