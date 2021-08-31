@@ -11,7 +11,7 @@ export class MarkBestAnswerUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.markBestAnswer(input.id, input.answerId, input.userId)
 	}
 }

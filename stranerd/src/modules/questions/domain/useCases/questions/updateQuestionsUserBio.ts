@@ -12,7 +12,7 @@ export class UpdateQuestionsUserBioUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.updateQuestionsUserBio(input.userId, input.userBio)
 	}
 }

@@ -11,7 +11,7 @@ export class RemoveBestAnswerUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.removeBestAnswer(input.id, input.answerId)
 	}
 }

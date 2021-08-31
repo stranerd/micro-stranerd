@@ -1,8 +1,8 @@
 import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
 import { QuestionFromModel } from '@modules/questions/data/models/questions'
-import { UpdateTagsCount } from '@modules/questions'
+import { DeleteQuestionAnswers, UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { GetUsers } from '@modules/users'
+import { GetUsers, IncrementUserQuestionsCount } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { QuestionMapper } from '@modules/questions/data/mappers'
@@ -11,24 +11,22 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	created: async (questionModel) => {
 		const question = new QuestionMapper().mapFrom(questionModel)!
 
-		// Broadcast new question for those connected to the channel
 		await getSocketEmitter().emitCreated('questions', question)
 
-		// Reduce user coins
 		await addUserCoins(question.userId, {
 			bronze: 0 - question.coins,
 			gold: 0
 		}, 'You paid coins to ask a question!')
 
-		// increment tags count
 		await UpdateTagsCount.execute({
 			tagIds: question.tags,
 			increment: true
 		})
 
-		// TODO: Increase user question's count
+		await IncrementUserQuestionsCount.execute({ id: question.id, value: 1 })
 
-		// Send notification to all tutors with strongest subject
+		// TODO: add to users question list
+
 		const tutors = await GetUsers.execute({
 			where: [
 				{ field: 'tutor.strongestSubject', value: question.subjectId, condition: Conditions.eq }
@@ -40,5 +38,20 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 				action: `/questions/${ question.id }`
 			}, 'New Question')
 		})
+	},
+	updated: async (questionModel) => {
+		const question = new QuestionMapper().mapFrom(questionModel)!
+		await getSocketEmitter().emitUpdated('questions', question)
+		await getSocketEmitter().emitUpdated(`questions/${ question.id }`, question)
+	},
+	deleted: async (questionModel) => {
+		await getSocketEmitter().emitDeleted('questions', { id: questionModel._id })
+		await getSocketEmitter().emitDeleted(`questions/${ questionModel._id }`, { id: questionModel._id })
+
+		await IncrementUserQuestionsCount.execute({ id: questionModel._id, value: -1 })
+
+		// TODO: remove from users question list
+
+		await DeleteQuestionAnswers.execute({ questionId: questionModel._id })
 	}
 }

@@ -11,7 +11,7 @@ export class ModifyAnswersCountUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input) {
+	async execute (input: Input) {
 		return await this.repository.modifyAnswersCount(input.id, input.increment)
 	}
 }
