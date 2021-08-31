@@ -8,8 +8,8 @@ import { getSocketEmitter } from '@index'
 import { QuestionMapper } from '@modules/questions/data/mappers'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel> = {
-	created: async (questionModel) => {
-		const question = new QuestionMapper().mapFrom(questionModel)!
+	created: async ({ after }) => {
+		const question = new QuestionMapper().mapFrom(after)!
 
 		await getSocketEmitter().emitCreated('questions', question)
 
@@ -41,15 +41,44 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			})
 		])
 	},
-	updated: async (questionModel) => {
-		const question = new QuestionMapper().mapFrom(questionModel)!
-		await getSocketEmitter().emitUpdated('questions', question)
-		await getSocketEmitter().emitUpdated(`questions/${ question.id }`, question)
-	},
-	deleted: async (questionModel) => {
-		await getSocketEmitter().emitDeleted('questions', { id: questionModel._id })
-		await getSocketEmitter().emitDeleted(`questions/${ questionModel._id }`, { id: questionModel._id })
+	updated: async ({ before, after }) => {
+		const beforeQuestion = new QuestionMapper().mapFrom(before)
+		const afterQuestion = new QuestionMapper().mapFrom(after)!
+		await getSocketEmitter().emitUpdated('questions', afterQuestion)
+		await getSocketEmitter().emitUpdated(`questions/${ afterQuestion.id }`, afterQuestion)
 
-		await DeleteQuestionAnswers.execute({ questionId: questionModel._id })
+		if (beforeQuestion) {
+			await UpdateTagsCount.execute({
+				tagIds: beforeQuestion.tags,
+				increment: false
+			})
+			await UpdateTagsCount.execute({
+				tagIds: afterQuestion.tags,
+				increment: true
+			})
+
+			const coins = afterQuestion.coins - afterQuestion.coins
+			if (coins !== 0) await addUserCoins(afterQuestion.userId,
+				{ bronze: 0 - coins, gold: 0 },
+				coins > 0 ? 'You paid coins to upgrade a question' : 'You got refunded coins from downgrading a question'
+			)
+		}
+	},
+	deleted: async ({ before }) => {
+		const question = new QuestionMapper().mapFrom(before)!
+
+		await getSocketEmitter().emitDeleted('questions', { id: question.id })
+		await getSocketEmitter().emitDeleted(`questions/${ question.id }`, { id: question.id })
+
+		await DeleteQuestionAnswers.execute({ questionId: question.id })
+
+		await UpdateTagsCount.execute({
+			tagIds: question.tags,
+			increment: false
+		})
+
+		await IncrementUserQuestionsCount.execute({ id: question.userId, value: -1 })
+
+		// TODO: remove from users question list
 	}
 }

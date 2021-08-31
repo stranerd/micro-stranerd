@@ -4,9 +4,6 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Answer, Question } from '../mongooseModels'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types/users'
-import { UpdateTagsCount } from '@modules/questions'
-import { addUserCoins } from '@utils/modules/users/transactions'
-import { IncrementUserQuestionsCount } from '@modules/users'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -42,23 +39,6 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
 		const question = await Question.findOneAndUpdate({ _id: id, userId }, data)
-		if (question) {
-			if (data.tags) {
-				await UpdateTagsCount.execute({
-					tagIds: question.tags,
-					increment: false
-				})
-				await UpdateTagsCount.execute({
-					tagIds: data.tags,
-					increment: true
-				})
-			}
-			const coins = data.coins - question.coins
-			if (coins !== 0) await addUserCoins(question.userId,
-				{ bronze: 0 - coins, gold: 0 },
-				coins > 0 ? 'You paid coins to upgrade a question' : 'You got refunded coins from downgrading a question'
-			)
-		}
 		return this.mapper.mapFrom(question)!
 	}
 
@@ -98,15 +78,6 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async delete (id: string, userId: string) {
 		const question = await Question.findOneAndDelete({ _id: id, userId })
-		if (question) {
-			await UpdateTagsCount.execute({
-				tagIds: question.tags,
-				increment: false
-			})
-
-			await IncrementUserQuestionsCount.execute({ id: question.userId, value: -1 })
-			// TODO: remove from users question list
-		}
 		return !!question
 	}
 }
