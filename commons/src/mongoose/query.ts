@@ -11,6 +11,7 @@ export type QueryParams = {
 	sort?: { field: string, order?: 1 | -1 }
 	limit?: number
 	page?: number
+	search?: string
 }
 
 export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
@@ -37,6 +38,8 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 			[`${ c.field }`]: { [`$${ c.condition }`]: c.value }
 		}))
 	}
+
+	if (params.search) whereClause['$text'] = { $search: params.search }
 
 	// Handle sort clauses
 	const sortField = params.sort?.field ?? null
