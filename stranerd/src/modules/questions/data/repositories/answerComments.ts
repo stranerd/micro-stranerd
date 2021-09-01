@@ -3,6 +3,7 @@ import { AnswerCommentMapper } from '../mappers'
 import { AnswerCommentFromModel, AnswerCommentToModel } from '../models'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { AnswerComment } from '@modules/questions/data/mongooseModels'
+import { UserBio } from '@modules/questions/domain/types/users'
 
 export class AnswerCommentRepository implements IAnswerCommentRepository {
 	private static instance: AnswerCommentRepository
@@ -38,6 +39,11 @@ export class AnswerCommentRepository implements IAnswerCommentRepository {
 
 	async deleteAnswerComments (answerId: string) {
 		const comments = await AnswerComment.deleteMany({ answerId })
+		return !!comments.ok
+	}
+
+	async updateAnswerCommentsUserBio (userId: string, userBio: UserBio) {
+		const comments = await AnswerComment.updateMany({ userId }, { userBio })
 		return !!comments.ok
 	}
 }

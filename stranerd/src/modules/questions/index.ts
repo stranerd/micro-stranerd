@@ -13,7 +13,6 @@ import { AddSubjectUseCase } from './domain/useCases/subjects/addSubject'
 import { DeleteSubjectUseCase } from './domain/useCases/subjects/deleteSubject'
 import { FindSubjectUseCase } from './domain/useCases/subjects/findSubject'
 import { GetSubjectsUseCase } from './domain/useCases/subjects/getSubjects'
-import { UpdateSubjectUseCase } from './domain/useCases/subjects/updateSubject'
 import { GetAnswerCommentsUseCase } from './domain/useCases/answerComments/getAnswerComments'
 import { FindAnswerCommentUseCase } from './domain/useCases/answerComments/findAnswerComment'
 import { AddAnswerCommentUseCase } from './domain/useCases/answerComments/addAnswerComment'
@@ -39,6 +38,7 @@ import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAns
 import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
 import { CreateAnswerDownvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerDownvote'
 import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
+import { UpdateAnswerCommentsUserBioUseCase } from './domain/useCases/answerComments/updateAnswerCommentsUserBio'
 
 const tagRepository = TagRepository.getInstance()
 const subjectRepository = SubjectRepository.getInstance()
@@ -55,12 +55,12 @@ export const AddSubject = new AddSubjectUseCase(subjectRepository)
 export const DeleteSubject = new DeleteSubjectUseCase(subjectRepository)
 export const FindSubject = new FindSubjectUseCase(subjectRepository)
 export const GetSubjects = new GetSubjectsUseCase(subjectRepository)
-export const UpdateSubject = new UpdateSubjectUseCase(subjectRepository)
 
 export const GetAnswerComments = new GetAnswerCommentsUseCase(answerCommentRepository)
 export const FindAnswerComment = new FindAnswerCommentUseCase(answerCommentRepository)
 export const AddAnswerComment = new AddAnswerCommentUseCase(answerCommentRepository)
 export const DeleteAnswerComments = new DeleteAnswersCommentsUseCase(answerCommentRepository)
+export const UpdateAnswerCommentsUserBio = new UpdateAnswerCommentsUserBioUseCase(answerCommentRepository)
 
 export const GetAnswers = new GetAnswersUseCase(answerRepository)
 export const FindAnswer = new FindAnswerUseCase(answerRepository)
