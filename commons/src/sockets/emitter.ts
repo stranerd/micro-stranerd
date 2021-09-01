@@ -28,7 +28,7 @@ export class SocketEmitter {
 
 	private async emit (channel: string, type: EmitTypes, data: any) {
 		this.socket.to(channel).emit({
-			type, data
+			type, data, channel
 		})
 	}
 }

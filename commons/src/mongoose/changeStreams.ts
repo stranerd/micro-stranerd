@@ -12,7 +12,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
 	mapper: (model: Model | null) => Entity | null) {
 
-	const cloneName = collection.collection.collectionName + '_streams_cloned'
+	const cloneName = collection.collection.collectionName + '_streams_clone'
 	const getClone = () => collection.collection.conn.db.collection(cloneName)
 
 	collection.watch([], { fullDocument: 'updateLookup' })
@@ -39,7 +39,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 			if (data.operationType === 'update') {
 				const _id = data.documentKey._id
 				const after = data.fullDocument as Model
-				const before = await getClone().findOneAndUpdate({ _id }, after) as Model
+				const before = await getClone().findOneAndUpdate({ _id }, { $set: after }) as Model
 				const { updatedFields, removedFields } = data.updateDescription
 				const changed = removedFields
 					.map((f) => f.toString())
