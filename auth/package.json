@@ -13,7 +13,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^0.0.1-alpha-65",
+		"@stranerd/api-commons": "^0.0.1-alpha-66",
 		"bcrypt": "^5.0.1",
 		"google-auth-library": "^7.6.2"
 	},

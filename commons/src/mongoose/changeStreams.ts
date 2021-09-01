@@ -1,6 +1,6 @@
 import { mongoose } from './index'
 
-export type ChangeStreamCallbacks<Model, Entity> = {
+export type ChangeStreamCallbacks<Entity> = {
 	created?: (data: { before: null, after: Entity }) => Promise<void>
 	updated?: (data: { before: Entity, after: Entity }) => Promise<void>
 	deleted?: (data: { before: Entity, after: null }) => Promise<void>
@@ -8,7 +8,7 @@ export type ChangeStreamCallbacks<Model, Entity> = {
 
 export async function generateChangeStreams<Model, Entity> (
 	collection: mongoose.Model<Model | any>,
-	callbacks: ChangeStreamCallbacks<Model, Entity>,
+	callbacks: ChangeStreamCallbacks<Entity>,
 	mapper: (model: Model | null) => Entity | null) {
 
 	const cloneName = collection.collection.collectionName + '_streams_cloned'
