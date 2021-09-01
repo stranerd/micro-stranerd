@@ -22,7 +22,7 @@ export class SocketEmitter {
 		await this.emit(channel, EmitTypes.updated, data)
 	}
 
-	async emitDeleted (channel: string, data: { id: string }) {
+	async emitDeleted (channel: string, data: BaseEntity) {
 		await this.emit(channel, EmitTypes.deleted, data)
 	}
 
