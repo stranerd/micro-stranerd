@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerCommentFromModel } from '../models'
 import { AnswerCommentChangeStreamCallbacks } from '@utils/changeStreams/questions/answerComments'
+import { AnswerCommentEntity } from '@modules/questions/domain/entities'
+import { AnswerCommentMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 	body: {
@@ -34,4 +36,4 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 
 export const AnswerComment = mongoose.model<AnswerCommentFromModel>('AnswerComment', Schema)
 
-generateChangeStreams<AnswerCommentFromModel>(AnswerComment, AnswerCommentChangeStreamCallbacks).then()
+generateChangeStreams<AnswerCommentFromModel, AnswerCommentEntity>(AnswerComment, AnswerCommentChangeStreamCallbacks, new AnswerCommentMapper().mapFrom).then()

@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerUpvoteFromModel } from '../models'
 import { AnswerUpvoteChangeStreamCallbacks } from '@utils/changeStreams/questions/answerUpvotes'
+import { AnswerUpvoteEntity } from '@modules/questions/domain/entities'
+import { AnswerUpvoteMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 	vote: {
@@ -30,4 +32,4 @@ const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 
 export const AnswerUpvote = mongoose.model<AnswerUpvoteFromModel>('AnswerUpvote', Schema)
 
-generateChangeStreams<AnswerUpvoteFromModel>(AnswerUpvote, AnswerUpvoteChangeStreamCallbacks).then()
+generateChangeStreams<AnswerUpvoteFromModel, AnswerUpvoteEntity>(AnswerUpvote, AnswerUpvoteChangeStreamCallbacks, new AnswerUpvoteMapper().mapFrom).then()

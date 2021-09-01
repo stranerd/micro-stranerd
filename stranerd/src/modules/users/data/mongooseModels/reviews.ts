@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ReviewFromModel } from '../models/reviews'
 import { ReviewChangeStreamCallbacks } from '@utils/changeStreams/users/reviews'
+import { ReviewEntity } from '@modules/users/domain/entities/reviews'
+import { ReviewMapper } from '@modules/users/data/mappers/reviews'
 
 const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 	review: {
@@ -37,4 +39,4 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 
 export const Review = mongoose.model<ReviewFromModel>('Review', ReviewSchema)
 
-generateChangeStreams<ReviewFromModel>(Review, ReviewChangeStreamCallbacks).then()
+generateChangeStreams<ReviewFromModel, ReviewEntity>(Review, ReviewChangeStreamCallbacks, new ReviewMapper().mapFrom).then()

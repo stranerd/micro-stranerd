@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { TransactionFromModel } from '../models/transactions'
 import { TransactionChangeStreamCallbacks } from '@utils/changeStreams/users/transactions'
+import { TransactionEntity } from '@modules/users/domain/entities/transactions'
+import { TransactionMapper } from '@modules/users/data/mappers/transactions'
 
 const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 	event: {
@@ -34,4 +36,4 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 
 export const Transaction = mongoose.model<TransactionFromModel>('Transaction', TransactionSchema)
 
-generateChangeStreams<TransactionFromModel>(Transaction, TransactionChangeStreamCallbacks).then()
+generateChangeStreams<TransactionFromModel, TransactionEntity>(Transaction, TransactionChangeStreamCallbacks, new TransactionMapper().mapFrom).then()

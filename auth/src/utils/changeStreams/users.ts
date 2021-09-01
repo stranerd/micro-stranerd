@@ -1,29 +1,32 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
-import { UserFromModel } from '@modules/repository/models'
+import { UserEntity } from '@modules/domain'
 
-export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel> = {
-	created: async (data) => {
+export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserEntity> = {
+	created: async ({ after }) => {
 		await publishers[EventTypes.AUTHUSERCREATED].publish({
-			id: data._id,
+			id: after.id,
 			data: {
-				firstName: data.firstName,
-				lastName: data.lastName,
-				email: data.email,
-				photo: data.photo
+				firstName: after.firstName,
+				lastName: after.lastName,
+				email: after.email,
+				photo: after.photo
 			},
-			timestamp: data.signedUpAt
+			timestamp: after.signedUpAt
 		})
 	},
-	updated: async (data, fields) => {
-		const updatedBio = !!fields.firstName || !!fields.lastName || !!fields.email || !!fields.photo
+	updated: async ({ before, after }) => {
+		const updatedBio = before.firstName !== after.firstName
+			|| before.lastName !== after.lastName
+			|| before.photo !== after.photo
+
 		if (updatedBio) await publishers[EventTypes.AUTHUSERUPDATED].publish({
-			id: data._id,
+			id: after.id,
 			data: {
-				firstName: data.firstName,
-				lastName: data.lastName,
-				email: data.email,
-				photo: data.photo
+				firstName: after.firstName,
+				lastName: after.lastName,
+				email: after.email,
+				photo: after.photo
 			},
 			timestamp: Date.now()
 		})
@@ -35,9 +38,9 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel> = {
 			timestamp: Date.now()
 		})
 	},
-	deleted: async (data) => {
+	deleted: async ({ before }) => {
 		await publishers[EventTypes.AUTHUSERDELETED].publish({
-			id: data._id,
+			id: before.id,
 			timestamp: Date.now()
 		})
 	}

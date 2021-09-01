@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerFromModel } from '../models'
 import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
+import { AnswerEntity } from '@modules/questions/domain/entities'
+import { AnswerMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	title: {
@@ -64,5 +66,5 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 
 export const Answer = mongoose.model<AnswerFromModel>('Answer', Schema)
 
-generateChangeStreams<AnswerFromModel>(Answer, AnswerChangeStreamCallbacks).then()
+generateChangeStreams<AnswerFromModel, AnswerEntity>(Answer, AnswerChangeStreamCallbacks, new AnswerMapper().mapFrom).then()
 

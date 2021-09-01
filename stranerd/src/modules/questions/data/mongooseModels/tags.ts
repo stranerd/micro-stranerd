@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { TagFromModel } from '../models'
 import { TagChangeStreamCallbacks } from '@utils/changeStreams/questions/tags'
+import { TagEntity } from '@modules/questions/domain/entities'
+import { TagMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<TagFromModel>({
 	count: {
@@ -22,4 +24,4 @@ const Schema = new mongoose.Schema<TagFromModel>({
 
 export const Tag = mongoose.model<TagFromModel>('Tag', Schema)
 
-generateChangeStreams<TagFromModel>(Tag, TagChangeStreamCallbacks).then()
+generateChangeStreams<TagFromModel, TagEntity>(Tag, TagChangeStreamCallbacks, new TagMapper().mapFrom).then()

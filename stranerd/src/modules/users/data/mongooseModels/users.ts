@@ -1,6 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { UserFromModel } from '../models/users'
 import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
+import { UserEntity } from '@modules/users/domain/entities/users'
+import { UserMapper } from '@modules/users/data/mappers/users'
 
 const UserMeta = {
 	questionsCount: {
@@ -95,4 +97,4 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 
 export const User = mongoose.model<UserFromModel>('User', UserSchema)
 
-generateChangeStreams<UserFromModel>(User, UserChangeStreamCallbacks).then()
+generateChangeStreams<UserFromModel, UserEntity>(User, UserChangeStreamCallbacks, new UserMapper().mapFrom).then()
