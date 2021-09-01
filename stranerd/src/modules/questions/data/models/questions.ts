@@ -3,7 +3,7 @@ import { UserBio } from '../../domain/types/users'
 export interface QuestionFromModel extends QuestionToModel {
 	_id: string
 	bestAnswers: string[]
-	answersCount: number
+	answers: { id: string, userId: string }[]
 	commentsCount: number
 	createdAt: number
 	updatedAt: number

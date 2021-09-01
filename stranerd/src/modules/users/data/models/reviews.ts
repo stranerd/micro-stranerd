@@ -1,7 +1,7 @@
 import { UserBio } from '../../domain/types/users'
 
 export interface ReviewFromModel extends ReviewToModel {
-	id: string
+	_id: string
 	createdAt: number
 	updatedAt: number
 }

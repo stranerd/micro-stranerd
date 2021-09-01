@@ -23,8 +23,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 		await IncrementUserQuestionsCount.execute({ id: after.userId, value: 1 })
 
-		// TODO: add to users question list
-
 		const tutors = await GetUsers.execute({
 			where: [
 				{ field: 'tutor.strongestSubject', value: after.subjectId, condition: Conditions.eq }
@@ -74,7 +72,5 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		})
 
 		await IncrementUserQuestionsCount.execute({ id: before.userId, value: -1 })
-
-		// TODO: remove from users question list
 	}
 }

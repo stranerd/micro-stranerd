@@ -11,7 +11,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly bestAnswers: string[]
-	public readonly answersCount: number
+	public readonly answers: { id: string, userId: string }[]
 	public readonly commentsCount: number
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -19,7 +19,7 @@ export class QuestionEntity extends BaseEntity {
 	constructor ({
 		             id, body, coins, subjectId,
 		             bestAnswers, createdAt, userId, userBio,
-		             answersCount, commentsCount, tags, updatedAt
+		             answers, commentsCount, tags, updatedAt
 	             }: QuestionConstructorArgs) {
 		super()
 		this.id = id
@@ -30,7 +30,7 @@ export class QuestionEntity extends BaseEntity {
 		this.userId = userId
 		this.userBio = userBio
 		this.bestAnswers = bestAnswers
-		this.answersCount = answersCount ?? 0
+		this.answers = answers
 		this.commentsCount = commentsCount ?? 0
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
@@ -50,7 +50,7 @@ type QuestionConstructorArgs = {
 	userId: string
 	userBio: UserBio
 	bestAnswers: string[]
-	answersCount: number
+	answers: { id: string, userId: string }[]
 	commentsCount: number
 	createdAt: number
 	updatedAt: number

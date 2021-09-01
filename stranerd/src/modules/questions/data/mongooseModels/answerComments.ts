@@ -14,7 +14,7 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: true
 	},
 	answerId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	userBio: {
@@ -25,12 +25,12 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 	createdAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	},
 	updatedAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	}
 }, { timestamps: { currentTime: Date.now } })
 

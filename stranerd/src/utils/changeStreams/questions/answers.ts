@@ -4,14 +4,14 @@ import { getSocketEmitter } from '@index'
 import { IncrementUserAnswersCount } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { AnswerEntity } from '@modules/questions/domain/entities'
-import { DeleteAnswerComments, RemoveBestAnswer } from '@modules/questions'
+import { DeleteAnswerComments, ModifyAnswers, RemoveBestAnswer } from '@modules/questions'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated(`answers/${ after.questionId }`, after)
 
 		await IncrementUserAnswersCount.execute({ id: after.userId, value: 1 })
-		// TODO: add to users answer list
+		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
 
 		await sendNotification(after.userId, {
 			body: 'Your question has been answered. Go have a look',
@@ -31,7 +31,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitDeleted(`answers/${ before.id }`, before)
 
 		await IncrementUserAnswersCount.execute({ id: before.userId, value: -1 })
-		// TODO: remove from users answer list
+		await ModifyAnswers.execute({ id: before.id, userId: before.userId, add: false })
 
 		if (before.best) await RemoveBestAnswer.execute({ id: before.questionId, answerId: before.id })
 		await DeleteAnswerComments.execute({ answerId: before.id })

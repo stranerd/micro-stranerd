@@ -25,12 +25,12 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 	createdAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	},
 	updatedAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	}
 }, { timestamps: { currentTime: Date.now } })
 

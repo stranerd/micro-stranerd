@@ -14,7 +14,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	tags: {
-		type: Array,
+		type: [String],
 		required: true
 	},
 	subjectId: {
@@ -31,14 +31,17 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		default: {}
 	},
 	bestAnswers: {
-		type: Array,
+		type: [mongoose.Schema.Types.ObjectId],
 		required: false,
 		default: []
 	},
-	answersCount: {
-		type: Number,
+	answers: {
+		type: [{
+			id: mongoose.Schema.Types.ObjectId,
+			userId: mongoose.Schema.Types.ObjectId
+		}],
 		required: false,
-		default: 0
+		default: []
 	},
 	commentsCount: {
 		type: Number,
@@ -48,12 +51,12 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 	createdAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	},
 	updatedAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	}
 }, { timestamps: { currentTime: Date.now } })
 

@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		default: false
 	},
 	authTypes: {
-		type: Array,
+		type: [String],
 		set: (types: string[]) => Array.from(new Set(types)),
 		required: false,
 		default: []

@@ -15,18 +15,18 @@ const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 		required: true
 	},
 	answerId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	createdAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	},
 	updatedAt: {
 		type: Number,
 		required: false,
-		default: Date.now()
+		default: Date.now
 	}
 }, { timestamps: { currentTime: Date.now } })
 

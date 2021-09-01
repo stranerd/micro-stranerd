@@ -59,9 +59,9 @@ export class QuestionRepository implements IQuestionRepository {
 		}
 	}
 
-	async modifyAnswersCount (id: string, increment: boolean) {
+	async modifyAnswers (id: string, userId: string, add: boolean) {
 		const question = await Question.findByIdAndUpdate(id, {
-			$inc: { answerCount: increment ? 1 : -1 }
+			[add ? '$push' : '$pull']: { answers: { id, userId } }
 		}, { new: true })
 		return !!question
 	}
