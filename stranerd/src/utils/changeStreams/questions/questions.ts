@@ -6,8 +6,9 @@ import { GetUsers, IncrementUserQuestionsCount } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { QuestionMapper } from '@modules/questions/data/mappers'
+import { QuestionEntity } from '@modules/questions/domain/entities'
 
-export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel> = {
+export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
 		const question = new QuestionMapper().mapFrom(after)!
 
@@ -41,13 +42,13 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			})
 		])
 	},
-	updated: async ({ before, after }) => {
-		const beforeQuestion = new QuestionMapper().mapFrom(before)
+	updated: async ({ before, after, changes }) => {
+		const beforeQuestion = new QuestionMapper().mapFrom(before)!
 		const afterQuestion = new QuestionMapper().mapFrom(after)!
 		await getSocketEmitter().emitUpdated('questions', afterQuestion)
 		await getSocketEmitter().emitUpdated(`questions/${ afterQuestion.id }`, afterQuestion)
 
-		if (beforeQuestion) {
+		if (changes.tags) {
 			await UpdateTagsCount.execute({
 				tagIds: beforeQuestion.tags,
 				increment: false
@@ -56,7 +57,9 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 				tagIds: afterQuestion.tags,
 				increment: true
 			})
+		}
 
+		if (changes.coins) {
 			const coins = afterQuestion.coins - afterQuestion.coins
 			if (coins !== 0) await addUserCoins(afterQuestion.userId,
 				{ bronze: 0 - coins, gold: 0 },

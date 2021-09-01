@@ -1,8 +1,7 @@
 import { IUserRepository } from '../../contracts/repository'
 import { RegisterInput, RoleInput, TokenInput, UserEntity, UserUpdateInput } from '../../domain'
 import { UserMapper } from '../mapper/user.mapper'
-import { AuthTypes, deleteCachedAccessToken, EventTypes, mongoose, NotFoundError } from '@utils/commons'
-import { publishers } from '@utils/events'
+import { AuthTypes, deleteCachedAccessToken, mongoose, NotFoundError } from '@utils/commons'
 import User from '../mongooseModels/user.model'
 import { hash } from '@utils/hash'
 
@@ -33,18 +32,9 @@ export class UserRepository implements IUserRepository {
 
 	async updateUserProfile (input: UserUpdateInput): Promise<boolean> {
 		if (!mongoose.Types.ObjectId.isValid(input.userId)) return false
-		const user = await User.findOne({ _id: input.userId })
-		if (!user) return false
+		const user = await User.findOneAndUpdate({ _id: input.userId }, input)
+		return !!user
 
-		if (user.photo && user.photo.path != input.photo.path) await publishers[EventTypes.DELETEFILE].publish(user.photo)
-
-		user.firstName = input.firstName
-		user.lastName = input.lastName
-		user.photo = input.photo
-
-		user.save()
-
-		return true
 	}
 
 	async updateDetails (details: RegisterInput): Promise<TokenInput> {

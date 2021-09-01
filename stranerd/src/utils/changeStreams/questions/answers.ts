@@ -4,8 +4,9 @@ import { AnswerMapper } from '@modules/questions/data/mappers'
 import { getSocketEmitter } from '@index'
 import { IncrementUserAnswersCount } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { AnswerEntity } from '@modules/questions/domain/entities'
 
-export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel> = {
+export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async (answerModel) => {
 		const answer = new AnswerMapper().mapFrom(answerModel)!
 
