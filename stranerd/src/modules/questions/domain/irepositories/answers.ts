@@ -12,5 +12,4 @@ export interface IAnswerRepository {
 	modifyCommentsCount: (id: string, increment: boolean) => Promise<boolean>
 	updateAnswersUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
 	deleteQuestionAnswers: (questionId: string) => Promise<boolean>
-	search (query: Object, limit: number) : Promise<AnswerEntity[]>
 }

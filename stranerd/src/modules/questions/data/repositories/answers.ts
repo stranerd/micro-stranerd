@@ -4,7 +4,6 @@ import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '@modules/questions/domain/types/users'
-import { AnswerEntity } from '@modules/questions/domain/entities'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository
@@ -27,21 +26,6 @@ export class AnswerRepository implements IAnswerRepository {
 			results: data.results.map((r) => this.mapper.mapFrom(r)!)
 		}
 	}
-
-
-	async search (query: Object,limit: number): Promise<AnswerEntity[]> {
-       
-		let result: AnswerEntity[] = []
-  
-		 await Answer.find(query)
-		 .limit(limit)
-		 .exec((err, data) => { 
-			 if(err) result = []
-			 else result = data.map((u) => this.mapper.mapFrom(u)!)
-		  })
-  
-		 return result	
-	  }
 
 	async add (data: AnswerToModel) {
 		const answer = await new Answer(data).save()

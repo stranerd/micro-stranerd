@@ -13,5 +13,4 @@ export interface IQuestionRepository {
 	updateQuestionsUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
 	modifyAnswersCount: (id: string, increment: boolean) => Promise<boolean>
 	markBestAnswer: (id: string, answerId: string, userId: string) => Promise<boolean>
-	search (query: Object, limit: number) : Promise<QuestionEntity[]>
 }

@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/commons'
 import { SearchController } from '../../controllers/common/search'
 
 export const searchRoutes: Route[] = [
@@ -6,7 +6,6 @@ export const searchRoutes: Route[] = [
 		path: '/search/:query',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

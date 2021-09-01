@@ -4,7 +4,6 @@ import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
 import { UserFromModel } from '../models/users'
-import { UserEntity } from '@modules/users/domain/entities/users'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
@@ -39,20 +38,6 @@ export class UserRepository implements IUserRepository {
 			$set: { bio: data, _id: userId }
 		}, { upsert: true })
 	}
-
-	async search (query: Object,limit: number): Promise<UserEntity[]> {
-       
-		let result: UserEntity[] = []
-  
-		 await User.find(query)
-		 .limit(limit)
-		 .exec((err, data) => { 
-			 if(err) result = []
-			 else result = data.map((u) => this.mapper.mapFrom(u)!)
-		  })
-  
-		 return result	
-	  }
 
 	async findUser (userId: string) {
 		if (!mongoose.Types.ObjectId.isValid(userId)) return null

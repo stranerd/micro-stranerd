@@ -4,7 +4,6 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Answer, Question } from '../mongooseModels'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types/users'
-import { QuestionEntity } from '@modules/questions/domain/entities'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -27,22 +26,6 @@ export class QuestionRepository implements IQuestionRepository {
 			results: data.results.map((r) => this.mapper.mapFrom(r)!)
 		}
 	}
-
-
-	async search (query: Object,limit: number): Promise<QuestionEntity[]> {
-       
-		let result: QuestionEntity[] = []
-  
-		 await Question.find(query)
-		 .limit(limit)
-		 .exec((err, data) => { 
-			 if(err) result = []
-			 else result = data.map((u) => this.mapper.mapFrom(u)!)
-		  })
-  
-		 return result	
-	  }
-
 
 	async add (data: QuestionToModel) {
 		const question = await new Question(data).save()
