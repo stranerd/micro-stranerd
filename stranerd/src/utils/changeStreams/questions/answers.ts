@@ -1,9 +1,10 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerFromModel } from '@modules/questions/data/models/answers'
 import { getSocketEmitter } from '@index'
-import { IncrementUserAnswersCount } from '@modules/users'
+import { IncrementUserAnswersCount, UpdateNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { AnswerEntity } from '@modules/questions/domain/entities'
+import { ScoreRewards } from '@modules/users/domain/types/users'
 import { DeleteAnswerComments, ModifyAnswers, RemoveBestAnswer } from '@modules/questions'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
@@ -12,6 +13,11 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		await IncrementUserAnswersCount.execute({ id: after.userId, value: 1 })
 		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
+
+		await UpdateNerdScore.execute({
+			userId: after.userId,
+			amount: ScoreRewards.new_answer
+		})
 
 		await sendNotification(after.userId, {
 			body: 'Your question has been answered. Go have a look',
@@ -29,6 +35,11 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`answers/${ before.questionId }`, before)
 		await getSocketEmitter().emitDeleted(`answers/${ before.id }`, before)
+
+		await UpdateNerdScore.execute({
+			userId: before.userId,
+			amount: -ScoreRewards.new_answer
+		})
 
 		await IncrementUserAnswersCount.execute({ id: before.userId, value: -1 })
 		await ModifyAnswers.execute({ id: before.id, userId: before.userId, add: false })

@@ -69,10 +69,10 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		}
 	},
 	account: {
-		rank: {
+		score: {
 			type: Number,
 			required: false,
-			default: 1
+			default: 0
 		},
 		coins: {
 			gold: {
