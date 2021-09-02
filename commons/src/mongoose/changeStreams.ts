@@ -1,5 +1,6 @@
 import { mongoose } from './index'
 import { BaseEntity } from '../structure'
+import { getCacheInstance } from '../cache'
 
 export type ChangeStreamCallbacks<Model, Entity> = {
 	created?: (data: { before: null, after: Entity }) => Promise<void>
@@ -17,6 +18,13 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 
 	collection.watch([], { fullDocument: 'updateLookup' })
 		.on('change', async (data) => {
+			// @ts-ignore
+			const streamId = data._id._data
+			const cacheName = `streams-${ streamId }`
+			const cached = await getCacheInstance.get(cacheName)
+			if (cached) return
+			else await getCacheInstance.set(cacheName, streamId, 15)
+
 			if (data.operationType === 'insert') {
 				const _id = data.documentKey._id
 				const after = data.fullDocument as Model
