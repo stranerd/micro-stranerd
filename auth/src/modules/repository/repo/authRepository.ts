@@ -37,7 +37,7 @@ export class AuthRepository implements IAuthRepository {
 
 	private static async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes): Promise<TokenInput> {
 		const userUpdated = await User.findByIdAndUpdate(user._id, {
-			$currentDate: { lastSignedInAt: { $type: 'timestamp' } },
+			$set: { lastSignedInAt: Date.now() },
 			$addToSet: { authTypes: [type] }
 		}, { new: true })
 
