@@ -2,7 +2,8 @@ import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
 import { QuestionFromModel } from '@modules/questions/data/models/questions'
 import { DeleteQuestionAnswers, UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { GetUsers, IncrementUserQuestionsCount } from '@modules/users'
+import { ScoreRewards } from '@modules/users/domain/types/users'
+import { GetUsers, IncrementUserQuestionsCount, UpdateNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { QuestionEntity } from '@modules/questions/domain/entities'
@@ -22,6 +23,11 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		})
 
 		await IncrementUserQuestionsCount.execute({ id: after.userId, value: 1 })
+
+		await UpdateNerdScore.execute({
+			userId: after.userId,
+			amount: ScoreRewards.NewQuestion
+		})
 
 		const tutors = await GetUsers.execute({
 			where: [
@@ -59,16 +65,22 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 				coins > 0 ? 'You paid coins to upgrade a question' : 'You got refunded coins from downgrading a question'
 			)
 		}
+
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('questions', { id: before.id })
-		await getSocketEmitter().emitDeleted(`questions/${ before.id }`, { id: before.id })
+		await getSocketEmitter().emitDeleted('questions', before)
+		await getSocketEmitter().emitDeleted(`questions/${ before.id }`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 
 		await UpdateTagsCount.execute({
 			tagIds: before.tags,
 			increment: false
+		})
+
+		await UpdateNerdScore.execute({
+			userId: before.userId,
+			amount: -ScoreRewards.NewQuestion
 		})
 
 		await IncrementUserQuestionsCount.execute({ id: before.userId, value: -1 })

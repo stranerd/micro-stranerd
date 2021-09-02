@@ -22,7 +22,8 @@ import { TransactionRepository } from './data/repositories/transactions'
 import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransactions'
 import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
 import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
-import { GetUsersUseCase } from '@modules/users/domain/useCases/users/getUsers'
+import { GetUsersUseCase } from './domain/useCases/users/getUsers'
+import { UpdateNerdScoreUseCase } from './domain/useCases/users/updateNerdScore'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
@@ -39,6 +40,7 @@ export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCas
 export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
 export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
 export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
+export const UpdateNerdScore = new UpdateNerdScoreUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

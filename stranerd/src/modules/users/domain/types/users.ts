@@ -39,3 +39,10 @@ export type UserAccount = {
 		count: number
 	}
 }
+
+export enum ScoreRewards {
+	BestAnswer = 4,
+	CompleteSession = 1,
+	NewAnswer = 0.1,
+	NewQuestion = 0.05
+}

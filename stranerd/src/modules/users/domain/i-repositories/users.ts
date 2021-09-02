@@ -1,5 +1,5 @@
 import { UserEntity } from '../entities/users'
-import { UserBio, UserRoles } from '../types/users'
+import { ScoreRewards, UserBio, UserRoles } from '../types/users'
 import { QueryParams, QueryResults } from '@utils/commons'
 
 export interface IUserRepository {
@@ -18,4 +18,6 @@ export interface IUserRepository {
 	incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1): Promise<void>
 
 	addUserCoins (userId: string, coins: { gold: number, bronze: number })
+
+	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
 }
