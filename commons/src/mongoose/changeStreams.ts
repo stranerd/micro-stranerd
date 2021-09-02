@@ -29,7 +29,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 
 			if (data.operationType === 'delete') {
 				const _id = data.documentKey._id
-				const before = await getClone().findOneAndDelete({ _id }) as Model
+				const { value: before } = await getClone().findOneAndDelete({ _id })
 				await callbacks.deleted?.({
 					before: mapper(before)!,
 					after: null
@@ -39,10 +39,12 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 			if (data.operationType === 'update') {
 				const _id = data.documentKey._id
 				const after = data.fullDocument as Model
-				const before = await getClone().findOneAndUpdate({ _id }, { $set: after }) as Model
-				const { updatedFields, removedFields } = data.updateDescription
+				const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after })
+				// @ts-ignore
+				const { updatedFields, removedFields, truncatedArrays = [] } = data.updateDescription
 				const changed = removedFields
 					.map((f) => f.toString())
+					.concat(truncatedArrays)
 					.concat(Object.keys(updatedFields))
 				const changes = getObjectsFromKeys(changed)
 				await callbacks.updated?.({
