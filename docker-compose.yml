@@ -24,6 +24,19 @@ services:
       - rabbitmq
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
 
+  auth2:
+    build:
+      context: ./auth
+      target: production
+    container_name: auth2
+    hostname: auth2
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+
   emails:
     build:
       context: ./emails

@@ -7,4 +7,3 @@ COPY . .
 
 FROM base as production
 RUN yarn build
-

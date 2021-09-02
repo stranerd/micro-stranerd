@@ -41,4 +41,16 @@ export class RedisCache extends Cache {
 			})
 		})
 	}
+
+	async setInTransaction (key: string, data: string, ttlInSecs: number) {
+		return new Promise((res: (_: [string, string]) => void, rej) => {
+			this.client.multi([])
+				.get(key)
+				.setex(key, ttlInSecs, data)
+				.exec((err, result) => {
+					if (err) rej(err)
+					res(result as [string, string])
+				})
+		})
+	}
 }
