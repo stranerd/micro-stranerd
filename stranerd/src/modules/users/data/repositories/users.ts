@@ -52,16 +52,12 @@ export class UserRepository implements IUserRepository {
 		}, { upsert: true })
 	}
 
-	async updateNerdScore (userId: string | undefined, amount: number) {
-		if(userId == undefined) return
+	async updateNerdScore (userId: string, amount: number) {
 		if (!mongoose.Types.ObjectId.isValid(userId)) return
-		const user = await User.findById(userId)
-		if(user) {
-			const userAccount = user.account
-			userAccount.score = userAccount.score + amount
-			user.account = userAccount
-			user.save()
-		}
+		const user = await User.findByIdAndUpdate(userId, {
+			$inc: { 'account.score': amount }
+		})
+		return !!user
 	}
 
 	async updateUserWithRoles (userId: string, data: UserRoles) {

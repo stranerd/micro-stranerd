@@ -1,10 +1,9 @@
-import { BaseUseCase } from '../../../../../utils/commons'
+import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
 
+type Input = { userId: string, amount: number }
 
-type Input = { userId: string | undefined, amount: number}
-
-export class UpdateNerdScoreUseCase implements BaseUseCase<Input, void> {
+export class UpdateNerdScoreUseCase implements BaseUseCase<Input, boolean> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

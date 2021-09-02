@@ -1,13 +1,12 @@
 import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
 import { QuestionFromModel } from '@modules/questions/data/models/questions'
-import { DeleteQuestionAnswers, FindAnswer, UpdateTagsCount } from '@modules/questions'
+import { DeleteQuestionAnswers, UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { ScoreRewards } from '@modules/users/domain/types/users'
 import { GetUsers, IncrementUserQuestionsCount, UpdateNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { QuestionEntity } from '@modules/questions/domain/entities'
-
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
@@ -27,7 +26,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 		await UpdateNerdScore.execute({
 			userId: after.userId,
-			amount: ScoreRewards.new_question
+			amount: ScoreRewards.NewQuestion
 		})
 
 		const tutors = await GetUsers.execute({
@@ -67,34 +66,10 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			)
 		}
 
-		if(changes.bestAnswers){
-			const oldBestAnswers = before.bestAnswers
-			const newBestAnswers = after.bestAnswers
-
-			 if(oldBestAnswers.length > newBestAnswers.length) {
-				const removedAnswerId = oldBestAnswers.filter(((i) => (v) => newBestAnswers[i] !== v || !++i)(0))
-				const answerData = await FindAnswer.execute(removedAnswerId[0])
-				await UpdateNerdScore.execute({
-					userId: answerData?.userId,
-					amount: -ScoreRewards.best_anwser
-				})
-
-			 } else {
-				const addedAnswerId = newBestAnswers.filter(((i) => (v) => oldBestAnswers[i] !== v || !++i)(0))
-				const answerData = await FindAnswer.execute(addedAnswerId[0])
-				await UpdateNerdScore.execute({
-					userId: answerData?.userId,
-					amount: ScoreRewards.best_anwser
-				})
-			 }
-
-		}
-
-
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('questions', { id: before.id })
-		await getSocketEmitter().emitDeleted(`questions/${ before.id }`, { id: before.id })
+		await getSocketEmitter().emitDeleted('questions', before)
+		await getSocketEmitter().emitDeleted(`questions/${ before.id }`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 
@@ -105,7 +80,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 		await UpdateNerdScore.execute({
 			userId: before.userId,
-			amount: -ScoreRewards.new_question
+			amount: -ScoreRewards.NewQuestion
 		})
 
 		await IncrementUserQuestionsCount.execute({ id: before.userId, value: -1 })

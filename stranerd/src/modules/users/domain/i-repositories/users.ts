@@ -1,5 +1,5 @@
 import { UserEntity } from '../entities/users'
-import { UserBio, UserRoles } from '../types/users'
+import { ScoreRewards, UserBio, UserRoles } from '../types/users'
 import { QueryParams, QueryResults } from '@utils/commons'
 
 export interface IUserRepository {
@@ -19,5 +19,5 @@ export interface IUserRepository {
 
 	addUserCoins (userId: string, coins: { gold: number, bronze: number })
 
-	updateNerdScore (userId: string | undefined, amount: number)
+	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
 }

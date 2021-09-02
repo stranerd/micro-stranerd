@@ -22,8 +22,8 @@ import { TransactionRepository } from './data/repositories/transactions'
 import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransactions'
 import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
 import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
-import { GetUsersUseCase } from '@modules/users/domain/useCases/users/getUsers'
-import { UpdateNerdScoreUseCase } from '@modules/users/domain/useCases/users/updateNerdScore'
+import { GetUsersUseCase } from './domain/useCases/users/getUsers'
+import { UpdateNerdScoreUseCase } from './domain/useCases/users/updateNerdScore'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
