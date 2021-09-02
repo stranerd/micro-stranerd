@@ -62,6 +62,6 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 
 Schema.index({ body: 'text' })
 
-export const Question = mongoose.model<QuestionFromModel>('Question', Schema)
+export const Question = mongoose.model<QuestionFromModel>('StranerdQuestion', Schema)
 
 generateChangeStreams<QuestionFromModel, QuestionEntity>(Question, QuestionChangeStreamCallbacks, new QuestionMapper().mapFrom).then()

@@ -34,6 +34,6 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Transaction = mongoose.model<TransactionFromModel>('Transaction', TransactionSchema)
+export const Transaction = mongoose.model<TransactionFromModel>('StranerdTransaction', TransactionSchema)
 
 generateChangeStreams<TransactionFromModel, TransactionEntity>(Transaction, TransactionChangeStreamCallbacks, new TransactionMapper().mapFrom).then()

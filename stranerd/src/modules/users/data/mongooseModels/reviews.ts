@@ -37,6 +37,6 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Review = mongoose.model<ReviewFromModel>('Review', ReviewSchema)
+export const Review = mongoose.model<ReviewFromModel>('StranerdReview', ReviewSchema)
 
 generateChangeStreams<ReviewFromModel, ReviewEntity>(Review, ReviewChangeStreamCallbacks, new ReviewMapper().mapFrom).then()

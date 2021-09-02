@@ -21,6 +21,6 @@ const Schema = new mongoose.Schema<SubjectFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Subject = mongoose.model<SubjectFromModel>('Subject', Schema)
+export const Subject = mongoose.model<SubjectFromModel>('StranerdSubject', Schema)
 
 generateChangeStreams<SubjectFromModel, SubjectEntity>(Subject, SubjectChangeStreamCallbacks, new SubjectMapper().mapFrom).then()
