@@ -33,25 +33,30 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			if (!upvote || upvote.answerId !== data.answerId) {
 				upvote = new AnswerUpvote(data)
 				await Answer.findByIdAndUpdate(data.answerId, {
-					$inc: {
-						[upvote.vote === 1 ? 'votes.upvotes' : 'votes.downvotes']: 1
+					$push: {
+						votes: { userId: data.userId, vote: data.vote }
 					}
 				}, { session })
 			}
 			// the vote didnt change
-			else if (upvote.vote === data.vote) return this.mapper.mapFrom(upvote)!
+			else if (upvote.vote === data.vote) { /* do nothing */
+			}
 			// change answer upvote to downvote
 			else if (upvote.vote === 1) await Answer.findByIdAndUpdate(data.answerId, {
-				$inc: {
-					'votes.upvotes': -1,
-					'votes.downvotes': 1
+				$pull: {
+					votes: { userId: data.userId, vote: 1 }
+				},
+				$push: {
+					votes: { userId: data.userId, vote: -1 }
 				}
 			}, { session })
 			// change answer downvote to upvote
 			else if (upvote.vote === -1) await Answer.findByIdAndUpdate(data.answerId, {
-				$inc: {
-					'votes.upvotes': 1,
-					'votes.downvotes': -1
+				$pull: {
+					votes: { userId: data.userId, vote: -1 }
+				},
+				$push: {
+					votes: { userId: data.userId, vote: 1 }
 				}
 			}, { session })
 			upvote.vote = data.vote

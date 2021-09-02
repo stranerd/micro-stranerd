@@ -10,7 +10,7 @@ export class AnswerEntity extends BaseEntity {
 	public readonly questionId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
-	public readonly votes: { upvotes: number, downvotes: number }
+	public readonly votes: { userId: string, vote: 1 | -1 }[]
 	public readonly commentsCount: number
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -29,7 +29,7 @@ export class AnswerEntity extends BaseEntity {
 		this.userId = userId
 		this.userBio = userBio
 		this.best = best ?? false
-		this.votes = { upvotes: votes.upvotes ?? 0, downvotes: votes.downvotes ?? 0 }
+		this.votes = votes
 		this.commentsCount = commentsCount ?? 0
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
@@ -47,9 +47,6 @@ type AnswerConstructorArgs = {
 	userId: string
 	userBio: UserBio
 	best: boolean
-	votes: {
-		upvotes: number
-		downvotes: number
-	}
+	votes: { userId: string, vote: 1 | -1 }[]
 	commentsCount: number
 }

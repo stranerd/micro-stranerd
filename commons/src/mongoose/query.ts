@@ -52,7 +52,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	let page = Number.isNaN(Number(params.page)) ? 0 : Number(params.page)
 	page = page < 1 ? 1 : page
 
-	const total = await collection.find(whereClause).countDocuments().exec()
+	const total = await collection.countDocuments(whereClause).exec()
 
 	let builtQuery = collection.find(whereClause)
 	if (sortField) builtQuery = builtQuery.sort([[sortField, sortOrder]])

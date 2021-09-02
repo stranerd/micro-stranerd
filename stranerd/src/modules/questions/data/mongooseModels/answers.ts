@@ -36,16 +36,12 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		default: false
 	},
 	votes: {
-		upvotes: {
-			type: Number,
-			required: false,
-			default: 0
-		},
-		downvotes: {
-			type: Number,
-			required: false,
-			default: 0
-		}
+		type: [{
+			userId: mongoose.Schema.Types.ObjectId,
+			vote: Number
+		}],
+		required: false,
+		default: []
 	},
 	commentsCount: {
 		type: Number,

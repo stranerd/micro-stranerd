@@ -24,7 +24,7 @@ export const getRabbitConnection = async (register: string) => {
 					cb(msg.content.toString(), msg.fields.routingKey)
 					channel.ack(msg)
 				} catch (err) {
-					// TODO: what to do if error b4 acknowledging
+					channel.nack(msg)
 				}
 			}
 		}, {
