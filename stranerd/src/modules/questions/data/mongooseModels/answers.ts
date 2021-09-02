@@ -62,7 +62,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 
 Schema.index({ title: 'text', body: 'text' })
 
-export const Answer = mongoose.model<AnswerFromModel>('Answer', Schema)
+export const Answer = mongoose.model<AnswerFromModel>('StranerdAnswer', Schema)
 
 generateChangeStreams<AnswerFromModel, AnswerEntity>(Answer, AnswerChangeStreamCallbacks, new AnswerMapper().mapFrom).then()
 

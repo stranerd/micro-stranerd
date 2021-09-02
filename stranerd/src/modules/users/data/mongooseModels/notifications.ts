@@ -34,6 +34,6 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Notification = mongoose.model<NotificationFromModel>('Notification', NotificationSchema)
+export const Notification = mongoose.model<NotificationFromModel>('StranerdNotification', NotificationSchema)
 
 generateChangeStreams<NotificationFromModel, NotificationEntity>(Notification, NotificationChangeStreamCallbacks, new NotificationMapper().mapFrom).then()

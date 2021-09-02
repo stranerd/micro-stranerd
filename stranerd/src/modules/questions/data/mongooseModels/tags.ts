@@ -22,6 +22,6 @@ const Schema = new mongoose.Schema<TagFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Tag = mongoose.model<TagFromModel>('Tag', Schema)
+export const Tag = mongoose.model<TagFromModel>('StranerdTag', Schema)
 
 generateChangeStreams<TagFromModel, TagEntity>(Tag, TagChangeStreamCallbacks, new TagMapper().mapFrom).then()

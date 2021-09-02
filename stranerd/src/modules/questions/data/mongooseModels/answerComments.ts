@@ -34,6 +34,6 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const AnswerComment = mongoose.model<AnswerCommentFromModel>('AnswerComment', Schema)
+export const AnswerComment = mongoose.model<AnswerCommentFromModel>('StranerdAnswerComment', Schema)
 
 generateChangeStreams<AnswerCommentFromModel, AnswerCommentEntity>(AnswerComment, AnswerCommentChangeStreamCallbacks, new AnswerCommentMapper().mapFrom).then()
