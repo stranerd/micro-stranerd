@@ -24,7 +24,8 @@ export class LocalUploaderRepository implements IUploaderRepository {
 			name: media.name,
 			type: media.type,
 			size: media.size,
-			path: encodeURI(`/${ path }`), timestamp
+			path: encodeURI(`/${ path }`), timestamp,
+			link: null
 		}
 	}
 }
