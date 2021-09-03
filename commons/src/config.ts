@@ -17,7 +17,7 @@ export const refreshTokenKey = getEnvOrFail('REFRESH_TOKEN_KEY')
 
 export const mongoDbURI = getEnvOrFail('MONGODB_URI') ?? ''
 
-const RABBITMQ_CONFIG = JSON.parse(getEnvOrFail('RABBITMQ_CONFIG') ?? '{}')
+const RABBITMQ_CONFIG = JSON.parse(getEnvOrFail('RABBITMQ_CONFIG') || '{}')
 export const rabbitMQConfig = {
 	protocol: RABBITMQ_CONFIG.protocol,
 	hostname: RABBITMQ_CONFIG.hostname,

@@ -53,7 +53,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateNerdScore (userId: string, amount: number) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return
+		if (!mongoose.Types.ObjectId.isValid(userId)) return false
 		const user = await User.findByIdAndUpdate(userId, {
 			$inc: { 'account.score': amount }
 		})

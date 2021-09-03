@@ -2,6 +2,8 @@ import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
 import { UserEntity } from '@modules/domain'
 import { UserFromModel } from '@modules/repository/models'
+import { subscribeToMailingList } from '@utils/mailing'
+import { isProd } from '@utils/environment'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
@@ -15,6 +17,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			},
 			timestamp: after.signedUpAt
 		})
+		if (isProd) await subscribeToMailingList(after.email)
 	},
 	updated: async ({ before, after, changes }) => {
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
