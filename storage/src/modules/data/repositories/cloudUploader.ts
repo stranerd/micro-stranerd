@@ -9,7 +9,7 @@ export class CloudUploaderRepository implements IUploaderRepository {
 	private bucket: Bucket
 
 	constructor () {
-		this.bucket = new Storage().bucket(`storage-${ environment }`)
+		this.bucket = new Storage().bucket(`stranerd-storage-${ environment }`)
 	}
 
 	async delete (path: string) {
