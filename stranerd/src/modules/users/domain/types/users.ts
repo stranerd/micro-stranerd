@@ -40,6 +40,13 @@ export type UserAccount = {
 	}
 }
 
+export interface UserSession {
+	currentSession: string | null
+	currentTutorSession: string | null
+	requests: string[]
+	lobby: string[]
+}
+
 export enum ScoreRewards {
 	BestAnswer = 4,
 	CompleteSession = 1,

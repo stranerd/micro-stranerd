@@ -6,11 +6,11 @@ export class AnswerUpvoteMapper extends BaseMapper<AnswerUpvoteFromModel, Answer
 	mapFrom (model) {
 		if (!model) return null
 		const {
-			_id: id, vote, userId, answerId,
+			_id, vote, userId, answerId,
 			createdAt, updatedAt
 		} = model
 		return new AnswerUpvoteEntity({
-			id, vote, userId, answerId,
+			id: _id.toString(), vote, userId, answerId,
 			createdAt, updatedAt
 		})
 	}

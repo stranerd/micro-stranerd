@@ -11,7 +11,8 @@ export class UserMapper extends BaseMapper<UserFromModel, UserToModel, UserEntit
 			roles: param.roles,
 			tutor: param.tutor,
 			status: param.status,
-			account: param.account
+			account: param.account,
+			session: param.session
 		})
 	}
 
@@ -22,7 +23,8 @@ export class UserMapper extends BaseMapper<UserFromModel, UserToModel, UserEntit
 			roles: param.roles,
 			tutor: param.tutor,
 			status: param.status,
-			account: param.account
+			account: param.account,
+			session: param.session
 		}
 	}
 }

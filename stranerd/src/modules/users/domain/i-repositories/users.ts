@@ -20,4 +20,10 @@ export interface IUserRepository {
 	addUserCoins (userId: string, coins: { gold: number, bronze: number })
 
 	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
+
+	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null): Promise<void>
+
+	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>
+
+	removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]): Promise<void>
 }

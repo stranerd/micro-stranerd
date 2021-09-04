@@ -83,4 +83,46 @@ export class UserRepository implements IUserRepository {
 			}
 		})
 	}
+
+	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null) {
+		const session = await mongoose.startSession()
+		try {
+			await User.findByIdAndUpdate(studentId, { $set: { 'session.currentSession': sessionId } }, { session })
+			await User.findByIdAndUpdate(tutorId, { $set: { 'session.currentTutorSession': sessionId } }, { session })
+			await session.commitTransaction()
+			session.endSession()
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
+	}
+
+	async addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string) {
+		const session = await mongoose.startSession()
+		try {
+			await User.findByIdAndUpdate(studentId, { $push: { 'session.lobby': sessionId } }, { session })
+			await User.findByIdAndUpdate(tutorId, { $push: { 'session.requests': sessionId } }, { session })
+			await session.commitTransaction()
+			session.endSession()
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
+	}
+
+	async removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]) {
+		const session = await mongoose.startSession()
+		try {
+			await User.findByIdAndUpdate(studentId, { $pull: { 'session.lobby': { $in: sessionIds } } }, { session })
+			await User.findByIdAndUpdate(tutorId, { $pull: { 'session.requests': { $in: sessionIds } } }, { session })
+			await session.commitTransaction()
+			session.endSession()
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
+	}
 }

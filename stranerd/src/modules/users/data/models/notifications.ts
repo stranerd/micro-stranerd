@@ -7,6 +7,7 @@ export interface NotificationFromModel extends NotificationToModel {
 
 export interface NotificationToModel {
 	body: string
-	action: string
 	userId: string
+	action: string
+	data: Record<string, any>
 }
