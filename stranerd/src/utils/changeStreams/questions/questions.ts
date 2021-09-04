@@ -38,7 +38,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			tutors.results.map((t) => t.id).map(async (id) => {
 				await sendNotification(id, {
 					body: 'A new question was just asked on Stranerd that you might be interested in. Go check it out',
-					action: `/questions/${ after.id }`
+					action: 'questions',
+					data: { questionId: after.id }
 				}, 'New Question')
 			})
 		])

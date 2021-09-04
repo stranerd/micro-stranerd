@@ -21,11 +21,13 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		await sendNotification(after.userId, {
 			body: 'Your question has been answered. Go have a look',
-			action: `/questions/${ after.questionId }#${ after.id }`
+			action: 'answers',
+			data: { questionId: after.questionId, answerId: after.id }
 		})
 		await sendNotification(after.userId, {
 			body: 'You asked a question and we\'ve answered! Go view all answers to your question',
-			action: `/questions/${ after.questionId }#${ after.id }`
+			action: 'answers',
+			data: { questionId: after.questionId, answerId: after.id }
 		}, 'New Answer')
 	},
 	updated: async ({ after, changes }) => {

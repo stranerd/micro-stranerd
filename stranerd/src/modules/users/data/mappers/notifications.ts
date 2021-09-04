@@ -8,6 +8,7 @@ export class NotificationMapper extends BaseMapper<NotificationFromModel, Notifi
 			id: param._id.toString(),
 			body: param.body,
 			action: param.action,
+			data: param.data,
 			userId: param.userId,
 			seen: param.seen,
 			createdAt: param.createdAt,
@@ -18,6 +19,7 @@ export class NotificationMapper extends BaseMapper<NotificationFromModel, Notifi
 	mapTo (param) {
 		return {
 			body: param.body,
+			data: param.data,
 			action: param.action,
 			userId: param.userId
 		}

@@ -16,7 +16,8 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		const answer = await FindAnswer.execute(after.answerId)
 		if (answer) await sendNotification(answer.userId, {
 			body: 'Your question has a new comment. Go have a look',
-			action: `/questions/${ answer.questionId }#${ answer.id }`
+			action: 'answers',
+			data: { questionId: answer.questionId, answerId: answer.id }
 		})
 	},
 	deleted: async ({ before }) => {
