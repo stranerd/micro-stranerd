@@ -3,6 +3,7 @@ import { IChatMetaRepository } from '@modules/sessions/domain/irepositories/chat
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaFromModel } from '../models/chatMeta'
 import { ChatMeta } from '../mongooseModels/chatMeta'
+import { UserBio } from '../../domain/types/common'
 
 export class ChatMetaRepository implements IChatMetaRepository {
 	private static instance: ChatMetaRepository
@@ -24,5 +25,15 @@ export class ChatMetaRepository implements IChatMetaRepository {
 			...data,
 			results: data.results.map((r) => this.mapper.mapFrom(r)!)
 		}
+	}
+
+	async updateBio (id: string, userBio: UserBio) {
+		const chatMeta = await ChatMeta.findOneAndUpdate({ _id: id }, { $set: { userBio } })
+		return !!chatMeta
+	}
+
+	async updateUserBios (userId: string, userBio: UserBio) {
+		const result = await ChatMeta.updateMany({ userId }, { $set: { userBio } })
+		return result.ok
 	}
 }

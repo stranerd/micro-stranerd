@@ -2,11 +2,13 @@ import { SessionToModel } from '../../data/models/session'
 import { SessionEntity } from '../entities/session'
 import { QueryParams, QueryResults } from '@utils/commons'
 import { CancelReason } from '../types/session'
+import { UserBio } from '../types/common'
 
 export interface ISessionRepository {
-	add: (data: Partial<SessionToModel>) => Promise<SessionEntity>,
+	add: (data: SessionToModel) => Promise<SessionEntity>,
 	get: (query: QueryParams) => Promise<QueryResults<SessionEntity>>
 	find: (id: string) => Promise<SessionEntity | null>
-	accept: (id: string, accepted: boolean) => Promise<boolean>
+	accept: (id: string, tutorId: string, accepted: boolean) => Promise<boolean>
 	cancel: (id: string, reason: CancelReason) => Promise<boolean>
+	updateMySessionsBio: (userId: string, userBio: UserBio) => Promise<boolean>
 }

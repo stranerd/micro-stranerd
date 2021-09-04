@@ -17,13 +17,11 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	},
 	ownerId: {
 		type: mongoose.Schema.Types.ObjectId,
-		required: false,
-		default: null
+		required: true
 	},
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
-		required: false,
-		default: null
+		required: true
 	},
 	userBio: {
 		type: Object,

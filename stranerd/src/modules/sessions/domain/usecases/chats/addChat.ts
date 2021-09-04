@@ -3,7 +3,9 @@ import { BaseUseCase } from '@utils/commons'
 import { ChatToModel } from '../../../data/models/chat'
 import { ChatEntity } from '../../entities/chat'
 
-export class AddChatUseCase extends BaseUseCase<ChatToModel, ChatEntity> {
+type Input = { path: [string, string], data: ChatToModel }
+
+export class AddChatUseCase extends BaseUseCase<Input, ChatEntity> {
 	private repository: IChatRepository
 
 	constructor (repository: IChatRepository) {
@@ -11,7 +13,7 @@ export class AddChatUseCase extends BaseUseCase<ChatToModel, ChatEntity> {
 		this.repository = repository
 	}
 
-	async execute (data: ChatToModel) {
-		return await this.repository.add(data)
+	async execute (input: Input) {
+		return await this.repository.add(input.data, input.path)
 	}
 }

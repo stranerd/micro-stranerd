@@ -5,6 +5,13 @@ export interface SessionFromModel extends SessionToModel {
 	endedAt: number | null
 	createdAt: number,
 	updatedAt: number,
+	accepted: boolean
+	done: boolean
+	reviews: {
+		student: { rating: number, comment: string } | null
+		tutor: { rating: number, comment: string } | null
+	}
+	cancelled: { tutor: boolean, student: boolean, busy: boolean }
 }
 
 export interface SessionToModel {
@@ -15,11 +22,4 @@ export interface SessionToModel {
 	tutorBio: UserBio
 	duration: number
 	price: number
-	accepted: boolean
-	done: boolean
-	reviews: {
-		student: { rating: number, comment: string } | null
-		tutor: { rating: number, comment: string } | null
-	}
-	cancelled: { tutor: boolean, student: boolean, busy: boolean }
 }

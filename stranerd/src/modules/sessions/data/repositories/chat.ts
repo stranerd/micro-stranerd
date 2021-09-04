@@ -22,14 +22,18 @@ export class ChatRepository implements IChatRepository {
 		const session = await mongoose.startSession()
 		try {
 			const chat = await new Chat({ ...data, path: this.formPath(path) }).save({ session })
-			await ChatMeta.findOneAndUpdate({
-				ownerId: path[0], userId: path[1]
-			}, { $set: { last: chat } }, { upsert: true, session })
-			await ChatMeta.findOneAndUpdate({
-				ownerId: path[1], userId: path[0]
-			}, {
-				$set: { last: chat }, $push: { unRead: chat.id }
-			}, { upsert: true, session })
+			await ChatMeta.findOneAndUpdate(
+				{ ownerId: path[0], userId: path[1] },
+				{ $set: { last: chat, ownerId: path[0], userId: path[1] } },
+				{ upsert: true, session })
+			await ChatMeta.findOneAndUpdate(
+				{ ownerId: path[1], userId: path[0] },
+				{
+					$set: { last: chat, ownerId: path[1], userId: path[0] },
+					$push: { unRead: chat.id }
+				},
+				{ upsert: true, session }
+			)
 
 			await session.commitTransaction()
 			session.endSession()
