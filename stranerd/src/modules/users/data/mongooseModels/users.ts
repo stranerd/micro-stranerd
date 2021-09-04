@@ -70,12 +70,12 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	session: {
 		currentSession: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
 			required: false,
 			default: null
 		},
 		currentTutorSession: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
 			required: false,
 			default: null
 		},

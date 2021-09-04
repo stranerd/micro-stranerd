@@ -40,30 +40,17 @@ export class SessionRepository implements ISessionRepository {
 
 	async accept (id: string, tutorId: string, accepted: boolean) {
 		const session = await Session.findOneAndUpdate({
-			_id: id,
-			tutorId,
-			accepted: null
+			_id: id, tutorId, accepted: null
 		}, { $set: { accepted } })
 
 		return !!session
 	}
 
-	async cancel (id: string, reason: CancelReason) {
-		const session = await Session.findById(id)
-		const reasonData = {
-			tutor: false,
-			student: false,
-			busy: false
-		}
-		if (reason == 'tutor') reasonData.tutor = true
-		if (reason == 'student') reasonData.student = true
-		if (reason == 'busy') reasonData.busy = true
-
-		if (session) {
-			session.cancelled = reasonData
-			session.save()
-		}
-		return true
+	async cancel (ids: string[], userId: string, reason: CancelReason) {
+		const result = await Session.updateMany({
+			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
+		}, { $set: { [`cancelled.${ reason }`]: true } })
+		return !!result.ok
 	}
 
 	async updateMySessionsBio (userId: string, userBio: UserBio) {

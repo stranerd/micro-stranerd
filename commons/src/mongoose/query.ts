@@ -18,13 +18,12 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	// Handle where clauses
 	const whereType = ['and', 'or'].indexOf(params.whereType as string) !== -1 ? params.whereType : 'and'
 	const where = (params.where ?? [])
-		.filter(({ field, condition, value }) => !!field && !!condition && !!value)
 		.map(({ field, value, condition }) => {
 			const checkedField = field === 'id' ? '_id' : (field ?? '')
 			const parsedValue = value ?? ''
 			const checkedValue = field === 'id'
 				? mongoose.Types.ObjectId.isValid(parsedValue) ? parsedValue : new mongoose.Types.ObjectId()
-				: parsedValue
+				: (parsedValue ?? '')
 			const checkedCondition = Object.keys(Conditions).indexOf(condition as unknown as string) > -1 ? condition : Conditions.eq
 			return ({
 				field: checkedField,
