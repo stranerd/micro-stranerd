@@ -42,8 +42,8 @@ export class SessionRepository implements ISessionRepository {
 		const session = await Session.findOneAndUpdate({
 			_id: id,
 			tutorId,
-			accepted: false
-		}, { $set: { accepted: true } })
+			accepted: null
+		}, { $set: { accepted } })
 
 		return !!session
 	}

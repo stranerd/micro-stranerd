@@ -10,7 +10,7 @@ import { MarkChatReadUseCase } from './domain/usecases/chats/markChatRead'
 import { GetSessionUseCase } from './domain/usecases/sessions/getSession'
 import { GetSessionsUseCase } from './domain/usecases/sessions/getSessions'
 import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
-import { BeginSessionUseCase } from './domain/usecases/sessions/beginSession'
+import { AcceptSessionUseCase } from './domain/usecases/sessions/acceptSession'
 import { CancelSessionUseCase } from './domain/usecases/sessions/cancelSession'
 import { UpdateMySessionsBioUseCase } from './domain/usecases/sessions/updateMySessionsBio'
 
@@ -25,7 +25,7 @@ export const MarkChatRead = new MarkChatReadUseCase(personalChatRepository)
 export const GetSession = new GetSessionUseCase(sessionRepository)
 export const GetSessions = new GetSessionsUseCase(sessionRepository)
 export const AddSession = new AddSessionUseCase(sessionRepository)
-export const BeginSession = new BeginSessionUseCase(sessionRepository)
+export const BeginSession = new AcceptSessionUseCase(sessionRepository)
 export const CancelSession = new CancelSessionUseCase(sessionRepository)
 export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionRepository)
 

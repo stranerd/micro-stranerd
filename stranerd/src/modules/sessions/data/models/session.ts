@@ -5,7 +5,7 @@ export interface SessionFromModel extends SessionToModel {
 	endedAt: number | null
 	createdAt: number,
 	updatedAt: number,
-	accepted: boolean
+	accepted: boolean | null
 	done: boolean
 	reviews: {
 		student: { rating: number, comment: string } | null

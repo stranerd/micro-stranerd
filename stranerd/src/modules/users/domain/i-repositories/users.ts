@@ -23,7 +23,7 @@ export interface IUserRepository {
 
 	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null): Promise<void>
 
-	addUserQueuedSessions (userId: string, sessionId: string, requests: boolean): Promise<void>
+	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>
 
-	removeUserQueuedSessions (userId: string, sessionIds: string[], tutor: boolean): Promise<void>
+	removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]): Promise<void>
 }
