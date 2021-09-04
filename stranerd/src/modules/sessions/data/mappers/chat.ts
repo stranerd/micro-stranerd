@@ -5,9 +5,9 @@ import { BaseMapper } from '@stranerd/api-commons'
 export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntity> {
 	mapFrom (model) {
 		if (!model) return null
-		const { _id, content, media, sessionId, from, readAt, createdAt, updatedAt } = model
+		const { _id, path, content, media, sessionId, from, readAt, createdAt, updatedAt } = model
 		return new ChatEntity({
-			id: _id.toString(),
+			id: _id.toString(), path,
 			content, media, from, sessionId,
 			createdAt, updatedAt, readAt
 		})
@@ -19,6 +19,14 @@ export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntit
 			media: entity.media,
 			from: entity.from,
 			sessionId: entity.sessionId
+		}
+	}
+
+	mapForMeta (model: ChatFromModel) {
+		const { _id, path, content, media, sessionId, from, readAt, createdAt, updatedAt } = model
+		return {
+			id: _id.toString,
+			path, content, media, sessionId, from, readAt, createdAt, updatedAt
 		}
 	}
 }

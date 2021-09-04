@@ -2,7 +2,7 @@ import { Media } from '@modules/sessions/domain/types/common'
 
 export interface ChatFromModel extends ChatToModel {
 	_id: string
-	from: string
+	path: string
 	readAt: number | null,
 	createdAt: number
 	updatedAt: number

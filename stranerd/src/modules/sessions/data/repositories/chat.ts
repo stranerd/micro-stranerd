@@ -2,10 +2,10 @@ import { ChatMapper } from '../mappers/chat'
 import { IChatRepository } from '../../domain/irepositories/chat'
 import { ChatFromModel, ChatToModel } from '../models/chat'
 import { Chat } from '../mongooseModels/chat'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { ChatMeta } from '../mongooseModels/chatMeta'
 
 export class ChatRepository implements IChatRepository {
-
 	private static instance: ChatRepository
 	private mapper: ChatMapper
 
@@ -18,9 +18,27 @@ export class ChatRepository implements IChatRepository {
 		return ChatRepository.instance
 	}
 
-	async add (data: ChatToModel) {
-		const chat = await new Chat(data).save()
-		return this.mapper.mapFrom(chat)!
+	async add (data: ChatToModel, path: [string, string]) {
+		const session = await mongoose.startSession()
+		try {
+			const chat = await new Chat({ ...data, path: this.formPath(path) }).save({ session })
+			await ChatMeta.findOneAndUpdate({
+				ownerId: path[0], userId: path[1]
+			}, { $set: { last: chat } }, { upsert: true, session })
+			await ChatMeta.findOneAndUpdate({
+				ownerId: path[1], userId: path[0]
+			}, {
+				$set: { last: chat }, $push: { unRead: chat.id }
+			}, { upsert: true, session })
+
+			await session.commitTransaction()
+			session.endSession()
+			return this.mapper.mapFrom(chat)!
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
 	}
 
 	async get (query: QueryParams) {
@@ -37,13 +55,36 @@ export class ChatRepository implements IChatRepository {
 		return this.mapper.mapFrom(chat)
 	}
 
-	async markRead (id: string,data: Partial<ChatToModel>) {
-		const chat = await Chat.findOneAndUpdate({ _id: id }, data, { new: true })
+	async markRead (id: string, path: [string, string]) {
+		const session = await mongoose.startSession()
+		const readAt = Date.now()
+		try {
+			const chat = await Chat.findOneAndUpdate(
+				{ _id: id, path: this.formPath(path), readAt: null },
+				{ readAt },
+				{ new: true, session }
+			)
+			await ChatMeta.findOneAndUpdate({
+				ownerId: path[0], userId: path[1]
+			}, { $pull: { unRead: id } }, { session })
+			await ChatMeta.findOneAndUpdate({
+				ownerId: path[0], userId: path[1], 'last.id': id
+			}, { $set: { 'last.readAt': readAt } }, { session })
+
+			await session.commitTransaction()
+			session.endSession()
+			return !!chat
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
+	}
+
+	async delete (id: string, userId: string) {
+		const chat = await Chat.findOneAndDelete({ _id: id, from: userId })
 		return !!chat
 	}
 
-	async delete (id: string) {
-		const chat = await Chat.findOneAndDelete({ _id: id })
-		return !!chat
-	}
+	private formPath = (path: [string, string]) => [...path].sort().join('---')
 }

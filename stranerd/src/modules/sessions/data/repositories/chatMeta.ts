@@ -5,7 +5,6 @@ import { ChatMetaFromModel } from '../models/chatMeta'
 import { ChatMeta } from '../mongooseModels/chatMeta'
 
 export class ChatMetaRepository implements IChatMetaRepository {
-
 	private static instance: ChatMetaRepository
 	private mapper: ChatMetaMapper
 
@@ -25,9 +24,5 @@ export class ChatMetaRepository implements IChatMetaRepository {
 			...data,
 			results: data.results.map((r) => this.mapper.mapFrom(r)!)
 		}
-	}
-	async delete (id: string) {
-		const chatMeta = await ChatMeta.findOneAndDelete({ _id: id })
-		return !!chatMeta
 	}
 }

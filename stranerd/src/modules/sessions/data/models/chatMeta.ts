@@ -10,6 +10,8 @@ export interface ChatMetaFromModel extends ChatMetaToModel {
 export interface ChatMetaToModel {
 	unRead: string[],
 	last: ChatFromModel,
+	ownerId: string,
+	userId: string,
 	userBio: UserBio
 }
 

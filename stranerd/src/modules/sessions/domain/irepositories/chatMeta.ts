@@ -3,5 +3,4 @@ import { ChatMetaEntity } from '../entities/chatMeta'
 
 export interface IChatMetaRepository {
 	get: (query: QueryParams) => Promise<QueryResults<ChatMetaEntity>>
-	delete: ( id: string) => Promise<boolean>
 }

@@ -1,10 +1,7 @@
 import { IChatRepository } from '../../irepositories/chat'
 import { BaseUseCase } from '@utils/commons'
-import { ChatToModel } from '../../../data/models/chat'
 
-type Input = { id: string, data: Partial<ChatToModel> }
-
-export class MarkChatReadUseCase extends BaseUseCase<Input, boolean> {
+export class MarkChatReadUseCase extends BaseUseCase<string, boolean> {
 	private repository: IChatRepository
 
 	constructor (repository: IChatRepository) {
@@ -12,7 +9,7 @@ export class MarkChatReadUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input: Input) {
-		return await this.repository.markRead(input.id, input.data)
+	async execute (id: string) {
+		return await this.repository.markRead(id)
 	}
 }

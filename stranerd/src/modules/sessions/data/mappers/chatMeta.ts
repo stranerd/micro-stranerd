@@ -9,13 +9,12 @@ export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToMode
 
 	mapFrom (model) {
 		if (!model) return null
-		const { _id, last, unRead, userBio, createdAt, updatedAt } = model
+		const { _id, last, unRead, ownerId, userId, userBio, createdAt, updatedAt } = model
 		const lastData = this.chatMapper.mapFrom(last)
 		return new ChatMetaEntity({
 			id: _id.toString(),
 			last: lastData!,
-			unRead,
-			userBio,
+			unRead, userId, ownerId, userBio,
 			createdAt, updatedAt
 		})
 	}
@@ -24,6 +23,8 @@ export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToMode
 		return {
 			last: entity.last as ChatFromModel,
 			unRead: entity.unRead,
+			ownerId: entity.ownerId,
+			userId: entity.userId,
 			userBio: entity.userBio
 		}
 	}

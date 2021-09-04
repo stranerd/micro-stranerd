@@ -1,5 +1,5 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
-import { SessionEntity } from '@modules/sessions'
+import { SessionEntity } from '../../domain/entities/session'
 import { SessionFromModel } from '../models/session'
 import { SessionChangeStreamCallbacks } from '@utils/changeStreams/sessions/session'
 import { SessionMapper } from '../mappers/session'
@@ -10,7 +10,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	studentId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	studentBio: {
@@ -18,7 +18,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	tutorId: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
 	tutorBio: {
@@ -31,38 +31,64 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 	},
 	accepted: {
 		type: Boolean,
-		required: true
+		required: false,
+		default: false
 	},
 	done: {
 		type: Boolean,
-		required: true
+		required: false,
+		default: false
 	},
 	price: {
 		type: Number,
 		required: true
 	},
 	cancelled: {
-		type: Object,
-		required: true
+		student: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		tutor: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		busy: {
+			type: Boolean,
+			required: false,
+			default: false
+		}
 	},
 	reviews: {
-		type: Object,
-		required: true
+		student: {
+			type: Object,
+			required: false,
+			default: null
+		},
+		tutor: {
+			type: Object,
+			required: false,
+			default: null
+		}
 	},
 	endedAt: {
 		type: Number,
 		required: false,
+		default: null
 	},
 	createdAt: {
+		type: Number,
+		required: false,
+		default: Date.now
+	},
+	updatedAt: {
 		type: Number,
 		required: false,
 		default: Date.now
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-
 export const Session = mongoose.model<SessionFromModel>('StranerdSession', Schema)
 
 generateChangeStreams<SessionFromModel, SessionEntity>(Session, SessionChangeStreamCallbacks, new SessionMapper().mapFrom).then()
-
-
