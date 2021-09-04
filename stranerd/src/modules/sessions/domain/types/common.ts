@@ -1,6 +1,10 @@
-export interface Media {
-	name: string
-	path: string
-	link: string
-	type: string
+import { MediaOutput } from '@utils/commons'
+
+export type UserBio = {
+	email: string
+	firstName: string
+	lastName: string
+	photo: MediaOutput | null
 }
+
+export type Media = MediaOutput

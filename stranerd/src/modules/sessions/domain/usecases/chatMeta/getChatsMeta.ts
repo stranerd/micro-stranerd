@@ -1,5 +1,5 @@
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { ChatMetaEntity } from '@modules/sessions'
+import { ChatMetaEntity } from '../../entities/chatMeta'
 import { IChatMetaRepository } from '../../irepositories/chatMeta'
 
 export class GetChatsMetaUseCase extends BaseUseCase<QueryParams, QueryResults<ChatMetaEntity>> {

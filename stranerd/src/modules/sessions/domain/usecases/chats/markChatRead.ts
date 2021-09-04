@@ -1,6 +1,6 @@
 import { IChatRepository } from '../../irepositories/chat'
 import { BaseUseCase } from '@utils/commons'
-import { ChatToModel } from '@modules/sessions/data/models/chat'
+import { ChatToModel } from '../../../data/models/chat'
 
 type Input = { id: string, data: Partial<ChatToModel> }
 
@@ -13,6 +13,6 @@ export class MarkChatReadUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.markRead(input.id,input.data)
+		return await this.repository.markRead(input.id, input.data)
 	}
 }

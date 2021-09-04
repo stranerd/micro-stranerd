@@ -4,12 +4,12 @@ import { ChatEntity } from '@modules/sessions'
 
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
-	    if(after) return
+		if (after) return
 	},
 	updated: async ({ after, changes }) => {
-		if(after && changes) return
+		if (after && changes) return
 	},
 	deleted: async ({ before }) => {
-		if(before) return
+		if (before) return
 	}
 }

@@ -1,1 +1,1 @@
-export type CancleReason = 'tutor' | 'busy' | 'student'
+export type CancelReason = 'tutor' | 'busy' | 'student'

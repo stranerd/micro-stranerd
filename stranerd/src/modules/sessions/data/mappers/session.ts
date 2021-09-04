@@ -1,24 +1,24 @@
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { SessionEntity } from '../../domain/entities/session'
+import { BaseMapper } from '@utils/commons'
 
-export class SessionMapper {
-	mapFrom (model: SessionFromModel | null) {
+export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, SessionEntity> {
+	mapFrom (model) {
 		if (!model) return null
 		const {
-			_id: id, duration, price, message,
+			_id, duration, price, message,
 			studentId, tutorId, studentBio, tutorBio,
 			accepted, done, cancelled, reviews,
-			createdAt, endedAt
+			createdAt, endedAt, updatedAt
 		} = model
 		return new SessionEntity({
-			id, message, studentId, tutorId, studentBio, tutorBio,
+			id: _id.toString(), message, studentId, tutorId, studentBio, tutorBio,
 			duration, price, accepted, done, cancelled, reviews,
-			createdAt,
-			endedAt
+			createdAt, updatedAt, endedAt
 		})
 	}
 
-	mapTo (entity: SessionEntity): SessionToModel {
+	mapTo (entity) {
 		return {
 			message: entity.message,
 			studentId: entity.studentId,

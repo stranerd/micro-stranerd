@@ -1,11 +1,10 @@
 import { UserBio } from '@modules/users/domain/types/users'
 import { ChatFromModel } from './chat'
 
-export interface ChatMetaFromModel {
+export interface ChatMetaFromModel extends ChatMetaToModel {
 	_id: string
-	unRead: string[],
-	last: ChatFromModel,
-	userBio: UserBio
+	createdAt: number
+	updatedAt: number
 }
 
 export interface ChatMetaToModel {

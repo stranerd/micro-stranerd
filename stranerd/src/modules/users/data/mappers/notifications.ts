@@ -19,7 +19,6 @@ export class NotificationMapper extends BaseMapper<NotificationFromModel, Notifi
 		return {
 			body: param.body,
 			action: param.action,
-			seen: param.seen,
 			userId: param.userId
 		}
 	}

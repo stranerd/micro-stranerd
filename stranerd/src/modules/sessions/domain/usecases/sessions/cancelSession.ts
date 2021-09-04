@@ -1,11 +1,10 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { CancleReason } from '../../types/session'
+import { CancelReason } from '../../types/session'
 
+type Input = { id: string, reason: CancelReason }
 
-type Input = { id: string, reason: CancleReason }
-
-export class CancelSessionUseCase extends BaseUseCase<Input, boolean>  {
+export class CancelSessionUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISessionRepository
 
 	constructor (repository: ISessionRepository) {
@@ -14,6 +13,6 @@ export class CancelSessionUseCase extends BaseUseCase<Input, boolean>  {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.cancel(input.id,input.reason)
+		return await this.repository.cancel(input.id, input.reason)
 	}
 }

@@ -1,7 +1,7 @@
 import { IChatRepository } from '../../irepositories/chat'
 import { BaseUseCase } from '@utils/commons'
-import { ChatToModel } from '@modules/sessions/data/models/chat'
-import { ChatEntity } from '@modules/sessions'
+import { ChatToModel } from '../../../data/models/chat'
+import { ChatEntity } from '../../entities/chat'
 
 export class AddChatUseCase extends BaseUseCase<ChatToModel, ChatEntity> {
 	private repository: IChatRepository

@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '@modules/users/domain/types/users'
+import { UserBio } from '../types/common'
 
 export class SessionEntity extends BaseEntity {
 	public readonly id: string
@@ -14,12 +14,13 @@ export class SessionEntity extends BaseEntity {
 	public readonly done: boolean
 	public readonly cancelled: { student: boolean, tutor: boolean, busy: boolean }
 	public readonly reviews: {
-		student?: { rating: number, comment: string }
-		tutor?: { rating: number, comment: string }
+		student: { rating: number, comment: string } | null
+		tutor: { rating: number, comment: string } | null
 	}
 
 	public readonly createdAt: number
-	public readonly endedAt?: number
+	public readonly updatedAt: number
+	public readonly endedAt: number | null
 
 	constructor ({
 		             id, duration, price, message,
@@ -35,20 +36,12 @@ export class SessionEntity extends BaseEntity {
 		this.tutorBio = tutorBio
 		this.duration = duration
 		this.price = price
-		this.accepted = accepted ?? false
-		this.done = done ?? false
+		this.accepted = accepted
+		this.done = done
 		this.cancelled = cancelled
 		this.reviews = reviews
 		this.createdAt = createdAt
 		this.endedAt = endedAt
-	}
-
-	get studentAvatar () {
-		return this.studentBio.photo
-	}
-
-	get tutorAvatar () {
-		return this.tutorBio.photo
 	}
 
 	get wasCancelled () {
@@ -62,9 +55,10 @@ type SessionConstructorArgs = {
 	accepted: boolean, done: boolean,
 	cancelled: { tutor: boolean, student: boolean, busy: boolean },
 	reviews: {
-		student?: { rating: number, comment: string }
-		tutor?: { rating: number, comment: string }
+		student: { rating: number, comment: string } | null
+		tutor: { rating: number, comment: string } | null
 	},
-	createdAt: number, 
-	endedAt?: number
+	createdAt: number,
+	updatedAt: number,
+	endedAt: number | null
 }

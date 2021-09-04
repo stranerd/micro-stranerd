@@ -6,11 +6,11 @@ export class AnswerCommentMapper extends BaseMapper<AnswerCommentFromModel, Answ
 	mapFrom (model) {
 		if (!model) return null
 		const {
-			_id: id, body, userId, userBio, answerId,
+			_id, body, userId, userBio, answerId,
 			createdAt, updatedAt
 		} = model
 		return new AnswerCommentEntity({
-			id, body, userId, userBio, answerId,
+			id: _id.toString(), body, userId, userBio, answerId,
 			createdAt, updatedAt
 		})
 	}

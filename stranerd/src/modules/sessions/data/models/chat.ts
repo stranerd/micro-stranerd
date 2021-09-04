@@ -1,21 +1,17 @@
 import { Media } from '@modules/sessions/domain/types/common'
 
-
-export interface ChatFromModel {
+export interface ChatFromModel extends ChatToModel {
 	_id: string
-	content?: string
-	media?: Media
 	from: string
-	sessionId?: string
-	readAt?: number,
+	readAt: number | null,
 	createdAt: number
+	updatedAt: number
 }
 
 export interface ChatToModel {
-	content?: string
-	media?: Media
+	content: string | null
+	media: Media | null
 	from: string
-	sessionId?: string
-	readAt?: number,
+	sessionId: string | null
 }
 

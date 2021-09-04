@@ -1,23 +1,25 @@
-import { Media } from '@modules/sessions/domain/types/common'
+import { Media } from '../types/common'
 import { BaseEntity } from '@utils/commons'
 
 export class ChatEntity extends BaseEntity {
-	public readonly _id: string
-	public readonly content: string | undefined
-	public readonly media: Media | undefined
+	public readonly id: string
+	public readonly content: string | null
+	public readonly media: Media | null
 	public readonly from: string
-	public readonly sessionId: string | undefined
+	public readonly sessionId: string | null
 	public readonly createdAt: number
-	public readonly readAt: number | undefined
+	public readonly updatedAt: number
+	public readonly readAt: number | null
 
-	constructor ({ _id, content, media, from, sessionId, createdAt, readAt }: ChatConstructorArgs) {
+	constructor ({ id, content, media, from, sessionId, createdAt, updatedAt, readAt }: ChatConstructorArgs) {
 		super()
-		this._id = _id
+		this.id = id
 		this.content = content
 		this.media = media
 		this.from = from
 		this.sessionId = sessionId
 		this.createdAt = createdAt
+		this.updatedAt = updatedAt
 		this.readAt = readAt
 	}
 
@@ -30,16 +32,17 @@ export class ChatEntity extends BaseEntity {
 	}
 
 	get isImage () {
-		return this.isMedia && this.media?.type.startsWith('image/')
+		return this.media && this.media.type.startsWith('image/')
 	}
 }
 
 type ChatConstructorArgs = {
-	_id: string,
-	content: string | undefined,
-	media: Media | undefined,
+	id: string,
+	content: string | null,
+	media: Media | null,
 	createdAt: number
-	readAt: number | undefined
+	updatedAt: number
+	readAt: number | null
 	from: string
-	sessionId: string | undefined
+	sessionId: string | null
 }

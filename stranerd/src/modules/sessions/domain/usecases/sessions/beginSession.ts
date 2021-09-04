@@ -1,10 +1,9 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
 
-
 type Input = { id: string, accepted: boolean }
 
-export class BeginSessionUseCase extends BaseUseCase<Input, boolean>  {
+export class BeginSessionUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISessionRepository
 
 	constructor (repository: ISessionRepository) {
