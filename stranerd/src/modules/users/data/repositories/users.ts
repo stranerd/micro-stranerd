@@ -83,4 +83,34 @@ export class UserRepository implements IUserRepository {
 			}
 		})
 	}
+
+	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null) {
+		const session = await mongoose.startSession()
+		try {
+			await User.findByIdAndUpdate(studentId, { $set: { 'session.currentSession': sessionId } }, { session })
+			await User.findByIdAndUpdate(tutorId, { $set: { 'session.currentTutorSession': sessionId } }, { session })
+			await session.commitTransaction()
+			session.endSession()
+		} catch (e) {
+			await session.abortTransaction()
+			session.endSession()
+			throw e
+		}
+	}
+
+	async addUserQueuedSessions (userId: string, sessionId: string, lobby: boolean) {
+		await User.findByIdAndUpdate(userId, {
+			$push: {
+				[lobby ? 'session.lobby' : 'session.requests']: sessionId
+			}
+		})
+	}
+
+	async removeUserQueuedSessions (userId: string, sessionIds: string[], lobby: boolean) {
+		await User.findByIdAndUpdate(userId, {
+			$pull: {
+				[lobby ? 'session.lobby' : 'session.requests']: { $in: sessionIds }
+			}
+		})
+	}
 }

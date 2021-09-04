@@ -68,6 +68,28 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: 0
 		}
 	},
+	session: {
+		currentSession: {
+			type: String,
+			required: false,
+			default: null
+		},
+		currentTutorSession: {
+			type: String,
+			required: false,
+			default: null
+		},
+		requests: {
+			type: [mongoose.Schema.Types.ObjectId],
+			required: false,
+			default: []
+		},
+		lobby: {
+			type: [mongoose.Schema.Types.ObjectId],
+			required: false,
+			default: []
+		}
+	},
 	account: {
 		score: {
 			type: Number,

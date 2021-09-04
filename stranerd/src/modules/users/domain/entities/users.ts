@@ -1,4 +1,4 @@
-import { UserAccount, UserBio, UserDates, UserRoles, UserStatus, UserTutor } from '../types/users'
+import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, UserTutor } from '../types/users'
 import { BaseEntity } from '@utils/commons'
 
 export class UserEntity extends BaseEntity {
@@ -9,8 +9,9 @@ export class UserEntity extends BaseEntity {
 	public readonly tutor: UserTutor
 	public readonly status: UserStatus
 	public readonly account: UserAccount
+	public readonly session: UserSession
 
-	constructor ({ id, bio, roles, dates, tutor, status, account }: UserConstructorArgs) {
+	constructor ({ id, bio, roles, dates, tutor, status, account, session }: UserConstructorArgs) {
 		super()
 		this.id = id
 		this.bio = bio
@@ -19,6 +20,7 @@ export class UserEntity extends BaseEntity {
 		this.tutor = tutor
 		this.status = status
 		this.account = account
+		this.session = session
 	}
 }
 
@@ -30,4 +32,5 @@ type UserConstructorArgs = {
 	tutor: UserTutor
 	status: UserStatus
 	account: UserAccount
+	session: UserSession
 }

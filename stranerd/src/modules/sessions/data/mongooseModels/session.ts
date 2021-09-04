@@ -32,7 +32,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 	accepted: {
 		type: Boolean,
 		required: false,
-		default: false
+		default: null
 	},
 	done: {
 		type: Boolean,
