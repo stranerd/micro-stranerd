@@ -65,7 +65,7 @@ export class ChatRepository implements IChatRepository {
 		try {
 			const chat = await Chat.findOneAndUpdate(
 				{ _id: id, path: this.formPath(path), readAt: null },
-				{ readAt },
+				{ $set: { readAt } },
 				{ new: true, session }
 			)
 			await ChatMeta.findOneAndUpdate({

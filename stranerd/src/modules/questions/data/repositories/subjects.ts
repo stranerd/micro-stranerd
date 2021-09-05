@@ -38,7 +38,7 @@ export class SubjectRepository implements ISubjectRepository {
 	}
 
 	async update (id: string, data: SubjectToModel) {
-		const subject = await Subject.findByIdAndUpdate(id, data, { new: true })
+		const subject = await Subject.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(subject)!
 	}
 

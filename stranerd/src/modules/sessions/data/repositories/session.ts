@@ -55,8 +55,8 @@ export class SessionRepository implements ISessionRepository {
 
 	async updateMySessionsBio (userId: string, userBio: UserBio) {
 		const result = await Promise.all([
-			Session.updateMany({ studentId: userId }, { studentBio: userBio }),
-			Session.updateMany({ tutorId: userId }, { tutorBio: userBio })
+			Session.updateMany({ studentId: userId }, { $set: { studentBio: userBio } }),
+			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio } })
 		])
 		return !!result[0].ok && !!result[1].ok
 	}

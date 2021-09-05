@@ -38,7 +38,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
-		const question = await Question.findOneAndUpdate({ _id: id, userId }, data)
+		const question = await Question.findOneAndUpdate({ _id: id, userId }, { $set: data })
 		return this.mapper.mapFrom(question)!
 	}
 
@@ -67,7 +67,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async updateQuestionsUserBio (userId: string, userBio: UserBio) {
-		const questions = await Question.updateMany({ userId }, { userBio })
+		const questions = await Question.updateMany({ userId }, { $set: { userBio } })
 		return questions.n !== 0
 	}
 
