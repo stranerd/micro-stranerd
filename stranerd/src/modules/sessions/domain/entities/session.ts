@@ -25,7 +25,8 @@ export class SessionEntity extends BaseEntity {
 	constructor ({
 		             id, duration, price, message,
 		             studentId, tutorId, studentBio, tutorBio,
-		             accepted, done, createdAt, cancelled, reviews, endedAt
+		             accepted, done, cancelled, reviews,
+		             createdAt, endedAt, updatedAt
 	             }: SessionConstructorArgs) {
 		super()
 		this.id = id
@@ -41,6 +42,7 @@ export class SessionEntity extends BaseEntity {
 		this.cancelled = cancelled
 		this.reviews = reviews
 		this.createdAt = createdAt
+		this.updatedAt = updatedAt
 		this.endedAt = endedAt
 	}
 

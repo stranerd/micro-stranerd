@@ -13,16 +13,14 @@ const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] })
 export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {
-	const startQueueWorkers = async () => {
-		await startProcessingQueues({
-			onDelayed: async ({ data, type }) => {
-				await publishers[EventTypes.TASKSDELAYED].publish({ type, data })
-			},
-			onCron: async (type) => {
-				await publishers[EventTypes.TASKSCRON].publish({ type })
-			}
-		})
-	}
+	await startProcessingQueues({
+		onDelayed: async ({ data, type }) => {
+			await publishers[EventTypes.TASKSDELAYED].publish({ type, data })
+		},
+		onCron: async (type) => {
+			await publishers[EventTypes.TASKSCRON].publish({ type })
+		}
+	})
 	await setupMongooseConnection()
 	await app.start(port)
 	await Logger.info(`${ appId } api has started listening on port`, port)
