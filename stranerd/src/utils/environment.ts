@@ -7,4 +7,3 @@ export const port = parseInt(getEnvOrFail('PORT'))
 export const appId = getEnvOrFail('APP_ID')
 
 export const clientDomain = `http${ !isDev ? 's' : '' }://` + getEnvOrFail('CLIENT_DOMAIN')
-export const logo = clientDomain + '/images/logo-white.png'

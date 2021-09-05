@@ -10,6 +10,11 @@ export type Email = {
 	subject: string
 	content: string
 	from: Emails
+	attachments: {
+		logoWhite?: boolean
+		logoBlue?: boolean
+		icon?: boolean
+	}
 }
 
 export const readEmailFromPug = async (filePath: string, data: Record<string, any>) => {

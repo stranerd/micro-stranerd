@@ -9,7 +9,6 @@ export const appId = getEnvOrFail('APP_ID')
 export const googleClientId = getEnvOrFail('GOOGLE_CLIENT_ID')
 
 export const clientDomain = `http${ !isDev ? 's' : '' }://` + getEnvOrFail('CLIENT_DOMAIN')
-export const logo = clientDomain + '/images/logo-white.png'
 
 const MAILCHIMP_CONFIG = JSON.parse(getEnvOrFail('MAILCHIMP_CONFIG') || '{}')
 export const mailchimpConfig = {

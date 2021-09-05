@@ -2,7 +2,7 @@ import { NotificationToModel } from '@modules/users/data/models/notifications'
 import { CreateNotification, FindUser } from '@modules/users'
 import { publishers } from '@utils/events'
 import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
-import { clientDomain, logo } from '@utils/environment'
+import { clientDomain } from '@utils/environment'
 
 export const sendNotification = async (userId: string, data: Omit<NotificationToModel, 'userId'>, title?: string) => {
 	if (title) {
@@ -10,13 +10,14 @@ export const sendNotification = async (userId: string, data: Omit<NotificationTo
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
 				notification: { ...data, link: getNotificationLink(data.action, data.data), title },
-				meta: { logo, clientDomain }
+				meta: { clientDomain }
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
 				from: Emails.NO_REPLY,
 				to: user.bio.email,
 				subject: title,
-				content
+				content,
+				attachments: { logoWhite: true }
 			})
 		}
 	} else await CreateNotification.execute({ ...data, userId })

@@ -5,7 +5,7 @@ import * as crypto from 'crypto'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/user.model'
-import { clientDomain, googleClientId, logo } from '@utils/environment'
+import { clientDomain, googleClientId } from '@utils/environment'
 import { UserFromModel, UserToModel } from '../models'
 import { hash, hashCompare } from '@utils/hash'
 import {
@@ -109,7 +109,7 @@ export class AuthRepository implements IAuthRepository {
 
 		// send verification mail
 		const emailContent = await readEmailFromPug('emails/email-verification.pug', {
-			meta: { clientDomain, logo },
+			meta: { clientDomain },
 			token
 		})
 
@@ -117,7 +117,8 @@ export class AuthRepository implements IAuthRepository {
 			to: email,
 			subject: 'Verify Your Email',
 			from: Emails.NO_REPLY,
-			content: emailContent
+			content: emailContent,
+			attachments: {}
 		})
 
 		return true
@@ -125,16 +126,12 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async verifyEmail (token: string): Promise<TokenInput> {
-
 		// check token in cache
 		const userEmail = await getCacheInstance.get('verification-token-' + token)
 		if (!userEmail) throw new InvalidToken()
 
-		const user = await User.findOne({ email: userEmail })
+		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
-
-		user.isVerified = true
-		await user.save()
 
 		const tokenPayload: TokenInput = {
 			id: user._id,
@@ -158,7 +155,7 @@ export class AuthRepository implements IAuthRepository {
 
 		// send reset password mail
 		const emailContent = await readEmailFromPug('emails/email-reset.pug', {
-			meta: { clientDomain, logo },
+			meta: { clientDomain },
 			token
 		})
 
@@ -166,7 +163,8 @@ export class AuthRepository implements IAuthRepository {
 			to: email,
 			subject: 'Reset Your Password',
 			from: Emails.NO_REPLY,
-			content: emailContent
+			content: emailContent,
+			attachments: {}
 		})
 
 		return true
@@ -174,16 +172,12 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async resetPassword (input: PasswordResetInput): Promise<TokenInput> {
-
 		// check token in cache
 		const userEmail = await getCacheInstance.get('password-reset-token-' + input.token)
 		if (!userEmail) throw new InvalidToken()
 
-		const user = await User.findOne({ email: userEmail })
+		const user = await User.findOne({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
-
-		user.password = await hash(input.password)
-		await user.save()
 
 		return {
 			id: user._id!,

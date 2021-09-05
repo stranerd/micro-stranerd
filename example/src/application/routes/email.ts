@@ -15,7 +15,8 @@ const sendMail: Route = {
 				to: email,
 				subject: 'Hello From Example',
 				from: Emails.NO_REPLY,
-				content: emailContent
+				content: emailContent,
+				attachments: { logoWhite: true }
 			})
 			return {
 				status: StatusCodes.Ok,
