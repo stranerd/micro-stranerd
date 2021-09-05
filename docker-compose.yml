@@ -99,6 +99,16 @@ services:
     restart: unless-stopped
     command: "--quiet --bind_ip_all --replSet rs0"
 
+  mongodb-express:
+    image: mongo-express:latest
+    container_name: mongodb-express
+    hostname: mongodb-express
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    ports:
+      - "81:8081"
+
   rabbitmq:
     build:
       context: ./rabbitmq
@@ -106,12 +116,23 @@ services:
     hostname: rabbitmq
     restart: unless-stopped
     ports:
-      - "15672:15672"
+      - "82:15672"
 
   redis:
     image: redis:6.2.5-alpine
     container_name: redis
     hostname: redis
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    hostname: redis-commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "83:8081"
 
   rsinit:
     build:
