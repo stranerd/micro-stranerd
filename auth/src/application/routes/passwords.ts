@@ -60,7 +60,6 @@ const updatePassword: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-
 			const userId = req.authUser!.id
 
 			const reqData = {
@@ -84,8 +83,7 @@ const updatePassword: Route = {
 				status: StatusCodes.Ok,
 				result
 			}
-		}
-		)
+		})
 	]
 }
 
