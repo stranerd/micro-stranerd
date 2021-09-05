@@ -1,6 +1,6 @@
 import Bull from 'bull'
 import { redisURI } from '../config'
-import { CronTypes } from '../events/types/tasks'
+import { CronTypes } from '../events'
 
 export const queue = new Bull('task-queues', redisURI)
 
