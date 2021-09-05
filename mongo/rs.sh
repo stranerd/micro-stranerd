@@ -12,7 +12,7 @@ until curl http://${MONGODB1}:27017/serverStatus\?text\=1 2>&1 | grep uptime | h
 done
 
 
-mongo --host ${MONGODB1}:27017 <<EOF
+mongosh --host ${MONGODB1}:27017 <<EOF
 var cfg = {
     "_id": "rs0",
     "protocolVersion": 1,
@@ -27,7 +27,5 @@ var cfg = {
 };
 rs.initiate(cfg, { force: true });
 rs.reconfig(cfg, { force: true });
-rs.slaveOk();
 db.getMongo().setReadPref('nearest');
-db.getMongo().setSlaveOk();
 EOF
