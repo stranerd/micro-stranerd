@@ -2,6 +2,7 @@ import { Email } from '../emails'
 import { MediaOutput } from '../storage'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 import { StranerdUserBioUpdated } from './types/stranerd/users'
+import { CronTypes } from './types/tasks'
 
 export enum EventTypes {
 	TEST = 'TEST',
@@ -11,7 +12,9 @@ export enum EventTypes {
 	AUTHUSERUPDATED = 'AUTHUSERUPDATED',
 	AUTHROLESUPDATED = 'AUTHROLESUPDATED',
 	AUTHUSERDELETED = 'AUTHUSERDELETED',
-	STRANERDUSERBIOUPDATED = 'STRANERDUSERBIOUPDATED'
+	STRANERDUSERBIOUPDATED = 'STRANERDUSERBIOUPDATED',
+	TASKSCRON = 'TASKSCRON',
+	TASKSDELAYED = 'TASKSDELAYED'
 }
 
 interface Event<Data> {
@@ -51,5 +54,13 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	STRANERDUSERBIOUPDATED: {
 		topic: typeof EventTypes.STRANERDUSERBIOUPDATED,
 		data: StranerdUserBioUpdated
+	},
+	TASKSCRON: {
+		topic: typeof EventTypes.TASKSCRON,
+		data: { type: CronTypes }
+	},
+	TASKSDELAYED: {
+		topic: typeof EventTypes.TASKSDELAYED,
+		data: { type: string, data: Record<string, any> }
 	}
 }
