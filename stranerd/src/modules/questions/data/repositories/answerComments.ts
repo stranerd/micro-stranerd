@@ -43,7 +43,7 @@ export class AnswerCommentRepository implements IAnswerCommentRepository {
 	}
 
 	async updateAnswerCommentsUserBio (userId: string, userBio: UserBio) {
-		const comments = await AnswerComment.updateMany({ userId }, { userBio })
+		const comments = await AnswerComment.updateMany({ userId }, { $set: { userBio } })
 		return !!comments.ok
 	}
 }

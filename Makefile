@@ -1,4 +1,4 @@
-APPS = auth emails example storage stranerd
+APPS = auth emails example storage stranerd tasks
 COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))

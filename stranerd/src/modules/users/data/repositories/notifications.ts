@@ -36,7 +36,7 @@ export class NotificationRepository implements INotificationRepository {
 	async markNotificationSeen (data: { userId: string, id: string, seen: boolean }) {
 		if (!mongoose.Types.ObjectId.isValid(data.id)) return
 		if (!mongoose.Types.ObjectId.isValid(data.userId)) return
-		await Notification.findOneAndUpdate({ _id: data.id, userId: data.userId }, { seen: data.seen })
+		await Notification.findOneAndUpdate({ _id: data.id, userId: data.userId }, { $set: { seen: data.seen } })
 	}
 
 	async deleteOldSeenNotifications () {
