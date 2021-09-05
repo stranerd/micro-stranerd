@@ -1,14 +1,14 @@
-version: "3.8"
+version: '3.8'
 services:
   nginx:
-    image: nginx:1.21.1-alpine
+    image: 'nginx:1.21.1-alpine'
     container_name: nginx
     hostname: nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
-      - "./nginx/default.conf:/etc/nginx/nginx.conf:ro"
+      - './nginx/default.conf:/etc/nginx/nginx.conf:ro'
     restart: unless-stopped
 
   auth:
@@ -22,7 +22,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   emails:
     build:
@@ -35,7 +35,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   example:
     build:
@@ -48,7 +48,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   storage:
     build:
@@ -61,7 +61,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   stranerd:
     build:
@@ -74,7 +74,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   tasks:
     build:
@@ -87,27 +87,27 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start"
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
 
   mongodb:
     image: mongo
     container_name: mongodb
     hostname: mongodb
     volumes:
-      - "./mongo/data/mongo1/db:/data/db"
-      - "./mongo/data/mongo1/configdb:/data/configdb"
+      - './mongo/data/mongo1/db:/data/db'
+      - './mongo/data/mongo1/configdb:/data/configdb'
     restart: unless-stopped
-    command: "--quiet --bind_ip_all --replSet rs0"
+    command: '--quiet --bind_ip_all --replSet rs0'
 
   mongodb-express:
-    image: mongo-express:latest
+    image: 'mongo-express:latest'
     container_name: mongodb-express
     hostname: mongodb-express
     restart: unless-stopped
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongodb
     ports:
-      - "81:8081"
+      - '81:8081'
 
   rabbitmq:
     build:
@@ -116,23 +116,23 @@ services:
     hostname: rabbitmq
     restart: unless-stopped
     ports:
-      - "82:15672"
+      - '82:15672'
 
   redis:
-    image: redis:6.2.5-alpine
+    image: 'redis:6.2.5-alpine'
     container_name: redis
     hostname: redis
     restart: unless-stopped
 
   redis-commander:
-    image: rediscommander/redis-commander:latest
+    image: 'rediscommander/redis-commander:latest'
     container_name: redis-commander
     hostname: redis-commander
     restart: unless-stopped
     environment:
-      - REDIS_HOSTS=local:redis:6379
+      - 'REDIS_HOSTS=local:redis:6379'
     ports:
-      - "83:8081"
+      - '83:8081'
 
   rsinit:
     build:
@@ -142,4 +142,4 @@ services:
     depends_on:
       - mongodb
     restart: on-failure
-    entrypoint: "bash ./rs.sh"
+    entrypoint: 'bash ./rs.sh'

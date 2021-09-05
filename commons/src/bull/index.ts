@@ -2,7 +2,7 @@ import Bull from 'bull'
 import { redisURI } from '../config'
 import { CronTypes } from '../events/types/tasks'
 
-export const queue = new Bull('task-queues', { redis: redisURI })
+export const queue = new Bull('task-queues', redisURI)
 
 export const addDelayedJob = async (type: string, data: any, delay: number): Promise<string | number> => {
 	const job = await queue.add('delayedJobs', { type, data }, {
