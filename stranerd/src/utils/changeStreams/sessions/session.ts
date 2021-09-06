@@ -35,7 +35,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 	},
 	updated: async ({ before, after, changes }) => {
 		if (before.accepted === null && changes.accepted) {
-			if (changes.accepted) {
+			if (after.accepted) {
 				// TODO: create task and update its taskName
 
 				const tutor = await FindUser.execute(after.tutorId)
@@ -54,6 +54,16 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					studentId: after.studentId,
 					tutorId: after.tutorId,
 					sessionId: after.id
+				})
+
+				// Send accepted message
+				await AddChat.execute({
+					path: [after.tutorId, after.studentId],
+					data: {
+						sessionId: after.id,
+						content: 'Session accepted',
+						media: null
+					}
 				})
 
 				// Pay Tutor

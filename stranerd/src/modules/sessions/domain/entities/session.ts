@@ -12,6 +12,7 @@ export class SessionEntity extends BaseEntity {
 	public readonly price: number
 	public readonly accepted: boolean | null
 	public readonly done: boolean
+	public readonly taskId: string | null
 	public readonly cancelled: { student: boolean, tutor: boolean, busy: boolean }
 	public readonly reviews: {
 		student: { rating: number, comment: string } | null
@@ -63,4 +64,5 @@ type SessionConstructorArgs = {
 	createdAt: number,
 	updatedAt: number,
 	endedAt: number | null
+	taskId: string | null
 }

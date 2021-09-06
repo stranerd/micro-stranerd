@@ -60,4 +60,8 @@ export class SessionRepository implements ISessionRepository {
 		])
 		return !!result[0].ok && !!result[1].ok
 	}
+
+	async updateTaskIdAndEndedAt (id: string, data: { taskId: string | null, endedAt?: number }) {
+		await Session.findByIdAndUpdate(id, { $set: data })
+	}
 }

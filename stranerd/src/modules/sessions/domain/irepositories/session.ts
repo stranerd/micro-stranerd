@@ -11,4 +11,5 @@ export interface ISessionRepository {
 	accept: (id: string, tutorId: string, accepted: boolean) => Promise<boolean>
 	cancel: (ids: string[], userId: string, reason: CancelReason) => Promise<boolean>
 	updateMySessionsBio: (userId: string, userBio: UserBio) => Promise<boolean>
+	updateTaskIdAndEndedAt: (id: string, data: { taskId: string | null, endedAt?: number }) => Promise<void>
 }
