@@ -25,7 +25,7 @@ export const MarkChatRead = new MarkChatReadUseCase(personalChatRepository)
 export const GetSession = new GetSessionUseCase(sessionRepository)
 export const GetSessions = new GetSessionsUseCase(sessionRepository)
 export const AddSession = new AddSessionUseCase(sessionRepository)
-export const BeginSession = new AcceptSessionUseCase(sessionRepository)
+export const AcceptSession = new AcceptSessionUseCase(sessionRepository)
 export const CancelSession = new CancelSessionUseCase(sessionRepository)
 export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionRepository)
 
