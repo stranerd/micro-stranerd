@@ -23,13 +23,11 @@ export class AnswerController {
 			body: { required: true, rules: [] }
 		})
 
-		const authUserId = req.authUser?.id!
+		const authUserId = req.authUser!.id
 
 		const updatedAnswer = await UpdateAnswer.execute({ id: req.params.id, userId: authUserId, data })
 
-		if (updatedAnswer) {
-			return updatedAnswer
-		}
+		if (updatedAnswer) return updatedAnswer
 
 		throw new NotAuthorizedError()
 	}
@@ -66,7 +64,7 @@ export class AnswerController {
 
 	static async DeleteAnswer (req: Request) {
 		const isDeleted = await DeleteAnswer.execute({ id: req.params.id, userId: req.authUser!.id })
-		if (isDeleted) return { success: isDeleted }
+		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
 }

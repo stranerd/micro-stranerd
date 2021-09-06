@@ -4,6 +4,7 @@ import { Conditions, QueryParams, Request } from '@utils/commons'
 export class TransactionsController {
 	static async getTransactions (req: Request) {
 		const query = req.body as QueryParams
+		query.whereType = 'and'
 		if (!query.where) query.where = []
 		const ofUser = query.where.find((q) => q.field === 'userId')
 		if (ofUser) {

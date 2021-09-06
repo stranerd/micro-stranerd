@@ -8,8 +8,13 @@ import {
 	answerUpvotesRoutes,
 	questionsRoutes,
 	subjectsRoutes,
-	tagsRoutes
+	tagsRoutes,
 } from './questions'
+import {
+	SessionRoutes,
+	ChatMetaRoutes,
+	ChatRoutes
+} from './sessions'
 import { reviewsRoutes } from './users/reviews'
 import { transactionsRoutes } from './users/transactions'
 
@@ -23,6 +28,10 @@ export const routes: Route[] = [
 	...answerUpvotesRoutes,
 	...questionsRoutes,
 	...subjectsRoutes,
+	...tagsRoutes,
+	...SessionRoutes,
+	...ChatMetaRoutes,
+	...ChatRoutes,
 	...tagsRoutes,
 	{
 		path: '/',

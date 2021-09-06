@@ -73,7 +73,7 @@ export class QuestionController {
 
 	static async MarkBestAnswer (req: Request) {
 		const authUserId = req.authUser!.id
-		await MarkBestAnswer.execute({
+		return await MarkBestAnswer.execute({
 			id: req.params.id,
 			answerId: req.body.answerId,
 			userId: authUserId
@@ -83,7 +83,7 @@ export class QuestionController {
 	static async DeleteQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 		const isDeleted = await DeleteQuestion.execute({ id: req.params.id, userId: authUserId })
-		if (isDeleted) return { success: isDeleted }
+		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
 }
