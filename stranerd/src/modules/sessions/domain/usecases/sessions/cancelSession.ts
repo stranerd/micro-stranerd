@@ -1,6 +1,6 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { CancelReason } from '../../types/session'
+import { CancelReason } from '../../types/common'
 
 type Input = { sessionIds: string[], userId: string, reason: CancelReason }
 

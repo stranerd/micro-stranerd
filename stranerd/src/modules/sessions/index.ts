@@ -13,6 +13,8 @@ import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
 import { AcceptSessionUseCase } from './domain/usecases/sessions/acceptSession'
 import { CancelSessionUseCase } from './domain/usecases/sessions/cancelSession'
 import { UpdateMySessionsBioUseCase } from './domain/usecases/sessions/updateMySessionsBio'
+import { UpdateTaskIdAndStartedAtUseCase } from './domain/usecases/sessions/updateTaskIdAndStartedAt'
+import { MarkSessionDoneUseCase } from './domain/usecases/sessions/markSessionDone'
 
 const personalChatRepository = ChatRepository.getInstance()
 const chatMetaRepository = ChatMetaRepository.getInstance()
@@ -28,6 +30,8 @@ export const AddSession = new AddSessionUseCase(sessionRepository)
 export const AcceptSession = new AcceptSessionUseCase(sessionRepository)
 export const CancelSession = new CancelSessionUseCase(sessionRepository)
 export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionRepository)
+export const UpdateTaskIdAndStartedAt = new UpdateTaskIdAndStartedAtUseCase(sessionRepository)
+export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 
 export const GetPersonalChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
 export const UpdateChatMetaBio = new UpdateBioUseCase(chatMetaRepository)

@@ -43,6 +43,11 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		type: Number,
 		required: true
 	},
+	taskId: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: null
+	},
 	cancelled: {
 		student: {
 			type: Boolean,
@@ -71,6 +76,11 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 			required: false,
 			default: null
 		}
+	},
+	startedAt: {
+		type: Number,
+		required: false,
+		default: null
 	},
 	endedAt: {
 		type: Number,

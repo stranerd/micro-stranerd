@@ -3,8 +3,7 @@ import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { CancelReason } from '../../domain/types/session'
-import { UserBio } from '../../domain/types/common'
+import { CancelReason, TaskID, UserBio } from '../../domain/types/common'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
@@ -49,7 +48,7 @@ export class SessionRepository implements ISessionRepository {
 	async cancel (ids: string[], userId: string, reason: CancelReason) {
 		const result = await Session.updateMany({
 			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
-		}, { $set: { [`cancelled.${ reason }`]: true } })
+		}, { $set: { [`cancelled.${ reason }`]: true, done: true } })
 		return !!result.ok
 	}
 
@@ -59,5 +58,13 @@ export class SessionRepository implements ISessionRepository {
 			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio } })
 		])
 		return !!result[0].ok && !!result[1].ok
+	}
+
+	async updateTaskIdAndStartedAt (id: string, data: { taskId: TaskID, startedAt?: number }) {
+		await Session.findByIdAndUpdate(id, { $set: data })
+	}
+
+	async markSessionDone (id: string) {
+		await Session.findByIdAndUpdate(id, { $set: { done: true, endedAt: Date.now() } })
 	}
 }

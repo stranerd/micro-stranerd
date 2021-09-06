@@ -3,6 +3,7 @@ import { MediaOutput } from '../storage'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 import { StranerdUserBioUpdated } from './types/stranerd/users'
 import { CronTypes } from './types/tasks'
+import { DelayedEvent } from '../bull/types'
 
 export enum EventTypes {
 	TEST = 'TEST',
@@ -61,6 +62,6 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	},
 	TASKSDELAYED: {
 		topic: typeof EventTypes.TASKSDELAYED,
-		data: { type: string, data: Record<string, any> }
+		data: DelayedEvent
 	}
 }
