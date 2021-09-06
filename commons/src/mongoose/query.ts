@@ -1,15 +1,15 @@
 import { mongoose } from './index'
 
 export enum Conditions {
-	'lt' = 'lt', 'lte' = 'lte', 'gt' = 'gt', 'gte' = 'gte',
-	'eq' = 'eq', 'ne' = 'ne', 'in' = 'in', 'nin' = 'nin'
+	lt = 'lt', lte = 'lte', gt = 'gt', gte = 'gte',
+	eq = 'eq', ne = 'ne', in = 'in', nin = 'nin'
 }
 
-type Where = { field: string, value: any, condition: Conditions }
+type Where = { field: string, value: any, condition?: Conditions }
 
 export type QueryParams = {
 	where?: Where[]
-	auth?: { field: string, value: string }
+	auth?: Where[]
 	whereType?: 'and' | 'or'
 	sort?: { field: string, order?: 1 | -1 }
 	limit?: number
@@ -23,7 +23,11 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	const whereType = ['and', 'or'].indexOf(params.whereType as string) !== -1 ? params.whereType! : 'and'
 	const where = buildWhereQuery(params.where ?? [], whereType)
 	if (where) totalClause.$and.push(where)
-	if (params.auth) totalClause.$and.push({ [params.auth.field]: params.auth.value })
+	if (params.auth) {
+		const authType = params.auth.length > 1 ? 'or' : 'and'
+		const auth =  buildWhereQuery(params.auth ?? [], authType)
+		if (auth) totalClause.$and.push(auth)
+	}
 	if (params.search) totalClause['$text'] = { $search: params.search }
 
 	// Handle sort clauses
