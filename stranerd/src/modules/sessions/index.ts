@@ -7,7 +7,7 @@ import { UpdateBioUseCase } from './domain/usecases/chatMeta/updateBio'
 import { UpdateUserBiosUseCase } from './domain/usecases/chatMeta/updateUserBios'
 import { AddChatUseCase } from './domain/usecases/chats/addChat'
 import { MarkChatReadUseCase } from './domain/usecases/chats/markChatRead'
-import { GetSessionUseCase } from './domain/usecases/sessions/getSession'
+import { FindSessionUseCase } from './domain/usecases/sessions/findSession'
 import { GetSessionsUseCase } from './domain/usecases/sessions/getSessions'
 import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
 import { AcceptSessionUseCase } from './domain/usecases/sessions/acceptSession'
@@ -24,7 +24,7 @@ export const GetChats = new GetChatsUseCase(personalChatRepository)
 export const AddChat = new AddChatUseCase(personalChatRepository)
 export const MarkChatRead = new MarkChatReadUseCase(personalChatRepository)
 
-export const GetSession = new GetSessionUseCase(sessionRepository)
+export const FindSession = new FindSessionUseCase(sessionRepository)
 export const GetSessions = new GetSessionsUseCase(sessionRepository)
 export const AddSession = new AddSessionUseCase(sessionRepository)
 export const AcceptSession = new AcceptSessionUseCase(sessionRepository)
@@ -33,6 +33,6 @@ export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionReposit
 export const UpdateTaskIdAndStartedAt = new UpdateTaskIdAndStartedAtUseCase(sessionRepository)
 export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 
-export const GetPersonalChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
+export const GetChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
 export const UpdateChatMetaBio = new UpdateBioUseCase(chatMetaRepository)
 export const UpdateChatMetaUserBios = new UpdateUserBiosUseCase(chatMetaRepository)

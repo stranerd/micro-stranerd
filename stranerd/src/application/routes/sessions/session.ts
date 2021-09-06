@@ -6,6 +6,7 @@ export const SessionRoutes: Route[] = [
 		path: '/sessions',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -18,10 +19,11 @@ export const SessionRoutes: Route[] = [
 		path: '/sessions/:id',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.getSession(req)
+					result: await SessionController.findSession(req)
 				}
 			})
 		]
@@ -40,7 +42,7 @@ export const SessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/accept',
+		path: '/sessions/:id/accept',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -53,14 +55,14 @@ export const SessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/cancle',
+		path: '/sessions/:id/cancel',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.cancleSession(req)
+					result: await SessionController.cancelSession(req)
 				}
 			})
 		]

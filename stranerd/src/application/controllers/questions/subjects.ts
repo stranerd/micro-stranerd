@@ -26,7 +26,7 @@ export class SubjectController {
 	static async DeleteSubject (req: Request) {
 		const isDeleted = await DeleteSubject.execute(req.params.id)
 
-		if (isDeleted) return { success: isDeleted }
+		if (isDeleted) return isDeleted
 		throw new NotFoundError()
 	}
 }

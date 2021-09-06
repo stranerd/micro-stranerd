@@ -49,7 +49,7 @@ export class SessionRepository implements ISessionRepository {
 		const result = await Session.updateMany({
 			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
 		}, { $set: { [`cancelled.${ reason }`]: true, done: true } })
-		return !!result.ok
+		return result.n > 0
 	}
 
 	async updateMySessionsBio (userId: string, userBio: UserBio) {

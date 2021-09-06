@@ -6,6 +6,7 @@ export const ChatRoutes: Route[] = [
 		path: '/chats',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

@@ -4,6 +4,7 @@ import { Conditions, QueryParams, Request, validate } from '@utils/commons'
 export class NotificationsController {
 	static async getNotifications (req: Request) {
 		const query = req.body as QueryParams
+		query.whereType = 'and'
 		if (!query.where) query.where = []
 		const ofUser = query.where.find((q) => q.field === 'userId')
 		if (ofUser) {
@@ -29,10 +30,12 @@ export class NotificationsController {
 			seen: { required: true, rules: [] }
 		})
 
-		return await MarkNotificationSeen.execute({
+		await MarkNotificationSeen.execute({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			seen: !!data.seen
 		})
+
+		return true
 	}
 }
