@@ -32,8 +32,11 @@ export class SessionRepository implements ISessionRepository {
 		}
 	}
 
-	async find (id: string) {
-		const session = await Session.findById(id)
+	async find (id: string, userId: string) {
+		const session = await Session.findOne({
+			_id: id,
+			$or: [{ studentId: userId }, { tutorId: userId }]
+		})
 		return this.mapper.mapFrom(session)
 	}
 

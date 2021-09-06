@@ -4,7 +4,7 @@ import { QueryParams, Request, validate } from '@utils/commons'
 export class NotificationsController {
 	static async getNotifications (req: Request) {
 		const query = req.body as QueryParams
-		query.auth = { field: 'userId', value: req.authUser!.id }
+		query.auth = [{ field: 'userId', value: req.authUser!.id }]
 		return await GetNotifications.execute(query)
 	}
 

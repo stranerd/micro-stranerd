@@ -1,9 +1,10 @@
 import { AddChat, GetChats, MarkChatRead } from '@modules/sessions'
-import { QueryParams, Request, validate, Validation } from '@utils/commons'
+import { Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ChatController {
 	static async getChats (req: Request) {
 		const query = req.body as QueryParams
+		query.auth = [{ field: 'path', value: req.authUser!.id, condition: Conditions.in }]
 		return await GetChats.execute(query)
 	}
 
