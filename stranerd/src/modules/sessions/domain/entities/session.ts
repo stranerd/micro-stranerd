@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types/common'
+import { TaskID, UserBio } from '../types/common'
 
 export class SessionEntity extends BaseEntity {
 	public readonly id: string
@@ -12,7 +12,7 @@ export class SessionEntity extends BaseEntity {
 	public readonly price: number
 	public readonly accepted: boolean | null
 	public readonly done: boolean
-	public readonly taskId: string | null
+	public readonly taskId: TaskID
 	public readonly cancelled: { student: boolean, tutor: boolean, busy: boolean }
 	public readonly reviews: {
 		student: { rating: number, comment: string } | null
@@ -21,13 +21,14 @@ export class SessionEntity extends BaseEntity {
 
 	public readonly createdAt: number
 	public readonly updatedAt: number
+	public readonly startedAt: number | null
 	public readonly endedAt: number | null
 
 	constructor ({
 		             id, duration, price, message,
 		             studentId, tutorId, studentBio, tutorBio,
 		             accepted, done, cancelled, reviews,
-		             createdAt, endedAt, updatedAt
+		             createdAt, startedAt, endedAt, updatedAt, taskId
 	             }: SessionConstructorArgs) {
 		super()
 		this.id = id
@@ -40,10 +41,12 @@ export class SessionEntity extends BaseEntity {
 		this.price = price
 		this.accepted = accepted
 		this.done = done
+		this.taskId = taskId
 		this.cancelled = cancelled
 		this.reviews = reviews
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
+		this.startedAt = startedAt
 		this.endedAt = endedAt
 	}
 
@@ -63,6 +66,7 @@ type SessionConstructorArgs = {
 	},
 	createdAt: number,
 	updatedAt: number,
+	startedAt: number | null
 	endedAt: number | null
-	taskId: string | null
+	taskId: TaskID
 }

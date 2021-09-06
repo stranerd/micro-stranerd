@@ -1,11 +1,13 @@
-import { UserBio } from '@modules/users/domain/types/users'
+import { TaskID, UserBio } from '../../domain/types/common'
 
 export interface SessionFromModel extends SessionToModel {
 	_id: string
+	startedAt: number | null
 	endedAt: number | null
 	createdAt: number,
 	updatedAt: number,
 	accepted: boolean | null
+	taskId: TaskID
 	done: boolean
 	reviews: {
 		student: { rating: number, comment: string } | null

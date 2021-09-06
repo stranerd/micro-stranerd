@@ -1,12 +1,14 @@
 import Bull from 'bull'
 import { redisURI } from '../config'
 import { CronTypes } from '../events'
+import { DelayedEvent } from './types'
+export { DelayedJobs } from './types'
 
 export const queue = new Bull('task-queues', redisURI)
 
-export const addDelayedJob = async (type: string, data: any, delay: number): Promise<string | number> => {
-	const job = await queue.add('delayedJobs', { type, data }, {
-		delay,
+export async function addDelayedJob (data: DelayedEvent, delayInMs: number): Promise<string | number> {
+	const job = await queue.add(JobNames.DelayedJob, data, {
+		delay: delayInMs,
 		removeOnComplete: true,
 		backoff: 1000,
 		attempts: 3
@@ -15,7 +17,7 @@ export const addDelayedJob = async (type: string, data: any, delay: number): Pro
 }
 
 const addCronJob = async (type: CronTypes, cron: string) => {
-	await queue.add('cronJobs', type, {
+	await queue.add(JobNames.CronJob, type, {
 		repeat: { cron },
 		removeOnComplete: true,
 		backoff: 1000,
@@ -31,11 +33,11 @@ export const removeDelayedJob = async (jobId: string | number) => {
 const cleanup = async () => {
 	const failedJobs = await queue.getFailed()
 	await Promise.all(failedJobs.map((job) => job.retry()))
-	const repeatableJos = await queue.getRepeatableJobs()
-	await Promise.all(repeatableJos.map((job) => queue.removeRepeatableByKey(job.key)))
+	const repeatableJobs = await queue.getRepeatableJobs()
+	await Promise.all(repeatableJobs.map((job) => queue.removeRepeatableByKey(job.key)))
 }
 
-type DelayedJobCallback = (data: Record<string, any>) => Promise<void>
+type DelayedJobCallback = (data: DelayedEvent) => Promise<void>
 type CronCallback = (name: CronTypes) => Promise<void>
 
 export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCallback, onCron: CronCallback }) => {
@@ -51,8 +53,13 @@ export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCa
 		crons.map(({ cron, name }) => addCronJob(name, cron))
 	)
 	await queue.process(async (job) => {
-		job.name === 'cronJobs' ?
+		job.name === JobNames.CronJob ?
 			await callbacks.onCron(job.data as CronTypes) :
 			await callbacks.onDelayed(job.data)
 	})
+}
+
+enum JobNames {
+	CronJob = 'CronJob',
+	DelayedJob = 'DelayedJob'
 }

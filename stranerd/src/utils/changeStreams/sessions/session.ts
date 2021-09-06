@@ -5,6 +5,7 @@ import { AddChat, CancelSession, GetSessions } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { AddUserQueuedSessions, FindUser, RemoveUserQueuedSessions, SetUsersCurrentSession } from '@modules/users'
+import { cancelSessionTask } from '@utils/modules/sessions/sessions'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
@@ -34,6 +35,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		})
 	},
 	updated: async ({ before, after, changes }) => {
+		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
 			if (after.accepted) {
 				// TODO: create task and update its taskName
@@ -120,5 +122,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				)
 			}
 		}
+		// Session was just concluded or cancelled, so cleanup
+		if (!before.done && after.done) await cancelSessionTask(after)
 	}
 }

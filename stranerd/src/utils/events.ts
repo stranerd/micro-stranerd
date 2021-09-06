@@ -1,5 +1,6 @@
-import { EventBus, EventTypes, Logger } from '@utils/commons'
+import { DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
 import { CreateUserWithBio, MarkUserAsDeleted, UpdateUserWithBio, UpdateUserWithRoles } from '../modules/users'
+import { endSession } from '@utils/modules/sessions/sessions'
 
 const eventBus = new EventBus()
 
@@ -18,6 +19,9 @@ export const subscribers = {
 	}),
 	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
 		await MarkUserAsDeleted.execute({ id: data.id, timestamp: data.timestamp })
+	}),
+	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
+		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 	})
 }
 

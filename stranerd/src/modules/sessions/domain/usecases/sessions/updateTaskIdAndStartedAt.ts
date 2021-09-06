@@ -1,17 +1,16 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { SessionEntity } from '../../entities/session'
-import { SessionToModel } from '../../../data/models/session'
+import { TaskID } from '../../types/common'
 
 type Input = {
 	sessionId: string
 	data: {
-		taskId: string | null
-		endedAt?: number
+		taskId: TaskID
+		startedAt?: number
 	}
 }
 
-export class UpdateTaskIdAndEndedAtUseCase extends BaseUseCase<Input, void> {
+export class UpdateTaskIdAndStartedAtUseCase extends BaseUseCase<Input, void> {
 	private repository: ISessionRepository
 
 	constructor (repository: ISessionRepository) {
@@ -20,6 +19,6 @@ export class UpdateTaskIdAndEndedAtUseCase extends BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateTaskIdAndEndedAt(input.sessionId, input.data)
+		return await this.repository.updateTaskIdAndStartedAt(input.sessionId, input.data)
 	}
 }

@@ -8,3 +8,6 @@ export type UserBio = {
 }
 
 export type Media = MediaOutput
+
+export type CancelReason = 'tutor' | 'busy' | 'student'
+export type TaskID = string | number | null
