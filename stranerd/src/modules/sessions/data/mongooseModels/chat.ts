@@ -6,9 +6,8 @@ import { ChatMapper } from '@modules/sessions/data/mappers/chat'
 
 const Schema = new mongoose.Schema<ChatFromModel>({
 	path: {
-		type: String,
-		required: false,
-		default: null
+		type: [String],
+		required: true
 	},
 	content: {
 		type: String,
