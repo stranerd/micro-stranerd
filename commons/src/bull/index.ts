@@ -1,8 +1,7 @@
 import Bull from 'bull'
 import { redisURI } from '../config'
-import { CronTypes } from '../events'
-import { DelayedEvent } from './types'
-export { DelayedJobs } from './types'
+import { CronCallback, CronTypes, DelayedEvent, DelayedJobCallback, JobNames } from './types'
+export { CronTypes, DelayedJobs } from './types'
 
 export const queue = new Bull('task-queues', redisURI)
 
@@ -30,19 +29,21 @@ export const removeDelayedJob = async (jobId: string | number) => {
 	if (job) await job.discard()
 }
 
-const cleanup = async () => {
+export const retryAllFailedJobs = async () => {
 	const failedJobs = await queue.getFailed()
 	await Promise.all(failedJobs.map((job) => job.retry()))
+}
+
+const cleanup = async () => {
+	await retryAllFailedJobs()
 	const repeatableJobs = await queue.getRepeatableJobs()
 	await Promise.all(repeatableJobs.map((job) => queue.removeRepeatableByKey(job.key)))
 }
 
-type DelayedJobCallback = (data: DelayedEvent) => Promise<void>
-type CronCallback = (name: CronTypes) => Promise<void>
-
 export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCallback, onCron: CronCallback }) => {
 	await cleanup()
 	const crons = [
+		{ name: CronTypes.halfHourly, cron: '*/30 * * * *' },
 		{ name: CronTypes.hourly, cron: '0 * * * *' },
 		{ name: CronTypes.daily, cron: '0 0 * * *' },
 		{ name: CronTypes.weekly, cron: '0 0 * * SUN' },
@@ -57,9 +58,4 @@ export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCa
 			await callbacks.onCron(job.data as CronTypes) :
 			await callbacks.onDelayed(job.data)
 	})
-}
-
-enum JobNames {
-	CronJob = 'CronJob',
-	DelayedJob = 'DelayedJob'
 }

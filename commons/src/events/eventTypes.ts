@@ -2,8 +2,7 @@ import { Email } from '../emails'
 import { MediaOutput } from '../storage'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 import { StranerdUserBioUpdated } from './types/stranerd/users'
-import { CronTypes } from './types/tasks'
-import { DelayedEvent } from '../bull/types'
+import { CronTypes, DelayedEvent } from '../bull/types'
 
 export enum EventTypes {
 	TEST = 'TEST',
