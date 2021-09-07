@@ -21,7 +21,7 @@ export class ChatRepository implements IChatRepository {
 	async add (data: ChatToModel, path: [string, string]) {
 		const session = await mongoose.startSession()
 		try {
-			const chat = await new Chat({ ...data, from: path[0], path }).save({ session })
+			const chat = await new Chat({ ...data, path }).save({ session })
 			await ChatMeta.findOneAndUpdate(
 				{ ownerId: path[0], userId: path[1] },
 				{ $set: { last: chat, ownerId: path[0], userId: path[1] } },

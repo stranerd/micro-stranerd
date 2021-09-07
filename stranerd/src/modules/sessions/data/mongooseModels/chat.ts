@@ -6,7 +6,7 @@ import { ChatMapper } from '@modules/sessions/data/mappers/chat'
 
 const Schema = new mongoose.Schema<ChatFromModel>({
 	path: {
-		type: [String],
+		type: [mongoose.Schema.Types.ObjectId],
 		required: true
 	},
 	content: {
@@ -18,10 +18,6 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 		type: Object,
 		required: false,
 		default: null
-	},
-	from: {
-		type: mongoose.Schema.Types.ObjectId,
-		required: true
 	},
 	sessionId: {
 		type: mongoose.Schema.Types.ObjectId,
