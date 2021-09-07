@@ -1,5 +1,11 @@
-import { DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
-import { CreateUserWithBio, MarkUserAsDeleted, UpdateUserWithBio, UpdateUserWithRoles } from '../modules/users'
+import { CronTypes, DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
+import {
+	CreateUserWithBio,
+	DeleteOldSeenNotifications,
+	MarkUserAsDeleted,
+	UpdateUserWithBio,
+	UpdateUserWithRoles
+} from '../modules/users'
 import { endSession } from '@utils/modules/sessions/sessions'
 
 const eventBus = new EventBus()
@@ -22,6 +28,9 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
+	}),
+	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
+		if (type === CronTypes.weekly) await DeleteOldSeenNotifications.execute()
 	})
 }
 
