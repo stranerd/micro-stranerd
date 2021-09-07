@@ -14,11 +14,6 @@ export class SessionEntity extends BaseEntity {
 	public readonly done: boolean
 	public readonly taskId: TaskID
 	public readonly cancelled: { student: boolean, tutor: boolean, busy: boolean }
-	public readonly reviews: {
-		student: { rating: number, comment: string } | null
-		tutor: { rating: number, comment: string } | null
-	}
-
 	public readonly createdAt: number
 	public readonly updatedAt: number
 	public readonly startedAt: number | null
@@ -27,7 +22,7 @@ export class SessionEntity extends BaseEntity {
 	constructor ({
 		             id, duration, price, message,
 		             studentId, tutorId, studentBio, tutorBio,
-		             accepted, done, cancelled, reviews,
+		             accepted, done, cancelled,
 		             createdAt, startedAt, endedAt, updatedAt, taskId
 	             }: SessionConstructorArgs) {
 		super()
@@ -43,7 +38,6 @@ export class SessionEntity extends BaseEntity {
 		this.done = done
 		this.taskId = taskId
 		this.cancelled = cancelled
-		this.reviews = reviews
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 		this.startedAt = startedAt
@@ -60,10 +54,6 @@ type SessionConstructorArgs = {
 	studentId: string, tutorId: string, studentBio: UserBio, tutorBio: UserBio,
 	accepted: boolean | null, done: boolean,
 	cancelled: { tutor: boolean, student: boolean, busy: boolean },
-	reviews: {
-		student: { rating: number, comment: string } | null
-		tutor: { rating: number, comment: string } | null
-	},
 	createdAt: number,
 	updatedAt: number,
 	startedAt: number | null

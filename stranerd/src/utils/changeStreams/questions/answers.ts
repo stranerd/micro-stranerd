@@ -5,7 +5,7 @@ import { IncrementUserAnswersCount, UpdateNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { AnswerEntity } from '@modules/questions/domain/entities'
 import { ScoreRewards } from '@modules/users/domain/types/users'
-import { DeleteAnswerComments, ModifyAnswers, RemoveBestAnswer } from '@modules/questions'
+import { DeleteAnswerComments, FindQuestion, MarkBestAnswer, ModifyAnswers, RemoveBestAnswer } from '@modules/questions'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
@@ -38,6 +38,16 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			userId: after.userId,
 			amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
 		})
+
+		if (!after.best && changes.votes && after.totalVotes >= 20) {
+			const question = await FindQuestion.execute(after.questionId)
+			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
+			if (markBest) await MarkBestAnswer.execute({
+				id: question!.id,
+				answerId: after.id,
+				userId: question!.userId
+			})
+		}
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`answers/${ before.questionId }`, before)

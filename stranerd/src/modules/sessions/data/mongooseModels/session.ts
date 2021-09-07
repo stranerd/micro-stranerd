@@ -65,18 +65,6 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 			default: false
 		}
 	},
-	reviews: {
-		student: {
-			type: Object,
-			required: false,
-			default: null
-		},
-		tutor: {
-			type: Object,
-			required: false,
-			default: null
-		}
-	},
 	startedAt: {
 		type: Number,
 		required: false,

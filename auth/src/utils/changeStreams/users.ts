@@ -45,6 +45,11 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			data: after.roles,
 			timestamp: Date.now()
 		})
+
+		if (changes.referrer && after.referrer) await publishers[EventTypes.AUTHNEWREFERRAL].publish({
+			referrer: after.referrer,
+			referred: after.id
+		})
 	},
 	deleted: async ({ before }) => {
 		await publishers[EventTypes.AUTHUSERDELETED].publish({

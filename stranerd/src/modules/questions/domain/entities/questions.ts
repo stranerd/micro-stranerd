@@ -39,6 +39,10 @@ export class QuestionEntity extends BaseEntity {
 	get creditable () {
 		return Math.floor(this.coins * QUESTION_DISCOUNT / BEST_ANSWERS_COUNT)
 	}
+
+	get isAnswered () {
+		return this.answers.length > 1
+	}
 }
 
 type QuestionConstructorArgs = {
