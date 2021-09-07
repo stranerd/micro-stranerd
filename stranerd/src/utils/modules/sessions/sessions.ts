@@ -12,16 +12,17 @@ export const startSession = async (session: SessionEntity) => {
 	}, delay)
 	await UpdateTaskIdAndStartedAt.execute({
 		sessionId: session.id,
+		delayInMs: delay,
 		data: { taskId, startedAt: Date.now() }
 	})
 }
 
-/* export const extendSessionTime = async (session: SessionEntity, extensionInMinutes: number) => {
-	if (!session.taskId || !session.startedAt) return
+export const extendSessionTime = async (session: SessionEntity, extensionInMinutes: number) => {
+	if (!session.taskId || !session.endedAt) return
 
-	// TODO: Get time left for session
-	const minutesLeft = 0
-	const delay = (minutesLeft + extensionInMinutes) * 60 * 1000
+	const msLeft = session.endedAt - Date.now()
+	if (msLeft <= 0) return
+	const delay = msLeft + (extensionInMinutes * 60 * 1000)
 
 	if (session.taskId) await removeDelayedJob(session.taskId)
 
@@ -31,9 +32,10 @@ export const startSession = async (session: SessionEntity) => {
 	}, delay)
 	await UpdateTaskIdAndStartedAt.execute({
 		sessionId: session.id,
+		delayInMs: delay,
 		data: { taskId }
 	})
-} */
+}
 
 export const endSession = async (sessionId: string) => {
 	await MarkSessionDone.execute(sessionId)

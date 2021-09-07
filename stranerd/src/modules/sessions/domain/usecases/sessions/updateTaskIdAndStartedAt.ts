@@ -8,6 +8,7 @@ type Input = {
 		taskId: TaskID
 		startedAt?: number
 	}
+	delayInMs: number
 }
 
 export class UpdateTaskIdAndStartedAtUseCase extends BaseUseCase<Input, void> {
@@ -19,6 +20,6 @@ export class UpdateTaskIdAndStartedAtUseCase extends BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateTaskIdAndStartedAt(input.sessionId, input.data)
+		return await this.repository.updateTaskIdAndStartedAt(input.sessionId, input.data, input.delayInMs)
 	}
 }
