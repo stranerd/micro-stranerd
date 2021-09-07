@@ -19,5 +19,6 @@ export const publishers = {
 	[EventTypes.AUTHUSERCREATED]: eventBus.createPublisher(EventTypes.AUTHUSERCREATED),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createPublisher(EventTypes.AUTHUSERUPDATED),
 	[EventTypes.AUTHROLESUPDATED]: eventBus.createPublisher(EventTypes.AUTHROLESUPDATED),
-	[EventTypes.AUTHUSERDELETED]: eventBus.createPublisher(EventTypes.AUTHUSERDELETED)
+	[EventTypes.AUTHUSERDELETED]: eventBus.createPublisher(EventTypes.AUTHUSERDELETED),
+	[EventTypes.AUTHNEWREFERRAL]: eventBus.createPublisher(EventTypes.AUTHNEWREFERRAL)
 }

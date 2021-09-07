@@ -17,7 +17,8 @@ export class EmailsController {
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			password: req.body.password,
-			photo: req.body.photo
+			photo: req.body.photo,
+			referrer: req.body.referrer
 		}
 
 		const res = await GetUsers.execute({
@@ -41,7 +42,8 @@ export class EmailsController {
 			password: { required: true, rules: [isLongerThan7, isShorterThan17] },
 			photo: { required: false, rules: [Validation.isImage] },
 			firstName: { required: true, rules: [isLongerThan2] },
-			lastName: { required: true, rules: [isLongerThan2] }
+			lastName: { required: true, rules: [isLongerThan2] },
+			referrer: { required: false, rules: [] }
 		})
 
 		const userData = await FindUserByEmail.execute(validateData.email)

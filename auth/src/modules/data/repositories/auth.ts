@@ -164,7 +164,7 @@ export class AuthRepository implements IAuthRepository {
 		}
 	}
 
-	async googleSignIn (tokenId: string): Promise<TokenInput> {
+	async googleSignIn (tokenId: string, referrer: string | null): Promise<TokenInput> {
 		const client = new OAuth2Client(googleClientId)
 
 		const ticket = await client.verifyIdToken({
@@ -186,7 +186,7 @@ export class AuthRepository implements IAuthRepository {
 
 		if (!userData) {
 			const userData = {
-				email,
+				email, referrer,
 				authTypes: [AuthTypes.google],
 				firstName,
 				lastName,

@@ -8,6 +8,7 @@ export enum EventTypes {
 	TEST = 'TEST',
 	SENDMAIL = 'SENDMAIL',
 	DELETEFILE = 'DELETEFILE',
+	AUTHNEWREFERRAL = 'AUTHNEWREFERRAL',
 	AUTHUSERCREATED = 'AUTHUSERCREATED',
 	AUTHUSERUPDATED = 'AUTHUSERUPDATED',
 	AUTHROLESUPDATED = 'AUTHROLESUPDATED',
@@ -34,6 +35,10 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	DELETEFILE: {
 		topic: typeof EventTypes.DELETEFILE,
 		data: MediaOutput
+	},
+	AUTHNEWREFERRAL: {
+		topic: typeof EventTypes.AUTHNEWREFERRAL,
+		data: { referrer: string, referred: string }
 	},
 	AUTHUSERCREATED: {
 		topic: typeof EventTypes.AUTHUSERCREATED,

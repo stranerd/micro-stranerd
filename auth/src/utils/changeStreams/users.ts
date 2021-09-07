@@ -18,6 +18,10 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			timestamp: after.signedUpAt
 		})
 		if (isProd) await subscribeToMailingList(after.email)
+		if (after.referrer) await publishers[EventTypes.AUTHNEWREFERRAL].publish({
+			referrer: after.referrer,
+			referred: after.id
+		})
 	},
 	updated: async ({ before, after, changes }) => {
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
@@ -35,7 +39,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			timestamp: Date.now()
 		})
 
-		const updatedRoles = !!changes.roles
+		const updatedRoles = changes.roles
 		if (updatedRoles) await publishers[EventTypes.AUTHROLESUPDATED].publish({
 			id: after.id,
 			data: after.roles,

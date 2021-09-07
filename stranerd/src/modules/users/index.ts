@@ -28,9 +28,14 @@ import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersC
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
+import { ReferralRepository } from './data/repositories/referrals'
+import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
+import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
+import { GetReferralsUseCase } from './domain/useCases/referrals/getReferrals'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
+const referralRepository = ReferralRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
 const transactionRepository = TransactionRepository.getInstance()
 
@@ -63,3 +68,7 @@ export const CreateReview = new CreateReviewUseCase(reviewRepository)
 export const GetTransactions = new GetTransactionsUseCase(transactionRepository)
 export const FindTransaction = new FindTransactionUseCase(transactionRepository)
 export const CreateTransaction = new CreateTransactionUseCase(transactionRepository)
+
+export const GetReferrals = new GetReferralsUseCase(referralRepository)
+export const FindReferral = new FindReferralUseCase(referralRepository)
+export const CreateReferral = new CreateReferralUseCase(referralRepository)

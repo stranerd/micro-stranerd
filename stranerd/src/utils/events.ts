@@ -1,5 +1,6 @@
 import { CronTypes, DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
 import {
+	CreateReferral,
 	CreateUserWithBio,
 	DeleteOldSeenNotifications,
 	MarkUserAsDeleted,
@@ -13,6 +14,9 @@ const eventBus = new EventBus()
 export const subscribers = {
 	[EventTypes.TEST]: eventBus.createSubscriber(EventTypes.TEST, async (data) => {
 		await Logger.success('Just received test event with value of', data)
+	}),
+	[EventTypes.AUTHNEWREFERRAL]: eventBus.createSubscriber(EventTypes.AUTHNEWREFERRAL, async (data) => {
+		await CreateReferral.execute({ userId: data.referrer, referred: data.referred })
 	}),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createSubscriber(EventTypes.AUTHUSERCREATED, async (data) => {
 		await CreateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })

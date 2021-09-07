@@ -6,4 +6,5 @@ export interface RegisterInput {
 	lastName: string;
 	password: string;
 	photo: MediaOutput | null;
+	referrer: string | null;
 }

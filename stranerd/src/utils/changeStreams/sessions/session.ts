@@ -9,9 +9,11 @@ import {
 	FindUser,
 	IncrementUsersSessionsCount,
 	RemoveUserQueuedSessions,
-	SetUsersCurrentSession
+	SetUsersCurrentSession,
+	UpdateNerdScore
 } from '@modules/users'
 import { cancelSessionTask } from '@utils/modules/sessions/sessions'
+import { ScoreRewards } from '@modules/users/domain/types/users'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
@@ -135,6 +137,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				studentId: after.studentId,
 				tutorId: after.tutorId,
 				sessionId: null
+			})
+			await UpdateNerdScore.execute({
+				userId: after.studentId,
+				amount: ScoreRewards.CompleteSession
 			})
 			await IncrementUsersSessionsCount.execute({
 				tutorId: after.tutorId,

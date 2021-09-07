@@ -27,5 +27,6 @@ const getNotificationLink = (action: string, data: Record<string, any>): string 
 	if (action === 'questions') return `/questions/${ data.questionId }`
 	else if (action === 'answers') return `/questions/${ data.questionId }#${ data.answerId }`
 	else if (action === 'sessions') return `/sessions/${ data.studentId }`
+	else if (action === 'users') return `/users/${ data.userId }`
 	return '/dashboard'
 }

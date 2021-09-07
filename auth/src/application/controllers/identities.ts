@@ -4,13 +4,15 @@ import { generateAuthOutput } from '@utils/modules/auth'
 
 export class IdentitiesController {
 	static async googleSignIn (req: Request) {
-		const { idToken } = validate({
-			idToken: req.body.idToken
+		const validatedData = validate({
+			idToken: req.body.idToken,
+			referrer: req.body.referrer
 		}, {
-			idToken: { required: true, rules: [] }
+			idToken: { required: true, rules: [] },
+			referrer: { required: false, rules: [] }
 		})
 
-		const data = await GoogleSignIn.execute(idToken)
+		const data = await GoogleSignIn.execute(validatedData)
 		return await generateAuthOutput(data)
 	}
 }

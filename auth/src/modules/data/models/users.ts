@@ -13,6 +13,7 @@ export interface UserToModel {
 	firstName: string
 	lastName: string
 	photo: MediaOutput | null
+	referrer: string | null
 	isVerified: boolean
 	authTypes: AuthTypes[]
 }
