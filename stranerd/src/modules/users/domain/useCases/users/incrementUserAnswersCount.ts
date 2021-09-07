@@ -11,6 +11,6 @@ export class IncrementUserAnswersCountUseCase implements BaseUseCase<Input, void
 	}
 
 	async execute (params: Input) {
-		return await this.repository.incrementUserMetaProperty(params.id, 'answersCount', params.value)
+		return await this.repository.incrementUserMetaProperty(params.id, 'answers', params.value)
 	}
 }

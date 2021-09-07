@@ -27,6 +27,7 @@ import { UpdateNerdScoreUseCase } from './domain/useCases/users/updateNerdScore'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
+import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
@@ -47,6 +48,7 @@ export const UpdateNerdScore = new UpdateNerdScoreUseCase(userRepository)
 export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepository)
 export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
 export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
+export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
