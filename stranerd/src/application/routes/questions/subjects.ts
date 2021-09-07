@@ -1,5 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { SubjectController } from '../../controllers/questions'
+import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const subjectsRoutes: Route[] = [
 	{
@@ -31,6 +32,7 @@ export const subjectsRoutes: Route[] = [
 		method: 'post',
 		controllers: [
 			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -44,6 +46,7 @@ export const subjectsRoutes: Route[] = [
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

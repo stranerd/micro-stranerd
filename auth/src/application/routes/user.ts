@@ -28,7 +28,6 @@ const updateUser: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-
 			const userId = req.authUser!.id
 
 			const reqData = {
@@ -52,7 +51,6 @@ const updateUser: Route = {
 				status: StatusCodes.Ok,
 				result
 			}
-
 		})
 	]
 }

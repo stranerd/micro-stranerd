@@ -39,7 +39,7 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
 		const question = await Question.findOneAndUpdate({ _id: id, userId }, { $set: data })
-		return this.mapper.mapFrom(question)!
+		return this.mapper.mapFrom(question)
 	}
 
 	async markBestAnswer (id: string, answerId: string, userId: string) {

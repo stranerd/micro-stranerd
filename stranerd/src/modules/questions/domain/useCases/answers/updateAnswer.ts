@@ -5,7 +5,7 @@ import { AnswerEntity } from '../../entities'
 
 type Input = { id: string, userId: string, data: Partial<AnswerToModel> }
 
-export class UpdateAnswerUseCase extends BaseUseCase<Input, AnswerEntity> {
+export class UpdateAnswerUseCase extends BaseUseCase<Input, AnswerEntity | null> {
 	private repository: IAnswerRepository
 
 	constructor (repository: IAnswerRepository) {
