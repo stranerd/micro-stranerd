@@ -1,1 +1,3 @@
-export const getRandomValue = () => Date.now() + Math.random().toString(36).substr(2)
+import crypto from 'crypto'
+
+export const getRandomValue = () => crypto.randomBytes(24).toString('hex')

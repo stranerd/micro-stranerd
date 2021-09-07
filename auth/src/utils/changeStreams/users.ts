@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { publishers } from '@utils/events'
-import { UserEntity } from '@modules/domain'
-import { UserFromModel } from '@modules/repository/models'
+import { UserEntity } from '@modules/domain/entities/users'
+import { UserFromModel } from '@modules/data/models/users'
 import { subscribeToMailingList } from '@utils/mailing'
 import { isProd } from '@utils/environment'
 

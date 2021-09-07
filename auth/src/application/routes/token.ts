@@ -1,30 +1,18 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { AuthController } from '../controller/auth'
+import { TokenController } from '../controllers'
 
-const token: Route = {
+const getNewTokens: Route = {
 	path: '/token',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-
-			const accessToken = req.headers.AccessToken
-			const refreshToken = req.headers.RefreshToken
-
-			const tokens = {
-				accessToken,
-				refreshToken
-			}
-
-			const result = await new AuthController().refreshToken(tokens)
 			return {
 				status: StatusCodes.Ok,
-				result
+				result: await TokenController.getNewTokens(req)
 			}
 		})
 	]
 }
 
-const routes: Route[] = [
-	token
-]
+const routes: Route[] = [getNewTokens]
 export default routes

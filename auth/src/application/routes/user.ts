@@ -1,6 +1,5 @@
-import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
-import { UserController } from '../controller/user'
-import { AuthController } from '../controller'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { UserController } from '../controllers'
 import { cannotModifyMyRole, isAdminInSpecifiedApp } from '../middlewares'
 
 const getUserDetails: Route = {
@@ -9,15 +8,10 @@ const getUserDetails: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-
-			const userId = req.authUser!.id
-
-			const result = await new UserController().getUserDetails(userId)
 			return {
 				status: StatusCodes.Ok,
-				result
+				result: await UserController.findUser(req)
 			}
-
 		})
 	]
 }
@@ -28,82 +22,42 @@ const updateUser: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-			const userId = req.authUser!.id
-
-			const reqData = {
-				firstName: req.body.firstName,
-				lastName: req.body.lastName,
-				photo: req.body.photo,
-				userId
-			}
-
-			const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
-			const validateData = validate(reqData, {
-				firstName: { required: true, rules: [isLongerThan2] },
-				lastName: { required: true, rules: [isLongerThan2] },
-				photo: { required: false, rules: [Validation.isImage] },
-				userId: { required: true, rules: [] }
-			})
-
-			const result = await new UserController().updateUserProfile(validateData)
 			return {
 				status: StatusCodes.Ok,
-				result
+				result: await UserController.updateUser(req)
 			}
 		})
 	]
 }
 
 const updateUserRole: Route = {
-	path: '/roles',
+	path: '/user/roles',
 	method: 'post',
 	controllers: [
 		requireAuthUser, isAdminInSpecifiedApp, cannotModifyMyRole,
 		makeController(async (req) => {
-
-			const reqData = {
-				app: req.body.app,
-				role: req.body.role,
-				userId: req.body.userId,
-				value: req.body.value
-			}
-
-			const validateData = validate(reqData, {
-				app: { required: true, rules: [] },
-				role: { required: true, rules: [] },
-				value: { required: true, rules: [] },
-				userId: { required: true, rules: [] }
-			})
-
-			const result = await new UserController().updateUserRole(validateData)
-
 			return {
 				status: StatusCodes.Ok,
-				result
+				result: await UserController.updateUserRole(req)
 			}
 
 		})
 	]
 }
 
-const logout: Route = {
-	path: '/signout',
+const signout: Route = {
+	path: '/user/signout',
 	method: 'post',
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-
-			const authUser = req.authUser
-
-			const result = await new AuthController().logoutUser(authUser!.id)
 			return {
 				status: StatusCodes.Ok,
-				result
+				result: await UserController.signout(req)
 			}
 		})
 	]
 }
 
-const routes: Route[] = [getUserDetails, updateUserRole, updateUser, logout]
+const routes: Route[] = [getUserDetails, updateUserRole, updateUser, signout]
 export default routes
