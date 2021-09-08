@@ -1,8 +1,7 @@
 import { FindUser, FindUserByEmail, ResetPassword, SendPasswordResetMail, UpdatePassword } from '@modules/index'
-import { Request, validate, Validation, ValidationError } from '@utils/commons'
 import { generateAuthOutput } from '@utils/modules/auth'
 import { hashCompare } from '@utils/hash'
-import { BadRequestError } from '@stranerd/api-commons'
+import { BadRequestError, Request, validate, Validation, ValidationError } from '@utils/commons'
 
 export class PasswordsController {
 	static async sendResetMail (req: Request) {

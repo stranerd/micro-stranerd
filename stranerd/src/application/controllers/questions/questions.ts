@@ -7,8 +7,15 @@ import {
 	UpdateQuestion
 } from '@modules/questions'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ValidationError } from '@stranerd/api-commons'
+import {
+	NotAuthorizedError,
+	NotFoundError,
+	QueryParams,
+	Request,
+	validate,
+	Validation,
+	ValidationError
+} from '@utils/commons'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {

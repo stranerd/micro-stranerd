@@ -1,6 +1,7 @@
-import { FindUser, UpdateUserProfile, UpdateUserRole } from '@modules/index'
-import { Request, validate, Validation } from '@utils/commons'
+import { FindUser, FindUserByEmail, UpdateUserProfile, UpdateUserRole } from '@modules/index'
+import { AuthApps, NotFoundError, Request, validate, Validation } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
+import { superAdminEmail } from '@utils/environment'
 
 export class UserController {
 	static async findUser (req: Request) {
@@ -43,5 +44,16 @@ export class UserController {
 
 	static async signout (req: Request) {
 		return await signOutUser(req.authUser?.id ?? '')
+	}
+
+	static async superAdmin (_: Request) {
+		const user = await FindUserByEmail.execute(superAdminEmail)
+		if (!user) throw new NotFoundError()
+		return await UpdateUserRole.execute({
+			app: AuthApps.Stranerd,
+			role: 'isAdmin',
+			userId: user.id,
+			value: true
+		})
 	}
 }

@@ -1,5 +1,4 @@
-import { EventBus, EventTypes, Logger } from '@utils/commons'
-import { CronTypes } from '@stranerd/api-commons'
+import { CronTypes, EventBus, EventTypes, Logger } from '@utils/commons'
 import { deleteUnverifiedUsers } from '@utils/modules/emails'
 
 const eventBus = new EventBus()

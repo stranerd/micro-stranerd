@@ -16,4 +16,8 @@ export enum AuthTypes {
 	twitter = 'twitter'
 }
 
-export type AuthRoles = Record<string, Record<string, boolean>>
+export type AuthRoles = Record<AuthApps, Record<string, boolean>>
+
+export enum AuthApps {
+	Stranerd = 'stranerd'
+}

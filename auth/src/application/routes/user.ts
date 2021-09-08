@@ -59,5 +59,18 @@ const signout: Route = {
 	]
 }
 
-const routes: Route[] = [getUserDetails, updateUserRole, updateUser, signout]
+const superAdmin: Route = {
+	path: '/user/superAdmin',
+	method: 'get',
+	controllers: [
+		makeController(async (req) => {
+			return {
+				status: StatusCodes.Ok,
+				result: await UserController.superAdmin(req)
+			}
+		})
+	]
+}
+
+const routes: Route[] = [getUserDetails, updateUserRole, updateUser, signout, superAdmin]
 export default routes
