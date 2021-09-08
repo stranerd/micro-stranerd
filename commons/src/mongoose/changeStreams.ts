@@ -37,7 +37,10 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		if (data.operationType === 'insert') {
 			const _id = data.documentKey
 			const after = data.fullDocument as Model
-			await getClone().insertOne({ ...after, _id })
+			await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
+				upsert: true,
+				returnDocument: 'after'
+			})
 			await callbacks.created?.({
 				before: null,
 				after: mapper(after)!
@@ -56,9 +59,9 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		if (data.operationType === 'update') {
 			const _id = data.documentKey
 			const after = data.fullDocument as Model
-			const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after })
+			const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
 			// @ts-ignore
-			const { updatedFields, removedFields, truncatedArrays = [] } = data.updateDescription
+			const { updatedFields = {}, removedFields = [], truncatedArrays = [] } = data.updateDescription ?? {}
 			const changed = removedFields
 				.map((f) => f.toString())
 				.concat(truncatedArrays)

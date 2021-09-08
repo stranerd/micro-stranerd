@@ -32,11 +32,18 @@ export class TagRepository implements ITagRepository {
 	}
 
 	async updateTagsCount (tagNames: string[], increment: boolean) {
-		const tags = await Tag.updateMany({
-			name: { $in: tagNames }
-		}, {
-			$inc: { count: increment ? 1 : -1 }
-		}, { upsert: true, new: true })
-		return !!tags.acknowledged
+		const res = await Tag.bulkWrite(
+			tagNames.map((name) => ({
+				updateOne: {
+					filter: { name },
+					update: {
+						$set: { name },
+						$inc: { count: increment ? 1 : -1 }
+					},
+					upsert: true
+				}
+			}))
+		)
+		return res.isOk()
 	}
 }
