@@ -28,6 +28,12 @@ export class TransactionRepository implements ITransactionRepository {
 		return this.mapper.mapFrom(transaction)
 	}
 
+	async makeAsComplete (id: string) {
+		if (!mongoose.Types.ObjectId.isValid(id)) return null
+		const transaction = await Transaction.findOneAndUpdate({ _id: id },{isCompleted: true},{new: true})
+		return transaction ? true : false
+	}
+
 	async createTransaction (data: TransactionToModel) {
 		const transaction = await new Transaction(data).save()
 		return this.mapper.mapFrom(transaction)!

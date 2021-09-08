@@ -1,5 +1,5 @@
 import { IQuestionRepository } from '../../irepositories/questions'
-import { BaseUseCase } from '@stranerd/api-commons'
+import { BaseUseCase } from '@utils/commons'
 import { QuestionEntity } from '@modules/questions/domain/entities'
 
 export class FindQuestionUseCase extends BaseUseCase<string, QuestionEntity | null> {

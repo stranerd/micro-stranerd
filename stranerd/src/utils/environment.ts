@@ -5,5 +5,6 @@ export const isDev = environment === 'development'
 
 export const port = parseInt(getEnvOrFail('PORT'))
 export const appId = getEnvOrFail('APP_ID')
+export const stripeSecret = getEnvOrFail('STRIPE_SECRET_KEY')
 
 export const clientDomain = `http${ !isDev ? 's' : '' }://` + getEnvOrFail('CLIENT_DOMAIN')

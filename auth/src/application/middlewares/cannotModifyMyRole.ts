@@ -2,16 +2,8 @@ import { BadRequestError, makeMiddleware, NotAuthenticatedError } from '@utils/c
 
 export const cannotModifyMyRole = makeMiddleware(
 	async (request) => {
-
-		const userId = request.authUser?.id
-
 		const userIdToEdit = request.body.userId
-
-		if (userId) {
-			if (userId === userIdToEdit) throw new BadRequestError('You cannot modify your own roles')
-		} else {
-			throw new NotAuthenticatedError()
-		}
-
+		if (!request.authUser) throw new NotAuthenticatedError()
+		if (request.authUser.id === userIdToEdit) throw new BadRequestError('You cannot modify your own roles')
 	}
 )

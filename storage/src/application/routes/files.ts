@@ -1,6 +1,5 @@
-import { makeController, Route, StatusCodes, validate, ValidationError } from '@utils/commons'
+import { makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
 import { DeleteFile, UploadFile } from '@modules/domain'
-import { Validation } from '@stranerd/api-commons'
 
 const uploadFile: Route = {
 	path: '/file',

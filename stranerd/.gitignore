@@ -3,3 +3,4 @@ lib/
 public/
 .env
 package-lock.json
+yarn.lock

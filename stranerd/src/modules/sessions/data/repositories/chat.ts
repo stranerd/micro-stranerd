@@ -21,7 +21,7 @@ export class ChatRepository implements IChatRepository {
 	async add (data: ChatToModel, path: [string, string]) {
 		const session = await mongoose.startSession()
 		try {
-			const chat = await new Chat({ ...data, from: path[0], path: this.formPath(path) }).save({ session })
+			const chat = await new Chat({ ...data, path }).save({ session })
 			await ChatMeta.findOneAndUpdate(
 				{ ownerId: path[0], userId: path[1] },
 				{ $set: { last: chat, ownerId: path[0], userId: path[1] } },
@@ -64,7 +64,7 @@ export class ChatRepository implements IChatRepository {
 		const readAt = Date.now()
 		try {
 			const chat = await Chat.findOneAndUpdate(
-				{ _id: id, path: this.formPath(path), readAt: null },
+				{ _id: id, path, readAt: null },
 				{ $set: { readAt } },
 				{ new: true, session }
 			)
@@ -89,6 +89,4 @@ export class ChatRepository implements IChatRepository {
 		const chat = await Chat.findOneAndDelete({ _id: id, from: userId })
 		return !!chat
 	}
-
-	private formPath = (path: [string, string]) => [...path].sort().join('---')
 }

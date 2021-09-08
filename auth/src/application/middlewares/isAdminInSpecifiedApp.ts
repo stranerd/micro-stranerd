@@ -2,12 +2,8 @@ import { makeMiddleware, NotAuthenticatedError, NotAuthorizedError } from '@util
 
 export const isAdminInSpecifiedApp = makeMiddleware(
 	async (request) => {
-
-		const userId = request.authUser?.id
-
 		const appType = request.body.app
-
-		if (userId && !request.authUser?.roles[appType]?.['isAdmin']) throw new NotAuthorizedError()
-		else throw new NotAuthenticatedError()
+		if (!request.authUser) throw new NotAuthenticatedError()
+		if (!request.authUser.roles[appType]?.['isAdmin']) throw new NotAuthorizedError()
 	}
 )

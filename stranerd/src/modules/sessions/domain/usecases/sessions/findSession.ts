@@ -2,7 +2,9 @@ import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
 import { SessionEntity } from '../../entities/session'
 
-export class FindSessionUseCase extends BaseUseCase<string, SessionEntity | null> {
+type Input = { sessionId: string, userId: string }
+
+export class FindSessionUseCase extends BaseUseCase<Input, SessionEntity | null> {
 	private repository: ISessionRepository
 
 	constructor (repository: ISessionRepository) {
@@ -10,7 +12,7 @@ export class FindSessionUseCase extends BaseUseCase<string, SessionEntity | null
 		this.repository = repository
 	}
 
-	async execute (id: string) {
-		return await this.repository.find(id)
+	async execute (input: Input) {
+		return await this.repository.find(input.sessionId, input.userId)
 	}
 }

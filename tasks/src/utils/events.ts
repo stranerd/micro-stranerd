@@ -1,10 +1,13 @@
-import { EventBus, EventTypes, Logger } from '@utils/commons'
+import { CronTypes, EventBus, EventTypes, Logger, retryAllFailedJobs } from '@utils/commons'
 
 const eventBus = new EventBus()
 
 export const subscribers = {
 	[EventTypes.TEST]: eventBus.createSubscriber(EventTypes.TEST, async (data) => {
 		await Logger.success('Just received test event with value of', data)
+	}),
+	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async (data) => {
+		if (data.type === CronTypes.halfHourly) await retryAllFailedJobs()
 	})
 }
 

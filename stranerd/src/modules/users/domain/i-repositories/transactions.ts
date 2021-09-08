@@ -8,4 +8,6 @@ export interface ITransactionRepository {
 	createTransaction (data: TransactionToModel): Promise<TransactionEntity>
 
 	getTransactions (query: QueryParams): Promise<QueryResults<TransactionEntity>>
+
+	makeAsComplete (id: string): Promise<boolean | null>
 }

@@ -19,7 +19,6 @@ export const reviewsRoutes: Route[] = [
 		path: '/reviews/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

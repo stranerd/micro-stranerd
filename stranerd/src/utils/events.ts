@@ -1,5 +1,12 @@
-import { DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
-import { CreateUserWithBio, MarkUserAsDeleted, UpdateUserWithBio, UpdateUserWithRoles } from '../modules/users'
+import { CronTypes, DelayedJobs, EventBus, EventTypes, Logger } from '@utils/commons'
+import {
+	CreateReferral,
+	CreateUserWithBio,
+	DeleteOldSeenNotifications,
+	MarkUserAsDeleted,
+	UpdateUserWithBio,
+	UpdateUserWithRoles
+} from '../modules/users'
 import { endSession } from '@utils/modules/sessions/sessions'
 
 const eventBus = new EventBus()
@@ -7,6 +14,9 @@ const eventBus = new EventBus()
 export const subscribers = {
 	[EventTypes.TEST]: eventBus.createSubscriber(EventTypes.TEST, async (data) => {
 		await Logger.success('Just received test event with value of', data)
+	}),
+	[EventTypes.AUTHNEWREFERRAL]: eventBus.createSubscriber(EventTypes.AUTHNEWREFERRAL, async (data) => {
+		await CreateReferral.execute({ userId: data.referrer, referred: data.referred })
 	}),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createSubscriber(EventTypes.AUTHUSERCREATED, async (data) => {
 		await CreateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
@@ -22,11 +32,13 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
+	}),
+	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
+		if (type === CronTypes.weekly) await DeleteOldSeenNotifications.execute()
 	})
 }
 
 export const publishers = {
 	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL),
-	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
-	[EventTypes.STRANERDUSERBIOUPDATED]: eventBus.createPublisher(EventTypes.STRANERDUSERBIOUPDATED)
+	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE)
 }

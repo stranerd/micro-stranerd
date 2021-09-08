@@ -1,19 +1,17 @@
 import { Email } from '../emails'
 import { MediaOutput } from '../storage'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
-import { StranerdUserBioUpdated } from './types/stranerd/users'
-import { CronTypes } from './types/tasks'
-import { DelayedEvent } from '../bull/types'
+import { CronTypes, DelayedEvent } from '../bull/types'
 
 export enum EventTypes {
 	TEST = 'TEST',
 	SENDMAIL = 'SENDMAIL',
 	DELETEFILE = 'DELETEFILE',
+	AUTHNEWREFERRAL = 'AUTHNEWREFERRAL',
 	AUTHUSERCREATED = 'AUTHUSERCREATED',
 	AUTHUSERUPDATED = 'AUTHUSERUPDATED',
 	AUTHROLESUPDATED = 'AUTHROLESUPDATED',
 	AUTHUSERDELETED = 'AUTHUSERDELETED',
-	STRANERDUSERBIOUPDATED = 'STRANERDUSERBIOUPDATED',
 	TASKSCRON = 'TASKSCRON',
 	TASKSDELAYED = 'TASKSDELAYED'
 }
@@ -36,6 +34,10 @@ export interface Events extends Record<EventTypes, Event<any>> {
 		topic: typeof EventTypes.DELETEFILE,
 		data: MediaOutput
 	},
+	AUTHNEWREFERRAL: {
+		topic: typeof EventTypes.AUTHNEWREFERRAL,
+		data: { referrer: string, referred: string }
+	},
 	AUTHUSERCREATED: {
 		topic: typeof EventTypes.AUTHUSERCREATED,
 		data: AuthUserChange
@@ -51,10 +53,6 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	AUTHUSERDELETED: {
 		topic: typeof EventTypes.AUTHUSERDELETED,
 		data: AuthUserDeleted
-	},
-	STRANERDUSERBIOUPDATED: {
-		topic: typeof EventTypes.STRANERDUSERBIOUPDATED,
-		data: StranerdUserBioUpdated
 	},
 	TASKSCRON: {
 		topic: typeof EventTypes.TASKSCRON,

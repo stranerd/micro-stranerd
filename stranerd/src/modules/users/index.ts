@@ -27,9 +27,16 @@ import { UpdateNerdScoreUseCase } from './domain/useCases/users/updateNerdScore'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
+import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
+import { ReferralRepository } from './data/repositories/referrals'
+import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
+import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
+import { GetReferralsUseCase } from './domain/useCases/referrals/getReferrals'
+import { MarkAsCompleteUseCase } from './domain/useCases/transactions/makeAsComplete'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
+const referralRepository = ReferralRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
 const transactionRepository = TransactionRepository.getInstance()
 
@@ -47,6 +54,7 @@ export const UpdateNerdScore = new UpdateNerdScoreUseCase(userRepository)
 export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepository)
 export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
 export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
+export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
@@ -61,3 +69,8 @@ export const CreateReview = new CreateReviewUseCase(reviewRepository)
 export const GetTransactions = new GetTransactionsUseCase(transactionRepository)
 export const FindTransaction = new FindTransactionUseCase(transactionRepository)
 export const CreateTransaction = new CreateTransactionUseCase(transactionRepository)
+export const MarkTransactionAsComplete = new MarkAsCompleteUseCase(transactionRepository)
+
+export const GetReferrals = new GetReferralsUseCase(referralRepository)
+export const FindReferral = new FindReferralUseCase(referralRepository)
+export const CreateReferral = new CreateReferralUseCase(referralRepository)

@@ -5,11 +5,18 @@ import { NotFoundError, QueryParams, Request, validate, Validation } from '@util
 export class SessionController {
 	static async getSessions (req: Request) {
 		const query = req.body as QueryParams
+		query.auth = [
+			{ field: 'studentId', value: req.authUser!.id },
+			{ field: 'tutorId', value: req.authUser!.id }
+		]
 		return await GetSessions.execute(query)
 	}
 
 	static async findSession (req: Request) {
-		return await FindSession.execute(req.params.id)
+		return await FindSession.execute({
+			sessionId: req.params.id,
+			userId: req.authUser!.id
+		})
 	}
 
 	static async addSession (req: Request) {

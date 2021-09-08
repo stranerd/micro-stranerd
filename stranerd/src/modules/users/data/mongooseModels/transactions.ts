@@ -22,6 +22,11 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 		type: mongoose.Schema.Types.ObjectId,
 		required: true
 	},
+	isCompleted: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
 	createdAt: {
 		type: Number,
 		required: false,

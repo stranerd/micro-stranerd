@@ -6,10 +6,11 @@ export class TransactionEntity extends BaseEntity {
 	public readonly event: string
 	public readonly userId: string
 	public readonly amount: number
+	public isCompleted: boolean | null
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, isGold, event, amount, userId, createdAt, updatedAt }: TransactionConstructorArgs) {
+	constructor ({ id, isGold, event, amount, userId, createdAt, updatedAt, isCompleted }: TransactionConstructorArgs) {
 		super()
 		this.id = id
 		this.isGold = isGold
@@ -17,11 +18,12 @@ export class TransactionEntity extends BaseEntity {
 		this.userId = userId
 		this.amount = amount
 		this.createdAt = createdAt
+		this.isCompleted = isCompleted
 		this.updatedAt = updatedAt
 	}
 }
 
 type TransactionConstructorArgs = {
 	id: string, event: string, amount: number, isGold: boolean
-	userId: string, createdAt: number, updatedAt: number
+	userId: string, createdAt: number, updatedAt: number,isCompleted: boolean | null
 }

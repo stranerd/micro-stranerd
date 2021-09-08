@@ -4,8 +4,16 @@ import { SessionFromModel } from '@modules/sessions/data/models/session'
 import { AddChat, CancelSession, GetSessions } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { AddUserQueuedSessions, FindUser, RemoveUserQueuedSessions, SetUsersCurrentSession } from '@modules/users'
+import {
+	AddUserQueuedSessions,
+	FindUser,
+	IncrementUsersSessionsCount,
+	RemoveUserQueuedSessions,
+	SetUsersCurrentSession,
+	UpdateNerdScore
+} from '@modules/users'
 import { cancelSessionTask } from '@utils/modules/sessions/sessions'
+import { ScoreRewards } from '@modules/users/domain/types/users'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
@@ -123,6 +131,32 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			}
 		}
 		// Session was just concluded or cancelled, so cleanup
-		if (!before.done && after.done) await cancelSessionTask(after)
+		if (!before.done && after.done) {
+			await cancelSessionTask(after)
+			await SetUsersCurrentSession.execute({
+				studentId: after.studentId,
+				tutorId: after.tutorId,
+				sessionId: null
+			})
+			await UpdateNerdScore.execute({
+				userId: after.studentId,
+				amount: ScoreRewards.CompleteSession
+			})
+			await IncrementUsersSessionsCount.execute({
+				tutorId: after.tutorId,
+				studentId: after.studentId,
+				value: 1
+			})
+		}
+	},
+	deleted: async ({ before }) => {
+		if (before.done) {
+			await IncrementUsersSessionsCount.execute({
+				tutorId: before.tutorId,
+				studentId: before.studentId,
+				value: -1
+			})
+			await cancelSessionTask(before)
+		}
 	}
 }

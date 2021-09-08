@@ -12,10 +12,28 @@ export const startSession = async (session: SessionEntity) => {
 	}, delay)
 	await UpdateTaskIdAndStartedAt.execute({
 		sessionId: session.id,
-		data: {
-			taskId: taskId,
-			startedAt: Date.now()
-		}
+		delayInMs: delay,
+		data: { taskId, startedAt: Date.now() }
+	})
+}
+
+export const extendSessionTime = async (session: SessionEntity, extensionInMinutes: number) => {
+	if (!session.taskId || !session.endedAt) return
+
+	const msLeft = session.endedAt - Date.now()
+	if (msLeft <= 0) return
+	const delay = msLeft + (extensionInMinutes * 60 * 1000)
+
+	if (session.taskId) await removeDelayedJob(session.taskId)
+
+	const taskId = await addDelayedJob({
+		type: DelayedJobs.SessionTimer,
+		data: { sessionId: session.id }
+	}, delay)
+	await UpdateTaskIdAndStartedAt.execute({
+		sessionId: session.id,
+		delayInMs: delay,
+		data: { taskId }
 	})
 }
 

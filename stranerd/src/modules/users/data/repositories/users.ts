@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserBio, UserRoles } from '../../domain/types/users'
+import { UserAccount, UserBio, UserRoles } from '../../domain/types/users'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
@@ -67,10 +67,10 @@ export class UserRepository implements IUserRepository {
 		}, { upsert: true })
 	}
 
-	async incrementUserMetaProperty (userId: string, propertyName: 'questionsCount' | 'answersCount' | 'answerCommentsCount', value: 1 | -1) {
+	async incrementUserMetaProperty (userId: string, propertyName: keyof UserAccount['meta'], value: 1 | -1) {
 		await User.findByIdAndUpdate(userId, {
 			$inc: {
-				[`meta/${ propertyName }`]: value
+				[`account.meta.${ propertyName }`]: value
 			}
 		})
 	}
@@ -78,8 +78,8 @@ export class UserRepository implements IUserRepository {
 	async addUserCoins (userId: string, coins: { gold: number, bronze: number }) {
 		await User.findById(userId, {
 			$inc: {
-				'account.account.coins.gold': coins.gold,
-				'account.account.coins.bronze': coins.bronze
+				'account.coins.gold': coins.gold,
+				'account.coins.bronze': coins.bronze
 			}
 		})
 	}

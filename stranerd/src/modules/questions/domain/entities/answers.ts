@@ -34,6 +34,11 @@ export class AnswerEntity extends BaseEntity {
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
+
+	get totalVotes () {
+		return this.votes.map((v) => v.vote)
+			.reduce((acc, val) => acc + val, 0)
+	}
 }
 
 type AnswerConstructorArgs = {

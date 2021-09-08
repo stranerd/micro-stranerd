@@ -9,10 +9,6 @@ export interface SessionFromModel extends SessionToModel {
 	accepted: boolean | null
 	taskId: TaskID
 	done: boolean
-	reviews: {
-		student: { rating: number, comment: string } | null
-		tutor: { rating: number, comment: string } | null
-	}
 	cancelled: { tutor: boolean, student: boolean, busy: boolean }
 }
 

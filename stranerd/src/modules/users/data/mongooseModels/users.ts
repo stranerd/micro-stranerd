@@ -1,26 +1,18 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { UserFromModel } from '../models/users'
 import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
-import { UserEntity } from '@modules/users/domain/entities/users'
-import { UserMapper } from '@modules/users/data/mappers/users'
+import { UserEntity } from '../../domain/entities/users'
+import { UserMapper } from '../mappers/users'
+import { UserAccount } from '../../domain/types/users'
 
-const UserMeta = {
-	questionsCount: {
+const metaKeys: (keyof UserAccount['meta'])[] = ['questions', 'answers', 'answerComments', 'sessions', 'tutorSessions']
+const UserMeta = Object.fromEntries(
+	metaKeys.map((key) => [key, {
 		type: Number,
 		required: false,
 		default: 0
-	},
-	answersCount: {
-		type: Number,
-		required: false,
-		default: 0
-	},
-	answerCommentsCount: {
-		type: Number,
-		required: false,
-		default: 0
-	}
-}
+	}])
+)
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {

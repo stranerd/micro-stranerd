@@ -16,3 +16,5 @@ export const mailchimpConfig = {
 	apiKey: MAILCHIMP_CONFIG.apiKey,
 	dataCenter: MAILCHIMP_CONFIG.dataCenter
 }
+
+export const superAdminEmail = 'kevinfizu@gmail.com'

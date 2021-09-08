@@ -33,6 +33,9 @@ export type UserAccount = {
 	meta: {
 		questions: number
 		answers: number
+		answerComments: number
+		sessions: number
+		tutorSessions: number
 	},
 	ratings: {
 		total: number

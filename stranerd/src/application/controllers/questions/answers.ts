@@ -28,7 +28,6 @@ export class AnswerController {
 		const updatedAnswer = await UpdateAnswer.execute({ id: req.params.id, userId: authUserId, data })
 
 		if (updatedAnswer) return updatedAnswer
-
 		throw new NotAuthorizedError()
 	}
 
