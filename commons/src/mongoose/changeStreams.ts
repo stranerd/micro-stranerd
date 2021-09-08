@@ -35,7 +35,8 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		await getCacheInstance.set(cacheKey, JSON.stringify(data._id), 0)
 
 		if (data.operationType === 'insert') {
-			const _id = data.documentKey
+			// @ts-ignore
+			const _id = data.documentKey!._id
 			const after = data.fullDocument as Model
 			await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
 				upsert: true,
@@ -48,7 +49,8 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		}
 
 		if (data.operationType === 'delete') {
-			const _id = data.documentKey
+			// @ts-ignore
+			const _id = data.documentKey!._id
 			const { value: before } = await getClone().findOneAndDelete({ _id })
 			await callbacks.deleted?.({
 				before: mapper(before as Model)!,
@@ -57,7 +59,8 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		}
 
 		if (data.operationType === 'update') {
-			const _id = data.documentKey
+			// @ts-ignore
+			const _id = data.documentKey!._id
 			const after = data.fullDocument as Model
 			const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
 			// @ts-ignore
