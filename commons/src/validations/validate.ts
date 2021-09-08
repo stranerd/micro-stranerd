@@ -1,11 +1,17 @@
-import * as Validation from '@stranerd/validate'
+import * as Validate from '@stranerd/validate'
 import { ValidationError } from '../errors'
+import { mongoose } from '../mongoose'
 
-export { Validation }
+const isValidMongooseId = (val: string) => {
+	if (mongoose.Types.ObjectId.isValid(val)) return Validate.isValid()
+	return Validate.isInvalid('is not a valid id')
+}
+
+export const Validation = { ...Validate, isValidMongooseId }
 
 type Rules = {
 	required: boolean
-	rules: Validation.Rule[]
+	rules: Validate.Rule[]
 }
 
 export function validate<Keys extends Record<string, any>> (data: Keys, rules: Record<keyof Keys, Rules>) {
