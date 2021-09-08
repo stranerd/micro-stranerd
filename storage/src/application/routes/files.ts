@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes, validate, Validation } from '@utils/commons'
+import { makeController, Route, StatusCodes, StorageFile, validate, Validation } from '@utils/commons'
 import { UploadFile } from '@modules/domain'
 
 const uploadFile: Route = {
@@ -31,21 +31,15 @@ const uploadFiles: Route = {
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
-			const areAllFiles: Validation.Rule = (value: any[]) => {
-				const res = value.map(Validation.isFile)
-				const valid = res.every((r) => r.valid)
-				const error = res.find((r) => r.error)?.error!
-				return valid ? { valid: true, error: undefined } : { valid: false, error }
-			}
 			const files = req.files
-			const { path } = req.body
-			const data = validate({ path, files }, {
+			const data = validate({ path: req.body.path, files }, {
 				path: { required: true, rules: [] },
 				files: {
-					required: true, rules: [areAllFiles, (_) => {
-						if (files.some((f) => f.isTruncated)) return Validation.isInvalid('are larger than allowed limit')
-						return Validation.isValid()
-					}]
+					required: true,
+					rules: [
+						Validation.isArrayOfX((cur: StorageFile) => Validation.isFile(cur).valid, 'files'),
+						Validation.isArrayOfX((cur: StorageFile) => !cur.isTruncated, 'less than the allowed limit')
+					]
 				}
 			})
 			const res = await Promise.all(

@@ -17,14 +17,14 @@ export class ChatController {
 		}, {
 			content: {
 				required: false,
-				rules: [Validation.isRequiredIfX(!req.body.media), Validation.isLongerThanX(0)]
+				rules: [Validation.isRequiredIfX(!req.body.media), Validation.isString, Validation.isLongerThanX(0)]
 			},
 			media: {
 				required: false,
 				rules: [Validation.isRequiredIfX(!req.body.content), Validation.isFile]
 			},
-			sessionId: { required: false, rules: [Validation.isLongerThanX(0)] },
-			to: { required: true, rules: [Validation.isLongerThanX(0)] }
+			sessionId: { required: false, rules: [Validation.isValidMongooseId, Validation.isLongerThanX(0)] },
+			to: { required: true, rules: [Validation.isValidMongooseId, Validation.isLongerThanX(0)] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -36,15 +36,17 @@ export class ChatController {
 
 	static async markChatRead (req: Request) {
 		const data = validate({
-			to: req.body.to
+			to: req.body.to,
+			chatId: req.body.chatId
 		}, {
-			to: { required: true, rules: [Validation.isLongerThanX(0)] }
+			to: { required: true, rules: [Validation.isValidMongooseId] },
+			chatId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		const authUserId = req.authUser!.id
 		return await MarkChatRead.execute({
 			path: [authUserId, data.to],
-			chatId: req.params.id
+			chatId: data.chatId
 		})
 	}
 }

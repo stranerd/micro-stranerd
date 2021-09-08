@@ -9,10 +9,10 @@ export class MessageController {
 			email: req.body.email,
 			message: req.body.message
 		}, {
-			firstName: { required: true, rules: [Validation.isLongerThanX(2)] },
-			lastName: { required: true, rules: [Validation.isLongerThanX(2)] },
+			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			email: { required: true, rules: [Validation.isEmail] },
-			message: { required: true, rules: [Validation.isLongerThanX(0)] }
+			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
 		await sendNewMessageEmail(data)

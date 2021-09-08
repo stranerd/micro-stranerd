@@ -15,7 +15,7 @@ export class SubjectController {
 		const data = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
 		return await AddSubject.execute(data)

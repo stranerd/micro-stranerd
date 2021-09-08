@@ -16,8 +16,8 @@ export class UserController {
 			lastName: req.body.lastName,
 			photo: req.body.photo
 		}, {
-			firstName: { required: true, rules: [Validation.isLongerThanX(2)] },
-			lastName: { required: true, rules: [Validation.isLongerThanX(2)] },
+			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			photo: { required: false, rules: [Validation.isImage] }
 		})
 
@@ -35,9 +35,9 @@ export class UserController {
 				required: true,
 				rules: [Validation.arrayContainsX(Object.values(AuthApps), (cur, val) => cur === val)]
 			},
-			role: { required: true, rules: [] },
+			role: { required: true, rules: [Validation.isString] },
 			value: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [] }
+			userId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		return await UpdateUserRole.execute(validateData)

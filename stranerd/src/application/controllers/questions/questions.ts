@@ -16,6 +16,7 @@ import {
 	Validation,
 	ValidationError
 } from '@utils/commons'
+import { MAXIMUM_QUESTION_COINS, MINIMUM_QUESTION_COINS } from '@utils/environment'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -32,8 +33,11 @@ export class QuestionController {
 			body: req.body.body,
 			coins: req.body.coins
 		}, {
-			body: { required: true, rules: [Validation.isExtractedHTMLLongerThanX(2)] },
-			coins: { required: true, rules: [Validation.isMoreThanX(19), Validation.isLessThanX(101)] }
+			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			coins: {
+				required: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
+			}
 		})
 
 		const authUserId = req.authUser!.id
@@ -51,10 +55,16 @@ export class QuestionController {
 			coins: req.body.coins,
 			tags: req.body.tags
 		}, {
-			body: { required: true, rules: [Validation.isExtractedHTMLLongerThanX(2)] },
-			coins: { required: true, rules: [Validation.isMoreThanX(19), Validation.isLessThanX(101)] },
-			subjectId: { required: true, rules: [] },
-			tags: { required: true, rules: [Validation.isMoreThanX(0), Validation.isLessThanX(4)] }
+			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			coins: {
+				required: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
+			},
+			subjectId: { required: true, rules: [Validation.isValidMongooseId] },
+			tags: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.isMoreThanX(0), Validation.isLessThanX(4)]
+			}
 		})
 
 		const authUserId = req.authUser!.id
@@ -75,7 +85,7 @@ export class QuestionController {
 		const { answerId } = validate({
 			answerId: req.body.answerId
 		}, {
-			answerId: { required: true, rules: [] }
+			answerId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		const question = await FindQuestion.execute(req.params.id)

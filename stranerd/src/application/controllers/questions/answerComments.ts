@@ -17,8 +17,8 @@ export class AnswerCommentController {
 			body: req.body.body,
 			answerId: req.body.answerId
 		}, {
-			body: { required: true, rules: [Validation.isLongerThanX(2)] },
-			answerId: { required: true, rules: [] }
+			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			answerId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		const authUserId = req.authUser!.id

@@ -26,10 +26,10 @@ export class SessionController {
 			duration: req.body.duration,
 			price: req.body.price
 		}, {
-			message: { required: true, rules: [Validation.isLongerThanX(0)] },
-			tutorId: { required: true, rules: [] },
-			duration: { required: true, rules: [Validation.isMoreThanX(0)] },
-			price: { required: true, rules: [Validation.isMoreThanX(0)] }
+			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			tutorId: { required: true, rules: [Validation.isValidMongooseId] },
+			duration: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
+			price: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] }
 		})
 
 		const studentUser = await FindUser.execute(req.authUser!.id)
@@ -46,7 +46,14 @@ export class SessionController {
 	}
 
 	static async acceptSession (req: Request) {
-		const accepted = !!req.body.accepted
+		const { accepted } = validate({
+			accepted: req.body.accepted
+		}, {
+			accepted: {
+				required: true,
+				rules: [Validation.isBoolean]
+			}
+		})
 
 		return await AcceptSession.execute({
 			accepted,

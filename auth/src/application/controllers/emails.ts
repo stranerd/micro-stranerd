@@ -34,11 +34,14 @@ export class EmailsController {
 
 		const validateData = validate(userCredential, {
 			email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
-			password: { required: true, rules: [Validation.isLongerThanX(7), Validation.isShorterThanX(17)] },
+			password: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+			},
 			photo: { required: false, rules: [Validation.isImage] },
-			firstName: { required: true, rules: [Validation.isLongerThanX(2)] },
-			lastName: { required: true, rules: [Validation.isLongerThanX(2)] },
-			referrer: { required: false, rules: [] }
+			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			referrer: { required: false, rules: [Validation.isValidMongooseId] }
 		})
 
 		const userData = await FindUserByEmail.execute(validateData.email)
@@ -56,7 +59,7 @@ export class EmailsController {
 			password: req.body.password
 		}, {
 			email: { required: true, rules: [Validation.isEmail] },
-			password: { required: true, rules: [] }
+			password: { required: true, rules: [Validation.isString] }
 		})
 
 		const data = await AuthenticateUser.execute(validateData)
@@ -80,7 +83,7 @@ export class EmailsController {
 		const { token } = validate({
 			token: req.body.token
 		}, {
-			token: { required: true, rules: [] }
+			token: { required: true, rules: [Validation.isString] }
 		})
 
 		const data = await VerifyEmail.execute(token)

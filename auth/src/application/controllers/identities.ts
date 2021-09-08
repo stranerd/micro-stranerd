@@ -1,5 +1,5 @@
 import { GoogleSignIn } from '@modules/index'
-import { Request, validate } from '@utils/commons'
+import { Request, validate, Validation } from '@utils/commons'
 import { generateAuthOutput } from '@utils/modules/auth'
 
 export class IdentitiesController {
@@ -8,8 +8,8 @@ export class IdentitiesController {
 			idToken: req.body.idToken,
 			referrer: req.body.referrer
 		}, {
-			idToken: { required: true, rules: [] },
-			referrer: { required: false, rules: [] }
+			idToken: { required: true, rules: [Validation.isString] },
+			referrer: { required: false, rules: [Validation.isValidMongooseId] }
 		})
 
 		const data = await GoogleSignIn.execute(validatedData)

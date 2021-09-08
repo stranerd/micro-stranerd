@@ -9,8 +9,8 @@ const resolve: Route = {
 			const data = validate({ email, name, image, age }, {
 				email: { required: true, rules: [Validation.isEmail] },
 				image: { required: true, rules: [Validation.isImage] },
-				name: { required: true, rules: [Validation.isLongerThanX(2)] },
-				age: { required: true, rules: [Validation.isMoreThanX(17)] }
+				name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+				age: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(17)] }
 			})
 			return {
 				status: StatusCodes.Ok,

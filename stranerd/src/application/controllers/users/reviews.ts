@@ -16,9 +16,12 @@ export class ReviewsController {
 			review: req.body.review,
 			tutorId: req.body.tutorId
 		}, {
-			rating: { required: true, rules: [Validation.isMoreThanX(0), Validation.isLessThanX(5.1)] },
-			review: { required: true, rules: [] },
-			tutorId: { required: true, rules: [] }
+			rating: {
+				required: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0), Validation.isLessThanX(5.1)]
+			},
+			review: { required: true, rules: [Validation.isString] },
+			tutorId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		const user = await FindUser.execute(req.authUser!.id)

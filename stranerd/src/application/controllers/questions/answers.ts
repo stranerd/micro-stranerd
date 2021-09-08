@@ -17,8 +17,8 @@ export class AnswerController {
 			title: req.body.title,
 			body: req.body.body
 		}, {
-			title: { required: true, rules: [Validation.isLongerThanX(2)] },
-			body: { required: true, rules: [] }
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -35,9 +35,9 @@ export class AnswerController {
 			body: req.body.body,
 			questionId: req.body.questionId
 		}, {
-			title: { required: true, rules: [Validation.isLongerThanX(2)] },
-			body: { required: true, rules: [] },
-			questionId: { required: true, rules: [] }
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString] },
+			questionId: { required: true, rules: [Validation.isValidMongooseId] }
 		})
 
 		const authUserId = req.authUser!.id

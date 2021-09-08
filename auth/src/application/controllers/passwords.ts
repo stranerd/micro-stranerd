@@ -22,8 +22,11 @@ export class PasswordsController {
 			token: req.body.token,
 			password: req.body.password
 		}, {
-			token: { required: true, rules: [] },
-			password: { required: true, rules: [Validation.isLongerThanX(7), Validation.isShorterThanX(17)] }
+			token: { required: true, rules: [Validation.isString] },
+			password: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+			}
 		})
 
 		const data = await ResetPassword.execute(validateData)
@@ -36,8 +39,11 @@ export class PasswordsController {
 			oldPassword: req.body.oldPassword,
 			password: req.body.password
 		}, {
-			oldPassword: { required: true, rules: [] },
-			password: { required: true, rules: [Validation.isLongerThanX(7), Validation.isShorterThanX(17)] }
+			oldPassword: { required: true, rules: [Validation.isString] },
+			password: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+			}
 		})
 
 		const user = await FindUser.execute(userId)
