@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { SearchController } from '../../controllers/common/search'
+import { SearchController } from '../../controllers/meta/search'
 
 export const searchRoutes: Route[] = [
 	{
