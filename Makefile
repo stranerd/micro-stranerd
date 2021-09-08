@@ -30,6 +30,9 @@ build-all:
 publish-commons:
 	yarn --cwd ${COMMONS} pub;
 
+pub-and-inst:
+	make publish-commons && make install-commons
+
 install-commons:
 	$(foreach app, $(APPS), yarn --cwd $(app) add @stranerd/api-commons@latest;)
 
