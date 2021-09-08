@@ -35,7 +35,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		await getCacheInstance.set(cacheKey, JSON.stringify(data._id), 0)
 
 		if (data.operationType === 'insert') {
-			const _id = data.documentKey._id
+			const _id = data.documentKey
 			const after = data.fullDocument as Model
 			await getClone().insertOne({ ...after, _id })
 			await callbacks.created?.({
@@ -45,16 +45,16 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		}
 
 		if (data.operationType === 'delete') {
-			const _id = data.documentKey._id
+			const _id = data.documentKey
 			const { value: before } = await getClone().findOneAndDelete({ _id })
 			await callbacks.deleted?.({
-				before: mapper(before)!,
+				before: mapper(before as Model)!,
 				after: null
 			})
 		}
 
 		if (data.operationType === 'update') {
-			const _id = data.documentKey._id
+			const _id = data.documentKey
 			const after = data.fullDocument as Model
 			const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after })
 			// @ts-ignore
@@ -65,7 +65,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 				.concat(Object.keys(updatedFields))
 			const changes = getObjectsFromKeys(changed)
 			await callbacks.updated?.({
-				before: mapper(before)!,
+				before: mapper(before as Model)!,
 				after: mapper(after)!,
 				changes
 			})
