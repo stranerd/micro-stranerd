@@ -13,13 +13,11 @@ export class AnswerCommentController {
 	}
 
 	static async CreateAnswerComment (req: Request) {
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
 		const data = validate({
 			body: req.body.body,
 			answerId: req.body.answerId
 		}, {
-			body: { required: true, rules: [isLongerThan2] },
+			body: { required: true, rules: [Validation.isLongerThanX(2)] },
 			answerId: { required: true, rules: [] }
 		})
 

@@ -9,8 +9,6 @@ export class ChatController {
 	}
 
 	static async addChat (req: Request) {
-		const isLongerThan0 = (val: string) => Validation.isLongerThan(val, 0)
-
 		const { content, media, sessionId, to } = validate({
 			content: req.body.content,
 			media: req.body.media,
@@ -19,14 +17,14 @@ export class ChatController {
 		}, {
 			content: {
 				required: false,
-				rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content), isLongerThan0]
+				rules: [Validation.isRequiredIfX(!req.body.media), Validation.isLongerThanX(0)]
 			},
 			media: {
 				required: false,
-				rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content), Validation.isFile]
+				rules: [Validation.isRequiredIfX(!req.body.content), Validation.isFile]
 			},
-			sessionId: { required: false, rules: [isLongerThan0] },
-			to: { required: true, rules: [isLongerThan0] }
+			sessionId: { required: false, rules: [Validation.isLongerThanX(0)] },
+			to: { required: true, rules: [Validation.isLongerThanX(0)] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -37,12 +35,10 @@ export class ChatController {
 	}
 
 	static async markChatRead (req: Request) {
-		const isLongerThan0 = (val: string) => Validation.isLongerThan(val, 0)
-
 		const data = validate({
 			to: req.body.to
 		}, {
-			to: { required: true, rules: [isLongerThan0] }
+			to: { required: true, rules: [Validation.isLongerThanX(0)] }
 		})
 
 		const authUserId = req.authUser!.id

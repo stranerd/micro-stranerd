@@ -18,15 +18,12 @@ export class PasswordsController {
 	}
 
 	static async resetPassword (req: Request) {
-		const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
-		const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-
 		const validateData = validate({
 			token: req.body.token,
 			password: req.body.password
 		}, {
 			token: { required: true, rules: [] },
-			password: { required: true, rules: [isLongerThan7, isShorterThan17] }
+			password: { required: true, rules: [Validation.isLongerThanX(7), Validation.isShorterThanX(17)] }
 		})
 
 		const data = await ResetPassword.execute(validateData)
@@ -35,15 +32,12 @@ export class PasswordsController {
 
 	static async updatePassword (req: Request) {
 		const userId = req.authUser!.id
-		const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
-		const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-
 		const { oldPassword, password } = validate({
 			oldPassword: req.body.oldPassword,
 			password: req.body.password
 		}, {
 			oldPassword: { required: true, rules: [] },
-			password: { required: true, rules: [isLongerThan7, isShorterThan17] }
+			password: { required: true, rules: [Validation.isLongerThanX(7), Validation.isShorterThanX(17)] }
 		})
 
 		const user = await FindUser.execute(userId)

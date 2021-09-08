@@ -1,5 +1,5 @@
-import { makeController, Route, StatusCodes, validate, Validation, ValidationError } from '@utils/commons'
-import { DeleteFile, UploadFile } from '@modules/domain'
+import { makeController, Route, StatusCodes, validate, Validation } from '@utils/commons'
+import { UploadFile } from '@modules/domain'
 
 const uploadFile: Route = {
 	path: '/file',
@@ -10,12 +10,13 @@ const uploadFile: Route = {
 			const { path } = req.body
 			const data = validate({ path, file }, {
 				path: { required: true, rules: [] },
-				file: { required: true, rules: [Validation.isFile] }
+				file: {
+					required: true, rules: [Validation.isFile, (_) => {
+						if (file.isTruncated) return Validation.isInvalid('is larger than allowed limit')
+						else return Validation.isValid()
+					}]
+				}
 			})
-			if (file.isTruncated) throw new ValidationError([{
-				field: 'file',
-				messages: ['is larger than allowed limit']
-			}])
 			const res = await UploadFile.call(data.path, data.file)
 			return {
 				status: StatusCodes.Ok,
@@ -40,12 +41,13 @@ const uploadFiles: Route = {
 			const { path } = req.body
 			const data = validate({ path, files }, {
 				path: { required: true, rules: [] },
-				files: { required: true, rules: [areAllFiles] }
+				files: {
+					required: true, rules: [areAllFiles, (_) => {
+						if (files.some((f) => f.isTruncated)) return Validation.isInvalid('are larger than allowed limit')
+						return Validation.isValid()
+					}]
+				}
 			})
-			if (files.some((f) => f.isTruncated)) throw new ValidationError([{
-				field: 'file',
-				messages: ['are larger than allowed limit']
-			}])
 			const res = await Promise.all(
 				data.files.map(async (f) => await UploadFile.call(data.path, f))
 			)
@@ -57,23 +59,5 @@ const uploadFiles: Route = {
 	]
 }
 
-const deleteFile: Route = {
-	path: '/file',
-	method: 'delete',
-	controllers: [
-		makeController(async (req) => {
-			const { path } = req.body
-			const data = validate({ path }, {
-				path: { required: true, rules: [] }
-			})
-			const res = await DeleteFile.call(data.path)
-			return {
-				status: StatusCodes.Ok,
-				result: res
-			}
-		})
-	]
-}
-
-const routes: Route[] = [uploadFile, uploadFiles, deleteFile]
+const routes: Route[] = [uploadFile, uploadFiles]
 export default routes

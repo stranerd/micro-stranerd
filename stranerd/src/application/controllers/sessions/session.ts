@@ -20,19 +20,16 @@ export class SessionController {
 	}
 
 	static async addSession (req: Request) {
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
-
 		const data = validate({
 			message: req.body.message,
 			tutorId: req.body.tutorId,
 			duration: req.body.duration,
 			price: req.body.price
 		}, {
-			message: { required: true, rules: [isLongerThan2] },
+			message: { required: true, rules: [Validation.isLongerThanX(0)] },
 			tutorId: { required: true, rules: [] },
-			duration: { required: true, rules: [isMoreThan0] },
-			price: { required: true, rules: [isMoreThan0] }
+			duration: { required: true, rules: [Validation.isMoreThanX(0)] },
+			price: { required: true, rules: [Validation.isMoreThanX(0)] }
 		})
 
 		const studentUser = await FindUser.execute(req.authUser!.id)

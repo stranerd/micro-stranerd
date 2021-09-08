@@ -11,14 +11,12 @@ export class ReviewsController {
 	}
 
 	static async createReview (req: Request) {
-		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
-		const isLessThan5 = (val: number) => Validation.isLessThan(val, 5.1)
 		const data = validate({
 			rating: req.body.rating,
 			review: req.body.review,
 			tutorId: req.body.tutorId
 		}, {
-			rating: { required: true, rules: [isMoreThan0, isLessThan5] },
+			rating: { required: true, rules: [Validation.isMoreThanX(0), Validation.isLessThanX(5.1)] },
 			review: { required: true, rules: [] },
 			tutorId: { required: true, rules: [] }
 		})
