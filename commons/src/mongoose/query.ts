@@ -20,15 +20,17 @@ export type QueryParams = {
 
 export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
 	// Handle where clauses
-	const totalClause = { $and: [] as any }
+	const query = [] as ReturnType<typeof buildWhereQuery>[]
 	const whereType = ['and', 'or'].indexOf(params.whereType as string) !== -1 ? params.whereType! : 'and'
 	const where = buildWhereQuery(params.where ?? [], whereType)
-	if (where) totalClause.$and.push(where)
+	if (where) query.push(where)
 	if (params.auth) {
 		const authType = params.auth.length > 1 ? 'or' : 'and'
 		const auth = buildWhereQuery(params.auth ?? [], authType)
-		if (auth) totalClause.$and.push(auth)
+		if (auth) query.push(auth)
 	}
+	const totalClause = {}
+	if (query.length > 0) totalClause['$and'] = query
 	if (params.search) totalClause['$text'] = { $search: params.search }
 
 	// Handle sort clauses
