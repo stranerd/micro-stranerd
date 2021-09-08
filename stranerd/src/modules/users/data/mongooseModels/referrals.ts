@@ -6,11 +6,11 @@ import { ReferralMapper } from '@modules/users/data/mappers/referrals'
 
 const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	referred: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	createdAt: {

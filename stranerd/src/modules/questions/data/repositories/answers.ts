@@ -56,12 +56,12 @@ export class AnswerRepository implements IAnswerRepository {
 
 	async updateAnswersUserBio (userId: string, userBio: UserBio) {
 		const answers = await Answer.updateMany({ userId }, { $set: { userBio } })
-		return !!answers.ok
+		return !!answers.acknowledged
 
 	}
 
 	async deleteQuestionAnswers (questionId: string) {
 		const answers = await Answer.deleteMany({ questionId })
-		return !!answers.ok
+		return !!answers.acknowledged
 	}
 }

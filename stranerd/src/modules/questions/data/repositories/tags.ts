@@ -31,13 +31,12 @@ export class TagRepository implements ITagRepository {
 		return this.mapper.mapFrom(tag)
 	}
 
-	async updateTagsCount (tagIds: string[], increment: boolean) {
+	async updateTagsCount (tagNames: string[], increment: boolean) {
 		const tags = await Tag.updateMany({
-			_id: { $in: tagIds }
+			name: { $in: tagNames }
 		}, {
 			$inc: { count: increment ? 1 : -1 }
 		}, { upsert: true, new: true })
-		return !!tags.ok
+		return !!tags.acknowledged
 	}
-
 }

@@ -11,22 +11,28 @@ export class ChatController {
 	static async addChat (req: Request) {
 		const isLongerThan0 = (val: string) => Validation.isLongerThan(val, 0)
 
-		const data = validate({
+		const { content, media, sessionId, to } = validate({
 			content: req.body.content,
 			media: req.body.media,
 			sessionId: req.body.sessionId,
 			to: req.body.to
 		}, {
-			content: { required: false, rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content), isLongerThan0] },
-			media: { required: false, rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content)] },
+			content: {
+				required: false,
+				rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content), isLongerThan0]
+			},
+			media: {
+				required: false,
+				rules: [(val: any) => Validation.isRequiredIf(val, !req.body.content), Validation.isFile]
+			},
 			sessionId: { required: false, rules: [isLongerThan0] },
 			to: { required: true, rules: [isLongerThan0] }
 		})
-		
+
 		const authUserId = req.authUser!.id
 		return await AddChat.execute({
-			path: [authUserId, data.to],
-			data
+			path: [authUserId, to],
+			data: { content, media, sessionId }
 		})
 	}
 

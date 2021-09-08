@@ -52,7 +52,7 @@ export class SessionRepository implements ISessionRepository {
 		const result = await Session.updateMany({
 			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
 		}, { $set: { [`cancelled.${ reason }`]: true, done: true } })
-		return result.n > 0
+		return result.acknowledged
 	}
 
 	async updateMySessionsBio (userId: string, userBio: UserBio) {
@@ -60,7 +60,7 @@ export class SessionRepository implements ISessionRepository {
 			Session.updateMany({ studentId: userId }, { $set: { studentBio: userBio } }),
 			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio } })
 		])
-		return !!result[0].ok && !!result[1].ok
+		return result[0].acknowledged && result[1].acknowledged
 	}
 
 	async updateTaskIdAndStartedAt (id: string, data: { taskId: TaskID, startedAt?: number }, delayInMs: number) {

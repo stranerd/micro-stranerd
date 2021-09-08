@@ -14,15 +14,15 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		required: true
 	},
 	tutorId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as ReviewFromModel['userBio'],
 		required: true
 	},
 	createdAt: {

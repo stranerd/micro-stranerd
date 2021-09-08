@@ -62,11 +62,11 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			upvote.vote = data.vote
 			await upvote.save({ session })
 			await session.commitTransaction()
-			session.endSession()
+			await session.endSession()
 			return this.mapper.mapFrom(upvote)!
 		} catch (e) {
 			await session.abortTransaction()
-			session.endSession()
+			await session.endSession()
 			throw e
 		}
 	}

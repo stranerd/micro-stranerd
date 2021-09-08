@@ -6,13 +6,13 @@ import { ChatMapper } from '@modules/sessions/data/mappers/chat'
 
 const Schema = new mongoose.Schema<ChatFromModel>({
 	path: {
-		type: [mongoose.Schema.Types.ObjectId],
+		type: [mongoose.Schema.Types.ObjectId as unknown as StringConstructor],
 		required: true
 	},
 	content: {
 		type: String,
 		required: false,
-		default: null
+		default: null as unknown as string
 	},
 	media: {
 		type: Object,
@@ -27,7 +27,7 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 	readAt: {
 		type: Number,
 		required: false,
-		default: null
+		default: null as unknown as number
 	},
 	createdAt: {
 		type: Number,

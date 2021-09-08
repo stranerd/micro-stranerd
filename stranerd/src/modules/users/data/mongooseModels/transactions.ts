@@ -19,7 +19,7 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 		default: false
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	createdAt: {

@@ -18,27 +18,27 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	subjectId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as QuestionFromModel['userBio'],
 		required: false,
-		default: {}
+		default: {} as unknown as QuestionFromModel['userBio']
 	},
 	bestAnswers: {
-		type: [mongoose.Schema.Types.ObjectId],
+		type: [mongoose.Schema.Types.ObjectId as unknown as StringConstructor],
 		required: false,
 		default: []
 	},
 	answers: {
 		type: [{
-			id: mongoose.Schema.Types.ObjectId,
-			userId: mongoose.Schema.Types.ObjectId
+			id: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+			userId: mongoose.Schema.Types.ObjectId as unknown as StringConstructor
 		}],
 		required: false,
 		default: []

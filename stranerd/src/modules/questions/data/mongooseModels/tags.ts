@@ -5,6 +5,10 @@ import { TagEntity } from '@modules/questions/domain/entities'
 import { TagMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<TagFromModel>({
+	name: {
+		type: String,
+		required: true
+	},
 	count: {
 		type: Number,
 		required: false,

@@ -7,13 +7,14 @@ export class TagEntity extends BaseEntity {
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, count, createdAt, updatedAt }: TagConstructorArgs) {
+	constructor ({ id, name, count, createdAt, updatedAt }: TagConstructorArgs) {
 		super()
-		this.id = this.name = id
+		this.id = id
+		this.name = name
 		this.count = count
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
 }
 
-type TagConstructorArgs = { id: string, count: number, createdAt: number, updatedAt: number }
+type TagConstructorArgs = { id: string, name: string, count: number, createdAt: number, updatedAt: number }

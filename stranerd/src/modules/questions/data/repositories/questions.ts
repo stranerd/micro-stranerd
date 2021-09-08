@@ -53,11 +53,11 @@ export class QuestionRepository implements IQuestionRepository {
 				new: true
 			}) : null
 			await session.commitTransaction()
-			session.endSession()
+			await session.endSession()
 			return !!question && !!answer
 		} catch (e) {
 			await session.abortTransaction()
-			session.endSession()
+			await session.endSession()
 			throw e
 		}
 	}
@@ -71,7 +71,7 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async updateQuestionsUserBio (userId: string, userBio: UserBio) {
 		const questions = await Question.updateMany({ userId }, { $set: { userBio } })
-		return questions.n !== 0
+		return questions.acknowledged
 	}
 
 	async removeBestAnswer (id: string, answerId: string) {

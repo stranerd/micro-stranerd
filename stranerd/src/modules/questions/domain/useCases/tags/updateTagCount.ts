@@ -1,7 +1,7 @@
 import { ITagRepository } from '../../irepositories/tags'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { tagIds: string[], increment: boolean }
+type Input = { tagNames: string[], increment: boolean }
 
 export class UpdateCountUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ITagRepository
@@ -12,6 +12,6 @@ export class UpdateCountUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateTagsCount(input.tagIds, input.increment)
+		return await this.repository.updateTagsCount(input.tagNames, input.increment)
 	}
 }

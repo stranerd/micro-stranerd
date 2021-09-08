@@ -1,6 +1,5 @@
 import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
 import { QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UserBio } from '@modules/users/domain/types/users'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
@@ -24,11 +23,11 @@ export class ReviewsController {
 			tutorId: { required: true, rules: [] }
 		})
 
-		const user = await FindUser.execute(req.body.id)
+		const user = await FindUser.execute(req.authUser!.id)
 
 		return await CreateReview.execute({
 			...data,
-			userBio: user?.bio ?? {} as UserBio,
+			userBio: user!.bio,
 			userId: req.authUser!.id
 		})
 	}

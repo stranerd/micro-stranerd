@@ -46,7 +46,7 @@ export const sendMailAndCatchError = async (email: Email) => {
 	} catch (e) {
 		await AddError.execute({
 			...email,
-			error: e.message
+			error: (e as Error).message
 		})
 	}
 }

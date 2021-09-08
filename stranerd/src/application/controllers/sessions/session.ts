@@ -34,7 +34,7 @@ export class SessionController {
 			duration: { required: true, rules: [isMoreThan0] },
 			price: { required: true, rules: [isMoreThan0] }
 		})
-		
+
 		const studentUser = await FindUser.execute(req.authUser!.id)
 		const tutorUser = await FindUser.execute(data.tutorId)
 

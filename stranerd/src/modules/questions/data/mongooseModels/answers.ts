@@ -14,17 +14,17 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: true
 	},
 	questionId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as AnswerFromModel['userBio'],
 		required: false,
-		default: {}
+		default: {} as unknown as AnswerFromModel['userBio']
 	},
 	coins: {
 		type: Number,
@@ -37,7 +37,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 	},
 	votes: {
 		type: [{
-			userId: mongoose.Schema.Types.ObjectId,
+			userId: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 			vote: Number
 		}],
 		required: false,

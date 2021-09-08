@@ -16,13 +16,13 @@ const UserMeta = Object.fromEntries(
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	bio: {
-		type: Object,
+		type: Object as unknown as UserFromModel['bio'],
 		required: true
 	},
 	roles: {
-		type: Object,
+		type: Object as unknown as UserFromModel['roles'],
 		required: false,
-		default: {}
+		default: {} as unknown as UserFromModel['roles']
 	},
 	tutor: {
 		strongestSubject: {

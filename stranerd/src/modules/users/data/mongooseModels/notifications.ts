@@ -19,7 +19,7 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		default: false
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	createdAt: {

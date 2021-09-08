@@ -26,9 +26,9 @@ const Schema = new mongoose.Schema<ErrorFromModel>({
 		required: true
 	},
 	attachments: {
-		type: Object,
+		type: Object as unknown as ErrorFromModel['attachments'],
 		required: false,
-		default: {}
+		default: {} as unknown as ErrorFromModel['attachments']
 	},
 	createdAt: {
 		type: Number,

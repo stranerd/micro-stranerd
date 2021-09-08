@@ -10,17 +10,17 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	answerId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as AnswerCommentFromModel['userBio'],
 		required: false,
-		default: {}
+		default: {} as unknown as AnswerCommentFromModel['userBio']
 	},
 	createdAt: {
 		type: Number,

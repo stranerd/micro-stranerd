@@ -10,25 +10,26 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	studentId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	studentBio: {
-		type: Object,
+		type: Object as unknown as SessionFromModel['studentBio'],
 		required: true
 	},
 	tutorId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
 		required: true
 	},
 	tutorBio: {
-		type: Object,
+		type: Object as unknown as SessionFromModel['tutorBio'],
 		required: true
 	},
 	duration: {
 		type: Number,
 		required: true
 	},
+	// @ts-ignore
 	accepted: {
 		type: Boolean,
 		required: false,
@@ -68,12 +69,12 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 	startedAt: {
 		type: Number,
 		required: false,
-		default: null
+		default: null as unknown as number
 	},
 	endedAt: {
 		type: Number,
 		required: false,
-		default: null
+		default: null as unknown as number
 	},
 	createdAt: {
 		type: Number,
