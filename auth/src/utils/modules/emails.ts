@@ -1,4 +1,3 @@
-import { UserEntity } from '@modules/domain/entities/users'
 import { DeleteUsers, GetUsers, SendVerificationEmail } from '@modules/index'
 
 export const deleteUnverifiedUsers = async () => {
@@ -12,20 +11,9 @@ export const deleteUnverifiedUsers = async () => {
 }
 
 const getUnverifiedUsers = async () => {
-	const users = [] as UserEntity[]
-	const usersQuery = await GetUsers.execute({
-		where: [{ field: 'isVerified', value: false }]
+	const { results: users } = await GetUsers.execute({
+		where: [{ field: 'isVerified', value: false }],
+		all: true
 	})
-	usersQuery.results.forEach((u) => users.push(u))
-	if (usersQuery.docs.total > usersQuery.docs.count) {
-		const pages = usersQuery.pages.last
-		const res = [] as number[]
-		for (let i = 2; i <= pages; i++) res.push(i)
-		const paginatedRes = await Promise.all(res.map((i) => GetUsers.execute({
-			where: [{ field: 'isVerified', value: false }],
-			page: i
-		})))
-		paginatedRes.forEach((p) => users.push(...p.results))
-	}
 	return users
 }

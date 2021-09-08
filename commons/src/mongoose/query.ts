@@ -13,6 +13,7 @@ export type QueryParams = {
 	whereType?: 'and' | 'or'
 	sort?: { field: string, order?: 1 | -1 }
 	limit?: number
+	all?: boolean
 	page?: number
 	search?: string
 }
@@ -25,7 +26,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	if (where) totalClause.$and.push(where)
 	if (params.auth) {
 		const authType = params.auth.length > 1 ? 'or' : 'and'
-		const auth =  buildWhereQuery(params.auth ?? [], authType)
+		const auth = buildWhereQuery(params.auth ?? [], authType)
 		if (auth) totalClause.$and.push(auth)
 	}
 	if (params.search) totalClause['$text'] = { $search: params.search }
@@ -33,6 +34,8 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	// Handle sort clauses
 	const sortField = params.sort?.field ?? null
 	const sortOrder = [-1, 1].indexOf(Number(params.sort?.order)) !== -1 ? Number(params.sort?.order) : 1
+
+	const all = params.all ?? false
 
 	// Handle limit clause
 	const limit = Number(params.limit) <= 100 ? Number(params.limit) : 100
@@ -45,8 +48,10 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 
 	let builtQuery = collection.find(totalClause)
 	if (sortField) builtQuery = builtQuery.sort([[sortField, sortOrder]])
-	if (limit) builtQuery = builtQuery.limit(limit)
-	if (page && limit) builtQuery = builtQuery.skip((page - 1) * limit)
+	if (!all && limit) {
+		builtQuery = builtQuery.limit(limit)
+		if (page) builtQuery = builtQuery.skip((page - 1) * limit)
+	}
 
 	const results = await builtQuery.exec()
 
@@ -102,6 +107,6 @@ const buildWhereQuery = (params: Where[], type: 'and' | 'or') => {
 	}))
 
 	return where.length > 0 ? {
-		[`$${type}`]: where
+		[`$${ type }`]: where
 	} : null
 }
