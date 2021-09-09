@@ -3,7 +3,7 @@ import { QuestionFromModel } from '@modules/questions/data/models/questions'
 import { DeleteQuestionAnswers, UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { ScoreRewards } from '@modules/users/domain/types/users'
-import { GetUsers, IncrementUserQuestionsCount, UpdateNerdScore } from '@modules/users'
+import { GetUsers, IncrementUserQuestionsCount, UpdateUserNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { QuestionEntity } from '@modules/questions/domain/entities'
@@ -24,7 +24,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 		await IncrementUserQuestionsCount.execute({ id: after.userId, value: 1 })
 
-		await UpdateNerdScore.execute({
+		await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: ScoreRewards.NewQuestion
 		})
@@ -81,7 +81,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			increment: false
 		})
 
-		await UpdateNerdScore.execute({
+		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewQuestion
 		})

@@ -23,7 +23,8 @@ import { GetTransactionsUseCase } from './domain/useCases/transactions/getTransa
 import { FindTransactionUseCase } from './domain/useCases/transactions/findTransaction'
 import { CreateTransactionUseCase } from './domain/useCases/transactions/createTransaction'
 import { GetUsersUseCase } from './domain/useCases/users/getUsers'
-import { UpdateNerdScoreUseCase } from './domain/useCases/users/updateNerdScore'
+import { UpdateUserNerdScoreUseCase } from './domain/useCases/users/updateUserNerdScore'
+import { UpdateUserRatingsUseCase } from './domain/useCases/users/updateUserRatings'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
@@ -50,12 +51,13 @@ export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCas
 export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
 export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
 export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
-export const UpdateNerdScore = new UpdateNerdScoreUseCase(userRepository)
+export const UpdateUserNerdScore = new UpdateUserNerdScoreUseCase(userRepository)
 export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepository)
 export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
 export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
 export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
 export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
+export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

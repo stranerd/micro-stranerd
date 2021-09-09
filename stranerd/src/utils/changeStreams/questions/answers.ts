@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerFromModel } from '@modules/questions/data/models/answers'
 import { getSocketEmitter } from '@index'
-import { IncrementUserAnswersCount, UpdateNerdScore } from '@modules/users'
+import { IncrementUserAnswersCount, UpdateUserNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { AnswerEntity } from '@modules/questions/domain/entities'
 import { ScoreRewards } from '@modules/users/domain/types/users'
@@ -14,7 +14,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await IncrementUserAnswersCount.execute({ id: after.userId, value: 1 })
 		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
 
-		await UpdateNerdScore.execute({
+		await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: ScoreRewards.NewAnswer
 		})
@@ -34,7 +34,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitUpdated(`answers/${ after.questionId }`, after)
 		await getSocketEmitter().emitUpdated(`answers/${ after.id }`, after)
 
-		if (changes.best) await UpdateNerdScore.execute({
+		if (changes.best) await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
 		})
@@ -53,7 +53,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitDeleted(`answers/${ before.questionId }`, before)
 		await getSocketEmitter().emitDeleted(`answers/${ before.id }`, before)
 
-		await UpdateNerdScore.execute({
+		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewAnswer
 		})
@@ -63,7 +63,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		if (before.best) {
 			await RemoveBestAnswer.execute({ id: before.questionId, answerId: before.id })
-			await UpdateNerdScore.execute({
+			await UpdateUserNerdScore.execute({
 				userId: before.userId,
 				amount: -ScoreRewards.NewAnswer
 			})

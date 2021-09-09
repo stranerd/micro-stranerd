@@ -3,7 +3,7 @@ import { IUserRepository } from '../../i-repositories/users'
 
 type Input = { userId: string, amount: number }
 
-export class UpdateNerdScoreUseCase implements BaseUseCase<Input, boolean> {
+export class UpdateUserNerdScoreUseCase implements BaseUseCase<Input, boolean> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

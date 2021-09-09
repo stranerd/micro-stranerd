@@ -28,4 +28,6 @@ export interface IUserRepository {
 	removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]): Promise<void>
 
 	updateUserStreak (userId: string): Promise<{ skip: boolean, increase: boolean, reset: boolean, streak: number }>
+
+	updateUserRatings (userId: string, ratings: number, add: boolean): Promise<boolean>
 }

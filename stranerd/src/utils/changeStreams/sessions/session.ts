@@ -10,7 +10,7 @@ import {
 	IncrementUsersSessionsCount,
 	RemoveUserQueuedSessions,
 	SetUsersCurrentSession,
-	UpdateNerdScore
+	UpdateUserNerdScore
 } from '@modules/users'
 import { cancelSessionTask } from '@utils/modules/sessions/sessions'
 import { ScoreRewards } from '@modules/users/domain/types/users'
@@ -127,7 +127,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				tutorId: after.tutorId,
 				sessionId: null
 			})
-			await UpdateNerdScore.execute({
+			await UpdateUserNerdScore.execute({
 				userId: after.studentId,
 				amount: ScoreRewards.CompleteSession
 			})

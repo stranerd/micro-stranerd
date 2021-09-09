@@ -129,4 +129,14 @@ export class UserRepository implements IUserRepository {
 		})
 		return res
 	}
+
+	async updateUserRatings (userId: string, ratings: number, add: boolean) {
+		const user = await User.findByIdAndUpdate(userId, {
+			$inc: {
+				'account.ratings.total': add ? ratings : 0 - ratings,
+				'account.ratings.count': add ? 1 : -1
+			}
+		})
+		return !!user
+	}
 }
