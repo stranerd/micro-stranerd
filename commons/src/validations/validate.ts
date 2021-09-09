@@ -1,11 +1,11 @@
-import * as Validation from '@stranerd/validate'
+import * as Validate from '@stranerd/validate'
 import { ValidationError } from '../errors'
 
-export { Validation }
+export const Validation = Validate
 
 type Rules = {
 	required: boolean
-	rules: Validation.Rule[]
+	rules: Validate.Rule[]
 }
 
 export function validate<Keys extends Record<string, any>> (data: Keys, rules: Record<keyof Keys, Rules>) {

@@ -7,12 +7,7 @@ export * from './changeStreams'
 
 export const setupMongooseConnection = async () => {
 	try {
-		return await mongoose.connect(mongoDbURI, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			useFindAndModify: false,
-			useCreateIndex: true
-		})
+		await mongoose.connect(mongoDbURI)
 	} catch (error) {
 		await Logger.error('MongoDb failed with error:', error)
 		process.exit(1)

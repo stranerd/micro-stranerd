@@ -89,21 +89,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				})
 
 				// Get All Other Lobbied Sessions and Refund the owners
-				const filteredLobbiedSessions = [] as SessionEntity[]
-				const filteredLobbiedSessionsQuery = await GetSessions.execute({
-					where: [{ field: 'id', condition: Conditions.in, value: filteredLobbiedSessionIds }]
+				const { results: filteredLobbiedSessions } = await GetSessions.execute({
+					where: [{ field: 'id', condition: Conditions.in, value: filteredLobbiedSessionIds }],
+					all: true
 				})
-				filteredLobbiedSessionsQuery.results.forEach((s) => filteredLobbiedSessions.push(s))
-				if (filteredLobbiedSessionsQuery.docs.total > filteredLobbiedSessionsQuery.docs.count) {
-					const pages = filteredLobbiedSessionsQuery.pages.last
-					const res = [] as number[]
-					for (let i = 2; i <= pages; i++) res.push(i)
-					const paginatedRes = await Promise.all(res.map((i) => GetSessions.execute({
-						where: [{ field: 'id', condition: Conditions.in, value: filteredLobbiedSessionIds }],
-						page: i
-					})))
-					paginatedRes.forEach((p) => filteredLobbiedSessions.push(...p.results))
-				}
 				await Promise.all(filteredLobbiedSessions.map((s) => addUserCoins(
 					s.studentId,
 					{ gold: s.price, bronze: 0 },

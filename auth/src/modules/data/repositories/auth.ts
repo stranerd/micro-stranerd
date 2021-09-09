@@ -82,7 +82,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async sendVerificationMail (email: string): Promise<boolean> {
 		email = email.toLowerCase()
-		const token = getRandomValue()
+		const token = getRandomValue(40)
 
 		// save to cache
 		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
@@ -125,7 +125,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async sendPasswordResetMail (email: string) {
 		email = email.toLowerCase()
-		const token = getRandomValue()
+		const token = getRandomValue(40)
 
 		// save to cache
 		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)

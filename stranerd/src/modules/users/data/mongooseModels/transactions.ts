@@ -5,6 +5,10 @@ import { TransactionEntity } from '@modules/users/domain/entities/transactions'
 import { TransactionMapper } from '@modules/users/data/mappers/transactions'
 
 const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	event: {
 		type: String,
 		required: true
@@ -19,7 +23,7 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 		default: false
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	createdAt: {

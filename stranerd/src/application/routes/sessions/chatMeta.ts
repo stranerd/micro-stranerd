@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes, requireAuthUser } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { ChatMetaController } from '../../controllers/sessions'
 
 export const ChatMetaRoutes: Route[] = [

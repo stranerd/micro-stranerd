@@ -36,11 +36,11 @@ export class ChatRepository implements IChatRepository {
 			)
 
 			await session.commitTransaction()
-			session.endSession()
+			await session.endSession()
 			return this.mapper.mapFrom(chat)!
 		} catch (e) {
 			await session.abortTransaction()
-			session.endSession()
+			await session.endSession()
 			throw e
 		}
 	}
@@ -76,11 +76,11 @@ export class ChatRepository implements IChatRepository {
 			}, { $set: { 'last.readAt': readAt } }, { session })
 
 			await session.commitTransaction()
-			session.endSession()
+			await session.endSession()
 			return !!chat
 		} catch (e) {
 			await session.abortTransaction()
-			session.endSession()
+			await session.endSession()
 			throw e
 		}
 	}

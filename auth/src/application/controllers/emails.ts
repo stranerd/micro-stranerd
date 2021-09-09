@@ -30,20 +30,18 @@ export class EmailsController {
 		})
 		const emailExist = !!res.results[0]
 
-		const isLongerThan7 = (val: string) => Validation.isLongerThan(val, 7)
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-		const isShorterThan17 = (val: string) => Validation.isShorterThan(val, 17)
-		const isUniqueInDb: Validation.Rule = (_: string) => {
-			return emailExist ? { valid: false, error: 'email already in use' } : { valid: true, error: undefined }
-		}
+		const isUniqueInDb = (_: string) => emailExist ? Validation.isInvalid('email already in use') : Validation.isValid()
 
 		const validateData = validate(userCredential, {
 			email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
-			password: { required: true, rules: [isLongerThan7, isShorterThan17] },
+			password: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+			},
 			photo: { required: false, rules: [Validation.isImage] },
-			firstName: { required: true, rules: [isLongerThan2] },
-			lastName: { required: true, rules: [isLongerThan2] },
-			referrer: { required: false, rules: [] }
+			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			referrer: { required: false, rules: [Validation.isString] }
 		})
 
 		const userData = await FindUserByEmail.execute(validateData.email)
@@ -61,17 +59,11 @@ export class EmailsController {
 			password: req.body.password
 		}, {
 			email: { required: true, rules: [Validation.isEmail] },
-			password: { required: true, rules: [] }
+			password: { required: true, rules: [Validation.isString] }
 		})
 
 		const data = await AuthenticateUser.execute(validateData)
-		const result = await generateAuthOutput(data)
-
-		if (result) return result
-		else throw new ValidationError([{
-			messages: ['credential is incorrect'],
-			field: 'password'
-		}])
+		return await generateAuthOutput(data)
 	}
 
 	static async sendVerificationMail (req: Request) {
@@ -91,7 +83,7 @@ export class EmailsController {
 		const { token } = validate({
 			token: req.body.token
 		}, {
-			token: { required: true, rules: [] }
+			token: { required: true, rules: [Validation.isString] }
 		})
 
 		const data = await VerifyEmail.execute(token)

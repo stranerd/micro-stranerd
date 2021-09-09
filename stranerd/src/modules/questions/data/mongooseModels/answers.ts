@@ -5,6 +5,10 @@ import { AnswerEntity } from '@modules/questions/domain/entities'
 import { AnswerMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	title: {
 		type: String,
 		required: true
@@ -14,17 +18,17 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: true
 	},
 	questionId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as AnswerFromModel['userBio'],
 		required: false,
-		default: {}
+		default: {} as unknown as AnswerFromModel['userBio']
 	},
 	coins: {
 		type: Number,
@@ -36,10 +40,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		default: false
 	},
 	votes: {
-		type: [{
-			userId: mongoose.Schema.Types.ObjectId,
-			vote: Number
-		}],
+		type: [Object as unknown as any],
 		required: false,
 		default: []
 	},

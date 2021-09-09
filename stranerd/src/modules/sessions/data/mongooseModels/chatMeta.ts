@@ -5,28 +5,32 @@ import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 
 const Schema = new mongoose.Schema<ChatMetaFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	unRead: {
-		type: [mongoose.Schema.Types.ObjectId],
+		type: [String],
 		required: false,
 		default: []
 	},
 	last: {
-		type: Object,
+		type: Object as unknown as ChatMetaFromModel['last'],
 		required: false,
-		default: null
+		default: null as unknown as ChatMetaFromModel['last']
 	},
 	ownerId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as ChatMetaFromModel['userBio'],
 		required: false,
-		default: null
+		default: null as unknown as ChatMetaFromModel['userBio']
 	},
 	createdAt: {
 		type: Number,

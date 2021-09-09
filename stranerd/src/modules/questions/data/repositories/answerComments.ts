@@ -39,11 +39,11 @@ export class AnswerCommentRepository implements IAnswerCommentRepository {
 
 	async deleteAnswerComments (answerId: string) {
 		const comments = await AnswerComment.deleteMany({ answerId })
-		return !!comments.ok
+		return !!comments.acknowledged
 	}
 
 	async updateAnswerCommentsUserBio (userId: string, userBio: UserBio) {
 		const comments = await AnswerComment.updateMany({ userId }, { $set: { userBio } })
-		return !!comments.ok
+		return !!comments.acknowledged
 	}
 }

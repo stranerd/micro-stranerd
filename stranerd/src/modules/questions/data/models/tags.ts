@@ -5,5 +5,6 @@ export interface TagFromModel extends TagToModel {
 }
 
 export interface TagToModel {
+	name: string
 	count: number
 }

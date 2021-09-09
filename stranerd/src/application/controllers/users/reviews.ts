@@ -1,6 +1,5 @@
 import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
 import { QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UserBio } from '@modules/users/domain/types/users'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
@@ -12,23 +11,24 @@ export class ReviewsController {
 	}
 
 	static async createReview (req: Request) {
-		const isMoreThan0 = (val: number) => Validation.isMoreThan(val, 0)
-		const isLessThan5 = (val: number) => Validation.isLessThan(val, 5.1)
 		const data = validate({
 			rating: req.body.rating,
 			review: req.body.review,
 			tutorId: req.body.tutorId
 		}, {
-			rating: { required: true, rules: [isMoreThan0, isLessThan5] },
-			review: { required: true, rules: [] },
-			tutorId: { required: true, rules: [] }
+			rating: {
+				required: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0), Validation.isLessThanX(5.1)]
+			},
+			review: { required: true, rules: [Validation.isString] },
+			tutorId: { required: true, rules: [Validation.isString] }
 		})
 
-		const user = await FindUser.execute(req.body.id)
+		const user = await FindUser.execute(req.authUser!.id)
 
 		return await CreateReview.execute({
 			...data,
-			userBio: user?.bio ?? {} as UserBio,
+			userBio: user!.bio,
 			userId: req.authUser!.id
 		})
 	}

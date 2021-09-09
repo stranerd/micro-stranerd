@@ -34,6 +34,6 @@ export class ChatMetaRepository implements IChatMetaRepository {
 
 	async updateUserBios (userId: string, userBio: UserBio) {
 		const result = await ChatMeta.updateMany({ userId }, { $set: { userBio } })
-		return !!result.ok
+		return !!result.acknowledged
 	}
 }

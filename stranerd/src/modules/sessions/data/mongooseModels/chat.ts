@@ -5,14 +5,18 @@ import { ChatChangeStreamCallbacks } from '@utils/changeStreams/sessions/chat'
 import { ChatMapper } from '@modules/sessions/data/mappers/chat'
 
 const Schema = new mongoose.Schema<ChatFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	path: {
-		type: [mongoose.Schema.Types.ObjectId],
+		type: [String],
 		required: true
 	},
 	content: {
 		type: String,
 		required: false,
-		default: null
+		default: null as unknown as string
 	},
 	media: {
 		type: Object,
@@ -20,14 +24,14 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 		default: null
 	},
 	sessionId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: false,
-		default: null
+		default: null as unknown as string
 	},
 	readAt: {
 		type: Number,
 		required: false,
-		default: null
+		default: null as unknown as number
 	},
 	createdAt: {
 		type: Number,

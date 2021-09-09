@@ -13,14 +13,12 @@ export class AnswerController {
 	}
 
 	static async UpdateAnswer (req: Request) {
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
 		const data = validate({
 			title: req.body.title,
 			body: req.body.body
 		}, {
-			title: { required: true, rules: [isLongerThan2] },
-			body: { required: true, rules: [] }
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -32,16 +30,14 @@ export class AnswerController {
 	}
 
 	static async CreateAnswer (req: Request) {
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
 		const data = validate({
 			title: req.body.title,
 			body: req.body.body,
 			questionId: req.body.questionId
 		}, {
-			title: { required: true, rules: [isLongerThan2] },
-			body: { required: true, rules: [] },
-			questionId: { required: true, rules: [] }
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString] },
+			questionId: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id

@@ -12,12 +12,10 @@ export class SubjectController {
 	}
 
 	static async CreateSubject (req: Request) {
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
 		const data = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [isLongerThan2] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
 		return await AddSubject.execute(data)

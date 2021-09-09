@@ -18,7 +18,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		}, 'You paid coins to ask a question!')
 
 		await UpdateTagsCount.execute({
-			tagIds: after.tags,
+			tagNames: after.tags,
 			increment: true
 		})
 
@@ -49,12 +49,14 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitUpdated(`questions/${ after.id }`, after)
 
 		if (changes.tags) {
+			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
+			const newTags = after.tags.filter((t) => !before.tags.includes(t))
 			await UpdateTagsCount.execute({
-				tagIds: before.tags,
+				tagNames: oldTags,
 				increment: false
 			})
 			await UpdateTagsCount.execute({
-				tagIds: after.tags,
+				tagNames: newTags,
 				increment: true
 			})
 		}
@@ -75,7 +77,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 
 		await UpdateTagsCount.execute({
-			tagIds: before.tags,
+			tagNames: before.tags,
 			increment: false
 		})
 

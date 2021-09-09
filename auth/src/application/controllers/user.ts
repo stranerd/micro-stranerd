@@ -11,15 +11,13 @@ export class UserController {
 
 	static async updateUser (req: Request) {
 		const userId = req.authUser!.id
-		const isLongerThan2 = (val: string) => Validation.isLongerThan(val, 2)
-
 		const validateData = validate({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			photo: req.body.photo
 		}, {
-			firstName: { required: true, rules: [isLongerThan2] },
-			lastName: { required: true, rules: [isLongerThan2] },
+			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			photo: { required: false, rules: [Validation.isImage] }
 		})
 
@@ -33,10 +31,13 @@ export class UserController {
 			userId: req.body.userId,
 			value: req.body.value
 		}, {
-			app: { required: true, rules: [] },
-			role: { required: true, rules: [] },
-			value: { required: true, rules: [] },
-			userId: { required: true, rules: [] }
+			app: {
+				required: true,
+				rules: [Validation.arrayContainsX(Object.values(AuthApps), (cur, val) => cur === val)]
+			},
+			role: { required: true, rules: [Validation.isString] },
+			value: { required: true, rules: [Validation.isBoolean] },
+			userId: { required: true, rules: [Validation.isString] }
 		})
 
 		return await UpdateUserRole.execute(validateData)

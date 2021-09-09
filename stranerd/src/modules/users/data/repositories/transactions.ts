@@ -1,7 +1,7 @@
 import { ITransactionRepository } from '../../domain/i-repositories/transactions'
 import { TransactionMapper } from '../mappers/transactions'
 import { Transaction } from '../mongooseModels/transactions'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/commons'
 import { TransactionFromModel, TransactionToModel } from '../models/transactions'
 
 export class TransactionRepository implements ITransactionRepository {
@@ -22,8 +22,6 @@ export class TransactionRepository implements ITransactionRepository {
 	}
 
 	async findTransaction (data: { userId: string, id: string }) {
-		if (!mongoose.Types.ObjectId.isValid(data.id)) return null
-		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const transaction = await Transaction.findOne({ _id: data.id, userId: data.userId })
 		return this.mapper.mapFrom(transaction)
 	}

@@ -15,14 +15,18 @@ const UserMeta = Object.fromEntries(
 )
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	bio: {
-		type: Object,
+		type: Object as unknown as UserFromModel['bio'],
 		required: true
 	},
 	roles: {
-		type: Object,
+		type: Object as unknown as UserFromModel['roles'],
 		required: false,
-		default: {}
+		default: {} as unknown as UserFromModel['roles']
 	},
 	tutor: {
 		strongestSubject: {
@@ -31,7 +35,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: null
 		},
 		weakerSubjects: {
-			type: Array,
+			type: [String],
 			required: false,
 			default: []
 		}
@@ -62,22 +66,22 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	session: {
 		currentSession: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: String,
 			required: false,
 			default: null
 		},
 		currentTutorSession: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: String,
 			required: false,
 			default: null
 		},
 		requests: {
-			type: [mongoose.Schema.Types.ObjectId],
+			type: [String],
 			required: false,
 			default: []
 		},
 		lobby: {
-			type: [mongoose.Schema.Types.ObjectId],
+			type: [String],
 			required: false,
 			default: []
 		}

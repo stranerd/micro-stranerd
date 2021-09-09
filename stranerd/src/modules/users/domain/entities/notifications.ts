@@ -15,7 +15,7 @@ export class NotificationEntity extends BaseEntity {
 		this.id = id
 		this.body = body
 		this.action = action
-		this.data = data
+		this.data = data ?? {}
 		this.userId = userId
 		this.seen = seen
 		this.createdAt = createdAt

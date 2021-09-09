@@ -5,6 +5,10 @@ import { ErrorEntity } from '../../domain/entities/errors'
 import { ErrorMapper } from '../mappers/errors'
 
 const Schema = new mongoose.Schema<ErrorFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	error: {
 		type: String,
 		required: true
@@ -26,9 +30,9 @@ const Schema = new mongoose.Schema<ErrorFromModel>({
 		required: true
 	},
 	attachments: {
-		type: Object,
+		type: Object as unknown as ErrorFromModel['attachments'],
 		required: false,
-		default: {}
+		default: {} as unknown as ErrorFromModel['attachments']
 	},
 	createdAt: {
 		type: Number,

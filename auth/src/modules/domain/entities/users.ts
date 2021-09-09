@@ -25,7 +25,7 @@ export class UserEntity extends BaseEntity {
 		this.referrer = data.referrer
 		this.isVerified = data.isVerified
 		this.authTypes = data.authTypes
-		this.roles = data.roles
+		this.roles = data.roles ?? {}
 		this.lastSignedInAt = data.lastSignedInAt
 		this.signedUpAt = data.signedUpAt
 	}

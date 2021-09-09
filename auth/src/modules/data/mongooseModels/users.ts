@@ -5,9 +5,14 @@ import { UserEntity } from '../../domain/entities/users'
 import { UserMapper } from '../mappers/users'
 
 const UserSchema = new mongoose.Schema<UserFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	email: {
 		type: String,
-		set: (email: string) => email.toLowerCase(),
+		trim: true,
+		lowercase: true,
 		unique: true,
 		required: true
 	},
@@ -18,18 +23,25 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	firstName: {
 		type: String,
-		set: (name: string) => name.toLowerCase(),
+		trim: true,
+		lowercase: true,
 		required: true
 	},
 	lastName: {
 		type: String,
-		set: (name: string) => name.toLowerCase(),
+		trim: true,
+		lowercase: true,
 		required: true
 	},
 	photo: {
 		type: Object,
 		required: false,
 		default: null
+	},
+	referrer: {
+		type: String,
+		required: false,
+		default: null as unknown as string
 	},
 	isVerified: {
 		type: Boolean,
@@ -43,9 +55,9 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		default: []
 	},
 	roles: {
-		type: Object,
+		type: Object as unknown as UserFromModel['roles'],
 		required: false,
-		default: {}
+		default: {} as unknown as UserFromModel['roles']
 	},
 	lastSignedInAt: {
 		type: Number,

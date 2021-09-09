@@ -61,7 +61,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 					resolve(true)
 				})
 			} catch (err) {
-				reject(err)
+				reject(err as Error)
 			}
 		})
 	}

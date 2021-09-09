@@ -5,22 +5,26 @@ import { AnswerCommentEntity } from '@modules/questions/domain/entities'
 import { AnswerCommentMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerCommentFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	body: {
 		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	answerId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 		required: true
 	},
 	userBio: {
-		type: Object,
+		type: Object as unknown as AnswerCommentFromModel['userBio'],
 		required: false,
-		default: {}
+		default: {} as unknown as AnswerCommentFromModel['userBio']
 	},
 	createdAt: {
 		type: Number,
