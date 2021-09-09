@@ -69,6 +69,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			type: [String],
 			required: false,
 			default: []
+		},
+		tags: {
+			type: Object,
+			required: false,
+			default: {}
 		}
 	},
 	dates: {

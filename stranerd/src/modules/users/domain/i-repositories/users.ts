@@ -30,4 +30,6 @@ export interface IUserRepository {
 	updateUserStreak (userId: string): Promise<{ skip: boolean, increase: boolean, reset: boolean, streak: number }>
 
 	updateUserRatings (userId: string, ratings: number, add: boolean): Promise<boolean>
+
+	updateUserTags (userId: string, tags: string[], add: boolean): Promise<boolean>
 }

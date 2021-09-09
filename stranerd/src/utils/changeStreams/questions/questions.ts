@@ -1,6 +1,6 @@
 import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
 import { QuestionFromModel } from '@modules/questions/data/models/questions'
-import { DeleteQuestionAnswers, UpdateTagsCount } from '@modules/questions'
+import { DeleteQuestionAnswers, UpdateQuestionAnswersTags, UpdateTagsCount } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { ScoreRewards } from '@modules/users/domain/types/users'
 import { GetUsers, IncrementUserQuestionsCount, UpdateUserNerdScore } from '@modules/users'
@@ -51,14 +51,9 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		if (changes.tags) {
 			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
 			const newTags = after.tags.filter((t) => !before.tags.includes(t))
-			await UpdateTagsCount.execute({
-				tagNames: oldTags,
-				increment: false
-			})
-			await UpdateTagsCount.execute({
-				tagNames: newTags,
-				increment: true
-			})
+			await UpdateTagsCount.execute({ tagNames: oldTags, increment: false })
+			await UpdateTagsCount.execute({ tagNames: newTags, increment: true })
+			await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
 		}
 
 		if (changes.coins) {

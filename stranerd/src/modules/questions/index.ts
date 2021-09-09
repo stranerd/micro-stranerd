@@ -29,6 +29,7 @@ import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestio
 import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
 import { ModifyCommentsCountUseCase } from './domain/useCases/answers/modifyCommentsCount'
 import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
+import { UpdateQuestionAnswersTagsUseCase } from './domain/useCases/answers/updateQuestionAnswersTags'
 import { MarkBestAnswerUseCase } from './domain/useCases/questions/markBestAnswer'
 import { ModifyAnswersUseCase } from './domain/useCases/questions/modifyAnswers'
 import { RemoveBestAnswerUseCase } from './domain/useCases/questions/removeBestAnswer'
@@ -70,6 +71,7 @@ export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
 export const DeleteQuestionAnswers = new DeleteQuestionAnswersUseCase(answerRepository)
 export const ModifyCommentsCount = new ModifyCommentsCountUseCase(answerRepository)
 export const UpdateAnswersUserBio = new UpdateAnswersUserBioUseCase(answerRepository)
+export const UpdateQuestionAnswersTags = new UpdateQuestionAnswersTagsUseCase(answerRepository)
 
 export const GetQuestions = new GetQuestionsUseCase(questionRepository)
 export const FindQuestion = new FindQuestionUseCase(questionRepository)

@@ -21,6 +21,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: String,
 		required: true
 	},
+	tags: {
+		type: [String],
+		required: false,
+		default: []
+	},
 	userId: {
 		type: String,
 		required: true

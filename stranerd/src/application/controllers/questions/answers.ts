@@ -43,12 +43,13 @@ export class AnswerController {
 		const authUserId = req.authUser!.id
 
 		const user = await FindUser.execute(authUserId)
-		const questionData = await FindQuestion.execute(req.body.questionId)
+		const question = await FindQuestion.execute(req.body.questionId)
 
-		if (user && questionData) {
+		if (user && question) {
 			return await AddAnswer.execute({
 				...data,
-				coins: questionData.creditable,
+				coins: question.creditable,
+				tags: question.tags,
 				userBio: user.bio,
 				userId: req.authUser!.id
 			})

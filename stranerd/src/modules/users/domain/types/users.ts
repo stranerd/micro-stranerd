@@ -17,6 +17,7 @@ export type UserDates = {
 export type UserTutor = {
 	strongestSubject: string | null,
 	weakerSubjects: string[]
+	tags: Record<string, number>
 }
 
 export type UserStatus = {

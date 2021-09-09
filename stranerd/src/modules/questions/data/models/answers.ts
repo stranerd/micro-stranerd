@@ -13,6 +13,7 @@ export interface AnswerToModel {
 	title: string
 	body: string
 	coins: number
+	tags: string[]
 	questionId: string
 	userId: string
 	userBio: UserBio

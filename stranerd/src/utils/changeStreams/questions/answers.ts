@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerFromModel } from '@modules/questions/data/models/answers'
 import { getSocketEmitter } from '@index'
-import { IncrementUserAnswersCount, UpdateUserNerdScore } from '@modules/users'
+import { IncrementUserAnswersCount, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { AnswerEntity } from '@modules/questions/domain/entities'
 import { ScoreRewards } from '@modules/users/domain/types/users'
@@ -18,19 +18,27 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			userId: after.userId,
 			amount: ScoreRewards.NewAnswer
 		})
-
-		await sendNotification(after.userId, {
-			body: 'Your question has been answered. Go have a look',
-			action: 'answers',
-			data: { questionId: after.questionId, answerId: after.id }
+		await UpdateUserTags.execute({
+			userId: after.userId,
+			tags: after.tags,
+			add: true
 		})
-		await sendNotification(after.userId, {
-			body: 'You asked a question and we\'ve answered! Go view all answers to your question',
-			action: 'answers',
-			data: { questionId: after.questionId, answerId: after.id }
-		}, 'New Answer')
+
+		const question = await FindQuestion.execute(after.questionId)
+		if (question) {
+			await sendNotification(question.userId, {
+				body: 'Your question has been answered. Go have a look',
+				action: 'answers',
+				data: { questionId: after.questionId, answerId: after.id }
+			})
+			await sendNotification(question.userId, {
+				body: 'You asked a question and we\'ve answered! Go view all answers to your question',
+				action: 'answers',
+				data: { questionId: after.questionId, answerId: after.id }
+			}, 'New Answer')
+		}
 	},
-	updated: async ({ after, changes }) => {
+	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitUpdated(`answers/${ after.questionId }`, after)
 		await getSocketEmitter().emitUpdated(`answers/${ after.id }`, after)
 
@@ -38,6 +46,21 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			userId: after.userId,
 			amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
 		})
+
+		if (changes.tags) {
+			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
+			const newTags = after.tags.filter((t) => !before.tags.includes(t))
+			await UpdateUserTags.execute({
+				userId: before.userId,
+				tags: oldTags,
+				add: false
+			})
+			await UpdateUserTags.execute({
+				userId: after.userId,
+				tags: newTags,
+				add: true
+			})
+		}
 
 		if (!after.best && changes.votes && after.totalVotes >= 20) {
 			const question = await FindQuestion.execute(after.questionId)
@@ -56,6 +79,11 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewAnswer
+		})
+		await UpdateUserTags.execute({
+			userId: before.userId,
+			tags: before.tags,
+			add: false
 		})
 
 		await IncrementUserAnswersCount.execute({ id: before.userId, value: -1 })
