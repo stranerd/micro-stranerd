@@ -8,7 +8,7 @@ import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import { isDev } from '../config'
 import path from 'path'
-import { setupSocketConnection, SocketEmitter, SocketParams } from '../sockets'
+import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -31,7 +31,7 @@ const postRoutes: Route[] = [
 	}
 ]
 
-export const getNewServerInstance = (routes: Route[], socketChannels: SocketParams) => {
+export const getNewServerInstance = (routes: Route[], socketChannels: SocketParams, socketCallers: SocketCallers) => {
 	const app = express()
 	const server = http.createServer(app)
 	const socket = new io.Server(server)
@@ -57,7 +57,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
 				app.listen(port, () => {
-					setupSocketConnection(socket, socketChannels)
+					setupSocketConnection(socket, socketChannels, socketCallers)
 					resolve(true)
 				})
 			} catch (err) {

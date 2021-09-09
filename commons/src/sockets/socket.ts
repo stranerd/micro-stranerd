@@ -14,8 +14,15 @@ type Callback = (params: { code: StatusCodes, message: string, channel: string }
 
 const channelExists = (channels: string[], channel: string) => channels.some((c) => channel.startsWith(c))
 
-export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams) => {
-	socketInstance.on('connection', (socket) => {
+export type SocketCallers = {
+	onConnect: (userId: string, socketId: string) => Promise<void>
+	onDisconnect: (userId: string, socketId: string) => Promise<void>
+}
+
+export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams, callers: SocketCallers) => {
+	socketInstance.on('connection', async (socket) => {
+		const userId = socket.handshake.query.userId as string
+		const socketId = socket.id
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, _, callback: Callback) => {
 			if (!data.channel) return callback({
@@ -96,6 +103,10 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 				message: '',
 				channel: data.channel
 			})
+		})
+		if (userId) await callers.onConnect(userId, socketId)
+		socket.on('disconnect', async () => {
+			await callers.onDisconnect(userId, socketId)
 		})
 	})
 
