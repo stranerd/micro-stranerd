@@ -10,3 +10,9 @@ export const clientDomain = `http${ !isDev ? 's' : '' }://` + getEnvOrFail('CLIE
 
 export const MINIMUM_QUESTION_COINS = 20
 export const MAXIMUM_QUESTION_COINS = 100
+
+const stripe = JSON.parse(getEnvOrFail('STRIPE') || '{}')
+export const stripeConfig = {
+	secretKey: stripe.secretKey,
+	publicKey: stripe.publicKey
+}

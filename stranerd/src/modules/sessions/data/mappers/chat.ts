@@ -3,7 +3,7 @@ import { ChatEntity } from '../../domain/entities/chat'
 import { BaseMapper } from '@utils/commons'
 
 export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntity> {
-	mapFrom (model) {
+	mapFrom (model: ChatFromModel | null) {
 		if (!model) return null
 		const { _id, path, content, media, sessionId, readAt, createdAt, updatedAt } = model
 		return new ChatEntity({
@@ -13,7 +13,7 @@ export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntit
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: ChatEntity) {
 		return {
 			content: entity.content,
 			media: entity.media,
@@ -21,10 +21,10 @@ export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntit
 		}
 	}
 
-	mapForMeta (model: ChatFromModel) {
+	mapForMeta (model: ChatFromModel): ChatFromModel {
 		const { _id, path, content, media, sessionId, readAt, createdAt, updatedAt } = model
 		return {
-			id: _id.toString,
+			_id: _id.toString(),
 			path, content, media, sessionId, readAt, createdAt, updatedAt
 		}
 	}

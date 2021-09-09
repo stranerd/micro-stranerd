@@ -3,7 +3,7 @@ import { ReviewEntity } from '../../domain/entities/reviews'
 import { ReviewFromModel, ReviewToModel } from '../models/reviews'
 
 export class ReviewMapper extends BaseMapper<ReviewFromModel, ReviewToModel, ReviewEntity> {
-	mapFrom (param) {
+	mapFrom (param: ReviewFromModel | null) {
 		return !param ? null : new ReviewEntity({
 			id: param._id.toString(),
 			review: param.review,
@@ -16,7 +16,7 @@ export class ReviewMapper extends BaseMapper<ReviewFromModel, ReviewToModel, Rev
 		})
 	}
 
-	mapTo (param) {
+	mapTo (param: ReviewEntity) {
 		return {
 			review: param.review,
 			rating: param.rating,

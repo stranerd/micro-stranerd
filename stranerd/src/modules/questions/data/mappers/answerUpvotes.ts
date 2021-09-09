@@ -3,7 +3,7 @@ import { AnswerUpvoteEntity } from '../../domain/entities'
 import { BaseMapper } from '@utils/commons'
 
 export class AnswerUpvoteMapper extends BaseMapper<AnswerUpvoteFromModel, AnswerUpvoteToModel, AnswerUpvoteEntity> {
-	mapFrom (model) {
+	mapFrom (model: AnswerUpvoteFromModel | null) {
 		if (!model) return null
 		const {
 			_id, vote, userId, answerId,
@@ -15,7 +15,7 @@ export class AnswerUpvoteMapper extends BaseMapper<AnswerUpvoteFromModel, Answer
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: AnswerUpvoteEntity) {
 		return {
 			vote: entity.vote,
 			userId: entity.userId,

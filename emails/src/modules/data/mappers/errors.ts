@@ -3,7 +3,7 @@ import { ErrorFromModel, ErrorToModel } from '../models/errors'
 import { ErrorEntity } from '../../domain/entities/errors'
 
 export class ErrorMapper extends BaseMapper<ErrorFromModel, ErrorToModel, ErrorEntity> {
-	mapFrom (model) {
+	mapFrom (model: ErrorFromModel | null) {
 		if (!model) return null
 		const {
 			_id, content, subject, to, from, error, attachments,
@@ -16,7 +16,7 @@ export class ErrorMapper extends BaseMapper<ErrorFromModel, ErrorToModel, ErrorE
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: ErrorEntity) {
 		return {
 			content: entity.content,
 			subject: entity.subject,

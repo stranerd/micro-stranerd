@@ -7,7 +7,7 @@ import { ChatFromModel } from '../models/chat'
 export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToModel, ChatMetaEntity> {
 	chatMapper = new ChatMapper()
 
-	mapFrom (model) {
+	mapFrom (model: ChatMetaFromModel | null) {
 		if (!model) return null
 		const { _id, last, unRead, ownerId, userId, userBio, createdAt, updatedAt } = model
 		const lastData = this.chatMapper.mapFrom(last)
@@ -19,9 +19,9 @@ export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToMode
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: ChatMetaEntity) {
 		return {
-			last: entity.last as ChatFromModel,
+			last: entity.last as unknown as ChatFromModel,
 			unRead: entity.unRead,
 			ownerId: entity.ownerId,
 			userId: entity.userId,

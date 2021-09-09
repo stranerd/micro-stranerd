@@ -33,7 +33,7 @@ export class UserController {
 		}, {
 			app: {
 				required: true,
-				rules: [Validation.arrayContainsX(Object.values(AuthApps), (cur, val) => cur === val)]
+				rules: [Validation.arrayContainsX(Object.values<string>(AuthApps), (cur, val) => cur === val)]
 			},
 			role: { required: true, rules: [Validation.isString] },
 			value: { required: true, rules: [Validation.isBoolean] },
