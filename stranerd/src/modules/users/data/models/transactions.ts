@@ -7,7 +7,6 @@ export interface TransactionFromModel extends TransactionToModel {
 export interface TransactionToModel {
 	isGold: boolean
 	event: string
-	isCompleted?: boolean
 	amount: number
 	userId: string
 }

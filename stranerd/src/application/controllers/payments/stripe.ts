@@ -1,5 +1,5 @@
 import { MakeStripePaymentIntent } from '@modules/payments'
-import { CreateTransaction, MarkTransactionAsComplete } from '@modules/users'
+import { CreatePayment, MarkPaymentAsComplete } from '@modules/payments'
 import { NotAuthorizedError, Request } from '@utils/commons'
 
 export class StripeController {
@@ -14,14 +14,14 @@ export class StripeController {
 		
 		if(paymentIntent) {
 
-			const newTransaction = await CreateTransaction.execute({
+			const newPayment = await CreatePayment.execute({
 				amount: req.body.amount,
-				event:  req.body.event,
 				isGold:  req.body.isGold,
-				userId:  req.authUser!.id
+				userId:  req.authUser!.id,
+				type: 'stripe'
 			})
 			return {
-				transactionId: newTransaction.id,
+				paymentId: newPayment.id,
 				paymentIntent
 			}
 		}
@@ -35,9 +35,9 @@ export class StripeController {
 
 	static async verifyPayment (req: Request) {
 		
-		const transaction = await MarkTransactionAsComplete.execute(req.body.transactionId)
+		const payment = await MarkPaymentAsComplete.execute(req.body.paymentId)
 		
-		if(transaction) return  {
+		if(payment) return  {
 			success: true
 		}
 

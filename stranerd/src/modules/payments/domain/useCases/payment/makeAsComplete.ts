@@ -1,10 +1,10 @@
 import { BaseUseCase } from '@utils/commons'
-import { ITransactionRepository } from '../../i-repositories/transactions'
+import { IPaymentRepository } from '../../i-repositories/payment'
 
 export class MarkAsCompleteUseCase implements BaseUseCase<string, boolean | null> {
-	repository: ITransactionRepository
+	repository: IPaymentRepository
 
-	constructor (repo: ITransactionRepository) {
+	constructor (repo: IPaymentRepository) {
 		this.repository = repo
 	}
 

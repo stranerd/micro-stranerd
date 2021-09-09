@@ -11,7 +11,6 @@ export class TransactionMapper extends BaseMapper<TransactionFromModel, Transact
 			userId: param.userId,
 			amount: param.amount,
 			createdAt: param.createdAt,
-			isCompleted: param.isCompleted,
 			updatedAt: param.updatedAt
 		})
 	}
