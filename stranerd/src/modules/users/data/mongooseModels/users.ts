@@ -14,6 +14,37 @@ const UserMeta = Object.fromEntries(
 	}])
 )
 
+const UserRating = {
+	count: {
+		type: Number,
+		required: false,
+		default: 0
+	},
+	total: {
+		type: Number,
+		required: false,
+		default: 0
+	}
+}
+
+const UserStreak = {
+	count: {
+		type: Number,
+		required: false,
+		default: 0
+	},
+	longestStreak: {
+		type: Number,
+		required: false,
+		default: 0
+	},
+	lastEvaluatedAt: {
+		type: Number,
+		required: false,
+		default: 0
+	}
+}
+
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	_id: {
 		type: String,
@@ -105,11 +136,8 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			}
 		},
 		meta: UserMeta,
-		ratings: {
-			type: Object,
-			required: false,
-			default: { count: 0, total: 0 }
-		}
+		ratings: UserRating,
+		streak: UserStreak
 	}
 })
 

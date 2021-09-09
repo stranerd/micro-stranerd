@@ -28,6 +28,7 @@ import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersC
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
+import { UpdateUserStreakUseCase } from './domain/useCases/users/updateUserStreak'
 import { ReferralRepository } from './data/repositories/referrals'
 import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
 import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
@@ -54,6 +55,7 @@ export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepo
 export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
 export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
 export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
+export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

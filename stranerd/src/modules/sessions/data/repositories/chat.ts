@@ -20,7 +20,8 @@ export class ChatRepository implements IChatRepository {
 
 	async add (data: ChatToModel, path: [string, string]) {
 		const session = await mongoose.startSession()
-		try {
+		let res = null as ChatFromModel | null
+		await session.withTransaction(async (session) => {
 			const chat = await new Chat({ ...data, path }).save({ session })
 			const chatData = this.mapper.mapForMeta(chat)
 			await ChatMeta.findOneAndUpdate(
@@ -35,15 +36,9 @@ export class ChatRepository implements IChatRepository {
 				},
 				{ upsert: true, session }
 			)
-
-			await session.commitTransaction()
-			await session.endSession()
-			return this.mapper.mapFrom(chat)!
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+			res = chat
+		})
+		return this.mapper.mapFrom(res)!
 	}
 
 	async get (query: QueryParams) {
@@ -62,8 +57,9 @@ export class ChatRepository implements IChatRepository {
 
 	async markRead (id: string, path: [string, string]) {
 		const session = await mongoose.startSession()
-		const readAt = Date.now()
-		try {
+		let res = false
+		await session.withTransaction(async (session) => {
+			const readAt = Date.now()
 			const chat = await Chat.findOneAndUpdate(
 				{ _id: id, path, readAt: null },
 				{ $set: { readAt } },
@@ -76,14 +72,9 @@ export class ChatRepository implements IChatRepository {
 				ownerId: path[0], userId: path[1], 'last.id': id
 			}, { $set: { 'last.readAt': readAt } }, { session })
 
-			await session.commitTransaction()
-			await session.endSession()
-			return !!chat
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+			res = !!chat
+		})
+		return res
 	}
 
 	async delete (id: string, userId: string) {

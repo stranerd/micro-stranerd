@@ -1,7 +1,20 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { UsersController } from '../../controllers/users/users'
 
 export const usersRoutes: Route[] = [
+	{
+		path: '/users/streak',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await UsersController.updateStreak(req)
+				}
+			})
+		]
+	},
 	{
 		path: '/users/:id',
 		method: 'get',

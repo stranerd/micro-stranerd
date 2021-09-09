@@ -4,6 +4,7 @@ import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
 import { UserFromModel } from '../models/users'
+import { getDateDifference } from '@utils/functions'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
@@ -80,43 +81,52 @@ export class UserRepository implements IUserRepository {
 
 	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null) {
 		const session = await mongoose.startSession()
-		try {
+		await session.withTransaction(async (session) => {
 			await User.findByIdAndUpdate(studentId, { $set: { 'session.currentSession': sessionId } }, { session })
 			await User.findByIdAndUpdate(tutorId, { $set: { 'session.currentTutorSession': sessionId } }, { session })
-			await session.commitTransaction()
-			await session.endSession()
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+		})
 	}
 
 	async addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string) {
 		const session = await mongoose.startSession()
-		try {
+		await session.withTransaction(async (session) => {
 			await User.findByIdAndUpdate(studentId, { $push: { 'session.lobby': sessionId } }, { session })
 			await User.findByIdAndUpdate(tutorId, { $push: { 'session.requests': sessionId } }, { session })
-			await session.commitTransaction()
-			await session.endSession()
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+		})
 	}
 
 	async removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]) {
 		const session = await mongoose.startSession()
-		try {
+		await session.withTransaction(async (session) => {
 			await User.findByIdAndUpdate(studentId, { $pull: { 'session.lobby': { $in: sessionIds } } }, { session })
 			await User.findByIdAndUpdate(tutorId, { $pull: { 'session.requests': { $in: sessionIds } } }, { session })
-			await session.commitTransaction()
-			await session.endSession()
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+		})
+	}
+
+	async updateUserStreak (userId: string) {
+		const session = await mongoose.startSession()
+		const res = { skip: false, increase: false, reset: false, streak: 0 }
+		await session.withTransaction(async (session) => {
+			const userModel = await User.findById(userId, null, { session })
+			const user = this.mapper.mapFrom(userModel)
+			const { lastEvaluatedAt = 0, count = 0, longestStreak = 0 } = user?.account?.streak ?? {}
+			const { isLessThan, isNextDay } = getDateDifference(new Date(lastEvaluatedAt), new Date())
+
+			res.skip = isLessThan
+			res.increase = !isLessThan && isNextDay
+			res.reset = !isLessThan && !isNextDay
+			res.streak = !isLessThan && isNextDay ? count + 1 : 1
+
+			const updateData = {
+				$set: { 'account.streak.lastEvaluatedAt': Date.now() },
+				$inc: {
+					'account.streak.longestStreak': res.increase && count === longestStreak ? 1 : 0
+				}
+			}
+			if (res.increase) updateData.$inc['account.streak.count'] = 1
+			else updateData.$set['account.streak.count'] = 1
+			if (!res.skip) await User.findByIdAndUpdate(userId, updateData, { session })
+		})
+		return res
 	}
 }

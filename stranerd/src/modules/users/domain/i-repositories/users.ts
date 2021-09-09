@@ -26,4 +26,6 @@ export interface IUserRepository {
 	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>
 
 	removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]): Promise<void>
+
+	updateUserStreak (userId: string): Promise<{ skip: boolean, increase: boolean, reset: boolean, streak: number }>
 }

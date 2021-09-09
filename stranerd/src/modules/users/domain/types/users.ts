@@ -40,6 +40,11 @@ export type UserAccount = {
 	ratings: {
 		total: number
 		count: number
+	},
+	streak: {
+		count: number,
+		longestStreak: number,
+		lastEvaluatedAt: number
 	}
 }
 

@@ -28,7 +28,8 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 
 	async add (data: AnswerUpvoteToModel) {
 		const session = await mongoose.startSession()
-		try {
+		let res = null as AnswerUpvoteFromModel | null
+		await session.withTransaction(async (session) => {
 			let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId }).session(session)
 			if (!upvote || upvote.answerId !== data.answerId) {
 				upvote = new AnswerUpvote(data)
@@ -61,14 +62,10 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			}, { session })
 			upvote.vote = data.vote
 			await upvote.save({ session })
-			await session.commitTransaction()
-			await session.endSession()
-			return this.mapper.mapFrom(upvote)!
-		} catch (e) {
-			await session.abortTransaction()
-			await session.endSession()
-			throw e
-		}
+
+			res = upvote
+		})
+		return this.mapper.mapFrom(res)!
 	}
 
 	async find (id: string) {
