@@ -9,7 +9,12 @@ import { appId, port } from '@utils/environment'
 import { publishers, subscribers } from '@utils/events'
 import { routes } from '@application/routes'
 
-const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] })
+const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
+	onConnect: async () => {
+	},
+	onDisconnect: async () => {
+	}
+})
 export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {

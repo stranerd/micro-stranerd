@@ -1,9 +1,14 @@
 import { getNewServerInstance, Logger, setupMongooseConnection } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
-import { routes } from './application/routes'
+import { routes } from '@application/routes'
 
-const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] })
+const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
+	onConnect: async () => {
+	},
+	onDisconnect: async () => {
+	}
+})
 export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {

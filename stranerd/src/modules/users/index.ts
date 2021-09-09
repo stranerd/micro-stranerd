@@ -26,6 +26,7 @@ import { GetUsersUseCase } from './domain/useCases/users/getUsers'
 import { UpdateUserNerdScoreUseCase } from './domain/useCases/users/updateUserNerdScore'
 import { UpdateUserRatingsUseCase } from './domain/useCases/users/updateUserRatings'
 import { UpdateUserTagsUseCase } from './domain/useCases/users/updateUserTags'
+import { UpdateUserStatusUseCase } from './domain/useCases/users/updateUserStatus'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
@@ -60,6 +61,7 @@ export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCas
 export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)
+export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

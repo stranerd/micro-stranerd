@@ -145,4 +145,21 @@ export class UserRepository implements IUserRepository {
 		const user = await User.findByIdAndUpdate(userId, { $inc: updateData })
 		return !!user
 	}
+
+	async updateUserStatus (userId: string, socketId: string, add: boolean) {
+		const session = await mongoose.startSession()
+		let res = false
+		await session.withTransaction(async (session) => {
+			const userModel = await User.findById(userId, null, { session })
+			const user = this.mapper.mapFrom(userModel)
+			if (!user) return
+			const updateData: any = { [add ? '$push' : '$pull']: { 'status.connections': socketId } }
+			if (!add && user.status.connections.length === 1 && user.status.connections[0] === socketId) {
+				updateData['$set'] = { 'status.lastUpdatedAt': Date.now() }
+			}
+			const newUser = await User.findByIdAndUpdate(userId, updateData, { session })
+			res = !!newUser
+		})
+		return res
+	}
 }

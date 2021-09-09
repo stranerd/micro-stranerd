@@ -90,9 +90,9 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	},
 	status: {
 		connections: {
-			type: Object,
+			type: [String],
 			required: false,
-			default: {}
+			default: []
 		},
 		lastUpdatedAt: {
 			type: Number,

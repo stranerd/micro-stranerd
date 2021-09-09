@@ -21,7 +21,7 @@ export type UserTutor = {
 }
 
 export type UserStatus = {
-	connections: Record<string, boolean>
+	connections: string[]
 	lastUpdatedAt: number
 }
 
