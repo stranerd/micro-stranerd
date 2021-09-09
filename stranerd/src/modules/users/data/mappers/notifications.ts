@@ -3,7 +3,7 @@ import { NotificationEntity } from '../../domain/entities/notifications'
 import { NotificationFromModel, NotificationToModel } from '../models/notifications'
 
 export class NotificationMapper extends BaseMapper<NotificationFromModel, NotificationToModel, NotificationEntity> {
-	mapFrom (param) {
+	mapFrom (param: NotificationFromModel | null) {
 		return !param ? null : new NotificationEntity({
 			id: param._id.toString(),
 			body: param.body,
@@ -16,7 +16,7 @@ export class NotificationMapper extends BaseMapper<NotificationFromModel, Notifi
 		})
 	}
 
-	mapTo (param) {
+	mapTo (param: NotificationEntity) {
 		return {
 			body: param.body,
 			data: param.data,

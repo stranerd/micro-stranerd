@@ -3,14 +3,14 @@ import { StripeController } from '../../controllers/payments/stripe'
 
 export const stripeRoutes: Route[] = [
 	{
-		path: '/payment/stripe',
+		path: '/payment/stripe/coins',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await StripeController.makeIntent(req)
+					result: await StripeController.buyCoins(req)
 				}
 			})
 		]

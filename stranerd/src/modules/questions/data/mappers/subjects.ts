@@ -3,7 +3,7 @@ import { SubjectEntity } from '../../domain/entities/subjects'
 import { BaseMapper } from '@utils/commons'
 
 export class SubjectMapper extends BaseMapper<SubjectFromModel, SubjectToModel, SubjectEntity> {
-	mapFrom (model) {
+	mapFrom (model: SubjectFromModel | null) {
 		if (!model) return null
 		const { _id, name, createdAt, updatedAt } = model
 		return new SubjectEntity({
@@ -11,7 +11,7 @@ export class SubjectMapper extends BaseMapper<SubjectFromModel, SubjectToModel, 
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: SubjectEntity) {
 		return {
 			name: entity.name
 		}

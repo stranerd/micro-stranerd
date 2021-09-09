@@ -1,5 +1,7 @@
+import { SupportedCurrencies } from '../types'
+
 export interface IStripeRepository {
+	makePaymentIntent (amountInCents: number, currency: SupportedCurrencies): Promise<{ id: string, clientSecret: string }>
 
-	makePaymentIntent (amount: number, currency: 'usd' | 'ngn'): Promise<string | null>
-
+	confirmPaymentSuccess (id: string): Promise<boolean>
 }

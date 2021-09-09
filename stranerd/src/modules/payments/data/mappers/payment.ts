@@ -3,25 +3,32 @@ import { BaseMapper } from '@utils/commons'
 import { PaymentFromModel, PaymentToModel } from '../models/payment'
 
 export class PaymentMapper extends BaseMapper<PaymentFromModel, PaymentToModel, PaymentEntity> {
-	mapFrom (param) {
+	mapFrom (param: PaymentFromModel | null) {
 		return !param ? null : new PaymentEntity({
 			id: param._id.toString(),
-			isGold: param.isGold,
+			data: param.data,
+			method: param.method,
 			type: param.type,
 			userId: param.userId,
+			intent: param.intent,
 			amount: param.amount,
+			currency: param.currency,
 			createdAt: param.createdAt,
 			isCompleted: param.isCompleted,
 			updatedAt: param.updatedAt
 		})
 	}
 
-	mapTo (param) {
+	mapTo (param: PaymentEntity) {
 		return {
-			isGold: param.isGold,
+			data: param.data,
+			method: param.method,
 			amount: param.amount,
+			currency: param.currency,
 			type: param.type,
-			userId: param.userId
+			userId: param.userId,
+			intent: param.intent,
+			isCompleted: param.isCompleted
 		}
 	}
 }

@@ -2,10 +2,18 @@ import { generateChangeStreams, mongoose } from '@utils/commons'
 import { PaymentFromModel } from '../models/payment'
 import { PaymentEntity } from '@modules/payments/domain/entities/payment'
 import { PaymentChangeStreamCallbacks } from '@utils/changeStreams/payment/payment'
-import { PaymentMapper } from '../mappers/answers'
+import { PaymentMapper } from '../mappers/payment'
 
 const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	type: {
+		type: String,
+		required: true
+	},
+	method: {
 		type: String,
 		required: true
 	},
@@ -13,13 +21,21 @@ const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
 		type: Number,
 		required: true
 	},
-	isGold: {
-		type: Boolean,
+	data: {
+		type: Object,
 		required: false,
-		default: false
+		default: {}
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
+		required: true
+	},
+	intent: {
+		type: String,
+		required: true
+	},
+	currency: {
+		type: String,
 		required: true
 	},
 	isCompleted: {

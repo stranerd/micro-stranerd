@@ -3,7 +3,7 @@ import { AnswerFromModel, AnswerToModel } from '../models'
 import { AnswerEntity } from '../../domain/entities/answers'
 
 export class AnswerMapper extends BaseMapper<AnswerFromModel, AnswerToModel, AnswerEntity> {
-	mapFrom (model) {
+	mapFrom (model: AnswerFromModel | null) {
 		if (!model) return null
 		const {
 			_id, title, body, coins, questionId,
@@ -17,7 +17,7 @@ export class AnswerMapper extends BaseMapper<AnswerFromModel, AnswerToModel, Ans
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: AnswerEntity) {
 		return {
 			title: entity.title,
 			body: entity.body,

@@ -1,6 +1,5 @@
-import { mongoose } from '@utils/commons'
 import { IPaymentRepository } from '@modules/payments/domain/i-repositories/payment'
-import { PaymentMapper } from '../mappers/answers'
+import { PaymentMapper } from '../mappers/payment'
 import { Payment } from '../mongooseModels/payment'
 import { PaymentToModel } from '../models/payment'
 
@@ -14,16 +13,13 @@ export class PaymentRepository implements IPaymentRepository {
 	}
 
 	async find (data: { userId: string, id: string }) {
-		if (!mongoose.Types.ObjectId.isValid(data.id)) return null
-		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const payment = await Payment.findOne({ _id: data.id, userId: data.userId })
 		return this.mapper.mapFrom(payment)
 	}
 
-	async makeAsComplete (id: string) {
-		if (!mongoose.Types.ObjectId.isValid(id)) return null
-		const payment = await Payment.findOneAndUpdate({ _id: id },{isCompleted: true},{new: true})
-		return payment ? true : false
+	async markAsComplete (intent: string, userId: string) {
+		const payment = await Payment.findOneAndUpdate({ intent, userId }, { isCompleted: true })
+		return !!payment
 	}
 
 	async create (data: PaymentToModel) {

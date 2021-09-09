@@ -3,7 +3,7 @@ import { SessionEntity } from '../../domain/entities/session'
 import { BaseMapper } from '@utils/commons'
 
 export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, SessionEntity> {
-	mapFrom (model) {
+	mapFrom (model: SessionFromModel | null) {
 		if (!model) return null
 		const {
 			_id, duration, price, message,
@@ -18,7 +18,7 @@ export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, 
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: SessionEntity) {
 		return {
 			message: entity.message,
 			studentId: entity.studentId,

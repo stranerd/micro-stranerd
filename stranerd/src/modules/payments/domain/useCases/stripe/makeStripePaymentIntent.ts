@@ -1,9 +1,10 @@
 import { BaseUseCase } from '@utils/commons'
 import { IStripeRepository } from '../../i-repositories/stripe'
+import { SupportedCurrencies } from '../../types'
 
-type Input  = {amount: number, currency: 'usd' | 'ngn'}
+type Input = { amount: number, currency: SupportedCurrencies }
 
-export class MakeStripePaymentIntentUseCase implements BaseUseCase<Input, string | null> {
+export class MakeStripePaymentIntentUseCase implements BaseUseCase<Input, { id: string, clientSecret: string }> {
 	repository: IStripeRepository
 
 	constructor (repo: IStripeRepository) {

@@ -3,7 +3,7 @@ import { QuestionEntity } from '../../domain/entities/questions'
 import { BaseMapper } from '@utils/commons'
 
 export class QuestionMapper extends BaseMapper<QuestionFromModel, QuestionToModel, QuestionEntity> {
-	mapFrom (model) {
+	mapFrom (model: QuestionFromModel | null) {
 		if (!model) return null
 		const {
 			_id, body, coins, subjectId, tags,
@@ -17,7 +17,7 @@ export class QuestionMapper extends BaseMapper<QuestionFromModel, QuestionToMode
 		})
 	}
 
-	mapTo (entity) {
+	mapTo (entity: QuestionEntity) {
 		return {
 			body: entity.body,
 			coins: entity.coins,
