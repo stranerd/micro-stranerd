@@ -4,12 +4,19 @@ import { publishers } from '@utils/events'
 import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain } from '@utils/environment'
 
-export const sendNotification = async (userId: string, data: Omit<NotificationToModel, 'userId'>, title?: string) => {
+type QuestionData = { action: 'questions', data: { questionId: string } }
+type AnswerData = { action: 'answers', data: { questionId: string, answerId: string } }
+type SessionData = { action: 'sessions', data: { studentId: string, tutorId: string } }
+type UserData = { action: 'users', data: { userId: string } }
+
+type NotificationData = Omit<NotificationToModel, 'userId'> & (QuestionData | AnswerData | SessionData | UserData)
+
+export const sendNotification = async (userId: string, data: NotificationData, title?: string) => {
 	if (title) {
 		const user = await FindUser.execute(userId)
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
-				notification: { ...data, link: getNotificationLink(data.action, data.data), title },
+				notification: { ...data, link: getNotificationLink(data), title },
 				meta: { clientDomain }
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
@@ -23,10 +30,10 @@ export const sendNotification = async (userId: string, data: Omit<NotificationTo
 	} else await CreateNotification.execute({ ...data, userId })
 }
 
-const getNotificationLink = (action: string, data: Record<string, any>): string => {
-	if (action === 'questions') return `/questions/${ data.questionId }`
-	else if (action === 'answers') return `/questions/${ data.questionId }#${ data.answerId }`
-	else if (action === 'sessions') return `/sessions/${ data.studentId }`
-	else if (action === 'users') return `/users/${ data.userId }`
+const getNotificationLink = (notification: NotificationData): string => {
+	if (notification.action === 'questions') return `/questions/${ notification.data.questionId }`
+	else if (notification.action === 'answers') return `/questions/${ notification.data.questionId }#${ notification.data.answerId }`
+	else if (notification.action === 'sessions') return `/sessions/${ notification.data.studentId }`
+	else if (notification.action === 'users') return `/users/${ notification.data.userId }`
 	return '/dashboard'
 }
