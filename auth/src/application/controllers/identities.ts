@@ -9,7 +9,7 @@ export class IdentitiesController {
 			referrer: req.body.referrer
 		}, {
 			idToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: false, rules: [Validation.isValidMongooseId] }
+			referrer: { required: false, rules: [Validation.isString] }
 		})
 
 		const data = await GoogleSignIn.execute(validatedData)

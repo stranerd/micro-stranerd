@@ -37,7 +37,7 @@ export class AnswerController {
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			body: { required: true, rules: [Validation.isString] },
-			questionId: { required: true, rules: [Validation.isValidMongooseId] }
+			questionId: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id

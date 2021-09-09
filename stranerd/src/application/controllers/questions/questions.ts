@@ -60,7 +60,7 @@ export class QuestionController {
 				required: true,
 				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
 			},
-			subjectId: { required: true, rules: [Validation.isValidMongooseId] },
+			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.isMoreThanX(0), Validation.isLessThanX(4)]
@@ -85,7 +85,7 @@ export class QuestionController {
 		const { answerId } = validate({
 			answerId: req.body.answerId
 		}, {
-			answerId: { required: true, rules: [Validation.isValidMongooseId] }
+			answerId: { required: true, rules: [Validation.isString] }
 		})
 
 		const question = await FindQuestion.execute(req.params.id)

@@ -21,7 +21,7 @@ export class ReviewsController {
 				rules: [Validation.isNumber, Validation.isMoreThanX(0), Validation.isLessThanX(5.1)]
 			},
 			review: { required: true, rules: [Validation.isString] },
-			tutorId: { required: true, rules: [Validation.isValidMongooseId] }
+			tutorId: { required: true, rules: [Validation.isString] }
 		})
 
 		const user = await FindUser.execute(req.authUser!.id)

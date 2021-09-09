@@ -37,7 +37,7 @@ export class UserController {
 			},
 			role: { required: true, rules: [Validation.isString] },
 			value: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isValidMongooseId] }
+			userId: { required: true, rules: [Validation.isString] }
 		})
 
 		return await UpdateUserRole.execute(validateData)

@@ -5,12 +5,16 @@ import { SessionChangeStreamCallbacks } from '@utils/changeStreams/sessions/sess
 import { SessionMapper } from '../mappers/session'
 
 const Schema = new mongoose.Schema<SessionFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	message: {
 		type: String,
 		required: true
 	},
 	studentId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	studentBio: {
@@ -18,7 +22,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	tutorId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	tutorBio: {

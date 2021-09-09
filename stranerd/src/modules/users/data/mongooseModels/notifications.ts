@@ -5,6 +5,10 @@ import { NotificationEntity } from '@modules/users/domain/entities/notifications
 import { NotificationMapper } from '@modules/users/data/mappers/notifications'
 
 const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	body: {
 		type: String,
 		required: true
@@ -19,7 +23,7 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		default: false
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	createdAt: {

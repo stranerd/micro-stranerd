@@ -1,7 +1,7 @@
 import { INotificationRepository } from '../../domain/i-repositories/notifications'
 import { NotificationMapper } from '../mappers/notifications'
 import { Notification } from '../mongooseModels/notifications'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/commons'
 import { NotificationFromModel, NotificationToModel } from '../models/notifications'
 
 export class NotificationRepository implements INotificationRepository {
@@ -22,8 +22,6 @@ export class NotificationRepository implements INotificationRepository {
 	}
 
 	async findNotification (data: { userId: string, id: string }) {
-		if (!mongoose.Types.ObjectId.isValid(data.id)) return null
-		if (!mongoose.Types.ObjectId.isValid(data.userId)) return null
 		const notification = await Notification.findOne({ _id: data.id, userId: data.userId })
 		return this.mapper.mapFrom(notification)
 	}
@@ -34,8 +32,6 @@ export class NotificationRepository implements INotificationRepository {
 	}
 
 	async markNotificationSeen (data: { userId: string, id: string, seen: boolean }) {
-		if (!mongoose.Types.ObjectId.isValid(data.id)) return
-		if (!mongoose.Types.ObjectId.isValid(data.userId)) return
 		await Notification.findOneAndUpdate({ _id: data.id, userId: data.userId }, { $set: { seen: data.seen } })
 	}
 

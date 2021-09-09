@@ -14,8 +14,8 @@ export class UserEntity extends BaseEntity {
 	constructor ({ id, bio, roles, dates, tutor, status, account, session }: UserConstructorArgs) {
 		super()
 		this.id = id
-		this.bio = bio
-		this.roles = roles
+		this.bio = bio ?? {}
+		this.roles = roles ?? {}
 		this.dates = dates
 		this.tutor = tutor
 		this.status = status

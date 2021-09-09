@@ -1,13 +1,7 @@
 import * as Validate from '@stranerd/validate'
 import { ValidationError } from '../errors'
-import { mongoose } from '../mongoose'
 
-const isValidMongooseId = (val: string) => {
-	if (mongoose.Types.ObjectId.isValid(val)) return Validate.isValid()
-	return Validate.isInvalid('is not a valid id')
-}
-
-export const Validation = { ...Validate, isValidMongooseId }
+export const Validation = Validate
 
 type Rules = {
 	required: boolean

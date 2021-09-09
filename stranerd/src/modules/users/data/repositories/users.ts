@@ -23,7 +23,6 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return
 		let user = await User.findById(userId)
 		if (!user) user = new User()
 		user._id = userId
@@ -33,27 +32,23 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateUserWithBio (userId: string, data: UserBio, _: number) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return
 		await User.findByIdAndUpdate(userId, {
 			$set: { bio: data, _id: userId }
 		}, { upsert: true })
 	}
 
 	async findUser (userId: string) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return null
 		const user = await User.findById(userId)
 		return this.mapper.mapFrom(user)
 	}
 
 	async markUserAsDeleted (userId: string, timestamp: number) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return
 		await User.findByIdAndUpdate(userId, {
 			$set: { 'dates.deletedAt': timestamp }
 		}, { upsert: true })
 	}
 
 	async updateNerdScore (userId: string, amount: number) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return false
 		const user = await User.findByIdAndUpdate(userId, {
 			$inc: { 'account.score': amount }
 		})
@@ -61,7 +56,6 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateUserWithRoles (userId: string, data: UserRoles) {
-		if (!mongoose.Types.ObjectId.isValid(userId)) return
 		await User.findByIdAndUpdate(userId, {
 			$set: { roles: data }
 		}, { upsert: true })

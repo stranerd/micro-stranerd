@@ -23,8 +23,8 @@ export class ChatController {
 				required: false,
 				rules: [Validation.isRequiredIfX(!req.body.content), Validation.isFile]
 			},
-			sessionId: { required: false, rules: [Validation.isValidMongooseId, Validation.isLongerThanX(0)] },
-			to: { required: true, rules: [Validation.isValidMongooseId, Validation.isLongerThanX(0)] }
+			sessionId: { required: false, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			to: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -39,8 +39,8 @@ export class ChatController {
 			to: req.body.to,
 			chatId: req.body.chatId
 		}, {
-			to: { required: true, rules: [Validation.isValidMongooseId] },
-			chatId: { required: true, rules: [Validation.isValidMongooseId] }
+			to: { required: true, rules: [Validation.isString] },
+			chatId: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id

@@ -27,7 +27,7 @@ export class SessionController {
 			price: req.body.price
 		}, {
 			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			tutorId: { required: true, rules: [Validation.isValidMongooseId] },
+			tutorId: { required: true, rules: [Validation.isString] },
 			duration: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			price: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] }
 		})

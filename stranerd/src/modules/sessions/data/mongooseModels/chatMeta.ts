@@ -5,8 +5,12 @@ import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 
 const Schema = new mongoose.Schema<ChatMetaFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	unRead: {
-		type: [mongoose.Schema.Types.ObjectId as unknown as StringConstructor],
+		type: [String],
 		required: false,
 		default: []
 	},
@@ -16,11 +20,11 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		default: null as unknown as ChatMetaFromModel['last']
 	},
 	ownerId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userBio: {

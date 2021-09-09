@@ -5,17 +5,21 @@ import { AnswerUpvoteEntity } from '@modules/questions/domain/entities'
 import { AnswerUpvoteMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	vote: {
 		type: Number,
 		required: true,
 		default: 1
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	answerId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	createdAt: {

@@ -1,7 +1,7 @@
 import { IReviewRepository } from '../../domain/i-repositories/reviews'
 import { ReviewMapper } from '../mappers/reviews'
 import { Review } from '../mongooseModels/reviews'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/commons'
 import { ReviewFromModel, ReviewToModel } from '../models/reviews'
 
 export class ReviewRepository implements IReviewRepository {
@@ -22,7 +22,6 @@ export class ReviewRepository implements IReviewRepository {
 	}
 
 	async findReview (id: string) {
-		if (!mongoose.Types.ObjectId.isValid(id)) return null
 		const review = await Review.findOne({ _id: id })
 		return this.mapper.mapFrom(review)
 	}

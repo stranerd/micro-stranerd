@@ -5,6 +5,10 @@ import { QuestionEntity } from '@modules/questions/domain/entities'
 import { QuestionMapper } from '@modules/questions/data/mappers'
 
 const Schema = new mongoose.Schema<QuestionFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	body: {
 		type: String,
 		required: true
@@ -18,11 +22,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	subjectId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userBio: {
@@ -31,15 +35,12 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		default: {} as unknown as QuestionFromModel['userBio']
 	},
 	bestAnswers: {
-		type: [mongoose.Schema.Types.ObjectId as unknown as StringConstructor],
+		type: [String],
 		required: false,
 		default: []
 	},
 	answers: {
-		type: [{
-			id: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
-			userId: mongoose.Schema.Types.ObjectId as unknown as StringConstructor
-		}],
+		type: [Object as unknown as any],
 		required: false,
 		default: []
 	},

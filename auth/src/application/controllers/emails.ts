@@ -41,7 +41,7 @@ export class EmailsController {
 			photo: { required: false, rules: [Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			referrer: { required: false, rules: [Validation.isValidMongooseId] }
+			referrer: { required: false, rules: [Validation.isString] }
 		})
 
 		const userData = await FindUserByEmail.execute(validateData.email)

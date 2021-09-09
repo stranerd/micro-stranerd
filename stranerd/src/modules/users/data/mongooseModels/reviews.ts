@@ -5,6 +5,10 @@ import { ReviewEntity } from '@modules/users/domain/entities/reviews'
 import { ReviewMapper } from '@modules/users/data/mappers/reviews'
 
 const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
+	_id: {
+		type: String,
+		default: new mongoose.Types.ObjectId() as unknown as string
+	},
 	review: {
 		type: String,
 		required: true
@@ -14,11 +18,11 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		required: true
 	},
 	tutorId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userId: {
-		type: mongoose.Schema.Types.ObjectId as unknown as StringConstructor,
+		type: String,
 		required: true
 	},
 	userBio: {
