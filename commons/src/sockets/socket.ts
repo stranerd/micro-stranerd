@@ -1,6 +1,7 @@
 import io from 'socket.io'
 import { StatusCodes } from '../express'
 import { verifyAccessToken } from '../utils/tokens'
+import { AuthApps } from '../utils/authUser'
 
 export type SocketParams = {
 	open: string[]
@@ -21,8 +22,9 @@ export type SocketCallers = {
 
 export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams, callers: SocketCallers) => {
 	socketInstance.on('connection', async (socket) => {
-		const userId = (socket.handshake.query.userId ?? '') as string
 		const socketId = socket.id
+		const app = (socket.handshake.query.app ?? '') as string
+		const user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
 			if (!data.channel) return callback({
@@ -43,71 +45,53 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 				message: 'channel is required',
 				channel: ''
 			})
+			let channel = data.channel
 			if (!channelExists(allChannels, data.channel)) return callback({
 				code: StatusCodes.BadRequest,
 				message: 'unknown channel',
 				channel: data.channel
 			})
 			if (channelExists(params.admin, data.channel)) {
-				if (!data.app) return callback({
+				if (!app) return callback({
 					code: StatusCodes.ValidationError,
 					message: 'app is required',
 					channel: data.channel
 				})
-				if (!data.token) return callback({
+				if (!Object.values<string>(AuthApps).includes(app)) return callback({
 					code: StatusCodes.ValidationError,
-					message: 'token is required',
+					message: 'app is not a supported app',
 					channel: data.channel
 				})
-				const user = await verifyAccessToken(data.token).catch(() => null)
 				if (!user) return callback({
-					code: StatusCodes.NotAuthenticated,
+					code: StatusCodes.NotAuthorized,
 					message: 'invalid or expired token',
 					channel: data.channel
 				})
-				if (!user.roles[data.app].isAdmin) return callback({
+				if (!user.roles[app]?.isAdmin) return callback({
 					code: StatusCodes.NotAuthorized,
 					message: 'restricted privileges',
 					channel: data.channel
 				})
-				const channel = data.channel
-				socket.join(channel)
-				return callback({
-					code: StatusCodes.Ok,
-					message: '',
-					channel
-				})
+				channel = data.channel
 			} else if (channelExists(params.mine, data.channel)) {
-				if (!data.token) return callback({
-					code: StatusCodes.ValidationError,
-					message: 'token is required',
-					channel: data.channel
-				})
-				const user = await verifyAccessToken(data.token).catch(() => null)
 				if (!user) return callback({
-					code: StatusCodes.NotAuthenticated,
+					code: StatusCodes.NotAuthorized,
 					message: 'invalid or expired token',
 					channel: data.channel
 				})
-				const channel = `${ data.channel }/${ user.id }`
-				socket.join(channel)
-				return callback({
-					code: StatusCodes.Ok,
-					message: '',
-					channel
-				})
+				channel = `${ data.channel }/${ user.id }`
 			}
-			socket.join(data.channel)
+			socket.join(channel)
 			return callback({
 				code: StatusCodes.Ok,
 				message: '',
-				channel: data.channel
+				channel
 			})
 		})
-		if (userId) {
-			await callers.onConnect(userId, socketId)
+		if (user) {
+			await callers.onConnect(user.id, socketId)
 			socket.on('disconnect', async () => {
-				await callers.onDisconnect(userId, socketId)
+				await callers.onDisconnect(user.id, socketId)
 			})
 		}
 	})
