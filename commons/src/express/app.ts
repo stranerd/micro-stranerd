@@ -34,18 +34,19 @@ const postRoutes: Route[] = [
 export const getNewServerInstance = (routes: Route[], socketChannels: SocketParams, socketCallers: SocketCallers) => {
 	const app = express()
 	const server = http.createServer(app)
-	const socket = new io.Server(server)
+	const socket = new io.Server(server, { cors: { origin: '*' } })
 	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
 	app.use(express.static(path.join(process.cwd(), 'public')))
-	app.use(cors())
+	app.use(cors({ origin: '*' }))
 	app.use(
 		fileUpload({
 			limits: { fileSize: 100 * 1024 * 1024 },
 			useTempFiles: false
 		})
 	)
+	setupSocketConnection(socket, socketChannels, socketCallers)
 
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
@@ -56,10 +57,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	const start = async (port: number) => {
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
-				app.listen(port, () => {
-					setupSocketConnection(socket, socketChannels, socketCallers)
-					resolve(true)
-				})
+				server.listen(port, () => resolve(true))
 			} catch (err) {
 				reject(err as Error)
 			}

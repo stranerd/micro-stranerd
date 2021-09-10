@@ -80,16 +80,9 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 	changeStream.on('error', async (err) => {
 		await Logger.error(`Change Stream errored out: ${ dbName }`)
 		await Logger.error(err.message)
+		changeStream.close()
 		process.exit(1)
 	})
-
-	const cb = () => changeStream.close()
-
-	process.on('exit', cb)
-	process.on('SIGINT', cb)
-	process.on('SIGUSR1', cb)
-	process.on('SIGUSR2', cb)
-	process.on('uncaughtException', cb)
 }
 
 const deepMerge = (objFrom: any, objTo: any) => Object.keys(objFrom)
