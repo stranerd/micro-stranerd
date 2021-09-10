@@ -13,10 +13,11 @@ export type Controller = Handler | ErrorRequestHandler
 export const makeController = (cb: (_: CustomRequest) => Promise<CustomResponse>): Controller => {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const { status = 200, result } = await cb(extractRequest(req))
-			res.status(status).json({ data: result })
+			const { status = StatusCodes.Ok, result } = await cb(extractRequest(req))
+			return res.status(status).json(result)
 		} catch (e) {
 			next(e)
+			return
 		}
 	}
 }
@@ -25,7 +26,7 @@ export const makeMiddleware = (cb: (_: CustomRequest) => Promise<void>): Control
 	return async (req: Request, _: Response, next: NextFunction) => {
 		try {
 			await cb(extractRequest(req))
-			next()
+			return next()
 		} catch (e) {
 			return next(e)
 		}
@@ -34,12 +35,8 @@ export const makeMiddleware = (cb: (_: CustomRequest) => Promise<void>): Control
 
 export const makeErrorMiddleware = (cb: (_: CustomRequest, __: Error) => Promise<CustomResponse>): Controller => {
 	return async (err: Error, req: Request, res: Response, _: NextFunction) => {
-		try {
-			const ret = await cb(extractRequest(req), err)
-			res.status(ret.status ?? StatusCodes.BadRequest).json(ret.result)
-		} catch (e) {
-			res.status(400).json({ errors: [{ message: 'Something unexpected happened.' }] })
-		}
+		const { status = StatusCodes.BadRequest, result } = await cb(extractRequest(req), err)
+		return res.status(status).json(result)
 	}
 }
 
