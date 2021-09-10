@@ -50,11 +50,14 @@ export class UserController {
 	static async superAdmin (_: Request) {
 		const user = await FindUserByEmail.execute(superAdminEmail)
 		if (!user) throw new NotFoundError()
-		return await UpdateUserRole.execute({
-			app: AuthApps.Stranerd,
-			role: 'isAdmin',
-			userId: user.id,
-			value: true
-		})
+		const res = await Promise.all(
+			Object.values(AuthApps).map(async (app) => await UpdateUserRole.execute({
+				app,
+				role: 'isAdmin',
+				userId: user.id,
+				value: true
+			}))
+		)
+		return res.every((r) => r)
 	}
 }

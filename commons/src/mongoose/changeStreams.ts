@@ -3,9 +3,11 @@ import { BaseEntity } from '../structure'
 import { getCacheInstance } from '../cache'
 import { Logger } from '../logger'
 
+type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
+
 export type ChangeStreamCallbacks<Model, Entity> = {
 	created?: (data: { before: null, after: Entity }) => Promise<void>
-	updated?: (data: { before: Entity, after: Entity, changes: Partial<Model> }) => Promise<void>
+	updated?: (data: { before: Entity, after: Entity, changes: DeepPartial<Model> }) => Promise<void>
 	deleted?: (data: { before: Entity, after: null }) => Promise<void>
 }
 

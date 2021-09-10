@@ -2,7 +2,7 @@ import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/comm
 import { PasswordsController } from '../controllers'
 
 const resetPasswordEmail: Route = {
-	path: '/passwords/sendResetMail',
+	path: '/passwords/reset/mail',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {

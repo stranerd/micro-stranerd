@@ -3,8 +3,12 @@ import { UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { addUserCoins } from '@utils/modules/users/transactions'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
+	created: async ({ after }) => {
+		await addUserCoins(after.id, { gold: 10, bronze: 100 }, 'Congrats for signing up to Stranerd')
+	},
 	updated: async ({ before, after, changes }) => {
 		const updatedBio = !!changes.bio
 		if (updatedBio) {

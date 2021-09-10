@@ -3,7 +3,7 @@ import { AnswerUpvoteController } from '../../controllers/questions'
 
 export const answerUpvotesRoutes: Route[] = [
 	{
-		path: '/answers/upvotes',
+		path: '/answersUpvotes',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const answerUpvotesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/answers/:id/upvote',
+		path: '/answersUpvotes/:id/upvote',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -28,7 +28,7 @@ export const answerUpvotesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/answers/:id/downvote',
+		path: '/answersUpvotes/:id/downvote',
 		method: 'post',
 		controllers: [
 			requireAuthUser,

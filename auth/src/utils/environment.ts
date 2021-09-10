@@ -17,4 +17,4 @@ export const mailchimpConfig = {
 	dataCenter: MAILCHIMP_CONFIG.dataCenter
 }
 
-export const superAdminEmail = 'kevinfizu@gmail.com'
+export const superAdminEmail = getEnvOrFail('SUPER_ADMIN')

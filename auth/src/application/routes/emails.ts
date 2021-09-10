@@ -28,7 +28,7 @@ const emailSignUp: Route = {
 }
 
 const sendVerificationEmail: Route = {
-	path: '/emails/sendVerificationMail',
+	path: '/emails/verify/mail',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
