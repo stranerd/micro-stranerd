@@ -1,6 +1,6 @@
 import { QueryParams, QueryResults } from '@utils/commons'
 import { ChatMetaEntity } from '../entities/chatMeta'
-import { UserBio } from '../types/common'
+import { UserBio } from '../types'
 
 export interface IChatMetaRepository {
 	get: (query: QueryParams) => Promise<QueryResults<ChatMetaEntity>>

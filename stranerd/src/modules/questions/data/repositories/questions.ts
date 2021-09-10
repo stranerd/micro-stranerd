@@ -3,7 +3,7 @@ import { QuestionMapper } from '../mappers'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Answer, Question } from '../mongooseModels'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types/users'
+import { UserBio } from '../../domain/types'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository

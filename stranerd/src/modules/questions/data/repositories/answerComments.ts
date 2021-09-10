@@ -2,8 +2,8 @@ import { IAnswerCommentRepository } from '../../domain/irepositories/answerComme
 import { AnswerCommentMapper } from '../mappers'
 import { AnswerCommentFromModel, AnswerCommentToModel } from '../models'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { AnswerComment } from '@modules/questions/data/mongooseModels'
-import { UserBio } from '@modules/questions/domain/types/users'
+import { AnswerComment } from '../mongooseModels'
+import { UserBio } from '../../domain/types'
 
 export class AnswerCommentRepository implements IAnswerCommentRepository {
 	private static instance: AnswerCommentRepository

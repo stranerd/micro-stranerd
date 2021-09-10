@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerUpvoteFromModel } from '../models'
 import { AnswerUpvoteChangeStreamCallbacks } from '@utils/changeStreams/questions/answerUpvotes'
-import { AnswerUpvoteEntity } from '@modules/questions/domain/entities'
-import { AnswerUpvoteMapper } from '@modules/questions/data/mappers'
+import { AnswerUpvoteEntity } from '../../domain/entities'
+import { AnswerUpvoteMapper } from '../mappers'
 
 const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 	_id: {

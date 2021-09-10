@@ -1,6 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { UserFromModel } from '@modules/users/data/models/users'
-import { UserEntity } from '@modules/users/domain/entities/users'
+import { UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'

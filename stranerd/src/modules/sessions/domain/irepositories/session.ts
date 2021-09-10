@@ -1,7 +1,7 @@
 import { SessionToModel } from '../../data/models/session'
 import { SessionEntity } from '../entities/session'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { CancelReason, TaskID, UserBio } from '../types/common'
+import { CancelReason, TaskID, UserBio } from '../types'
 
 export interface ISessionRepository {
 	add: (data: SessionToModel) => Promise<SessionEntity>,

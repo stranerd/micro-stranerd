@@ -35,3 +35,7 @@ export const DeleteUsers = new DeleteUsersUseCase(userRepository)
 export const UpdateUserDetails = new UpdateUserDetailsUseCase(userRepository)
 export const UpdateUserProfile = new UpdateUserProfileUseCase(userRepository)
 export const UpdateUserRole = new UpdateUserRoleUseCase(userRepository)
+
+export { UserEntity } from './domain/entities/users'
+export { UserFromModel } from './data/models/users'
+export { AuthOutput, TokenInput } from './domain/types'

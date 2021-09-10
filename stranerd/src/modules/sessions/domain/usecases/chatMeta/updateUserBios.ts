@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { IChatMetaRepository } from '../../irepositories/chatMeta'
-import { UserBio } from '../../types/common'
+import { UserBio } from '../../types'
 
 type Input = { userId: string, userBio: UserBio }
 

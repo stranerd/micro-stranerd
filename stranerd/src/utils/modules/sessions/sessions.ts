@@ -1,6 +1,5 @@
-import { SessionEntity } from '@modules/sessions/domain/entities/session'
+import { MarkSessionDone, SessionEntity, UpdateTaskIdAndStartedAt } from '@modules/sessions'
 import { addDelayedJob, DelayedJobs, removeDelayedJob } from '@utils/commons'
-import { MarkSessionDone, UpdateTaskIdAndStartedAt } from '@modules/sessions'
 
 export const startSession = async (session: SessionEntity) => {
 	if (session.taskId && session.startedAt) return

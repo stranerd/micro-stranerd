@@ -1,7 +1,7 @@
 import { QuestionEntity } from '../entities/questions'
 import { QuestionToModel } from '../../data/models/questions'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { UserBio } from '../types/users'
+import { UserBio } from '../types'
 
 export interface IQuestionRepository {
 	add: (data: QuestionToModel) => Promise<QuestionEntity>

@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { PaymentFromModel } from '../models/payment'
-import { PaymentEntity } from '@modules/payments/domain/entities/payment'
+import { PaymentEntity } from '../../domain/entities/payment'
 import { PaymentChangeStreamCallbacks } from '@utils/changeStreams/payment/payment'
 import { PaymentMapper } from '../mappers/payment'
 

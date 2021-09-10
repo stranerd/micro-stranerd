@@ -1,11 +1,16 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerFromModel } from '@modules/questions/data/models/answers'
+import {
+	AnswerEntity,
+	AnswerFromModel,
+	DeleteAnswerComments,
+	FindQuestion,
+	MarkBestAnswer,
+	ModifyAnswers,
+	RemoveBestAnswer
+} from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { IncrementUserAnswersCount, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
+import { IncrementUserAnswersCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { AnswerEntity } from '@modules/questions/domain/entities'
-import { ScoreRewards } from '@modules/users/domain/types/users'
-import { DeleteAnswerComments, FindQuestion, MarkBestAnswer, ModifyAnswers, RemoveBestAnswer } from '@modules/questions'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {

@@ -1,6 +1,6 @@
-import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, UserTutor } from '../types/users'
+import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, UserTutor } from '../types'
 import { BaseEntity } from '@utils/commons'
-import { getRank } from '../types/ranks'
+import { getRank } from './ranks'
 import { getPercentage } from '@utils/functions'
 
 export class UserEntity extends BaseEntity {

@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { TransactionFromModel } from '../models/transactions'
 import { TransactionChangeStreamCallbacks } from '@utils/changeStreams/users/transactions'
-import { TransactionEntity } from '@modules/users/domain/entities/transactions'
-import { TransactionMapper } from '@modules/users/data/mappers/transactions'
+import { TransactionEntity } from '../../domain/entities/transactions'
+import { TransactionMapper } from '../mappers/transactions'
 
 const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 	_id: {

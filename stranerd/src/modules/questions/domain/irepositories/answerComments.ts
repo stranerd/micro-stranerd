@@ -1,7 +1,7 @@
 import { AnswerCommentToModel } from '../../data/models'
 import { AnswerCommentEntity } from '../entities/answerComments'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { UserBio } from '../types/users'
+import { UserBio } from '../types'
 
 export interface IAnswerCommentRepository {
 	add: (data: AnswerCommentToModel) => Promise<AnswerCommentEntity>

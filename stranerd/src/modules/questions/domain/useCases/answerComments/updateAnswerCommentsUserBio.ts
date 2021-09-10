@@ -1,5 +1,5 @@
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types/users'
+import { UserBio } from '../../types'
 import { IAnswerCommentRepository } from '../../irepositories/answerComments'
 
 type Input = { userId: string, userBio: UserBio }

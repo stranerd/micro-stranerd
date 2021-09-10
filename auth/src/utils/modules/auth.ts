@@ -6,8 +6,7 @@ import {
 	makeAccessToken,
 	makeRefreshToken
 } from '@utils/commons'
-import { AuthOutput, TokenInput } from '@modules/domain/types'
-import { FindUser } from '@modules/index'
+import { AuthOutput, FindUser, TokenInput } from '@modules/index'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
 	await deleteCachedAccessToken(userId)

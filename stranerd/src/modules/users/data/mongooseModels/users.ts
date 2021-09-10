@@ -3,7 +3,7 @@ import { UserFromModel } from '../models/users'
 import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
 import { UserEntity } from '../../domain/entities/users'
 import { UserMapper } from '../mappers/users'
-import { UserAccount } from '../../domain/types/users'
+import { UserAccount } from '../../domain/types'
 
 const metaKeys: (keyof UserAccount['meta'])[] = ['questions', 'answers', 'answerComments', 'sessions', 'tutorSessions']
 const UserMeta = Object.fromEntries(

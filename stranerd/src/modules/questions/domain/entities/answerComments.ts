@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types/users'
+import { UserBio } from '../types'
 
 export class AnswerCommentEntity extends BaseEntity {
 	public readonly id: string

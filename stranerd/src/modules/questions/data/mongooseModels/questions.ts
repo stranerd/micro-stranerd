@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { QuestionFromModel } from '../models'
 import { QuestionChangeStreamCallbacks } from '@utils/changeStreams/questions/questions'
-import { QuestionEntity } from '@modules/questions/domain/entities'
-import { QuestionMapper } from '@modules/questions/data/mappers'
+import { QuestionEntity } from '../../domain/entities'
+import { QuestionMapper } from '../mappers'
 
 const Schema = new mongoose.Schema<QuestionFromModel>({
 	_id: {

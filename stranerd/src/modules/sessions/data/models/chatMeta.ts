@@ -1,4 +1,4 @@
-import { UserBio } from '@modules/users/domain/types/users'
+import { UserBio } from '../../domain/types'
 import { ChatFromModel } from './chat'
 
 export interface ChatMetaFromModel extends ChatMetaToModel {

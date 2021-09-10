@@ -1,6 +1,6 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types/common'
+import { UserBio } from '../../types'
 
 type Input = { userId: string, userBio: UserBio }
 

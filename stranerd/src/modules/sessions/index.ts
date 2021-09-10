@@ -36,3 +36,10 @@ export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 export const GetChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
 export const UpdateChatMetaBio = new UpdateBioUseCase(chatMetaRepository)
 export const UpdateChatMetaUserBios = new UpdateUserBiosUseCase(chatMetaRepository)
+
+export { SessionFromModel } from './data/models/session'
+export { ChatFromModel } from './data/models/chat'
+export { ChatMetaFromModel } from './data/models/chatMeta'
+export { SessionEntity } from './domain/entities/session'
+export { ChatEntity } from './domain/entities/chat'
+export { ChatMetaEntity } from './domain/entities/chatMeta'

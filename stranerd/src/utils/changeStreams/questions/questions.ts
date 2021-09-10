@@ -1,12 +1,15 @@
 import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
-import { QuestionFromModel } from '@modules/questions/data/models/questions'
-import { DeleteQuestionAnswers, UpdateQuestionAnswersTags, UpdateTagsCount } from '@modules/questions'
+import {
+	DeleteQuestionAnswers,
+	QuestionEntity,
+	QuestionFromModel,
+	UpdateQuestionAnswersTags,
+	UpdateTagsCount
+} from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { ScoreRewards } from '@modules/users/domain/types/users'
-import { GetUsers, IncrementUserQuestionsCount, UpdateUserNerdScore } from '@modules/users'
+import { GetUsers, IncrementUserQuestionsCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
-import { QuestionEntity } from '@modules/questions/domain/entities'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {

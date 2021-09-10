@@ -15,3 +15,7 @@ export const ConfirmStripePaymentSuccess = new ConfirmStripePaymentSuccessUseCas
 export const FindPayment = new FindPaymentUseCase(paymentRepository)
 export const CreatePayment = new CreatePaymentUseCase(paymentRepository)
 export const MarkPaymentAsComplete = new MarkAsCompleteUseCase(paymentRepository)
+
+export { PaymentType, SupportedCurrencies, SupportedMethods } from './domain/types'
+export { PaymentFromModel } from './data/models/payment'
+export { PaymentEntity } from './domain/entities/payment'

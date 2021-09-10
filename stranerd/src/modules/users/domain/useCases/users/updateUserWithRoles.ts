@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
-import { UserRoles } from '../../types/users'
+import { UserRoles } from '../../types'
 
 type Input = { id: string, data: UserRoles, timestamp: number }
 

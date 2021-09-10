@@ -1,9 +1,9 @@
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { IChatMetaRepository } from '@modules/sessions/domain/irepositories/chatMeta'
+import { IChatMetaRepository } from '../../domain/irepositories/chatMeta'
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaFromModel } from '../models/chatMeta'
 import { ChatMeta } from '../mongooseModels/chatMeta'
-import { UserBio } from '../../domain/types/common'
+import { UserBio } from '../../domain/types'
 
 export class ChatMetaRepository implements IChatMetaRepository {
 	private static instance: ChatMetaRepository

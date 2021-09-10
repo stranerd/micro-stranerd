@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { SubjectFromModel } from '@modules/questions/data/models/subjects'
-import { SubjectEntity } from '@modules/questions/domain/entities'
+import { SubjectEntity, SubjectFromModel } from '@modules/questions'
 
 export const SubjectChangeStreamCallbacks: ChangeStreamCallbacks<SubjectFromModel, SubjectEntity> = {}

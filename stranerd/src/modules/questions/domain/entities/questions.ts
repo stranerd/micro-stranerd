@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types/users'
+import { UserBio } from '../types'
 import { BEST_ANSWERS_COUNT, QUESTION_DISCOUNT } from '@utils/constants'
 
 export class QuestionEntity extends BaseEntity {
