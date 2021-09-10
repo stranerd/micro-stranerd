@@ -16,6 +16,18 @@ export const usersRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/users/',
+		method: 'get',
+		controllers: [
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await UsersController.getUsers(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/users/:id',
 		method: 'get',
 		controllers: [
