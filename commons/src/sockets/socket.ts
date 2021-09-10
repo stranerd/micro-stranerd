@@ -24,7 +24,7 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 		const userId = socket.handshake.query.userId as string
 		const socketId = socket.id
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
-		socket.on('leave', async (data: LeaveRoomParams, _, callback: Callback) => {
+		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
 			if (!data.channel) return callback({
 				code: StatusCodes.ValidationError,
 				message: 'channel is required',
@@ -37,13 +37,13 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 				channel: data.channel
 			})
 		})
-		socket.on('join', async (data: JoinRoomParams, _, callback: Callback) => {
+		socket.on('join', async (data: JoinRoomParams, callback: Callback) => {
 			if (!data.channel) return callback({
 				code: StatusCodes.ValidationError,
 				message: 'channel is required',
 				channel: ''
 			})
-			if (channelExists(allChannels, data.channel)) return callback({
+			if (!channelExists(allChannels, data.channel)) return callback({
 				code: StatusCodes.BadRequest,
 				message: 'unknown channel',
 				channel: data.channel
