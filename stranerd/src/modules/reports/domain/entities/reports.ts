@@ -1,6 +1,5 @@
-import { ReportType } from '@modules/reports/data/models/reports'
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types/users'
+import { ReportType, UserBio } from '../types'
 
 export class ReportEntity extends BaseEntity {
 	public readonly id: string
@@ -8,7 +7,7 @@ export class ReportEntity extends BaseEntity {
 	public readonly reporterId: string
 	public readonly reporterBio: UserBio
 	public readonly reportedId: string
-	public readonly reported: object
+	public readonly reported: Record<string, any>
 	public readonly message: string
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -16,7 +15,7 @@ export class ReportEntity extends BaseEntity {
 	constructor ({
 		             id, reporterId, reporterBio, reportedId, type, reported, message,
 		             createdAt, updatedAt
-	             }: PaymentConstructorArgs) {
+	             }: ReportConstructorArgs) {
 		super()
 		this.id = id
 		this.type = type
@@ -30,14 +29,14 @@ export class ReportEntity extends BaseEntity {
 	}
 }
 
-type PaymentConstructorArgs = {
+type ReportConstructorArgs = {
 	id: string,
 	type: ReportType
 	reporterId: string
 	reporterBio: UserBio
 	reportedId: string
-	reported: Object
+	reported: Record<string, any>
 	message: string
-	createdAt: number, 
+	createdAt: number
 	updatedAt: number
 }

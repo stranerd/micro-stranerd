@@ -1,6 +1,4 @@
-import { UserBio } from '@modules/reports/domain/types/users'
-
-export type ReportType = 'user' | 'question' | 'answer'
+import { ReportType, UserBio } from '../../domain/types'
 
 export interface ReportFromModel extends ReportToModel {
 	_id: string
@@ -13,6 +11,6 @@ export interface ReportToModel {
 	reporterId: string
 	reporterBio: UserBio
 	reportedId: string
-	reported: Object
+	reported: Record<string, any>
 	message: string
 }
