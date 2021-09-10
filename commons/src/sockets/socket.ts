@@ -23,7 +23,7 @@ export type SocketCallers = {
 export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams, callers: SocketCallers) => {
 	socketInstance.on('connection', async (socket) => {
 		const socketId = socket.id
-		const app = (socket.handshake.query.app ?? '') as string
+		const app = socket.handshake.auth.app ?? ''
 		const user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
