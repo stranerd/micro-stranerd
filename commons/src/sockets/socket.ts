@@ -21,7 +21,7 @@ export type SocketCallers = {
 
 export const setupSocketConnection = (socketInstance: io.Server, params: SocketParams, callers: SocketCallers) => {
 	socketInstance.on('connection', async (socket) => {
-		const userId = socket.handshake.query.userId as string
+		const userId = (socket.handshake.query.userId ?? '') as string
 		const socketId = socket.id
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
@@ -104,10 +104,12 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 				channel: data.channel
 			})
 		})
-		if (userId) await callers.onConnect(userId, socketId)
-		socket.on('disconnect', async () => {
-			await callers.onDisconnect(userId, socketId)
-		})
+		if (userId) {
+			await callers.onConnect(userId, socketId)
+			socket.on('disconnect', async () => {
+				await callers.onDisconnect(userId, socketId)
+			})
+		}
 	})
 
 	return socketInstance

@@ -13,7 +13,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^0.0.1-alpha-93",
+		"@stranerd/api-commons": "^0.0.1-alpha-94",
 		"stripe": "^8.174.0"
 	},
 	"devDependencies": {
