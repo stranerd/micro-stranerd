@@ -1,7 +1,7 @@
 import { QueryParams, QueryResults } from '@utils/commons'
 import { AnswerToModel } from '../../data/models/answers'
 import { AnswerEntity } from '../entities/answers'
-import { UserBio } from '../types/users'
+import { UserBio } from '../types'
 
 export interface IAnswerRepository {
 	add: (data: AnswerToModel) => Promise<AnswerEntity>

@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerUpvoteFromModel } from '@modules/questions/data/models/answerUpvotes'
-import { AnswerUpvoteEntity } from '@modules/questions/domain/entities'
+import { AnswerUpvoteEntity, AnswerUpvoteFromModel } from '@modules/questions'
 
 export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvoteFromModel, AnswerUpvoteEntity> = {}

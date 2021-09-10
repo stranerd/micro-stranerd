@@ -1,6 +1,6 @@
 import { IAnswerRepository } from '../../irepositories/answers'
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types/users'
+import { UserBio } from '../../types'
 
 type Input = { userId: string, userBio: UserBio }
 

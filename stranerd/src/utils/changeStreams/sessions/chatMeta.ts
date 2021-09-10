@@ -1,8 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ChatMetaEntity } from '@modules/sessions/domain/entities/chatMeta'
-import { ChatMetaFromModel } from '@modules/sessions/data/models/chatMeta'
+import { ChatMetaEntity, ChatMetaFromModel, UpdateChatMetaBio } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { UpdateChatMetaBio } from '@modules/sessions'
 
 export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
 	created: async ({ after }) => {

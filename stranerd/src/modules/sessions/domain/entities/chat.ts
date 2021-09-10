@@ -1,4 +1,4 @@
-import { Media } from '../types/common'
+import { Media } from '../types'
 import { BaseEntity } from '@utils/commons'
 
 export class ChatEntity extends BaseEntity {

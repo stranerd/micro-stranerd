@@ -1,11 +1,6 @@
-import { MediaOutput } from '@utils/commons'
+import { UserBio } from '@modules/users'
 
-export type UserBio = {
-	email: string
-	firstName: string
-	lastName: string
-	photo: MediaOutput | null
-}
+export { UserBio }
 
 export enum ReportType {
 	users = 'users',

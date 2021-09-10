@@ -3,7 +3,7 @@ import { AnswerMapper } from '../mappers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '@modules/questions/domain/types/users'
+import { UserBio } from '../../domain/types'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository

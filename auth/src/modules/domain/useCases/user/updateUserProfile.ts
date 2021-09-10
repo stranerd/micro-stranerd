@@ -1,7 +1,7 @@
 import { BaseUseCase } from '@utils/commons'
 import { UserUpdateInput } from '../../types'
 import { IUserRepository } from '../../i-repositories/users'
-import { UserEntity } from '@modules/domain/entities/users'
+import { UserEntity } from '../../entities/users'
 
 type Input = {
 	userId: string,

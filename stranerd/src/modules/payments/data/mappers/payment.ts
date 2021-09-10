@@ -1,4 +1,4 @@
-import { PaymentEntity } from '@modules/payments/domain/entities/payment'
+import { PaymentEntity } from '../../domain/entities/payment'
 import { BaseMapper } from '@utils/commons'
 import { PaymentFromModel, PaymentToModel } from '../models/payment'
 

@@ -87,3 +87,11 @@ export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteReposito
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)
 export const CreateAnswerUpvote = new CreateAnswerUpvoteUseCase(answerUpvoteRepository)
 export const CreateAnswerDownvote = new CreateAnswerDownvoteUseCase(answerUpvoteRepository)
+
+export {
+	AnswerCommentFromModel, AnswerUpvoteFromModel, AnswerFromModel,
+	TagFromModel, QuestionFromModel, SubjectFromModel
+} from './data/models'
+export {
+	AnswerCommentEntity, AnswerUpvoteEntity, AnswerEntity, TagEntity, QuestionEntity, SubjectEntity
+} from './domain/entities'

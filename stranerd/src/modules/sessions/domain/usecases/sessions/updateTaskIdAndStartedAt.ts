@@ -1,6 +1,6 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { TaskID } from '../../types/common'
+import { TaskID } from '../../types'
 
 type Input = {
 	sessionId: string

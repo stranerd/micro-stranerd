@@ -1,7 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ReviewFromModel } from '@modules/users/data/models/reviews'
-import { ReviewEntity } from '@modules/users/domain/entities/reviews'
-import { UpdateUserRatings } from '@modules/users'
+import { ReviewEntity, ReviewFromModel, UpdateUserRatings } from '@modules/users'
 
 export const ReviewChangeStreamCallbacks: ChangeStreamCallbacks<ReviewFromModel, ReviewEntity> = {
 	created: async ({ after }) => {

@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ReferralFromModel } from '../models/referrals'
 import { ReferralChangeStreamCallbacks } from '@utils/changeStreams/users/referrals'
-import { ReferralEntity } from '@modules/users/domain/entities/referrals'
-import { ReferralMapper } from '@modules/users/data/mappers/referrals'
+import { ReferralEntity } from '../../domain/entities/referrals'
+import { ReferralMapper } from '../mappers/referrals'
 
 const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 	_id: {

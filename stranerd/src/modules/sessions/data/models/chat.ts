@@ -1,4 +1,4 @@
-import { Media } from '@modules/sessions/domain/types/common'
+import { Media } from '../../domain/types'
 
 export interface ChatFromModel extends ChatToModel {
 	_id: string

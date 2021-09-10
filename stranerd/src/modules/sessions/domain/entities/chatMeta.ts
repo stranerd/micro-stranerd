@@ -1,6 +1,6 @@
 import { BaseEntity } from '@utils/commons'
 import { ChatEntity } from './chat'
-import { UserBio } from '../types/common'
+import { UserBio } from '../types'
 
 export class ChatMetaEntity extends BaseEntity {
 	public readonly id: string

@@ -1,4 +1,4 @@
-import { TaskID, UserBio } from '../../domain/types/common'
+import { TaskID, UserBio } from '../../domain/types'
 
 export interface SessionFromModel extends SessionToModel {
 	_id: string

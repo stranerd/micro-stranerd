@@ -80,3 +80,16 @@ export const CreateTransaction = new CreateTransactionUseCase(transactionReposit
 export const GetReferrals = new GetReferralsUseCase(referralRepository)
 export const FindReferral = new FindReferralUseCase(referralRepository)
 export const CreateReferral = new CreateReferralUseCase(referralRepository)
+
+export { NotificationFromModel, NotificationToModel } from './data/models/notifications'
+export { ReferralFromModel } from './data/models/referrals'
+export { ReviewFromModel } from './data/models/reviews'
+export { TransactionFromModel } from './data/models/transactions'
+export { UserFromModel } from './data/models/users'
+export { NotificationEntity } from './domain/entities/notifications'
+export { ReferralEntity } from './domain/entities/referrals'
+export { ReviewEntity } from './domain/entities/reviews'
+export { TransactionEntity } from './domain/entities/transactions'
+export { UserEntity } from './domain/entities/users'
+export { ScoreRewards } from './domain/types'
+export { UserBio } from './domain/types'

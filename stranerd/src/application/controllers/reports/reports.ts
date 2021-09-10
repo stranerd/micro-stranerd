@@ -1,8 +1,7 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
-import { CreateReport, FindReport, GetReports } from '@modules/reports'
+import { CreateReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
 import { FindUser } from '@modules/users'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ReportData, ReportType } from '@modules/reports/domain/types'
 
 export class ReportController {
 	static async GetReports (req: Request) {

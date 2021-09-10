@@ -1,9 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ReferralFromModel } from '@modules/users/data/models/referrals'
-import { ReferralEntity } from '@modules/users/domain/entities/referrals'
+import { FindUser, ReferralEntity, ReferralFromModel } from '@modules/users'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { FindUser } from '@modules/users'
 
 export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromModel, ReferralEntity> = {
 	created: async ({ after }) => {

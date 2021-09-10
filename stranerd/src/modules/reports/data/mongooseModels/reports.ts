@@ -2,7 +2,7 @@ import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 import { ReportMapper } from '../mappers/reports'
 import { ReportEntity } from '../../domain/entities/reports'
-import { ReportChangeStreamCallbacks } from '@utils/changeStreams/report/report'
+import { ReportChangeStreamCallbacks } from '@utils/changeStreams/reports/reports'
 
 const ReportSchema = new mongoose.Schema<ReportFromModel>({
 	_id: {

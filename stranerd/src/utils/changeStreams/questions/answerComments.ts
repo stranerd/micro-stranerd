@@ -1,7 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerCommentFromModel } from '@modules/questions/data/models/answerComments'
-import { AnswerCommentEntity } from '@modules/questions/domain/entities'
-import { FindAnswer, ModifyCommentsCount } from '@modules/questions'
+import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer, ModifyCommentsCount } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { IncrementUserAnswerCommentsCount } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'

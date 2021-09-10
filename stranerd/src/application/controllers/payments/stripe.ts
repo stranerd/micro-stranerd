@@ -2,10 +2,12 @@ import {
 	ConfirmStripePaymentSuccess,
 	CreatePayment,
 	MakeStripePaymentIntent,
-	MarkPaymentAsComplete
+	MarkPaymentAsComplete,
+	PaymentType,
+	SupportedCurrencies,
+	SupportedMethods
 } from '@modules/payments'
 import { NotAuthorizedError, Request, validate, Validation } from '@utils/commons'
-import { PaymentType, SupportedCurrencies, SupportedMethods } from '@modules/payments/domain/types'
 import { BadRequestError } from '@stranerd/api-commons'
 
 export class StripeController {

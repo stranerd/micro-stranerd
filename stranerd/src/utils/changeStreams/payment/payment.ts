@@ -1,8 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { PaymentFromModel } from '@modules/payments/data/models/payment'
-import { PaymentEntity } from '@modules/payments/domain/entities/payment'
+import { PaymentEntity, PaymentFromModel, PaymentType } from '@modules/payments'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { PaymentType } from '@modules/payments/domain/types'
 
 export const PaymentChangeStreamCallbacks: ChangeStreamCallbacks<PaymentFromModel, PaymentEntity> = {
 	updated: async ({ after, changes }) => {

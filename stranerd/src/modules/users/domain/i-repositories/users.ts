@@ -1,5 +1,5 @@
 import { UserEntity } from '../entities/users'
-import { ScoreRewards, UserAccount, UserBio, UserRoles } from '../types/users'
+import { ScoreRewards, UserAccount, UserBio, UserRoles } from '../types'
 import { QueryParams, QueryResults } from '@utils/commons'
 
 export interface IUserRepository {

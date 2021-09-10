@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { TaskID, UserBio } from '../types/common'
+import { TaskID, UserBio } from '../types'
 
 export class SessionEntity extends BaseEntity {
 	public readonly id: string

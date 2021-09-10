@@ -6,3 +6,6 @@ const errorRepository = ErrorRepository.getInstance()
 
 export const AddError = new AddErrorUseCase(errorRepository)
 export const GetAndDeleteAllErrors = new GetAndDeleteAllErrorsUseCase(errorRepository)
+
+export { ErrorFromModel } from './data/models/errors'
+export { ErrorEntity } from './domain/entities/errors'

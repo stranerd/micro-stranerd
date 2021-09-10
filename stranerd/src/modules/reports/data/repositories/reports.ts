@@ -1,4 +1,4 @@
-import { IReportRepository } from '@modules/reports/domain/i-repositories/reports'
+import { IReportRepository } from '../../domain/i-repositories/reports'
 import { ReportMapper } from '../mappers/reports'
 import { Report } from '../mongooseModels/reports'
 import { ReportFromModel, ReportToModel } from '../models/reports'

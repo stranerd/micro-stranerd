@@ -1,8 +1,6 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { ChatFromModel } from '@modules/sessions/data/models/chat'
-import { ChatEntity } from '@modules/sessions/domain/entities/chat'
+import { ChatEntity, ChatFromModel, FindSession, GetChats } from '@modules/sessions'
 import { publishers } from '@utils/events'
-import { FindSession, GetChats } from '@modules/sessions'
 import { startSession } from '@utils/modules/sessions/sessions'
 
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {

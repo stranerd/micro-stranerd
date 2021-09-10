@@ -1,7 +1,5 @@
 import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
-import { SessionEntity } from '@modules/sessions/domain/entities/session'
-import { SessionFromModel } from '@modules/sessions/data/models/session'
-import { AddChat, CancelSession, GetSessions } from '@modules/sessions'
+import { AddChat, CancelSession, GetSessions, SessionEntity, SessionFromModel } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import {
@@ -9,11 +7,11 @@ import {
 	FindUser,
 	IncrementUsersSessionsCount,
 	RemoveUserQueuedSessions,
+	ScoreRewards,
 	SetUsersCurrentSession,
 	UpdateUserNerdScore
 } from '@modules/users'
 import { cancelSessionTask } from '@utils/modules/sessions/sessions'
-import { ScoreRewards } from '@modules/users/domain/types/users'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {

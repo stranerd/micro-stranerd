@@ -1,5 +1,5 @@
 import { BaseUseCase } from '@utils/commons'
-import { ReportToModel } from '@modules/reports/data/models/reports'
+import { ReportToModel } from '../../data/models/reports'
 import { ReportEntity } from '../entities/reports'
 import { IReportRepository } from '../i-repositories/reports'
 import { ReportData } from '../types'

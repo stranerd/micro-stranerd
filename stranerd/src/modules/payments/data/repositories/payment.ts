@@ -1,4 +1,4 @@
-import { IPaymentRepository } from '@modules/payments/domain/i-repositories/payment'
+import { IPaymentRepository } from '../../domain/i-repositories/payment'
 import { PaymentMapper } from '../mappers/payment'
 import { Payment } from '../mongooseModels/payment'
 import { PaymentToModel } from '../models/payment'

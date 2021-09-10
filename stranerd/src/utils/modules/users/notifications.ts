@@ -1,5 +1,4 @@
-import { NotificationToModel } from '@modules/users/data/models/notifications'
-import { CreateNotification, FindUser } from '@modules/users'
+import { CreateNotification, FindUser, NotificationToModel } from '@modules/users'
 import { publishers } from '@utils/events'
 import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain } from '@utils/environment'
