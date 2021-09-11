@@ -22,7 +22,7 @@ jobs:
       - name: Create .env Files
         run: make copy-envs
       - name: Set Apps In Environment Variables
-        run: export APPS=$(make echo-apps)
+        run: echo "APPS=$(make echo-apps)" >> $GITHUB_ENV
       - name: Install Dependencies
         run: make install-all
       - name: Build Apps
@@ -33,4 +33,4 @@ jobs:
           PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
         with:
-          args: app deploy $(echo $APPS) --quiet
+          args: app deploy ${{ env.APPS }} --quiet

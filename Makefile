@@ -40,4 +40,4 @@ copy-envs:
 	node bin/copy-envs.js $(APPS);
 
 echo-apps:
-	echo $(foreach app, $(APPS), $(app)/app.yaml)
+	@echo $(foreach app, $(APPS), $(app)/app.yaml)
