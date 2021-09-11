@@ -31,4 +31,4 @@ jobs:
           PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
         with:
-          args: app deploy $(make echo-apps) --quiet
+          args: app deploy ${{ make echo-apps }} --quiet
