@@ -21,6 +21,8 @@ jobs:
           args: secrets versions access latest --secret=Micro_Stranerd_Environment_Variables > env.json
       - name: Create .env Files
         run: make copy-envs
+      - name: Set Apps In Environment Variables
+        run: export APPS=$(make echo-apps)
       - name: Install Dependencies
         run: make install-all
       - name: Build Apps
@@ -31,4 +33,4 @@ jobs:
           PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
         with:
-          args: app deploy ${{ make echo-apps }} --quiet
+          args: app deploy $(echo $APPS) --quiet
