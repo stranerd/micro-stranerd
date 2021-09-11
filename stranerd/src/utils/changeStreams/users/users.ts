@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { UserEntity, UserFromModel } from '@modules/users'
+import { UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -17,6 +17,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			await UpdateAnswerCommentsUserBio.execute({ userId: after.id, userBio: after.bio })
 			await UpdateChatMetaUserBios.execute({ userId: after.id, userBio: after.bio })
 			await UpdateMySessionsBio.execute({ userId: after.id, userBio: after.bio })
+			await UpdateMyReviewsBio.execute({ userId: after.id, userBio: after.bio })
 		}
 
 		const updatedScore = !!changes.account?.score

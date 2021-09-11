@@ -1,6 +1,7 @@
 import { ReviewEntity } from '../entities/reviews'
 import { ReviewToModel } from '../../data/models/reviews'
 import { QueryParams, QueryResults } from '@utils/commons'
+import { UserBio } from '../types'
 
 export interface IReviewRepository {
 	findReview (data: string): Promise<ReviewEntity | null>
@@ -8,4 +9,6 @@ export interface IReviewRepository {
 	createReview (data: ReviewToModel): Promise<ReviewEntity>
 
 	getReviews (query: QueryParams): Promise<QueryResults<ReviewEntity>>
+
+	updateMyReviewsBio (userId: string, userBio: UserBio): Promise<boolean>
 }
