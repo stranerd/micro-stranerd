@@ -3,11 +3,11 @@ name: Publish to GCloud App Engine
 on:
   push:
     branches:
-      actions
+      production
 
 jobs:
   publish-gae:
-    environment: action
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
