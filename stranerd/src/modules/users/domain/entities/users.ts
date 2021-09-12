@@ -1,6 +1,6 @@
 import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, UserTutor } from '../types'
 import { BaseEntity } from '@utils/commons'
-import { getRank } from './ranks'
+import { getNextRank, getRank } from './ranks'
 import { getPercentage } from '@utils/functions'
 
 export class UserEntity extends BaseEntity {
@@ -31,6 +31,10 @@ export class UserEntity extends BaseEntity {
 
 	get rankProgress () {
 		return getPercentage(this.account.score ?? 0, this.rank.score)
+	}
+
+	get nextRank () {
+		return getNextRank(this.rank.id)
 	}
 }
 

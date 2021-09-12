@@ -43,3 +43,8 @@ const Ranks: Record<RankTypes, Rank> = {
 export const ranks = Object.values(Ranks).sort((a, b) => a.level - b.level)
 
 export const getRank = (score: number) => ranks.find((r) => score < r.score) ?? Ranks[RankTypes.Rookie]
+
+export const getNextRank = (rank: RankTypes): Rank | null => {
+	const index = ranks.findIndex((r) => r.id === rank)
+	return ranks[index + 1] ?? null
+}

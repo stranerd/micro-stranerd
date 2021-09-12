@@ -17,7 +17,7 @@ export class AnswerController {
 			title: req.body.title,
 			body: req.body.body
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			body: { required: true, rules: [Validation.isString] }
 		})
 
@@ -35,7 +35,7 @@ export class AnswerController {
 			body: req.body.body,
 			questionId: req.body.questionId
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			body: { required: true, rules: [Validation.isString] },
 			questionId: { required: true, rules: [Validation.isString] }
 		})

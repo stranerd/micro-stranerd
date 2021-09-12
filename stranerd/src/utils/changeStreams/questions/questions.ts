@@ -7,7 +7,7 @@ import {
 	UpdateTagsCount
 } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { GetUsers, IncrementUserQuestionsCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { GetUsers, IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -25,7 +25,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			increment: true
 		})
 
-		await IncrementUserQuestionsCount.execute({ id: after.userId, value: 1 })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'questions' })
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -49,7 +49,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitUpdated('questions', after)
-		await getSocketEmitter().emitUpdated(`questions/${ after.id }`, after)
+		await getSocketEmitter().emitUpdated(`questions/${after.id}`, after)
 
 		if (changes.tags) {
 			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
@@ -70,7 +70,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('questions', before)
-		await getSocketEmitter().emitDeleted(`questions/${ before.id }`, before)
+		await getSocketEmitter().emitDeleted(`questions/${before.id}`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 
@@ -84,6 +84,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			amount: -ScoreRewards.NewQuestion
 		})
 
-		await IncrementUserQuestionsCount.execute({ id: before.userId, value: -1 })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'questions' })
 	}
 }

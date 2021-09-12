@@ -43,10 +43,6 @@ export class SessionEntity extends BaseEntity {
 		this.startedAt = startedAt
 		this.endedAt = endedAt
 	}
-
-	get wasCancelled () {
-		return this.cancelled.busy || this.cancelled.student || this.cancelled.tutor
-	}
 }
 
 type SessionConstructorArgs = {

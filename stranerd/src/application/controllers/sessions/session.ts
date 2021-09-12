@@ -20,16 +20,22 @@ export class SessionController {
 	}
 
 	static async addSession (req: Request) {
+		const sessions = [
+			{ duration: 15, price: 10 }, { duration: 30, price: 20 }, { duration: 60, price: 40 },
+			{ duration: 120, price: 80 }, { duration: 180, price: 120 }
+		]
+
 		const data = validate({
 			message: req.body.message,
 			tutorId: req.body.tutorId,
-			duration: req.body.duration,
-			price: req.body.price
+			duration: req.body.duration
 		}, {
 			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			tutorId: { required: true, rules: [Validation.isString] },
-			duration: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			price: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] }
+			duration: {
+				required: true,
+				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val)]
+			}
 		})
 
 		const studentUser = await FindUser.execute(req.authUser!.id)
@@ -37,6 +43,7 @@ export class SessionController {
 
 		if (studentUser && tutorUser) return await AddSession.execute({
 			...data,
+			price: sessions.find((s) => s.duration === data.duration)!.price,
 			tutorBio: tutorUser.bio,
 			studentId: studentUser.id,
 			studentBio: studentUser.bio

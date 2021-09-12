@@ -23,16 +23,8 @@ export class ChatEntity extends BaseEntity {
 		this.readAt = readAt
 	}
 
-	get isMedia () {
-		return !!this.media
-	}
-
-	get isRead () {
-		return !!this.readAt
-	}
-
-	get isImage () {
-		return this.media && this.media.type.startsWith('image/')
+	get from () {
+		return this.path[0]
 	}
 }
 

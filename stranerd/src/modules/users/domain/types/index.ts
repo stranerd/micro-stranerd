@@ -12,7 +12,7 @@ export type UserRoles = AuthRoles
 
 export type UserDates = {
 	createdAt: number
-	deletedAt: number
+	deletedAt: number | null
 }
 
 export type UserTutor = {
@@ -35,6 +35,7 @@ export type UserAccount = {
 	meta: {
 		questions: number
 		answers: number
+		bestAnswers: number
 		answerComments: number
 		sessions: number
 		tutorSessions: number

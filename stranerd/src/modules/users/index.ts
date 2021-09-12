@@ -4,9 +4,7 @@ import { CreateUserWithBioUseCase } from './domain/useCases/users/createUserWith
 import { UpdateUserWithBioUseCase } from './domain/useCases/users/updateUserWithBio'
 import { MarkUserAsDeletedUseCase } from './domain/useCases/users/markUserAsDeleted'
 import { UpdateUserWithRolesUseCase } from './domain/useCases/users/updateUserWithRoles'
-import { IncrementUserQuestionsCountUseCase } from './domain/useCases/users/incrementUserQuestionsCount'
-import { IncrementUserAnswersCountUseCase } from './domain/useCases/users/incrementUserAnswersCount'
-import { IncrementUserAnswerCommentsCountUseCase } from './domain/useCases/users/incrementUserAnswerCommentsCount'
+import { IncrementUserMetaCountUseCase } from './domain/useCases/users/incrementUserMetaCount'
 import { AddUserCoinsUseCase } from './domain/useCases/users/addUserCoins'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
@@ -50,15 +48,13 @@ export const CreateUserWithBio = new CreateUserWithBioUseCase(userRepository)
 export const UpdateUserWithBio = new UpdateUserWithBioUseCase(userRepository)
 export const UpdateUserWithRoles = new UpdateUserWithRolesUseCase(userRepository)
 export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
-export const IncrementUserQuestionsCount = new IncrementUserQuestionsCountUseCase(userRepository)
-export const IncrementUserAnswersCount = new IncrementUserAnswersCountUseCase(userRepository)
-export const IncrementUserAnswerCommentsCount = new IncrementUserAnswerCommentsCountUseCase(userRepository)
 export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
 export const UpdateUserNerdScore = new UpdateUserNerdScoreUseCase(userRepository)
 export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepository)
 export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
 export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
 export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
+export const IncrementUserMetaCount = new IncrementUserMetaCountUseCase(userRepository)
 export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)

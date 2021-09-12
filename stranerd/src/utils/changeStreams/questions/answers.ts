@@ -9,14 +9,14 @@ import {
 	RemoveBestAnswer
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { IncrementUserAnswersCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
+import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`answers/${ after.questionId }`, after)
+		await getSocketEmitter().emitCreated(`answers/${after.questionId}`, after)
 
-		await IncrementUserAnswersCount.execute({ id: after.userId, value: 1 })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answers' })
 		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
 
 		await UpdateUserNerdScore.execute({
@@ -44,13 +44,20 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated(`answers/${ after.questionId }`, after)
-		await getSocketEmitter().emitUpdated(`answers/${ after.id }`, after)
+		await getSocketEmitter().emitUpdated(`answers/${after.questionId}`, after)
+		await getSocketEmitter().emitUpdated(`answers/${after.id}`, after)
 
-		if (changes.best) await UpdateUserNerdScore.execute({
-			userId: after.userId,
-			amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
-		})
+		if (changes.best) {
+			await UpdateUserNerdScore.execute({
+				userId: after.userId,
+				amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
+			})
+			await IncrementUserMetaCount.execute({
+				id: before.userId,
+				value: after.best ? 1 : -1,
+				property: 'bestAnswers'
+			})
+		}
 
 		if (changes.tags) {
 			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
@@ -78,8 +85,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`answers/${ before.questionId }`, before)
-		await getSocketEmitter().emitDeleted(`answers/${ before.id }`, before)
+		await getSocketEmitter().emitDeleted(`answers/${before.questionId}`, before)
+		await getSocketEmitter().emitDeleted(`answers/${before.id}`, before)
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
@@ -91,7 +98,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			add: false
 		})
 
-		await IncrementUserAnswersCount.execute({ id: before.userId, value: -1 })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answers' })
 		await ModifyAnswers.execute({ id: before.id, userId: before.userId, add: false })
 
 		if (before.best) {
@@ -100,6 +107,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				userId: before.userId,
 				amount: -ScoreRewards.NewAnswer
 			})
+			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
 		}
 		await DeleteAnswerComments.execute({ answerId: before.id })
 	}
