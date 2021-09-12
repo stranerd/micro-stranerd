@@ -10,6 +10,7 @@ export interface UserFromModel extends UserToModel {
 export interface UserToModel {
 	email: string
 	password: string
+	description: string
 	firstName: string
 	lastName: string
 	photo: MediaOutput | null

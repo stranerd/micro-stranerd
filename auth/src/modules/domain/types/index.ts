@@ -3,6 +3,7 @@ import { AuthUser, MediaOutput } from '@utils/commons'
 export interface UserUpdateInput {
 	firstName: string
 	lastName: string
+	description: string
 	photo: MediaOutput
 }
 
@@ -23,6 +24,7 @@ export interface RegisterInput {
 	firstName: string;
 	lastName: string;
 	password: string;
+	description: string
 	photo: MediaOutput | null;
 	referrer: string | null;
 }

@@ -33,6 +33,12 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		lowercase: true,
 		required: true
 	},
+	description: {
+		type: String,
+		trim: true,
+		required: false,
+		default: ''
+	},
 	photo: {
 		type: Object,
 		required: false,

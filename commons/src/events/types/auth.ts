@@ -6,6 +6,7 @@ export type AuthUserChange = {
 	data: {
 		firstName: string
 		lastName: string
+		description: string
 		email: string
 		photo: MediaOutput | null
 	},

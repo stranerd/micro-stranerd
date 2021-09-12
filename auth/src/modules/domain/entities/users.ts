@@ -4,6 +4,7 @@ export class UserEntity extends BaseEntity {
 	public readonly id: string
 	public readonly email: string
 	public readonly password: string
+	public readonly description: string
 	public readonly firstName: string
 	public readonly lastName: string
 	public readonly photo: MediaOutput | null
@@ -21,6 +22,7 @@ export class UserEntity extends BaseEntity {
 		this.password = data.password
 		this.firstName = data.firstName
 		this.lastName = data.lastName
+		this.description = data.description
 		this.photo = data.photo
 		this.referrer = data.referrer
 		this.isVerified = data.isVerified
@@ -35,6 +37,7 @@ export interface UserConstructorArgs {
 	id: string;
 	email: string;
 	password: string;
+	description: string;
 	roles: AuthRoles;
 	firstName: string;
 	lastName: string;

@@ -14,10 +14,12 @@ export class UserController {
 		const validateData = validate({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
+			description: req.body.description,
 			photo: req.body.photo
 		}, {
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString] },
 			photo: { required: false, rules: [Validation.isImage] }
 		})
 

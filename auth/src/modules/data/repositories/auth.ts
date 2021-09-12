@@ -190,6 +190,7 @@ export class AuthRepository implements IAuthRepository {
 				authTypes: [AuthTypes.google],
 				firstName,
 				lastName,
+				description: '',
 				isVerified: true,
 				roles: {},
 				password: '',

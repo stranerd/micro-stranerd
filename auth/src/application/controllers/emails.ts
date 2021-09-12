@@ -18,7 +18,8 @@ export class EmailsController {
 			lastName: req.body.lastName,
 			password: req.body.password,
 			photo: req.body.photo,
-			referrer: req.body.referrer
+			referrer: req.body.referrer,
+			description: req.body.description
 		}
 
 		const res = await GetUsers.execute({
@@ -37,6 +38,10 @@ export class EmailsController {
 			password: {
 				required: true,
 				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+			},
+			description: {
+				required: true,
+				rules: [Validation.isString]
 			},
 			photo: { required: false, rules: [Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },

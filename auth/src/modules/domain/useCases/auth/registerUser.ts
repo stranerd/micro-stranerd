@@ -16,6 +16,7 @@ export class RegisterUserUseCase implements BaseUseCase<RegisterInput, TokenInpu
 			lastName: params.lastName,
 			password: params.password,
 			email: params.email,
+			description: params.description,
 			photo: params.photo,
 			referrer: params.referrer,
 			isVerified: false,
