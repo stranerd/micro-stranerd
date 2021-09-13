@@ -30,6 +30,7 @@ import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersC
 import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
 import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
+import { UpdateUserSubjectsUseCase } from './domain/useCases/users/updateUserSubjects'
 import { UpdateUserStreakUseCase } from './domain/useCases/users/updateUserStreak'
 import { ReferralRepository } from './data/repositories/referrals'
 import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
@@ -59,6 +60,7 @@ export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
+export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

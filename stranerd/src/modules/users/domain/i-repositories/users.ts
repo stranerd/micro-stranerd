@@ -34,4 +34,6 @@ export interface IUserRepository {
 	updateUserTags (userId: string, tags: string[], add: boolean): Promise<boolean>
 
 	updateUserStatus (userId: string, socketId: string, add: boolean): Promise<boolean>
+
+	updateUserSubjects (userId: string, strongestSubject: string, weakerSubjects: string[]): Promise<boolean>
 }
