@@ -1,16 +1,17 @@
 import { AuthTypes, BaseUseCase } from '@utils/commons'
-import { RegisterInput, TokenInput } from '../../types'
+import { RegisterInput } from '../../types'
 import { IAuthRepository } from '../../i-repositories/auth'
 import { UserToModel } from '../../../data/models/users'
+import { UserEntity } from '../../entities/users'
 
-export class RegisterUserUseCase implements BaseUseCase<RegisterInput, TokenInput> {
+export class RegisterUserUseCase implements BaseUseCase<RegisterInput, UserEntity> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (params: RegisterInput): Promise<TokenInput> {
+	async execute (params: RegisterInput) {
 		const userModel: UserToModel = {
 			firstName: params.firstName,
 			lastName: params.lastName,

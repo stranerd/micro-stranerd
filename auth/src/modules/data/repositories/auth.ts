@@ -1,5 +1,5 @@
 import { IAuthRepository } from '../../domain/i-repositories/auth'
-import { Credential, PasswordResetInput, TokenInput } from '../../domain/types'
+import { Credential, PasswordResetInput } from '../../domain/types'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/users'
@@ -19,40 +19,37 @@ import {
 	readEmailFromPug,
 	ValidationError
 } from '@utils/commons'
+import { UserMapper } from '../mappers/users'
 
 const FIVE_MINUTE_IN_SECS = 60 * 5
 
 export class AuthRepository implements IAuthRepository {
 
 	private static instance: AuthRepository
+	private static mapper: UserMapper
 
 	static getInstance () {
 		if (!AuthRepository.instance) AuthRepository.instance = new AuthRepository()
 		return AuthRepository.instance
 	}
 
-	private static async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes): Promise<TokenInput> {
+	private static async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes) {
 		const userUpdated = await User.findByIdAndUpdate(user._id, {
 			$set: { lastSignedInAt: Date.now() },
 			$addToSet: { authTypes: [type] }
 		}, { new: true })
 
-		return {
-			id: userUpdated!._id,
-			roles: userUpdated!.roles,
-			isVerified: userUpdated!.isVerified,
-			authTypes: userUpdated!.authTypes
-		}
+		return AuthRepository.mapper.mapFrom(userUpdated)!
 	}
 
-	async addNewUser (data: UserToModel, type: AuthTypes): Promise<TokenInput> {
+	async addNewUser (data: UserToModel, type: AuthTypes) {
 		data.email = data.email.toLowerCase()
 		if (data.password) data.password = await hash(data.password)
 		const userData = await new User(data).save()
 		return AuthRepository.signInUser(userData, type)
 	}
 
-	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes): Promise<TokenInput> {
+	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes) {
 		details.email = details.email.toLowerCase()
 		const user = await User.findOne({ email: details.email })
 		if (!user) throw new ValidationError([
@@ -68,19 +65,14 @@ export class AuthRepository implements IAuthRepository {
 
 	}
 
-	async userTokenData (id: string): Promise<TokenInput> {
+	async userTokenData (id: string) {
 		const user = await User.findOne({ _id: id })
 		if (!user) throw new BadRequestError('No account with such id exists')
 
-		return {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
-		}
+		return AuthRepository.mapper.mapFrom(user)!
 	}
 
-	async sendVerificationMail (email: string): Promise<boolean> {
+	async sendVerificationMail (email: string) {
 		email = email.toLowerCase()
 		const token = getRandomValue(40)
 
@@ -105,7 +97,7 @@ export class AuthRepository implements IAuthRepository {
 
 	}
 
-	async verifyEmail (token: string): Promise<TokenInput> {
+	async verifyEmail (token: string) {
 		// check token in cache
 		const userEmail = await getCacheInstance.get('verification-token-' + token)
 		if (!userEmail) throw new InvalidToken()
@@ -113,14 +105,7 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
-		const tokenPayload: TokenInput = {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
-		}
-
-		return tokenPayload
+		return AuthRepository.mapper.mapFrom(user)!
 	}
 
 	async sendPasswordResetMail (email: string) {
@@ -156,15 +141,10 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOne({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
-		return {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
-		}
+		return AuthRepository.mapper.mapFrom(user)!
 	}
 
-	async googleSignIn (tokenId: string, referrer: string | null): Promise<TokenInput> {
+	async googleSignIn (tokenId: string, referrer: string | null) {
 		const client = new OAuth2Client(googleClientId)
 
 		const ticket = await client.verifyIdToken({

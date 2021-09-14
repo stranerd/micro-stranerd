@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { RegisterInput, RoleInput, TokenInput, UserUpdateInput } from '../../domain/types'
+import { RegisterInput, RoleInput, UserUpdateInput } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { UserFromModel } from '../models/users'
 import { AuthTypes, deleteCachedAccessToken, NotFoundError, parseQueryParams, QueryParams } from '@utils/commons'
@@ -41,7 +41,7 @@ export class UserRepository implements IUserRepository {
 		return this.mapper.mapFrom(user)!
 	}
 
-	async updateDetails (userId: string, details: RegisterInput): Promise<TokenInput> {
+	async updateDetails (userId: string, details: RegisterInput) {
 		const user = await User.findByIdAndUpdate(
 			userId,
 			{
@@ -60,19 +60,14 @@ export class UserRepository implements IUserRepository {
 		)
 		if (!user) throw new NotFoundError()
 
-		return {
-			id: user._id,
-			roles: user.roles,
-			isVerified: user.isVerified,
-			authTypes: user.authTypes
-		}
+		return this.mapper.mapFrom(user)!
 
 	}
 
 	async updateUserRole (roleInput: RoleInput) {
 		await User.findByIdAndUpdate(roleInput.userId, {
 			$set: {
-				[`roles.${ roleInput.app }.${ roleInput.role }`]: roleInput.value
+				[`roles.${roleInput.app}.${roleInput.role}`]: roleInput.value
 			}
 		})
 		// clear accessToken

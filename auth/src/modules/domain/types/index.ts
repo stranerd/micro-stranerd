@@ -7,8 +7,6 @@ export interface UserUpdateInput {
 	photo: MediaOutput
 }
 
-export type TokenInput = AuthUser
-
 export interface RoleInput {
 	app: AppTypes
 	userId: string

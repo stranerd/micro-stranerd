@@ -1,4 +1,4 @@
-import { RegisterInput, RoleInput, TokenInput, UserUpdateInput } from '../types'
+import { RegisterInput, RoleInput, UserUpdateInput } from '../types'
 import { QueryParams, QueryResults } from '@utils/commons'
 import { UserEntity } from '../entities/users'
 
@@ -9,7 +9,7 @@ export interface IUserRepository {
 
 	updateUserRole (roleInput: RoleInput): Promise<boolean>
 
-	updateDetails (userId: string, credentials: RegisterInput): Promise<TokenInput>
+	updateDetails (userId: string, credentials: RegisterInput): Promise<UserEntity>
 
 	updateUserProfile (userId: string, input: UserUpdateInput): Promise<UserEntity>
 

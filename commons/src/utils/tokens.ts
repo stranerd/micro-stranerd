@@ -4,20 +4,20 @@ import { AccessTokenExpired, NotAuthenticatedError, RefreshTokenMisusedError } f
 import { AuthUser, RefreshUser } from './authUser'
 import { getCacheInstance } from '../cache/'
 
-const MINUTE_IN_SECS = 60
-const DAYS14_IN_SECS = 14 * 24 * 60 * 60
+const ACCESS_TOKEN_TTL = 10 * 60
+const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60
 
-const getAccessTokenKey = (userId: string) => `${ userId }-access-token`
-const getRefreshTokenKey = (userId: string) => `${ userId }-refresh-token`
+const getAccessTokenKey = (userId: string) => `${userId}-access-token`
+const getRefreshTokenKey = (userId: string) => `${userId}-refresh-token`
 
 export const makeAccessToken = async (payload: AuthUser) => {
-	const token = jwt.sign(payload, accessTokenKey, { expiresIn: MINUTE_IN_SECS })
-	await getCacheInstance.set(getAccessTokenKey(payload.id), token, MINUTE_IN_SECS)
+	const token = jwt.sign(payload, accessTokenKey, { expiresIn: ACCESS_TOKEN_TTL })
+	await getCacheInstance.set(getAccessTokenKey(payload.id), token, ACCESS_TOKEN_TTL)
 	return token
 }
 export const makeRefreshToken = async (payload: RefreshUser) => {
-	const token = jwt.sign(payload, refreshTokenKey, { expiresIn: DAYS14_IN_SECS })
-	await getCacheInstance.set(getRefreshTokenKey(payload.id), token, DAYS14_IN_SECS)
+	const token = jwt.sign(payload, refreshTokenKey, { expiresIn: REFRESH_TOKEN_TTL })
+	await getCacheInstance.set(getRefreshTokenKey(payload.id), token, REFRESH_TOKEN_TTL)
 	return token
 }
 

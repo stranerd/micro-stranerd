@@ -1,15 +1,15 @@
 import { BaseUseCase } from '@utils/commons'
-import { TokenInput } from '../../types'
 import { IAuthRepository } from '../../i-repositories/auth'
+import { UserEntity } from '../../entities/users'
 
-export class VerifyEmailUseCase implements BaseUseCase<string, TokenInput> {
+export class VerifyEmailUseCase implements BaseUseCase<string, UserEntity> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (token: string): Promise<TokenInput> {
+	async execute (token: string) {
 		return await this.repository.verifyEmail(token)
 	}
 }

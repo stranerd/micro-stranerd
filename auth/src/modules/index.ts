@@ -38,4 +38,4 @@ export const UpdateUserRole = new UpdateUserRoleUseCase(userRepository)
 
 export { UserEntity } from './domain/entities/users'
 export { UserFromModel } from './data/models/users'
-export { AuthOutput, TokenInput } from './domain/types'
+export { AuthOutput } from './domain/types'
