@@ -1,5 +1,5 @@
 import { makeMiddleware } from '../controllers'
-import { EmailNotVerifiedError, NotAuthenticatedError } from '../../errors'
+import { NotAuthenticatedError } from '../../errors'
 import { verifyAccessToken } from '../../utils/tokens'
 
 export const requireAuthUser = makeMiddleware(
@@ -8,6 +8,6 @@ export const requireAuthUser = makeMiddleware(
 		if (!accessToken) throw new NotAuthenticatedError()
 		request.authUser = await verifyAccessToken(accessToken)
 		if (!request.authUser) throw new NotAuthenticatedError()
-		if (!request.authUser.isVerified) throw new EmailNotVerifiedError()
+		// if (!request.authUser.isVerified) throw new EmailNotVerifiedError()
 	}
 )

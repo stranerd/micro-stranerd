@@ -26,27 +26,22 @@ const FIVE_MINUTE_IN_SECS = 60 * 5
 export class AuthRepository implements IAuthRepository {
 
 	private static instance: AuthRepository
-	private static mapper: UserMapper
+	private mapper = new UserMapper()
+
+	private constructor () {
+		this.mapper = new UserMapper()
+	}
 
 	static getInstance () {
 		if (!AuthRepository.instance) AuthRepository.instance = new AuthRepository()
 		return AuthRepository.instance
 	}
 
-	private static async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes) {
-		const userUpdated = await User.findByIdAndUpdate(user._id, {
-			$set: { lastSignedInAt: Date.now() },
-			$addToSet: { authTypes: [type] }
-		}, { new: true })
-
-		return AuthRepository.mapper.mapFrom(userUpdated)!
-	}
-
 	async addNewUser (data: UserToModel, type: AuthTypes) {
 		data.email = data.email.toLowerCase()
 		if (data.password) data.password = await hash(data.password)
 		const userData = await new User(data).save()
-		return AuthRepository.signInUser(userData, type)
+		return this.signInUser(userData, type)
 	}
 
 	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes) {
@@ -61,7 +56,7 @@ export class AuthRepository implements IAuthRepository {
 			{ field: 'password', messages: ['Invalid credentials'] }
 		])
 
-		return AuthRepository.signInUser(user, type)
+		return this.signInUser(user, type)
 
 	}
 
@@ -69,7 +64,7 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOne({ _id: id })
 		if (!user) throw new BadRequestError('No account with such id exists')
 
-		return AuthRepository.mapper.mapFrom(user)!
+		return this.mapper.mapFrom(user)!
 	}
 
 	async sendVerificationMail (email: string) {
@@ -105,7 +100,7 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
-		return AuthRepository.mapper.mapFrom(user)!
+		return this.mapper.mapFrom(user)!
 	}
 
 	async sendPasswordResetMail (email: string) {
@@ -141,7 +136,7 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOne({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
-		return AuthRepository.mapper.mapFrom(user)!
+		return this.mapper.mapFrom(user)!
 	}
 
 	async googleSignIn (tokenId: string, referrer: string | null) {
@@ -184,5 +179,14 @@ export class AuthRepository implements IAuthRepository {
 			password: ''
 		}
 		return await this.authenticateUser(credentials, false, AuthTypes.google)
+	}
+
+	private async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes) {
+		const userUpdated = await User.findByIdAndUpdate(user._id, {
+			$set: { lastSignedInAt: Date.now() },
+			$addToSet: { authTypes: [type] }
+		}, { new: true })
+
+		return this.mapper.mapFrom(userUpdated)!
 	}
 }

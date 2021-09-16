@@ -16,7 +16,8 @@ export class Request {
 
 	constructor ({
 		             body, params, query,
-		             method, path, headers, files
+		             method, path, headers, files,
+		             data
 	             }: {
 		body: Record<string, any>
 		params: Record<string, any>
@@ -24,7 +25,8 @@ export class Request {
 		headers: Record<HeaderTypes, any>
 		files: StorageFile[]
 		method: string
-		path: string
+		path: string,
+		data: Record<string, any>
 	}) {
 		this.method = method
 		this.path = path
@@ -33,5 +35,7 @@ export class Request {
 		this.query = query
 		this.headers = headers
 		this.files = files
+		this.authUser = data.authUser ?? null
+		this.refreshUser = data.refreshUser ?? null
 	}
 }

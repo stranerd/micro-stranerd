@@ -69,13 +69,18 @@ const extractRequest = (req: Request) => {
 		}
 	}
 
-	return new CustomRequest({
+	const data = req.savedReq ?? {}
+	const request = new CustomRequest({
 		body: req.body ?? {},
 		params: req.params ?? {},
 		query: req.query ?? {},
 		method: req.method,
 		path: req.path,
 		headers,
-		files: fileArray
+		files: fileArray,
+		data
 	})
+	req.savedReq = request
+
+	return request
 }

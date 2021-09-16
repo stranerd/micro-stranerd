@@ -7,7 +7,7 @@ import { UserBio } from '../../domain/types'
 
 export class ChatMetaRepository implements IChatMetaRepository {
 	private static instance: ChatMetaRepository
-	private mapper: ChatMetaMapper
+	private mapper = new ChatMetaMapper()
 
 	private constructor () {
 		this.mapper = new ChatMetaMapper()

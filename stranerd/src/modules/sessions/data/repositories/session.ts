@@ -7,7 +7,7 @@ import { CancelReason, TaskID, UserBio } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
-	private mapper: SessionMapper
+	private mapper = new SessionMapper()
 
 	private constructor () {
 		this.mapper = new SessionMapper()
@@ -51,7 +51,7 @@ export class SessionRepository implements ISessionRepository {
 	async cancel (ids: string[], userId: string, reason: CancelReason) {
 		const result = await Session.updateMany({
 			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
-		}, { $set: { [`cancelled.${ reason }`]: true, done: true } })
+		}, { $set: { [`cancelled.${reason}`]: true, done: true } })
 		return result.acknowledged
 	}
 
