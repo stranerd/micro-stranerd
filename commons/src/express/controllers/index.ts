@@ -69,6 +69,7 @@ const extractRequest = (req: Request) => {
 		}
 	}
 
+	// @ts-ignore
 	const data = req.savedReq ?? {}
 	const request = new CustomRequest({
 		body: req.body ?? {},
@@ -80,6 +81,7 @@ const extractRequest = (req: Request) => {
 		files: fileArray,
 		data
 	})
+	// @ts-ignore
 	req.savedReq = request
 
 	return request
