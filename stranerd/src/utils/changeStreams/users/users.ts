@@ -4,12 +4,17 @@ import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserB
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
+import { getSocketEmitter } from '@index'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
+		await getSocketEmitter().emitCreated('users', after)
+		await getSocketEmitter().emitCreated(`users/${after.id}`, after)
 		await addUserCoins(after.id, { gold: 10, bronze: 100 }, 'Congrats for signing up to Stranerd')
 	},
 	updated: async ({ before, after, changes }) => {
+		await getSocketEmitter().emitUpdated('users', after)
+		await getSocketEmitter().emitUpdated(`users/${after.id}`, after)
 		const updatedBio = !!changes.bio
 		if (updatedBio) {
 			await UpdateQuestionsUserBio.execute({ userId: after.id, userBio: after.bio })
@@ -24,15 +29,19 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedScore && after.rank.id !== before.rank.id) {
 			const increased = after.account.score > before.account.score
 			if (increased) await sendNotification(after.id, {
-				body: `Congrats, you just got promoted to ${ after.rank.id }`,
+				body: `Congrats, you just got promoted to ${after.rank.id}`,
 				action: 'users',
 				data: { userId: after.id }
 			})
 			else await sendNotification(after.id, {
-				body: `Oops, you just got demoted to ${ after.rank.id }`,
+				body: `Oops, you just got demoted to ${after.rank.id}`,
 				action: 'users',
 				data: { userId: after.id }
 			})
 		}
+	},
+	deleted: async ({ before }) => {
+		await getSocketEmitter().emitDeleted('users', before)
+		await getSocketEmitter().emitDeleted(`users/${before.id}`, before)
 	}
 }

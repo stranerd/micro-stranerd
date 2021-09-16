@@ -4,7 +4,11 @@ import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
 import { UpdateUserStatus } from '@modules/users'
 
-const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
+const app = getNewServerInstance(routes, {
+	mine: ['notifications', 'transactions', 'referrals', 'chats', 'chatMetas', 'sessions', 'payments'],
+	admin: ['reports'],
+	open: ['users', 'reviews', 'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags']
+}, {
 	onConnect: async (userId, socketId) => {
 		await UpdateUserStatus.execute({
 			userId, socketId, add: true
@@ -27,7 +31,7 @@ const start = async () => {
 			})
 	)
 	await app.start(port)
-	await Logger.info(`${ appId } api has started listening on port`, port)
+	await Logger.info(`${appId} api has started listening on port`, port)
 }
 
 start().then()
