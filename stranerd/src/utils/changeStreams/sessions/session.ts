@@ -12,9 +12,14 @@ import {
 	UpdateUserNerdScore
 } from '@modules/users'
 import { cancelSessionTask } from '@utils/modules/sessions/sessions'
+import { getSocketEmitter } from '@index'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
+		await getSocketEmitter().emitMineCreated('sessions', after, after.studentId)
+		await getSocketEmitter().emitMineCreated(`sessions/${after.id}`, after, after.studentId)
+		await getSocketEmitter().emitMineCreated('sessions', after, after.tutorId)
+		await getSocketEmitter().emitMineCreated(`sessions/${after.id}`, after, after.tutorId)
 		await AddChat.execute({
 			path: [after.studentId, after.tutorId],
 			data: {
@@ -29,7 +34,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		)
 
 		await sendNotification(after.tutorId, {
-			body: `${ after.studentBio.firstName ?? 'Anon' } is requesting a new ${ after.duration } minutes session with you!`,
+			body: `${after.studentBio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
 			action: 'sessions',
 			data: { studentId: after.studentId, tutorId: after.tutorId }
 		}, 'New Session Request')
@@ -41,6 +46,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		})
 	},
 	updated: async ({ before, after, changes }) => {
+		await getSocketEmitter().emitMineUpdated('sessions', after, after.studentId)
+		await getSocketEmitter().emitMineUpdated(`sessions/${after.id}`, after, after.studentId)
+		await getSocketEmitter().emitMineUpdated('sessions', after, after.tutorId)
+		await getSocketEmitter().emitMineUpdated(`sessions/${after.id}`, after, after.tutorId)
+
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
 			if (after.accepted) {
@@ -137,6 +147,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 	},
 	deleted: async ({ before }) => {
+		await getSocketEmitter().emitMineDeleted('sessions', before, before.studentId)
+		await getSocketEmitter().emitMineDeleted(`sessions/${before.id}`, before, before.studentId)
+		await getSocketEmitter().emitMineDeleted('sessions', before, before.tutorId)
+		await getSocketEmitter().emitMineDeleted(`sessions/${before.id}`, before, before.tutorId)
 		if (before.done) {
 			await IncrementUsersSessionsCount.execute({
 				tutorId: before.tutorId,

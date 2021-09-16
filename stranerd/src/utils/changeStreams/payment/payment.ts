@@ -5,12 +5,12 @@ import { getSocketEmitter } from '@index'
 
 export const PaymentChangeStreamCallbacks: ChangeStreamCallbacks<PaymentFromModel, PaymentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`payments/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`payments/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineCreated('payments', after, after.userId)
+		await getSocketEmitter().emitMineCreated(`payments/${after.id}`, after, after.userId)
 	},
 	updated: async ({ after, changes }) => {
-		await getSocketEmitter().emitUpdated(`payments/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`payments/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineUpdated('payments', after, after.userId)
+		await getSocketEmitter().emitMineUpdated(`payments/${after.id}`, after, after.userId)
 		if (changes.isCompleted && after.isCompleted) {
 			if (after.type === PaymentType.BuyCoins) {
 				const gold = after.data.gold ?? 0
@@ -20,7 +20,7 @@ export const PaymentChangeStreamCallbacks: ChangeStreamCallbacks<PaymentFromMode
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`payments/${before.userId}`, before)
-		await getSocketEmitter().emitDeleted(`payments/${before.id}/${before.userId}`, before)
+		await getSocketEmitter().emitMineDeleted('payments', before, before.userId)
+		await getSocketEmitter().emitMineDeleted(`payments/${before.id}`, before, before.userId)
 	}
 }

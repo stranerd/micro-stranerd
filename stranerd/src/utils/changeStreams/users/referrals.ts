@@ -6,8 +6,8 @@ import { getSocketEmitter } from '@index'
 
 export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromModel, ReferralEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`referrals/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`referrals/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineCreated('referrals', after, after.userId)
+		await getSocketEmitter().emitMineCreated(`referrals/${after.id}`, after, after.userId)
 		await addUserCoins(
 			after.userId,
 			{ gold: 1, bronze: 20 },
@@ -25,11 +25,11 @@ export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromMo
 		)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated(`referrals/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`referrals/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineUpdated('referrals', after, after.userId)
+		await getSocketEmitter().emitMineUpdated(`referrals/${after.id}`, after, after.userId)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`referrals/${before.userId}`, before)
-		await getSocketEmitter().emitDeleted(`referrals/${before.id}/${before.userId}`, before)
+		await getSocketEmitter().emitMineDeleted('referrals', before, before.userId)
+		await getSocketEmitter().emitMineDeleted(`referrals/${before.id}`, before, before.userId)
 	}
 }

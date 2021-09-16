@@ -13,7 +13,8 @@ import { getSocketEmitter } from '@index'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('questions', after)
+		await getSocketEmitter().emitOpenCreated('questions', after)
+		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
 
 		await addUserCoins(after.userId, {
 			bronze: 0 - after.coins,
@@ -48,8 +49,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		])
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated('questions', after)
-		await getSocketEmitter().emitUpdated(`questions/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/${after.id}`, after)
 
 		if (changes.tags) {
 			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
@@ -69,8 +70,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('questions', before)
-		await getSocketEmitter().emitDeleted(`questions/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/${before.id}`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 

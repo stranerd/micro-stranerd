@@ -8,13 +8,13 @@ import { getSocketEmitter } from '@index'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('users', after)
-		await getSocketEmitter().emitCreated(`users/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('users', after)
+		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
 		await addUserCoins(after.id, { gold: 10, bronze: 100 }, 'Congrats for signing up to Stranerd')
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated('users', after)
-		await getSocketEmitter().emitUpdated(`users/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('users', after)
+		await getSocketEmitter().emitOpenUpdated(`users/${after.id}`, after)
 		const updatedBio = !!changes.bio
 		if (updatedBio) {
 			await UpdateQuestionsUserBio.execute({ userId: after.id, userBio: after.bio })
@@ -41,7 +41,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('users', before)
-		await getSocketEmitter().emitDeleted(`users/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('users', before)
+		await getSocketEmitter().emitOpenDeleted(`users/${before.id}`, before)
 	}
 }

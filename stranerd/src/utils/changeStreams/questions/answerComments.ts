@@ -6,7 +6,8 @@ import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`answersComments/${after.answerId}`, after)
+		await getSocketEmitter().emitOpenCreated('answersComments', after)
+		await getSocketEmitter().emitOpenCreated(`answersComments/${after.answerId}`, after)
 
 		await ModifyCommentsCount.execute({ id: after.answerId, increment: true })
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answerComments' })
@@ -18,8 +19,13 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 			data: { questionId: answer.questionId, answerId: answer.id }
 		})
 	},
+	updated: async ({ after }) => {
+		await getSocketEmitter().emitOpenUpdated('answersComments', after)
+		await getSocketEmitter().emitOpenUpdated(`answersComments/${after.answerId}`, after)
+	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`answersComments/${before.answerId}`, before)
+		await getSocketEmitter().emitOpenDeleted('answersComments', before)
+		await getSocketEmitter().emitOpenDeleted(`answersComments/${before.answerId}`, before)
 
 		await ModifyCommentsCount.execute({ id: before.answerId, increment: false })
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answerComments' })

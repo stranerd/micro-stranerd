@@ -14,7 +14,8 @@ import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`answers/${after.questionId}`, after)
+		await getSocketEmitter().emitOpenCreated('answers', after)
+		await getSocketEmitter().emitOpenCreated(`answers/${after.id}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answers' })
 		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
@@ -44,8 +45,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated(`answers/${after.questionId}`, after)
-		await getSocketEmitter().emitUpdated(`answers/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('answers', after)
+		await getSocketEmitter().emitOpenUpdated(`answers/${after.id}`, after)
 
 		if (changes.best) {
 			await UpdateUserNerdScore.execute({
@@ -85,8 +86,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`answers/${before.questionId}`, before)
-		await getSocketEmitter().emitDeleted(`answers/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('answers', before)
+		await getSocketEmitter().emitOpenDeleted(`answers/${before.id}`, before)
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,

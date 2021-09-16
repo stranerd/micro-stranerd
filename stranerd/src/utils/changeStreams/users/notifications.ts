@@ -4,15 +4,15 @@ import { getSocketEmitter } from '@index'
 
 export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<NotificationFromModel, NotificationEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`notifications/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`notifications/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineCreated('notifications', after, after.userId)
+		await getSocketEmitter().emitMineCreated(`notifications/${after.id}`, after, after.userId)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated(`notifications/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`notifications/${after.id}/${after.userId}`, after)
+		await getSocketEmitter().emitMineUpdated('notifications', after, after.userId)
+		await getSocketEmitter().emitMineUpdated(`notifications/${after.id}`, after, after.userId)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitCreated(`notifications/${before.userId}`, before)
-		await getSocketEmitter().emitCreated(`notifications/${before.id}/${before.userId}`, before)
+		await getSocketEmitter().emitMineDeleted('notifications', before, before.userId)
+		await getSocketEmitter().emitMineDeleted(`notifications/${before.id}`, before, before.userId)
 	}
 }
