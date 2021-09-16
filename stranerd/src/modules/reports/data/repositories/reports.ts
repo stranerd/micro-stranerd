@@ -30,4 +30,9 @@ export class ReportRepository implements IReportRepository {
 		const report = await new Report(data).save()
 		return this.mapper.mapFrom(report)!
 	}
+
+	async delete (id: string) {
+		const report = await Report.findByIdAndDelete(id)
+		return !!report
+	}
 }

@@ -8,4 +8,6 @@ export interface IReportRepository {
 	create (data: ReportToModel): Promise<ReportEntity>
 
 	get (query: QueryParams): Promise<QueryResults<ReportEntity>>
+
+	delete (id: string): Promise<boolean>
 }

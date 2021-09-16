@@ -1,5 +1,5 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
-import { CreateReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
+import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
 import { FindUser } from '@modules/users'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -11,6 +11,10 @@ export class ReportController {
 
 	static async FindReport (req: Request) {
 		return await FindReport.execute(req.params.id)
+	}
+
+	static async DeleteReport (req: Request) {
+		return await DeleteReport.execute(req.params.id)
 	}
 
 	static async CreateReport (req: Request) {

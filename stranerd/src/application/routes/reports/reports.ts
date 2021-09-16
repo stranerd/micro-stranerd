@@ -30,6 +30,19 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/reports/:id',
+		method: 'delete',
+		controllers: [
+			isAdmin,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ReportController.DeleteReport(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/reports',
 		method: 'post',
 		controllers: [
