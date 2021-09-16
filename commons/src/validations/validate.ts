@@ -18,7 +18,9 @@ export function validate<Keys extends Record<string, any>> (data: Keys, rules: R
 	const failed = errors.some(({ valid }) => !valid.isValid)
 
 	if (failed) throw new ValidationError(
-		errors.map(({ key, valid }) => ({ field: key, messages: valid.errors }))
+		errors
+			.filter(({ valid }) => !valid.isValid)
+			.map(({ key, valid }) => ({ field: key, messages: valid.errors }))
 	)
 
 	return data
