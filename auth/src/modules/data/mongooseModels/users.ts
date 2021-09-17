@@ -7,7 +7,7 @@ import { UserMapper } from '../mappers/users'
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	email: {
 		type: String,

@@ -5,7 +5,7 @@ import { UserEntity } from '../../domain/entities/users'
 import { UserMapper } from '../mappers/users'
 import { UserAccount } from '../../domain/types'
 
-const metaKeys: (keyof UserAccount['meta'])[] = ['questions', 'answers', 'answerComments', 'sessions', 'tutorSessions']
+const metaKeys: (keyof UserAccount['meta'])[] = ['questions', 'answers', 'bestAnswers', 'answerComments', 'sessions', 'tutorSessions']
 const UserMeta = Object.fromEntries(
 	metaKeys.map((key) => [key, {
 		type: Number,
@@ -48,7 +48,7 @@ const UserStreak = {
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	bio: {
 		type: Object as unknown as UserFromModel['bio'],

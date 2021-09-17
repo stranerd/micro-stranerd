@@ -7,7 +7,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports',
 		method: 'get',
 		controllers: [
-			isAdmin,
+			requireAuthUser, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -20,7 +20,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports/:id',
 		method: 'get',
 		controllers: [
-			isAdmin,
+			requireAuthUser, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -33,7 +33,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports/:id',
 		method: 'delete',
 		controllers: [
-			isAdmin,
+			requireAuthUser, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

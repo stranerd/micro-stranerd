@@ -7,7 +7,7 @@ import { TransactionMapper } from '../mappers/transactions'
 const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	event: {
 		type: String,

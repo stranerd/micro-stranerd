@@ -7,7 +7,7 @@ import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	unRead: {
 		type: [String],

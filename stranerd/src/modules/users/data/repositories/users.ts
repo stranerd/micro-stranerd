@@ -71,7 +71,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async addUserCoins (userId: string, coins: { gold: number, bronze: number }) {
-		await User.findById(userId, {
+		await User.findByIdAndUpdate(userId, {
 			$inc: {
 				'account.coins.gold': coins.gold,
 				'account.coins.bronze': coins.bronze

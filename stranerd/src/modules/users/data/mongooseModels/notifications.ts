@@ -7,7 +7,7 @@ import { NotificationMapper } from '../mappers/notifications'
 const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	body: {
 		type: String,

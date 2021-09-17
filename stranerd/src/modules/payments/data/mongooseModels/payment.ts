@@ -7,7 +7,7 @@ import { PaymentMapper } from '../mappers/payment'
 const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	type: {
 		type: String,

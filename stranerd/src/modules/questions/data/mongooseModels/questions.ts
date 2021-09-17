@@ -7,7 +7,7 @@ import { QuestionMapper } from '../mappers'
 const Schema = new mongoose.Schema<QuestionFromModel>({
 	_id: {
 		type: String,
-		default: new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	body: {
 		type: String,
