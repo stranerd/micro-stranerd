@@ -1,5 +1,5 @@
 import { FindUser, FindUserByEmail, UpdateUserProfile, UpdateUserRole } from '@modules/index'
-import { AuthApps, NotFoundError, Request, validate, Validation } from '@utils/commons'
+import { AuthApps, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 
@@ -46,7 +46,8 @@ export class UserController {
 	}
 
 	static async signout (req: Request) {
-		return await signOutUser(req.authUser?.id ?? '')
+		const user = await verifyAccessToken(req.headers.AccessToken ?? '').catch(() => null)
+		return await signOutUser(user?.id ?? '')
 	}
 
 	static async superAdmin (_: Request) {

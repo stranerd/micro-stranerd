@@ -44,7 +44,8 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async markBestAnswer (id: string, answerId: string, userId: string) {
 		const session = await mongoose.startSession()
-		const res = await session.withTransaction(async (session) => {
+		let res = null as any
+		await session.withTransaction(async (session) => {
 			const question = await Question.findOneAndUpdate({ _id: id, userId, 'answers.2': { $exists: false } }, {
 				$addToSet: { bestAnswers: answerId }
 			}, { session, new: true })
@@ -52,7 +53,8 @@ export class QuestionRepository implements IQuestionRepository {
 				session,
 				new: true
 			}) : null
-			return !!question && !!answer
+			res = !!question && !!answer
+			return res
 		})
 		await session.endSession()
 		return res

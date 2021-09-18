@@ -49,7 +49,6 @@ const signout: Route = {
 	path: '/user/signout',
 	method: 'post',
 	controllers: [
-		requireAuthUser,
 		makeController(async (req) => {
 			return {
 				status: StatusCodes.Ok,

@@ -20,7 +20,8 @@ export class ChatRepository implements IChatRepository {
 
 	async add (data: ChatToModel, path: [string, string]) {
 		const session = await mongoose.startSession()
-		const chat = await session.withTransaction(async (session) => {
+		let res = null as any
+		await session.withTransaction(async (session) => {
 			const chat = await new Chat({ ...data, path }).save({ session })
 			const chatData = this.mapper.mapForMeta(chat)
 			await ChatMeta.findOneAndUpdate(
@@ -35,10 +36,11 @@ export class ChatRepository implements IChatRepository {
 				},
 				{ upsert: true, session }
 			)
+			res = chat
 			return chat
 		})
 		await session.endSession()
-		return this.mapper.mapFrom(chat)!
+		return this.mapper.mapFrom(res)!
 	}
 
 	async get (query: QueryParams) {
@@ -57,7 +59,8 @@ export class ChatRepository implements IChatRepository {
 
 	async markRead (id: string, path: [string, string]) {
 		const session = await mongoose.startSession()
-		const res = await session.withTransaction(async (session) => {
+		let res = null as any
+		await session.withTransaction(async (session) => {
 			const readAt = Date.now()
 			const chat = await Chat.findOneAndUpdate(
 				{ _id: id, path, readAt: null },
@@ -71,7 +74,8 @@ export class ChatRepository implements IChatRepository {
 				ownerId: path[0], userId: path[1], 'last.id': id
 			}, { $set: { 'last.readAt': readAt } }, { session })
 
-			return !!chat
+			res = !!chat
+			return res
 		})
 		await session.endSession()
 		return res

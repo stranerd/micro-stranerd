@@ -57,14 +57,6 @@ export class AuthRepository implements IAuthRepository {
 		])
 
 		return this.signInUser(user, type)
-
-	}
-
-	async userTokenData (id: string) {
-		const user = await User.findOne({ _id: id })
-		if (!user) throw new BadRequestError('No account with such id exists')
-
-		return this.mapper.mapFrom(user)!
 	}
 
 	async sendVerificationMail (email: string, redirectUrl: string) {
@@ -127,8 +119,11 @@ export class AuthRepository implements IAuthRepository {
 		const userEmail = await getCacheInstance.get('password-reset-token-' + input.token)
 		if (!userEmail) throw new InvalidToken()
 
-		const user = await User.findOne({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
+		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
+
+		console.log(userEmail)
+		console.log(user)
 
 		return this.mapper.mapFrom(user)!
 	}

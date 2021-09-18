@@ -4,3 +4,4 @@ docs/
 public/
 .env
 package-lock.json
+src/utils/common

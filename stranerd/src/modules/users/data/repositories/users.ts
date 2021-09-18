@@ -108,13 +108,13 @@ export class UserRepository implements IUserRepository {
 
 	async updateUserStreak (userId: string) {
 		const session = await mongoose.startSession()
-		const streak = await session.withTransaction(async (session) => {
+		const res = { skip: false, increase: false, reset: false, streak: 0 }
+		await session.withTransaction(async (session) => {
 			const userModel = await User.findById(userId, null, { session })
 			const user = this.mapper.mapFrom(userModel)
 			const { lastEvaluatedAt = 0, count = 0, longestStreak = 0 } = user?.account?.streak ?? {}
 			const { isLessThan, isNextDay } = getDateDifference(new Date(lastEvaluatedAt), new Date())
 
-			const res = { skip: false, increase: false, reset: false, streak: 0 }
 			res.skip = isLessThan
 			res.increase = !isLessThan && isNextDay
 			res.reset = !isLessThan && !isNextDay
@@ -133,7 +133,7 @@ export class UserRepository implements IUserRepository {
 			return res
 		})
 		await session.endSession()
-		return streak
+		return res
 	}
 
 	async updateUserRatings (userId: string, ratings: number, add: boolean) {
@@ -154,7 +154,8 @@ export class UserRepository implements IUserRepository {
 
 	async updateUserStatus (userId: string, socketId: string, add: boolean) {
 		const session = await mongoose.startSession()
-		const res = await session.withTransaction(async (session) => {
+		let res = null as any
+		await session.withTransaction(async (session) => {
 			const userModel = await User.findById(userId, null, { session })
 			const user = this.mapper.mapFrom(userModel)
 			if (!user) return false
@@ -163,7 +164,8 @@ export class UserRepository implements IUserRepository {
 				updateData['$set'] = { 'status.lastUpdatedAt': Date.now() }
 			}
 			const newUser = await User.findByIdAndUpdate(userId, updateData, { session })
-			return !!newUser
+			res = !!newUser
+			return res
 		})
 		await session.endSession()
 		return res

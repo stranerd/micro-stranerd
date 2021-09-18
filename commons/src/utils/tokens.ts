@@ -24,9 +24,10 @@ export const makeRefreshToken = async (payload: RefreshUser) => {
 export const verifyAccessToken = async (token: string) => {
 	try {
 		const user = jwt.verify(token, accessTokenKey) as AuthUser
+		if (!user) throw new NotAuthenticatedError()
 		const cachedToken = await getCachedAccessToken(user.id)
 		// Cached access token was deleted, eg by user roles being modified, so token needs to be treated as expired
-		if (token !== cachedToken) throw new AccessTokenExpired()
+		if (token && token !== cachedToken) throw new AccessTokenExpired()
 		return user
 	} catch (err) {
 		if (err instanceof AccessTokenExpired) throw err
@@ -37,7 +38,9 @@ export const verifyAccessToken = async (token: string) => {
 
 export const verifyRefreshToken = async (token: string) => {
 	try {
-		return jwt.verify(token, refreshTokenKey) as RefreshUser
+		const user = jwt.verify(token, refreshTokenKey) as RefreshUser
+		if (!user) throw new NotAuthenticatedError()
+		return user
 	} catch (err) {
 		throw new NotAuthenticatedError()
 	}

@@ -1,5 +1,4 @@
 import {
-	AuthUser,
 	BadRequestError,
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
@@ -15,7 +14,7 @@ export const signOutUser = async (userId: string): Promise<boolean> => {
 	return true
 }
 
-export const generateAuthOutput = async (user: UserEntity): Promise<AuthOutput & { user: AuthUser }> => {
+export const generateAuthOutput = async (user: UserEntity): Promise<AuthOutput & { user: UserEntity }> => {
 	const accessToken = await makeAccessToken({
 		id: user.id,
 		roles: user.roles,
@@ -26,10 +25,10 @@ export const generateAuthOutput = async (user: UserEntity): Promise<AuthOutput &
 	return { accessToken, refreshToken, user }
 }
 
-export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { user: AuthUser }> => {
-	let returnUser = null as any
+export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { user: UserEntity }> => {
+	let user = null as any
 	const newTokens = await exchangeOldForNewTokens(tokens, async (id: string) => {
-		const user = returnUser = await FindUser.execute(id)
+		user = await FindUser.execute(id)
 		if (!user) throw new BadRequestError('No account with such id exists')
 
 		return {
@@ -40,5 +39,5 @@ export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { u
 		}
 	})
 
-	return { ...newTokens, user: returnUser }
+	return { ...newTokens, user }
 }

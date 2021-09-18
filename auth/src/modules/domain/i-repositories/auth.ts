@@ -8,8 +8,6 @@ export interface IAuthRepository {
 
 	authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes): Promise<UserEntity>
 
-	userTokenData (userId: string): Promise<UserEntity>
-
 	sendVerificationMail (email: string, redirectUrl: string): Promise<boolean>
 
 	verifyEmail (token: string): Promise<UserEntity>
