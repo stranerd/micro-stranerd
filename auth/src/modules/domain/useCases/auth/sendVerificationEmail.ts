@@ -1,14 +1,19 @@
 import { BaseUseCase } from '@utils/commons'
 import { IAuthRepository } from '../../i-repositories/auth'
 
-export class SendVerificationEmailUseCase implements BaseUseCase<string, boolean> {
+type Input = {
+	email: string,
+	redirectUrl: string
+}
+
+export class SendVerificationEmailUseCase implements BaseUseCase<Input, boolean> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {
 		this.repository = repo
 	}
 
-	async execute (email: string) {
-		return await this.repository.sendVerificationMail(email)
+	async execute (input: Input) {
+		return await this.repository.sendVerificationMail(input.email, input.redirectUrl)
 	}
 }

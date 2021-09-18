@@ -3,7 +3,7 @@ import { ChatMetaController } from '../../controllers/sessions'
 
 export const ChatMetaRoutes: Route[] = [
 	{
-		path: '/chatMeta',
+		path: '/chatMetas',
 		method: 'get',
 		controllers: [
 			requireAuthUser,

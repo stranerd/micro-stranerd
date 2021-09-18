@@ -10,11 +10,11 @@ export interface IAuthRepository {
 
 	userTokenData (userId: string): Promise<UserEntity>
 
-	sendVerificationMail (email: string): Promise<boolean>
+	sendVerificationMail (email: string, redirectUrl: string): Promise<boolean>
 
 	verifyEmail (token: string): Promise<UserEntity>
 
-	sendPasswordResetMail (email: string): Promise<boolean>
+	sendPasswordResetMail (email: string, redirectUrl: string): Promise<boolean>
 
 	resetPassword (input: PasswordResetInput): Promise<UserEntity>
 

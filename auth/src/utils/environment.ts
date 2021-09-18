@@ -8,8 +8,6 @@ export const port = parseInt(getEnvOrFail('PORT'))
 export const appId = getEnvOrFail('APP_ID')
 export const googleClientId = getEnvOrFail('GOOGLE_CLIENT_ID')
 
-export const clientDomain = `http${ !isDev ? 's' : '' }://` + getEnvOrFail('CLIENT_DOMAIN')
-
 const MAILCHIMP_CONFIG = JSON.parse(getEnvOrFail('MAILCHIMP_CONFIG') || '{}')
 export const mailchimpConfig = {
 	audienceId: MAILCHIMP_CONFIG.audienceId,

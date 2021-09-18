@@ -3,7 +3,7 @@ import { Credential, PasswordResetInput } from '../../domain/types'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/users'
-import { clientDomain, googleClientId } from '@utils/environment'
+import { googleClientId } from '@utils/environment'
 import { UserFromModel, UserToModel } from '../models/users'
 import { hash, hashCompare } from '@utils/hash'
 import {
@@ -67,7 +67,7 @@ export class AuthRepository implements IAuthRepository {
 		return this.mapper.mapFrom(user)!
 	}
 
-	async sendVerificationMail (email: string) {
+	async sendVerificationMail (email: string, redirectUrl: string) {
 		email = email.toLowerCase()
 		const token = getRandomValue(40)
 
@@ -75,10 +75,7 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send verification mail
-		const emailContent = await readEmailFromPug('emails/email-verification.pug', {
-			meta: { clientDomain },
-			token
-		})
+		const emailContent = await readEmailFromPug('emails/email-verification.pug', { redirectUrl, token })
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
@@ -103,7 +100,7 @@ export class AuthRepository implements IAuthRepository {
 		return this.mapper.mapFrom(user)!
 	}
 
-	async sendPasswordResetMail (email: string) {
+	async sendPasswordResetMail (email: string, redirectUrl: string) {
 		email = email.toLowerCase()
 		const token = getRandomValue(40)
 
@@ -111,10 +108,7 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)
 
 		// send reset password mail
-		const emailContent = await readEmailFromPug('emails/email-reset.pug', {
-			meta: { clientDomain },
-			token
-		})
+		const emailContent = await readEmailFromPug('emails/password-reset.pug', { redirectUrl, token })
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
