@@ -81,7 +81,14 @@ export const exchangeOldForNewTokens = async (
 	authUser = await getAuthUser(refreshUser.id)
 
 	return {
-		accessToken: await makeAccessToken(authUser),
-		refreshToken: await makeRefreshToken(refreshUser)
+		accessToken: await makeAccessToken({
+			id: authUser.id,
+			roles: authUser.roles,
+			isVerified: authUser.isVerified,
+			authTypes: authUser.authTypes
+		}),
+		refreshToken: await makeRefreshToken({
+			id: refreshUser.id
+		})
 	}
 }

@@ -99,10 +99,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^0.0.1-alpha-100":
-  version "0.0.1-alpha-100"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-100.tgz#ce6d9022df5f624502d88443b1d71e13b190f5e7"
-  integrity sha512-pYiPNvjtaO3hPEOmF7YX+4PZeLlHohNrgOiFRB67Zkms035kXN2GHFF/T/ly+iF+vGH9VW1IN5NtFijNWcfr+g==
+"@stranerd/api-commons@^0.0.1-alpha-101":
+  version "0.0.1-alpha-101"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-0.0.1-alpha-101.tgz#57c754c2e4dd1358cccdce464ea0897dfebbaeba"
+  integrity sha512-ivaWxmhd7Q9XIkhqs4NT4vkY11NaXXtYPX51I8JlXm2jBYqRW7lxXg2qmKS3ZzPT+eH49n1ASeXCR7t1YNUIOQ==
   dependencies:
     "@stranerd/validate" "^1.4.2"
     amqplib "^0.8.0"
@@ -113,7 +113,7 @@
     express "^4.17.1"
     express-fileupload "^1.2.1"
     jsonwebtoken "^8.5.1"
-    mongoose "^6.0.5"
+    mongoose "^6.0.6"
     morgan "^1.10.0"
     pug "^3.0.2"
     redis "^3.1.2"
@@ -2224,10 +2224,10 @@ mongodb@4.1.1:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongoose@^6.0.5:
-  version "6.0.5"
-  resolved "https://registry.npmjs.org/mongoose/-/mongoose-6.0.5.tgz"
-  integrity sha512-1MoG52oosjEK8z45DHQVbakP6DJG1sbQI/ZASBW8sZRV+rCaG/pC3L3wWjrsiped/2+uhvanWM9C89F2n6bQ3w==
+mongoose@^6.0.6:
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-6.0.6.tgz#d99d7c478b121e23c0035682da1b9b7640bff48b"
+  integrity sha512-8lHgva/q5msZT16KOKDl+26Mh7uzTrmznup0p/TMqDCt7Y41voP7rZ0sTW/6tk2nsrmmMlJzzThJ8vexq7aQtQ==
   dependencies:
     bson "^4.2.2"
     kareem "2.3.2"

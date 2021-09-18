@@ -27,32 +27,32 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 		const user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
-			if (!data.channel) return callback({
+			if (!data.channel) return typeof (callback) === 'function' && callback({
 				code: StatusCodes.ValidationError,
 				message: 'channel is required',
 				channel: ''
 			})
 			socket.leave(data.channel)
-			return callback({
+			return typeof (callback) === 'function' && callback({
 				code: StatusCodes.Ok,
 				message: '',
 				channel: data.channel
 			})
 		})
 		socket.on('join', async (data: JoinRoomParams, callback: Callback) => {
-			if (!data.channel) return callback({
+			if (!data.channel) return typeof (callback) === 'function' && callback({
 				code: StatusCodes.ValidationError,
 				message: 'channel is required',
 				channel: ''
 			})
 			let channel = data.channel
-			if (!channelExists(allChannels, data.channel)) return callback({
+			if (!channelExists(allChannels, data.channel)) return typeof (callback) === 'function' && callback({
 				code: StatusCodes.BadRequest,
 				message: 'unknown channel',
 				channel: data.channel
 			})
 			if (channelExists(params.admin, data.channel)) {
-				if (!app) return callback({
+				if (!app) return typeof (callback) === 'function' && callback({
 					code: StatusCodes.ValidationError,
 					message: 'app is required',
 					channel: data.channel
@@ -62,27 +62,27 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 					message: 'app is not a supported app',
 					channel: data.channel
 				})
-				if (!user) return callback({
+				if (!user) return typeof (callback) === 'function' && callback({
 					code: StatusCodes.NotAuthorized,
 					message: 'invalid or expired token',
 					channel: data.channel
 				})
-				if (!user.roles[app]?.isAdmin) return callback({
+				if (!user.roles[app]?.isAdmin) return typeof (callback) === 'function' && callback({
 					code: StatusCodes.NotAuthorized,
 					message: 'restricted privileges',
 					channel: data.channel
 				})
 				channel = data.channel
 			} else if (channelExists(params.mine, data.channel)) {
-				if (!user) return callback({
+				if (!user) return typeof (callback) === 'function' && callback({
 					code: StatusCodes.NotAuthorized,
 					message: 'invalid or expired token',
 					channel: data.channel
 				})
-				channel = `${ data.channel }/${ user.id }`
+				channel = `${data.channel}/${user.id}`
 			}
 			socket.join(channel)
-			return callback({
+			return typeof (callback) === 'function' && callback({
 				code: StatusCodes.Ok,
 				message: '',
 				channel
