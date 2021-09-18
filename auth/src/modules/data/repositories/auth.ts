@@ -21,7 +21,7 @@ import {
 } from '@utils/commons'
 import { UserMapper } from '../mappers/users'
 
-const FIVE_MINUTE_IN_SECS = 60 * 5
+const TOKENS_TTL_IN_SECS = 60 * 60
 
 export class AuthRepository implements IAuthRepository {
 
@@ -72,7 +72,7 @@ export class AuthRepository implements IAuthRepository {
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance.set('verification-token-' + token, email, FIVE_MINUTE_IN_SECS)
+		await getCacheInstance.set('verification-token-' + token, email, TOKENS_TTL_IN_SECS)
 
 		// send verification mail
 		const emailContent = await readEmailFromPug('emails/email-verification.pug', { redirectUrl, token })
@@ -105,7 +105,7 @@ export class AuthRepository implements IAuthRepository {
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance.set('password-reset-token-' + token, email, FIVE_MINUTE_IN_SECS)
+		await getCacheInstance.set('password-reset-token-' + token, email, TOKENS_TTL_IN_SECS)
 
 		// send reset password mail
 		const emailContent = await readEmailFromPug('emails/password-reset.pug', { redirectUrl, token })
