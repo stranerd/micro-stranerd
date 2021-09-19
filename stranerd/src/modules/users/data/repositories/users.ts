@@ -164,7 +164,6 @@ export class UserRepository implements IUserRepository {
 		const res = await User.updateMany({}, {
 			$set: { 'status.connections': [] }
 		})
-		console.log(res)
 		return !!res.acknowledged
 	}
 

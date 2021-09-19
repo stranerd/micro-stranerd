@@ -24,7 +24,7 @@ export class QuestionController {
 	}
 
 	static async GetQuestion (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		return await GetQuestions.execute(query)
 	}
 
@@ -63,7 +63,7 @@ export class QuestionController {
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.isMoreThanX(0), Validation.isLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
 			}
 		})
 

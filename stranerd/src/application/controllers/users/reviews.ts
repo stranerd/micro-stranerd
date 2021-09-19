@@ -3,7 +3,7 @@ import { QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
-		return await GetReviews.execute(req.body as QueryParams)
+		return await GetReviews.execute(req.query as QueryParams)
 	}
 
 	static async findReview (req: Request) {

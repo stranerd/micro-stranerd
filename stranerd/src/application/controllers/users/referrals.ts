@@ -3,7 +3,7 @@ import { QueryParams, Request } from '@utils/commons'
 
 export class ReferralsController {
 	static async getReferrals (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		query.auth = [{ field: 'userId', value: req.authUser!.id }]
 		return await GetReferrals.execute(query)
 	}

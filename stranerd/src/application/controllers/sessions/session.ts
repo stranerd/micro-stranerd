@@ -4,7 +4,7 @@ import { NotFoundError, QueryParams, Request, validate, Validation } from '@util
 
 export class SessionController {
 	static async getSessions (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		query.auth = [
 			{ field: 'studentId', value: req.authUser!.id },
 			{ field: 'tutorId', value: req.authUser!.id }

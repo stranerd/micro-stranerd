@@ -13,7 +13,6 @@ import {
 	EventTypes,
 	getCacheInstance,
 	getRandomValue,
-	InvalidToken,
 	MediaOutput,
 	mongoose,
 	readEmailFromPug,
@@ -84,7 +83,7 @@ export class AuthRepository implements IAuthRepository {
 	async verifyEmail (token: string) {
 		// check token in cache
 		const userEmail = await getCacheInstance.get('verification-token-' + token)
-		if (!userEmail) throw new InvalidToken()
+		if (!userEmail) throw new BadRequestError('Invalid token')
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
@@ -117,7 +116,7 @@ export class AuthRepository implements IAuthRepository {
 	async resetPassword (input: PasswordResetInput) {
 		// check token in cache
 		const userEmail = await getCacheInstance.get('password-reset-token-' + input.token)
-		if (!userEmail) throw new InvalidToken()
+		if (!userEmail) throw new BadRequestError('Invalid token')
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
@@ -126,15 +125,17 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async googleSignIn (tokenId: string, referrer: string | null) {
+		console.log(tokenId)
 		const client = new OAuth2Client(googleClientId)
 
 		const ticket = await client.verifyIdToken({
 			idToken: tokenId,
 			audience: googleClientId
-		})
+		}).catch(() => null)
+		if (!ticket) throw new BadRequestError('Invalid token')
 
 		const user = ticket.getPayload()
-		if (!user) throw new InvalidToken()
+		if (!user) throw new BadRequestError('Invalid token')
 
 		const [firstName = '', lastName = ''] = (user.name ?? '').split(' ')
 		const email = user.email!.toLowerCase()

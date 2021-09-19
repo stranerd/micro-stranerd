@@ -5,7 +5,7 @@ import { NotFoundError, QueryParams, Request, validate, Validation } from '@util
 
 export class ReportController {
 	static async GetReports (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		return await GetReports.execute(query)
 	}
 

@@ -1,7 +1,7 @@
 import io from 'socket.io'
 import { StatusCodes } from '../express'
 import { verifyAccessToken } from '../utils/tokens'
-import { AuthApps } from '../utils/authUser'
+import { AuthApps, AuthUser } from '../utils/authUser'
 
 export type SocketParams = {
 	open: string[]
@@ -24,7 +24,8 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 	socketInstance.on('connection', async (socket) => {
 		const socketId = socket.id
 		const app = socket.handshake.auth.app ?? ''
-		const user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
+		let user = null as AuthUser | null
+		if (socket.handshake.auth.token) user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
 		const allChannels = [...params.open, ...params.mine, ...params.admin]
 		socket.on('leave', async (data: LeaveRoomParams, callback: Callback) => {
 			if (!data.channel) return typeof (callback) === 'function' && callback({
@@ -88,12 +89,10 @@ export const setupSocketConnection = (socketInstance: io.Server, params: SocketP
 				channel
 			})
 		})
-		if (user) {
-			await callers.onConnect(user.id, socketId)
-			socket.on('disconnect', async () => {
-				await callers.onDisconnect(user.id, socketId)
-			})
-		}
+		if (user) await callers.onConnect(user.id, socketId)
+		socket.on('disconnect', async () => {
+			if (user) await callers.onDisconnect(user.id, socketId)
+		})
 	})
 
 	return socketInstance

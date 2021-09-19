@@ -3,7 +3,7 @@ import { Conditions, QueryParams, Request, validate, Validation } from '@utils/c
 
 export class ChatController {
 	static async getChats (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		query.auth = [{ field: 'path', value: req.authUser!.id, condition: Conditions.in }]
 		return await GetChats.execute(query)
 	}

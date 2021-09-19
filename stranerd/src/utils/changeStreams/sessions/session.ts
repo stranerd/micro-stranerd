@@ -11,7 +11,7 @@ import {
 	SetUsersCurrentSession,
 	UpdateUserNerdScore
 } from '@modules/users'
-import { cancelSessionTask } from '@utils/modules/sessions/sessions'
+import { cancelSessionTask, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
@@ -54,7 +54,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
 			if (after.accepted) {
-				// TODO: create task and update its taskName
+				await startSession(after)
 
 				const tutor = await FindUser.execute(after.tutorId)
 				const tutorLobby = tutor?.session.lobby ?? []

@@ -8,7 +8,7 @@ export class AnswerController {
 	}
 
 	static async GetAnswers (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		return await GetAnswers.execute(query)
 	}
 

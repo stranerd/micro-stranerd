@@ -3,7 +3,7 @@ import { QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class UsersController {
 	static async getUsers (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		return await GetUsers.execute(query)
 	}
 

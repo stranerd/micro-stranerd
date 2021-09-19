@@ -7,7 +7,7 @@ export class AnswerUpvoteController {
 	}
 
 	static async GetAnswerUpvotes (req: Request) {
-		const query = req.body as QueryParams
+		const query = req.query as QueryParams
 		return await GetAnswerUpvotes.execute(query)
 	}
 

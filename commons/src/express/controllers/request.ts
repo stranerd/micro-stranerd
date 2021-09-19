@@ -32,10 +32,22 @@ export class Request {
 		this.path = path
 		this.body = body
 		this.params = params
-		this.query = query
+		this.query = Object.fromEntries(
+			Object.entries(query ?? {})
+				.map(([key, val]) => [key, this.parseQueryStrings(val as any)])
+		)
 		this.headers = headers
 		this.files = files
 		this.authUser = data.authUser ?? null
 		this.refreshUser = data.refreshUser ?? null
+	}
+
+	private parseQueryStrings (value: string | string[]) {
+		if (Array.isArray(value)) return value.map(this.parseQueryStrings)
+		try {
+			return JSON.parse(value)
+		} catch (e) {
+			return value
+		}
 	}
 }
