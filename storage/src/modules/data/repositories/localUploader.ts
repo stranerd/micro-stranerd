@@ -15,7 +15,7 @@ export class LocalUploaderRepository implements IUploaderRepository {
 	async upload (path: string, media: MediaInput) {
 		const timestamp = Date.now()
 		media.name = media.name.toLowerCase()
-		path = `storage/${ environment }/${ path }/${ timestamp }-${ media.name }`
+		path = `storage/${environment}/${path}/${timestamp}-${media.name}`
 		const mediaPath = resolve(join(process.cwd(), 'public', path))
 		const folder = dirname(mediaPath)
 		if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
@@ -24,7 +24,7 @@ export class LocalUploaderRepository implements IUploaderRepository {
 			name: media.name,
 			type: media.type,
 			size: media.size,
-			path: encodeURI(`/${ path }`), timestamp,
+			path: encodeURI(`/${path}`), timestamp,
 			link: null
 		}
 	}

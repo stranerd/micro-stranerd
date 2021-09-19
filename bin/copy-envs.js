@@ -12,8 +12,8 @@ if (fs.existsSync('env.json')) {
 		}).map(([key, value]) => ([key, typeof value === 'string' ? value : JSON.stringify(value)]))
 		const envFormattedEntries = entries.reduce((accumulator, currentValue) => {
 			const [key, value] = currentValue
-			return accumulator + `${ key.toUpperCase() }=${ value }\n`
+			return accumulator + `${key.toUpperCase()}=${value}\n`
 		}, '')
-		fs.writeFileSync(`${ path }/.env`, envFormattedEntries)
+		fs.writeFileSync(`${path}/.env`, envFormattedEntries)
 	})
 } else throw new Error('Env.json doesn\'t exist. Try creating one by copying the env.example.json')

@@ -9,7 +9,7 @@ const sendMail: Route = {
 			const { email } = req.params
 			// filePath needs to be relative to the root of the microservice which is the part that started the process
 			const emailContent = await readEmailFromPug('emails/test.pug', {
-				message: `A sample email was just sent to ${ email }`
+				message: `A sample email was just sent to ${email}`
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
 				to: email,

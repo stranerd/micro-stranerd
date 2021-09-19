@@ -20,7 +20,7 @@ module.exports = {
 		'no-var': 'error',
 		'accessor-pairs': 'off',
 		'no-unused-vars': 0,
-		indent: ['error', 'tab', {SwitchCase: 1}],
+		indent: ['error', 'tab', { SwitchCase: 1 }],
 		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 		semi: ['error', 'never'],
 		'@typescript-eslint/semi': ['error', 'never'],

@@ -67,6 +67,6 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	return { start, socketEmitter: new SocketEmitter(socket) }
 }
 
-const formatPath = (path: string) => `/${ path }/`
+const formatPath = (path: string) => `/${path}/`
 	.replaceAll('///', '/')
 	.replaceAll('//', '/')

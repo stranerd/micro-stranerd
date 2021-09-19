@@ -14,5 +14,18 @@ export const ChatMetaRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/chatMetas/:id',
+		method: 'get',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ChatMetaController.findChatMeta(req)
+				}
+			})
+		]
 	}
 ]

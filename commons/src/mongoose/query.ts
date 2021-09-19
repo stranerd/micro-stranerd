@@ -103,12 +103,12 @@ const buildWhereQuery = (params: Where[], type: 'and' | 'or') => {
 			condition: checkedCondition
 		})
 	}).map((c) => ({
-		[`${ c.field }`]: {
-			[`$${ c.condition }`]: c.value
+		[`${c.field}`]: {
+			[`$${c.condition}`]: c.value
 		}
 	}))
 
 	return where.length > 0 ? {
-		[`$${ type }`]: where
+		[`$${type}`]: where
 	} : null
 }

@@ -10,10 +10,10 @@ export const subscribeToMailingList = async (email: string) => {
 	}
 	const bodyJSON = JSON.stringify(body)
 	const { audienceId, apiKey, dataCenter } = mailchimpConfig
-	const url = `https://${ dataCenter }.api.mailchimp.com/3.0/lists/${ audienceId }`
+	const url = `https://${dataCenter}.api.mailchimp.com/3.0/lists/${audienceId}`
 
 	try {
-		await axios.post(url, bodyJSON, { headers: { Authorization: `auth ${ apiKey }` } })
+		await axios.post(url, bodyJSON, { headers: { Authorization: `auth ${apiKey}` } })
 	} catch (error) {
 		await Logger.error('Mailchimp error:', error)
 	}

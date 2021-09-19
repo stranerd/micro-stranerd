@@ -18,6 +18,11 @@ export class ChatMetaRepository implements IChatMetaRepository {
 		return ChatMetaRepository.instance
 	}
 
+	async find (id: string, userId: string) {
+		const chat = await ChatMeta.findOne({ _id: id, ownerId: userId })
+		return this.mapper.mapFrom(chat)
+	}
+
 	async get (query: QueryParams) {
 		const data = await parseQueryParams<ChatMetaFromModel>(ChatMeta, query)
 

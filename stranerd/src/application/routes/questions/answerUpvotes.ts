@@ -15,6 +15,18 @@ export const answerUpvotesRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/answersUpvotes/:id',
+		method: 'get',
+		controllers: [
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnswerUpvoteController.FindAnswerUpvote(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/answersUpvotes/:id/upvote',
 		method: 'post',
 		controllers: [

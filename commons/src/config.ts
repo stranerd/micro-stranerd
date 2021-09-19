@@ -7,7 +7,7 @@ export const getEnvOrFail = (key: string) => {
 	const value = process.env[key]
 	if (value) return value
 	Logger
-		.error(`Environment variable not found: ${ key }`)
+		.error(`Environment variable not found: ${key}`)
 		.then(() => process.exit(1))
 	return ''
 }

@@ -1,4 +1,4 @@
-import { AddChat, GetChats, MarkChatRead } from '@modules/sessions'
+import { AddChat, FindChat, GetChats, MarkChatRead } from '@modules/sessions'
 import { Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ChatController {
@@ -6,6 +6,10 @@ export class ChatController {
 		const query = req.body as QueryParams
 		query.auth = [{ field: 'path', value: req.authUser!.id, condition: Conditions.in }]
 		return await GetChats.execute(query)
+	}
+
+	static async findChat (req: Request) {
+		return await FindChat.execute({ id: req.params.id, userId: req.authUser?.id! })
 	}
 
 	static async addChat (req: Request) {

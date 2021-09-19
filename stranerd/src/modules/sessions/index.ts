@@ -1,10 +1,12 @@
 import { ChatRepository } from './data/repositories/chat'
 import { SessionRepository } from './data/repositories/session'
 import { ChatMetaRepository } from './data/repositories/chatMeta'
-import { GetChatsUseCase } from './domain/usecases/chats/getChats'
 import { GetChatsMetaUseCase } from './domain/usecases/chatMeta/getChatsMeta'
 import { UpdateBioUseCase } from './domain/usecases/chatMeta/updateBio'
 import { UpdateUserBiosUseCase } from './domain/usecases/chatMeta/updateUserBios'
+import { FindChatMetaUseCase } from './domain/usecases/chatMeta/findChatMeta'
+import { GetChatsUseCase } from './domain/usecases/chats/getChats'
+import { FindChatUseCase } from './domain/usecases/chats/findChat'
 import { AddChatUseCase } from './domain/usecases/chats/addChat'
 import { MarkChatReadUseCase } from './domain/usecases/chats/markChatRead'
 import { FindSessionUseCase } from './domain/usecases/sessions/findSession'
@@ -20,6 +22,7 @@ const personalChatRepository = ChatRepository.getInstance()
 const chatMetaRepository = ChatMetaRepository.getInstance()
 const sessionRepository = SessionRepository.getInstance()
 
+export const FindChat = new FindChatUseCase(personalChatRepository)
 export const GetChats = new GetChatsUseCase(personalChatRepository)
 export const AddChat = new AddChatUseCase(personalChatRepository)
 export const MarkChatRead = new MarkChatReadUseCase(personalChatRepository)
@@ -33,6 +36,7 @@ export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionReposit
 export const UpdateTaskIdAndStartedAt = new UpdateTaskIdAndStartedAtUseCase(sessionRepository)
 export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 
+export const FindChatMeta = new FindChatMetaUseCase(chatMetaRepository)
 export const GetChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
 export const UpdateChatMetaBio = new UpdateBioUseCase(chatMetaRepository)
 export const UpdateChatMetaUserBios = new UpdateUserBiosUseCase(chatMetaRepository)

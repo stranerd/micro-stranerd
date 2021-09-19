@@ -20,7 +20,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 	const cloneName = dbName + '_streams_clone'
 	const getClone = () => collection.collection.conn.db.collection(cloneName)
 
-	const cacheKey = `streams-token-${ dbName }`
+	const cacheKey = `streams-token-${dbName}`
 	const resumeToken = await getCacheInstance.get(cacheKey)
 
 	const changeStream = collection.watch([], {
@@ -31,7 +31,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 	changeStream.on('change', async (data) => {
 		// @ts-ignore
 		const streamId = data._id._data
-		const cacheName = `streams-${ streamId }`
+		const cacheName = `streams-${streamId}`
 		const cached = await getCacheInstance.setInTransaction(cacheName, streamId, 15)
 		if (cached[0]) return
 		await getCacheInstance.set(cacheKey, JSON.stringify(data._id), 0)
@@ -80,7 +80,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 		}
 	})
 	changeStream.on('error', async (err) => {
-		await Logger.error(`Change Stream errored out: ${ dbName }`)
+		await Logger.error(`Change Stream errored out: ${dbName}`)
 		await Logger.error(err.message)
 		changeStream.close()
 		process.exit(1)

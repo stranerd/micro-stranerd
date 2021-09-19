@@ -144,7 +144,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		ratings: UserRating,
 		streak: UserStreak
 	}
-})
+}, { minimize: false })
 
 UserSchema.index({ 'bio.firstName': 'text', 'bio.lastName': 'text' })
 

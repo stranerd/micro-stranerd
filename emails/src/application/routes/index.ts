@@ -9,7 +9,7 @@ export const routes: Route[] = [
 			makeController(async () => {
 				return {
 					status: StatusCodes.Ok,
-					result: `${ appId } service running`
+					result: `${appId} service running`
 				}
 			})
 		]

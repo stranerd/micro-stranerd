@@ -15,7 +15,7 @@ export const getRabbitConnection = async (register: string) => {
 	}
 
 	const subscribe = async (topic: string, cb: (data: string, topic: string) => void) => {
-		const queue = `${ appId }-${ topic }`
+		const queue = `${appId}-${topic}`
 		await channel.assertQueue(queue, { durable: true })
 		await channel.bindQueue(queue, register, topic)
 		channel.consume(queue, (msg) => {

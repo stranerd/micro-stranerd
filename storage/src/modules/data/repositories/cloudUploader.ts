@@ -9,7 +9,7 @@ export class CloudUploaderRepository implements IUploaderRepository {
 	private bucket: Bucket
 
 	constructor () {
-		this.bucket = new Storage().bucket(`stranerd-storage-${ environment }`)
+		this.bucket = new Storage().bucket(`stranerd-storage-${environment}`)
 	}
 
 	async delete (path: string) {
@@ -22,7 +22,7 @@ export class CloudUploaderRepository implements IUploaderRepository {
 	async upload (path: string, media: MediaInput) {
 		const timestamp = Date.now()
 		media.name = media.name.toLowerCase()
-		path = `storage/${ environment }/${ path }/${ timestamp }-${ media.name }`
+		path = `storage/${environment}/${path}/${timestamp}-${media.name}`
 
 		const tempFilePath = getRandomValue()
 		fs.writeFileSync(tempFilePath, media.data)
