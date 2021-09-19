@@ -15,8 +15,8 @@ export const sendNotification = async (userId: string, data: NotificationData, t
 		const user = await FindUser.execute(userId)
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
-				notification: { ...data, link: getNotificationLink(data), title },
-				meta: { clientDomain }
+				notification: { ...data, title },
+				meta: { link: clientDomain + getNotificationLink(data) }
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
 				from: Emails.NO_REPLY,
@@ -30,9 +30,9 @@ export const sendNotification = async (userId: string, data: NotificationData, t
 }
 
 const getNotificationLink = (notification: NotificationData): string => {
-	if (notification.action === 'questions') return `/questions/${ notification.data.questionId }`
-	else if (notification.action === 'answers') return `/questions/${ notification.data.questionId }#${ notification.data.answerId }`
-	else if (notification.action === 'sessions') return `/sessions/${ notification.data.studentId }`
-	else if (notification.action === 'users') return `/users/${ notification.data.userId }`
+	if (notification.action === 'questions') return `/questions/${notification.data.questionId}`
+	else if (notification.action === 'answers') return `/questions/${notification.data.questionId}#${notification.data.answerId}`
+	else if (notification.action === 'sessions') return `/sessions/${notification.data.studentId}`
+	else if (notification.action === 'users') return `/users/${notification.data.userId}`
 	return '/dashboard'
 }

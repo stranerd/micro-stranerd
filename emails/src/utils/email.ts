@@ -1,7 +1,7 @@
 import { createTransport } from 'nodemailer'
-import { emails } from '@utils/environment'
+import { emails, isDev } from '@utils/environment'
 import path from 'path'
-import { Email, Emails } from '@utils/commons'
+import { Email, Emails, Logger } from '@utils/commons'
 import { AddError } from '@modules/index'
 
 export const sendMail = async (email: Email) => {
@@ -34,7 +34,7 @@ export const sendMail = async (email: Email) => {
 	})
 
 	await transporter.sendMail({
-		from: `Stranerd ${ from }`,
+		from: `Stranerd ${from}`,
 		html: content,
 		to, subject, attachments
 	})
@@ -42,6 +42,7 @@ export const sendMail = async (email: Email) => {
 
 export const sendMailAndCatchError = async (email: Email) => {
 	try {
+		if (isDev) await Logger.info(email.to, email.content)
 		await sendMail(email)
 	} catch (e) {
 		await AddError.execute({

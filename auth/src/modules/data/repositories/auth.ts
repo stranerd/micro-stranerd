@@ -67,7 +67,8 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('verification-token-' + token, email, TOKENS_TTL_IN_SECS)
 
 		// send verification mail
-		const emailContent = await readEmailFromPug('emails/email-verification.pug', { redirectUrl, token })
+		const url = `${redirectUrl}?token=${token}`
+		const emailContent = await readEmailFromPug('emails/email-verification.pug', { redirectUrl: url })
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
@@ -78,7 +79,6 @@ export class AuthRepository implements IAuthRepository {
 		})
 
 		return true
-
 	}
 
 	async verifyEmail (token: string) {
@@ -100,7 +100,8 @@ export class AuthRepository implements IAuthRepository {
 		await getCacheInstance.set('password-reset-token-' + token, email, TOKENS_TTL_IN_SECS)
 
 		// send reset password mail
-		const emailContent = await readEmailFromPug('emails/password-reset.pug', { redirectUrl, token })
+		const url = `${redirectUrl}?token=${token}`
+		const emailContent = await readEmailFromPug('emails/password-reset.pug', { redirectUrl: url })
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: email,
@@ -111,7 +112,6 @@ export class AuthRepository implements IAuthRepository {
 		})
 
 		return true
-
 	}
 
 	async resetPassword (input: PasswordResetInput) {
@@ -121,9 +121,6 @@ export class AuthRepository implements IAuthRepository {
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
-
-		console.log(userEmail)
-		console.log(user)
 
 		return this.mapper.mapFrom(user)!
 	}

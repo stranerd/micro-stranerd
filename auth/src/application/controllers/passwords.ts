@@ -32,7 +32,7 @@ export class PasswordsController {
 		})
 
 		const data = await ResetPassword.execute(validateData)
-		return generateAuthOutput(data)
+		return await generateAuthOutput(data)
 	}
 
 	static async updatePassword (req: Request) {

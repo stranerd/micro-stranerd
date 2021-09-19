@@ -35,5 +35,7 @@ export interface IUserRepository {
 
 	updateUserStatus (userId: string, socketId: string, add: boolean): Promise<boolean>
 
+	resetAllUsersStatus (): Promise<boolean>
+
 	updateUserSubjects (userId: string, strongestSubject: string, weakerSubjects: string[]): Promise<boolean>
 }

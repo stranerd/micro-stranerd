@@ -36,6 +36,7 @@ import { ReferralRepository } from './data/repositories/referrals'
 import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
 import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
 import { GetReferralsUseCase } from './domain/useCases/referrals/getReferrals'
+import { ResetAllUsersStatusUseCase } from './domain/useCases/users/resetAllUsersStatus'
 
 const userRepository = UserRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
@@ -60,6 +61,7 @@ export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
+export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
 export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)

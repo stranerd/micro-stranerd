@@ -2,7 +2,7 @@ import { getNewServerInstance, Logger, setupMongooseConnection } from '@utils/co
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
-import { UpdateUserStatus } from '@modules/users'
+import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 
 const app = getNewServerInstance(routes, {
 	mine: ['notifications', 'transactions', 'referrals', 'chats', 'chatMetas', 'sessions', 'payments'],
@@ -30,6 +30,7 @@ const start = async () => {
 				await subscriber.subscribe()
 			})
 	)
+	await ResetAllUsersStatus.execute()
 	await app.start(port)
 	await Logger.info(`${appId} api has started listening on port`, port)
 }
