@@ -11,6 +11,6 @@ export interface IQuestionRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	removeBestAnswer: (id: string, answerId: string) => Promise<boolean>
 	updateQuestionsUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
-	modifyAnswers: (id: string, userId: string, add: boolean) => Promise<boolean>
+	modifyAnswers: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	markBestAnswer: (id: string, answerId: string, userId: string) => Promise<boolean>
 }

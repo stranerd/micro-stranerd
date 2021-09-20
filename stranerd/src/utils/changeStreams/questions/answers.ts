@@ -5,7 +5,7 @@ import {
 	DeleteAnswerComments,
 	FindQuestion,
 	MarkBestAnswer,
-	ModifyAnswers,
+	ModifyQuestionAnswers,
 	RemoveBestAnswer
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
@@ -18,7 +18,12 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitOpenCreated(`answers/${after.id}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answers' })
-		await ModifyAnswers.execute({ id: after.id, userId: after.userId, add: true })
+		await ModifyQuestionAnswers.execute({
+			questionId: after.questionId,
+			answerId: after.id,
+			userId: after.userId,
+			add: true
+		})
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -100,7 +105,12 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answers' })
-		await ModifyAnswers.execute({ id: before.id, userId: before.userId, add: false })
+		await ModifyQuestionAnswers.execute({
+			questionId: before.questionId,
+			answerId: before.id,
+			userId: before.userId,
+			add: false
+		})
 
 		if (before.best) {
 			await RemoveBestAnswer.execute({ id: before.questionId, answerId: before.id })

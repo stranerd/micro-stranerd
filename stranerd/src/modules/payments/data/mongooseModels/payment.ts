@@ -40,7 +40,7 @@ const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
 	},
 	isCompleted: {
 		type: Boolean,
-		required: true,
+		required: false,
 		default: false
 	},
 	createdAt: {
@@ -53,7 +53,7 @@ const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Payment = mongoose.model<PaymentFromModel>('StranerdPayment', PaymentSchema)
 

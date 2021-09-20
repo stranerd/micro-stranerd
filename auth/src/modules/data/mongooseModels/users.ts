@@ -31,7 +31,8 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		type: String,
 		trim: true,
 		lowercase: true,
-		required: true
+		required: false,
+		default: ''
 	},
 	description: {
 		type: String,

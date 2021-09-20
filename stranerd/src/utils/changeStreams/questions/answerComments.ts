@@ -13,10 +13,10 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answerComments' })
 
 		const answer = await FindAnswer.execute(after.answerId)
-		if (answer) await sendNotification(answer.userId, {
-			body: 'Your question has a new comment. Go have a look',
-			action: 'answers',
-			data: { questionId: answer.questionId, answerId: answer.id }
+		if (answer && answer.userId !== after.userId) await sendNotification(answer.userId, {
+			body: 'Your answer has a new comment. Go have a look',
+			action: 'answerComments',
+			data: { questionId: answer.questionId, answerId: answer.id, commentId: after.id }
 		})
 	},
 	updated: async ({ after }) => {

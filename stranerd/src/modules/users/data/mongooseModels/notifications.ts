@@ -22,6 +22,11 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		required: false,
 		default: false
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed,
+		required: true,
+		default: {}
+	},
 	userId: {
 		type: String,
 		required: true
@@ -36,7 +41,7 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Notification = mongoose.model<NotificationFromModel>('StranerdNotification', NotificationSchema)
 
