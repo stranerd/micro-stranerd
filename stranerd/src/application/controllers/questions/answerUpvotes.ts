@@ -11,15 +11,9 @@ export class AnswerUpvoteController {
 		return await GetAnswerUpvotes.execute(query)
 	}
 
-	static async UpvoteAnswer (req: Request) {
-		return await CreateAnswerUpvote.execute({
-			answerId: req.params.id,
-			userId: req.authUser!.id
-		})
-	}
-
-	static async DownvoteAnswer (req: Request) {
-		return await CreateAnswerDownvote.execute({
+	static async VoteAnswer (req: Request) {
+		const vote = !!req.body.vote
+		return await (vote ? CreateAnswerUpvote : CreateAnswerDownvote).execute({
 			answerId: req.params.id,
 			userId: req.authUser!.id
 		})

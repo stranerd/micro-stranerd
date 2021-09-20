@@ -31,7 +31,7 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 		let res = null as any
 		await session.withTransaction(async (session) => {
 			let upvote = await AnswerUpvote.findOne({ userId: data.userId, answerId: data.answerId }).session(session)
-			if (!upvote || upvote.answerId !== data.answerId) {
+			if (!upvote) {
 				upvote = new AnswerUpvote(data)
 				await Answer.findByIdAndUpdate(data.answerId, {
 					$push: {
@@ -42,24 +42,14 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			// the vote didnt change
 			else if (upvote.vote === data.vote) { /* do nothing */
 			}
-			// change answer upvote to downvote
-			else if (upvote.vote === 1) await Answer.findByIdAndUpdate(data.answerId, {
-				$pull: {
-					votes: { userId: data.userId, vote: 1 }
-				},
-				$push: {
-					votes: { userId: data.userId, vote: -1 }
-				}
+			// change answer vote
+			else await Answer.findOneAndUpdate({
+				_id: data.answerId,
+				'votes.userId': data.userId
+			}, {
+				$set: { 'votes.$.vote': data.vote }
 			}, { session })
-			// change answer downvote to upvote
-			else if (upvote.vote === -1) await Answer.findByIdAndUpdate(data.answerId, {
-				$pull: {
-					votes: { userId: data.userId, vote: -1 }
-				},
-				$push: {
-					votes: { userId: data.userId, vote: 1 }
-				}
-			}, { session })
+
 			upvote.vote = data.vote
 			await upvote.save({ session })
 
