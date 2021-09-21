@@ -14,6 +14,3 @@ export interface ChatMetaToModel {
 	userId: string,
 	userBio: UserBio
 }
-
-
-

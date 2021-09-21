@@ -67,8 +67,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-Schema.index({ title: 'text', body: 'text' })
-
 export const Answer = mongoose.model<AnswerFromModel>('StranerdAnswer', Schema)
 
 generateChangeStreams<AnswerFromModel, AnswerEntity>(Answer, AnswerChangeStreamCallbacks, new AnswerMapper().mapFrom).then()

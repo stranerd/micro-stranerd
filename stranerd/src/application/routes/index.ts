@@ -15,6 +15,7 @@ import { ChatMetaRoutes, ChatRoutes, SessionRoutes } from './sessions'
 import { reviewsRoutes } from './users/reviews'
 import { transactionsRoutes } from './users/transactions'
 import { messagesRoutes } from './meta/messages'
+import { searchRoutes } from './meta/search'
 import { reportRoutes } from './reports/reports'
 
 export const routes: Route[] = [
@@ -34,6 +35,7 @@ export const routes: Route[] = [
 	...ChatRoutes,
 	...tagsRoutes,
 	...messagesRoutes,
+	...searchRoutes,
 	...reportRoutes,
 	{
 		path: '/',

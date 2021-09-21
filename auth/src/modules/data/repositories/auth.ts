@@ -125,7 +125,6 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async googleSignIn (tokenId: string, referrer: string | null) {
-		console.log(tokenId)
 		const client = new OAuth2Client(googleClientId)
 
 		const ticket = await client.verifyIdToken({

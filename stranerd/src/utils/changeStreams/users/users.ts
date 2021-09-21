@@ -30,13 +30,13 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			const increased = after.account.score > before.account.score
 			if (increased) await sendNotification(after.id, {
 				body: `Congrats, you just got promoted to ${after.rank.id}`,
-				action: 'users',
-				data: { userId: after.id }
+				action: 'account',
+				data: { profile: true }
 			})
 			else await sendNotification(after.id, {
 				body: `Oops, you just got demoted to ${after.rank.id}`,
-				action: 'users',
-				data: { userId: after.id }
+				action: 'account',
+				data: { profile: true }
 			})
 		}
 	},

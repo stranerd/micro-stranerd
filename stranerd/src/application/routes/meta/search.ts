@@ -3,7 +3,7 @@ import { SearchController } from '../../controllers/meta/search'
 
 export const searchRoutes: Route[] = [
 	{
-		path: '/search/:query',
+		path: '/meta/search/:search',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {

@@ -15,7 +15,7 @@ export type QueryParams = {
 	limit?: number
 	all?: boolean
 	page?: number
-	search?: string
+	search?: { value: string, fields: string[] }
 }
 
 export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
@@ -29,9 +29,17 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 		const auth = buildWhereQuery(params.auth ?? [], authType)
 		if (auth) query.push(auth)
 	}
+	if (params.search && params.search.fields.length > 0) {
+		const search = params.search.fields.map((field) => ({
+			[field]: {
+				$regex: new RegExp(params.search!.value, 'i')
+			}
+		}))
+
+		query.push({ $or: search })
+	}
 	const totalClause = {}
 	if (query.length > 0) totalClause['$and'] = query
-	if (params.search) totalClause['$text'] = { $search: params.search }
 
 	// Handle sort clauses
 	const sortField = params.sort?.field ?? null

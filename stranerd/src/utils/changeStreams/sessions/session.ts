@@ -36,7 +36,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await sendNotification(after.tutorId, {
 			body: `${after.studentBio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
 			action: 'sessions',
-			data: { studentId: after.studentId, tutorId: after.tutorId }
+			data: { userId: after.studentId }
 		}, 'New Session Request')
 
 		await AddUserQueuedSessions.execute({

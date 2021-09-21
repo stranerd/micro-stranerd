@@ -13,4 +13,3 @@ export interface ChatToModel {
 	media: Media | null
 	sessionId: string | null
 }
-

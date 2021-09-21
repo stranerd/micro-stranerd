@@ -146,8 +146,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	}
 }, { minimize: false })
 
-UserSchema.index({ 'bio.firstName': 'text', 'bio.lastName': 'text' })
-
 export const User = mongoose.model<UserFromModel>('StranerdUser', UserSchema)
 
 generateChangeStreams<UserFromModel, UserEntity>(User, UserChangeStreamCallbacks, new UserMapper().mapFrom).then()

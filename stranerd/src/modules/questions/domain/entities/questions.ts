@@ -41,7 +41,7 @@ export class QuestionEntity extends BaseEntity {
 	}
 
 	get isAnswered () {
-		return this.answers.length > 1
+		return this.bestAnswers.length > BEST_ANSWERS_COUNT - 1
 	}
 }
 
