@@ -1,10 +1,10 @@
 import amqp from 'amqplib'
-import { appId, rabbitMQConfig } from '../config'
+import { appId, rabbitURI } from '../config'
 
 let connection = null as amqp.Connection | null
 
 export const getRabbitConnection = async (register: string) => {
-	if (!connection) connection = await amqp.connect(rabbitMQConfig)
+	if (!connection) connection = await amqp.connect(rabbitURI)
 	const channel = await connection.createChannel()
 
 	await channel.assertExchange(register, 'direct', { durable: true })

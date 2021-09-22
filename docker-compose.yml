@@ -22,7 +22,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   emails:
     build:
@@ -35,7 +35,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   example:
     build:
@@ -48,7 +48,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   storage:
     build:
@@ -61,7 +61,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   stranerd:
     build:
@@ -74,7 +74,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   tasks:
     build:
@@ -87,7 +87,7 @@ services:
       - mongodb
       - redis
       - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   mongodb:
     image: mongo
