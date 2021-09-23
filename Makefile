@@ -41,3 +41,10 @@ copy-envs:
 
 echo-apps:
 	@echo $(foreach app, $(APPS), $(app)/app.yaml)
+
+link-commons:
+	$(foreach app, $(APPS),\
+	ln -rfs ./commons/links/* ./$(app)/src/utils;\
+	mkdir ./$(app)/src/utils/commons;\
+	ln -rfs ./commons/src/* ./$(app)/src/utils/commons;\
+)

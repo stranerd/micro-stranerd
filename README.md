@@ -11,6 +11,8 @@
 $ git clone https://github.com/stranerd/micro-stranerd
 # setup git hooks
 $ npx husky install
+# create soft links for commons
+$ make link-commons
 # install dependencies for all microservices
 $ make install-all
 # copy env.example.json to env.json & fill in all env values in env.json
