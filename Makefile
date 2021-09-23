@@ -44,7 +44,7 @@ echo-apps:
 
 link-commons:
 	$(foreach app, $(APPS),\
-	ln -rfs ./commons/links/* ./$(app)/src/utils;\
-	mkdir ./$(app)/src/utils/commons;\
-	ln -rfs ./commons/src/* ./$(app)/src/utils/commons;\
+	ln ./commons/links/* ./$(app)/src/utils;\
+	mkdir ./$(app)/src/utils/common;\
+	ln -rfs ./commons/src/* ./$(app)/src/utils/common;\
 )
