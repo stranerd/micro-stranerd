@@ -32,7 +32,7 @@
 				"./src/utils/*"
 			],
 			"@index": [
-				"./src/index.ts"
+				"./src/index"
 			]
 		},
 		"types": [
