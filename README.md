@@ -11,7 +11,7 @@
 $ git clone https://github.com/stranerd/micro-stranerd
 # setup git hooks
 $ npx husky install
-# create soft links for commons
+# create symbolic links for commons
 $ make link-commons
 # install dependencies for all microservices
 $ make install-all
