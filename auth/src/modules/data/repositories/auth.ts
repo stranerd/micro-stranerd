@@ -46,24 +46,22 @@ export class AuthRepository implements IAuthRepository {
 	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes) {
 		details.email = details.email.toLowerCase()
 		const user = await User.findOne({ email: details.email })
-		if (!user) throw new ValidationError([
-			{ field: 'email', messages: ['No account with such email exists'] }
-		])
+		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
 		const match = passwordValidate ? await hashCompare(details.password, user.password) : true
-		if (!match) throw new ValidationError([
-			{ field: 'password', messages: ['Invalid credentials'] }
-		])
+		if (!match) throw new ValidationError([{ field: 'password', messages: ['Invalid password'] }])
 
 		return this.signInUser(user, type)
 	}
 
 	async sendVerificationMail (email: string, redirectUrl: string) {
-		email = email.toLowerCase()
+		const user = await User.findOne({ email: email.toLowerCase() })
+		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
+
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance.set('verification-token-' + token, email, TOKENS_TTL_IN_SECS)
+		await getCacheInstance.set('verification-token-' + token, user.email, TOKENS_TTL_IN_SECS)
 
 		// send verification mail
 		const url = `${redirectUrl}?token=${token}`
@@ -92,11 +90,13 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async sendPasswordResetMail (email: string, redirectUrl: string) {
-		email = email.toLowerCase()
+		const user = await User.findOne({ email: email.toLowerCase() })
+		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
+
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance.set('password-reset-token-' + token, email, TOKENS_TTL_IN_SECS)
+		await getCacheInstance.set('password-reset-token-' + token, user.email, TOKENS_TTL_IN_SECS)
 
 		// send reset password mail
 		const url = `${redirectUrl}?token=${token}`
