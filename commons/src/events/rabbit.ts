@@ -1,16 +1,23 @@
 import amqp from 'amqplib'
 import { appId, rabbitURI } from '../config'
 
-const con = amqp.connect(rabbitURI)
+const register = 'StranerdExchangeColumn'
 
-export const getRabbitConnection = async (register: string) => {
-	const connection = await con
-	const channel = await connection.createChannel()
+const globalChannel = (async () => {
+	const con = await amqp.connect(rabbitURI)
+
+	const channel = await con.createChannel()
 
 	process.on('exit', () => channel.close())
 
 	await channel.assertExchange(register, 'direct', { durable: true })
 	await channel.prefetch(1)
+
+	return channel
+})()
+
+export const pubAndSub = async () => {
+	const channel = await globalChannel
 
 	const publish = async (topic: string, data: any) => {
 		channel.publish(register, topic, Buffer.from(data), { persistent: true })
