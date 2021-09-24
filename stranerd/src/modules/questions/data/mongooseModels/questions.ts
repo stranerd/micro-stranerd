@@ -19,6 +19,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 	},
 	tags: {
 		type: [String],
+		set: (tags: string[]) => Array.from(new Set(tags)),
 		required: true
 	},
 	subjectId: {

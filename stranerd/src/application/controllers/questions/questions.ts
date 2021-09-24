@@ -31,12 +31,19 @@ export class QuestionController {
 	static async UpdateQuestion (req: Request) {
 		const data = validate({
 			body: req.body.body,
-			coins: req.body.coins
+			subjectId: req.body.subjectId,
+			coins: req.body.coins,
+			tags: req.body.tags
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			coins: {
 				required: true,
 				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
+			},
+			subjectId: { required: true, rules: [Validation.isString] },
+			tags: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
 			}
 		})
 

@@ -5,12 +5,10 @@ import { BaseMapper } from '@utils/commons'
 import { ChatFromModel } from '../models/chat'
 
 export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToModel, ChatMetaEntity> {
-	chatMapper = new ChatMapper()
-
 	mapFrom (model: ChatMetaFromModel | null) {
 		if (!model) return null
 		const { _id, last, unRead, ownerId, userId, userBio, createdAt, updatedAt } = model
-		const lastData = this.chatMapper.mapFrom(last)
+		const lastData = new ChatMapper().mapFrom(last)
 		return new ChatMetaEntity({
 			id: _id.toString(),
 			last: lastData!,

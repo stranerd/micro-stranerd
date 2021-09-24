@@ -33,7 +33,7 @@ export class TagRepository implements ITagRepository {
 
 	async updateTagsCount (tagNames: string[], increment: boolean) {
 		const res = await Tag.bulkWrite(
-			tagNames.map((name) => ({
+			tagNames.filter((tag, index) => tagNames.indexOf(tag) === index).map((name) => ({
 				updateOne: {
 					filter: { name },
 					update: {
