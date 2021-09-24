@@ -37,19 +37,6 @@ services:
       - rabbitmq
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
-  example:
-    build:
-      context: ./example
-      target: production
-    container_name: example
-    hostname: example
-    restart: unless-stopped
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
-
   storage:
     build:
       context: ./storage

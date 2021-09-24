@@ -38,12 +38,6 @@ $ make prod-start
 ```
 
 ```bash
-# New microservice
-# A detailed example microservice has been defined in the microservice - example
-# Use that as a starting point for any service that runs in javascript
-```
-
-```bash
 # Lint entire codebase
 # ensure all microservices have a lint script defined in it
 $ make lint-all
