@@ -7,6 +7,8 @@ export const getRabbitConnection = async (register: string) => {
 	if (!connection) connection = await amqp.connect(rabbitURI)
 	const channel = await connection.createChannel()
 
+	process.on('exit', () => channel.close())
+
 	await channel.assertExchange(register, 'direct', { durable: true })
 	await channel.prefetch(1)
 

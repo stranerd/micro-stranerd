@@ -13,6 +13,7 @@ export class RedisCache extends Cache {
 			await Logger.error('Redis failed with error:', error)
 			process.exit(1)
 		})
+		process.on('exit', () => this.client.end())
 	}
 
 	async delete (key: string) {
