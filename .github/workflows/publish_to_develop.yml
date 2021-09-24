@@ -27,6 +27,8 @@ jobs:
         run: make install-all
       - name: Build Apps
         run: make build-all
+      - name: Create App Engine Config Files
+        run: make generate-config-development
       - name: Deploy to GAE
         uses: actions-hub/gcloud@master
         env:

@@ -48,3 +48,12 @@ link-commons:
 	mkdir ./$(app)/src/utils/common;\
 	ln -rfs ./commons/src/* ./$(app)/src/utils/common;\
 )
+
+generate-config-development:
+	node bin/generate-configs.js development $(APPS);
+
+generate-config-staging:
+	node bin/generate-configs.js staging $(APPS);
+
+generate-config-production:
+	node bin/generate-configs.js production $(APPS);
