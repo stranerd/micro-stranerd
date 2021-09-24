@@ -1,7 +1,6 @@
 import { getEnvOrFail } from '@utils/commons'
 
 const environment = getEnvOrFail('ENVIRONMENT')
-export const isDev = environment === 'development'
 export const isProd = environment === 'production'
 
 export const port = parseInt(getEnvOrFail('PORT'))
