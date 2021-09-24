@@ -1,10 +1,10 @@
 import amqp from 'amqplib'
 import { appId, rabbitURI } from '../config'
 
-let connection = null as amqp.Connection | null
+const con = amqp.connect(rabbitURI)
 
 export const getRabbitConnection = async (register: string) => {
-	if (!connection) connection = await amqp.connect(rabbitURI)
+	const connection = await con
 	const channel = await connection.createChannel()
 
 	process.on('exit', () => channel.close())
