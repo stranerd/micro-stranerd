@@ -5,7 +5,7 @@ const eventBus = new EventBus()
 
 export const subscribers = {
 	[EventTypes.DELETEFILE]: eventBus.createSubscriber(EventTypes.DELETEFILE, async (data) => {
-		await DeleteFile.call(data.path)
+		await DeleteFile.call(data?.path ?? '')
 	})
 }
 

@@ -11,6 +11,7 @@ export class CloudUploaderRepository implements IUploaderRepository {
 	}
 
 	async delete (path: string) {
+		if (!path) return false
 		const file = this.bucket.file(path)
 		const exists = (await file.exists())[0]
 		if (exists) await file.delete()
