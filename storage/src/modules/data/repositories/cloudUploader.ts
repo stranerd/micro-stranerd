@@ -1,9 +1,7 @@
 import { IUploaderRepository } from '../../domain/irepositories/uploader'
-import fs from 'fs'
 import { MediaInput } from '../models/media'
 import { environment } from '@utils/environment'
 import { Bucket, Storage } from '@google-cloud/storage'
-import { getRandomValue } from '@utils/commons'
 
 export class CloudUploaderRepository implements IUploaderRepository {
 	private bucket: Bucket
@@ -24,16 +22,11 @@ export class CloudUploaderRepository implements IUploaderRepository {
 		media.name = media.name.toLowerCase()
 		path = `storage/${environment}/${path}/${timestamp}-${media.name}`
 
-		const tempFilePath = getRandomValue()
-		fs.writeFileSync(tempFilePath, media.data)
+		const file = this.bucket.file(path)
 
-		await this.bucket.upload(tempFilePath, {
-			destination: path
-		})
+		await file.save(media.data)
 
-		const link = this.bucket.file(path).publicUrl()
-
-		fs.unlinkSync(tempFilePath)
+		const link = file.publicUrl()
 
 		return {
 			name: media.name,

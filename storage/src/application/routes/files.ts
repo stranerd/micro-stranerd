@@ -12,7 +12,7 @@ const uploadFile: Route = {
 				path: { required: true, rules: [] },
 				file: {
 					required: true, rules: [Validation.isFile, (_) => {
-						if (file.isTruncated) return Validation.isInvalid('is larger than allowed limit')
+						if (file?.isTruncated) return Validation.isInvalid('is larger than allowed limit')
 						else return Validation.isValid()
 					}]
 				}
@@ -38,7 +38,7 @@ const uploadFiles: Route = {
 					required: true,
 					rules: [
 						Validation.isArrayOfX((cur: StorageFile) => Validation.isFile(cur).valid, 'files'),
-						Validation.isArrayOfX((cur: StorageFile) => !cur.isTruncated, 'less than the allowed limit')
+						Validation.isArrayOfX((cur: StorageFile) => !cur?.isTruncated, 'less than the allowed limit')
 					]
 				}
 			})
