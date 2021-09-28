@@ -44,9 +44,11 @@ echo-apps:
 
 link-commons:
 	$(foreach app, $(APPS),\
-	ln ./commons/links/* ./$(app)/src/utils;\
-	mkdir ./$(app)/src/utils/common;\
-	ln -rfs ./commons/src/* ./$(app)/src/utils/common;\
+	rm ./$(app)/src/utils/commons.ts;\
+	ln ./commons/links/commons.ts ./$(app)/src/utils;\
+	rm -r ./$(app)/src/utils/common;\
+	mkdir ./$(app)/src/utils/common -p;\
+	cp -al ./commons/src/* ./$(app)/src/utils/common;\
 )
 
 generate-config-development:
