@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import {
 	AnswerEntity,
 	AnswerFromModel,
@@ -11,6 +11,7 @@ import {
 import { getSocketEmitter } from '@index'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { publishers } from '@utils/events'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
@@ -89,6 +90,13 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				userId: question!.userId
 			})
 		}
+
+		if (changes.attachments) {
+			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
+			await Promise.all(
+				oldAttachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+			)
+		}
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('answers', before)
@@ -121,5 +129,9 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
 		}
 		await DeleteAnswerComments.execute({ answerId: before.id })
+
+		await Promise.all(
+			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+		)
 	}
 }

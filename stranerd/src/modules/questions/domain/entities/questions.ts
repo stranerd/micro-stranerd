@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity, MediaOutput } from '@utils/commons'
 import { UserBio } from '../types'
 import { BEST_ANSWERS_COUNT, QUESTION_DISCOUNT } from '@utils/constants'
 
@@ -7,6 +7,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly body: string
 	public readonly coins: number
 	public readonly tags: string[]
+	public readonly attachments: MediaOutput[]
 	public readonly subjectId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
@@ -17,7 +18,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly updatedAt: number
 
 	constructor ({
-		             id, body, coins, subjectId,
+		             id, body, coins, subjectId, attachments,
 		             bestAnswers, createdAt, userId, userBio,
 		             answers, commentsCount, tags, updatedAt
 	             }: QuestionConstructorArgs) {
@@ -25,6 +26,7 @@ export class QuestionEntity extends BaseEntity {
 		this.id = id
 		this.body = body
 		this.coins = coins
+		this.attachments = attachments
 		this.tags = tags
 		this.subjectId = subjectId
 		this.userId = userId
@@ -50,6 +52,7 @@ type QuestionConstructorArgs = {
 	body: string
 	coins: number
 	tags: string[]
+	attachments: MediaOutput[]
 	subjectId: string
 	userId: string
 	userBio: UserBio

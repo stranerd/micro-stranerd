@@ -33,7 +33,8 @@ export class QuestionController {
 			body: req.body.body,
 			subjectId: req.body.subjectId,
 			coins: req.body.coins,
-			tags: req.body.tags
+			tags: req.body.tags,
+			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			coins: {
@@ -44,6 +45,10 @@ export class QuestionController {
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+			},
+			attachments: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
 			}
 		})
 
@@ -60,7 +65,8 @@ export class QuestionController {
 			body: req.body.body,
 			subjectId: req.body.subjectId,
 			coins: req.body.coins,
-			tags: req.body.tags
+			tags: req.body.tags,
+			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			coins: {
@@ -71,6 +77,10 @@ export class QuestionController {
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+			},
+			attachments: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
 			}
 		})
 

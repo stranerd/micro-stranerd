@@ -15,10 +15,15 @@ export class AnswerController {
 	static async UpdateAnswer (req: Request) {
 		const data = validate({
 			title: req.body.title,
-			body: req.body.body
+			body: req.body.body,
+			attachments: req.body.attachments
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			body: { required: true, rules: [Validation.isString] }
+			body: { required: true, rules: [Validation.isString] },
+			attachments: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+			}
 		})
 
 		const authUserId = req.authUser!.id
@@ -33,11 +38,16 @@ export class AnswerController {
 		const data = validate({
 			title: req.body.title,
 			body: req.body.body,
-			questionId: req.body.questionId
+			questionId: req.body.questionId,
+			attachments: req.body.attachments
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			body: { required: true, rules: [Validation.isString] },
-			questionId: { required: true, rules: [Validation.isString] }
+			questionId: { required: true, rules: [Validation.isString] },
+			attachments: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+			}
 		})
 
 		const authUserId = req.authUser!.id

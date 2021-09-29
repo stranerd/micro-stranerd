@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
 import { AnswerFromModel } from '../models'
 import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
 import { AnswerEntity } from '../../domain/entities'
@@ -35,6 +35,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: Object as unknown as AnswerFromModel['userBio'],
 		required: false,
 		default: {} as unknown as AnswerFromModel['userBio']
+	},
+	attachments: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
 	},
 	coins: {
 		type: Number,

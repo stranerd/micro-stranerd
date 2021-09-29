@@ -1,3 +1,4 @@
+import { MediaOutput } from '@utils/commons'
 import { UserBio } from '../../domain/types'
 
 export interface AnswerFromModel extends AnswerToModel {
@@ -14,6 +15,7 @@ export interface AnswerToModel {
 	body: string
 	coins: number
 	tags: string[]
+	attachments: MediaOutput[]
 	questionId: string
 	userId: string
 	userBio: UserBio
