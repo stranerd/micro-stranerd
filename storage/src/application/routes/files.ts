@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes, StorageFile, validate, Validation } from '@utils/commons'
-import { UploadFile } from '@modules/domain'
+import { UploadFile } from '@modules/index'
 
 const uploadFile: Route = {
 	path: '/file',

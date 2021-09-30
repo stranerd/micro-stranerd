@@ -1,5 +1,5 @@
 import { EventBus, EventTypes } from '@utils/commons'
-import { DeleteFile } from '@modules/domain'
+import { DeleteFile } from '@modules/index'
 
 const eventBus = new EventBus()
 
