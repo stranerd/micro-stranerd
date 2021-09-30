@@ -1,8 +1,8 @@
 import { createTransport } from 'nodemailer'
-import { emails, isDev } from '@utils/environment'
 import path from 'path'
+import { emails, isDev } from '@utils/environment'
 import { Email, Emails, Logger } from '@utils/commons'
-import { AddError } from '@modules/index'
+import { AddError } from '@modules/emails'
 
 export const sendMail = async (email: Email) => {
 	const { to, subject, content, from = Emails.NO_REPLY } = email

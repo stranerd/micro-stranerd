@@ -24,19 +24,6 @@ services:
       - rabbitmq
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
-  emails:
-    build:
-      context: ./emails
-      target: production
-    container_name: emails
-    hostname: emails
-    restart: unless-stopped
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
-
   stranerd:
     build:
       context: ./stranerd

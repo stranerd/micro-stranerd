@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ErrorFromModel } from '../models/errors'
-import { ErrorChangeStreamCallbacks } from '@utils/changeStreams/errors'
+import { ErrorChangeStreamCallbacks } from '@utils/changeStreams/emails/errors'
 import { ErrorEntity } from '../../domain/entities/errors'
 import { ErrorMapper } from '../mappers/errors'
 
