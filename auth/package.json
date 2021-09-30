@@ -13,16 +13,16 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^1.0.7",
+		"@stranerd/api-commons": "^1.0.8",
 		"axios": "^0.21.4",
 		"bcrypt": "^5.0.1",
-		"google-auth-library": "^7.9.2"
+		"google-auth-library": "^7.10.0"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
-		"@types/node": "^16.9.2",
-		"@typescript-eslint/eslint-plugin": "^4.31.1",
-		"@typescript-eslint/parser": "^4.31.1",
+		"@types/node": "^16.10.2",
+		"@typescript-eslint/eslint-plugin": "^4.32.0",
+		"@typescript-eslint/parser": "^4.32.0",
 		"eslint": "^7.32.0",
 		"eslint-plugin-promise": "^5.1.0",
 		"ts-node-dev": "^1.1.8",
