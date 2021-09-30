@@ -2,7 +2,7 @@ import { makeController, Route, StatusCodes, StorageFile, validate, Validation }
 import { UploadFile } from '@modules/storage'
 
 const uploadFile: Route = {
-	path: '/file',
+	path: '/storage/file',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
@@ -27,7 +27,7 @@ const uploadFile: Route = {
 }
 
 const uploadFiles: Route = {
-	path: '/files',
+	path: '/storage/files',
 	method: 'post',
 	controllers: [
 		makeController(async (req) => {
