@@ -37,19 +37,6 @@ services:
       - rabbitmq
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
-  storage:
-    build:
-      context: ./storage
-      target: production
-    container_name: storage
-    hostname: storage
-    restart: unless-stopped
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
-
   stranerd:
     build:
       context: ./stranerd
@@ -63,11 +50,11 @@ services:
       - rabbitmq
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
-  tasks:
+  utils:
     build:
-      context: ./tasks
+      context: ./utils
       target: production
-    container_name: tasks
+    container_name: utils
     hostname: tasks
     restart: unless-stopped
     depends_on:

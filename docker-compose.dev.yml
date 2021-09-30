@@ -14,13 +14,6 @@ services:
       - "./emails/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
-  storage:
-    build:
-      target: base
-    volumes:
-      - "./storage/src:/app/src:ro"
-    command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
-
   stranerd:
     build:
       target: base
@@ -28,9 +21,9 @@ services:
       - "./stranerd/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
-  tasks:
+  utils:
     build:
       target: base
     volumes:
-      - "./tasks/src:/app/src:ro"
+      - "./utils/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
