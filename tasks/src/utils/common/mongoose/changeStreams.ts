@@ -82,8 +82,10 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 	changeStream.on('error', async (err) => {
 		await Logger.error(`Change Stream errored out: ${dbName}`)
 		await Logger.error(err.message)
-		changeStream.close()
-		process.exit(1)
+		if (!err.message.startsWith('Resume of change stream was not possible, as the resume point may no longer be in the oplog')) {
+			await changeStream.close()
+			process.exit(1)
+		}
 	})
 }
 
