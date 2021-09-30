@@ -9,7 +9,7 @@ const uploadFile: Route = {
 			const file = req.files[0]
 			const { path } = req.body
 			const data = validate({ path, file }, {
-				path: { required: true, rules: [] },
+				path: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 				file: {
 					required: true, rules: [Validation.isFile, (_) => {
 						if (file?.isTruncated) return Validation.isInvalid('is larger than allowed limit')
@@ -33,7 +33,7 @@ const uploadFiles: Route = {
 		makeController(async (req) => {
 			const files = req.files
 			const data = validate({ path: req.body.path, files }, {
-				path: { required: true, rules: [] },
+				path: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 				files: {
 					required: true,
 					rules: [
