@@ -37,7 +37,7 @@ manual_scaling:
 		production: `runtime: nodejs16
 service: ${name}
 
-instance_class: B2
+instance_class: B1
 
 env_variables:
   PORT: 8080
