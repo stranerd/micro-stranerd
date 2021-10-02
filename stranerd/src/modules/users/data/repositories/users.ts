@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserAccount, UserBio, UserRoles } from '../../domain/types'
+import { UserAccount, UserBio, UserRankings, UserRoles } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
@@ -50,10 +50,20 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateNerdScore (userId: string, amount: number) {
+		const rankings = Object.fromEntries(
+			Object.keys(UserRankings).map((key) => [`account.rankings.${key}`, amount])
+		)
 		const user = await User.findByIdAndUpdate(userId, {
-			$inc: { 'account.score': amount }
+			$inc: { ...rankings, 'account.score': amount }
 		})
 		return !!user
+	}
+
+	async resetRankings (key: keyof UserAccount['rankings']) {
+		const res = await User.updateMany({}, {
+			$set: { [`account.rankings.${key}`]: 0 }
+		})
+		return !!res.acknowledged
 	}
 
 	async updateUserWithRoles (userId: string, data: UserRoles) {

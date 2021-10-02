@@ -21,6 +21,8 @@ export interface IUserRepository {
 
 	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
 
+	resetRankings (key: keyof UserAccount['rankings']): Promise<boolean>
+
 	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null): Promise<void>
 
 	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>

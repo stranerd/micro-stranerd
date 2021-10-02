@@ -28,6 +28,11 @@ export type UserStatus = {
 
 export type UserAccount = {
 	score: number
+	rankings: {
+		daily: number
+		weekly: number
+		monthly: number
+	}
 	coins: {
 		gold: number,
 		bronze: number
@@ -49,6 +54,21 @@ export type UserAccount = {
 		longestStreak: number,
 		lastEvaluatedAt: number
 	}
+}
+
+export enum UserMeta {
+	questions = 'questions',
+	answers = 'answers',
+	bestAnswers = 'bestAnswers',
+	answerComments = 'answerComments',
+	sessions = 'sessions',
+	tutorSessions = 'tutorSessions'
+}
+
+export enum UserRankings {
+	daily = 'daily',
+	weekly = 'weekly',
+	monthly = 'monthly'
 }
 
 export interface UserSession {
