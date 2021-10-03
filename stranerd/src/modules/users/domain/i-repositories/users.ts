@@ -23,7 +23,7 @@ export interface IUserRepository {
 
 	resetRankings (key: keyof UserAccount['rankings']): Promise<boolean>
 
-	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null): Promise<void>
+	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean): Promise<void>
 
 	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>
 

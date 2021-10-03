@@ -72,8 +72,8 @@ export enum UserRankings {
 }
 
 export interface UserSession {
-	currentSession: string | null
-	currentTutorSession: string | null
+	currentSessions: string[]
+	currentTutorSessions: string[]
 	requests: string[]
 	lobby: string[]
 }

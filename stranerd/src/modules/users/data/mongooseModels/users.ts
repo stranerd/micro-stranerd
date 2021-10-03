@@ -108,15 +108,15 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		}
 	},
 	session: {
-		currentSession: {
-			type: String,
+		currentSessions: {
+			type: [String],
 			required: false,
-			default: null
+			default: []
 		},
-		currentTutorSession: {
-			type: String,
+		currentTutorSessions: {
+			type: [String],
 			required: false,
-			default: null
+			default: []
 		},
 		requests: {
 			type: [String],
