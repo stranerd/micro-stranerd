@@ -85,11 +85,13 @@ export const GetReferrals = new GetReferralsUseCase(referralRepository)
 export const FindReferral = new FindReferralUseCase(referralRepository)
 export const CreateReferral = new CreateReferralUseCase(referralRepository)
 
+export { BadgeFromModel } from './data/models/badges'
 export { NotificationFromModel, NotificationToModel } from './data/models/notifications'
 export { ReferralFromModel } from './data/models/referrals'
 export { ReviewFromModel } from './data/models/reviews'
 export { TransactionFromModel } from './data/models/transactions'
 export { UserFromModel } from './data/models/users'
+export { BadgeEntity } from './domain/entities/badges'
 export { NotificationEntity } from './domain/entities/notifications'
 export { ReferralEntity } from './domain/entities/referrals'
 export { ReviewEntity } from './domain/entities/reviews'
