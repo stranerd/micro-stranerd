@@ -71,7 +71,8 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				await SetUsersCurrentSession.execute({
 					studentId: after.studentId,
 					tutorId: after.tutorId,
-					sessionId: after.id
+					sessionId: after.id,
+					add: true
 				})
 
 				// Send accepted message
@@ -133,7 +134,8 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			await SetUsersCurrentSession.execute({
 				studentId: after.studentId,
 				tutorId: after.tutorId,
-				sessionId: null
+				sessionId: after.id,
+				add: false
 			})
 			await UpdateUserNerdScore.execute({
 				userId: after.studentId,

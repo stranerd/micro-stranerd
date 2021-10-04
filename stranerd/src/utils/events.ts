@@ -4,6 +4,7 @@ import {
 	CreateUserWithBio,
 	DeleteOldSeenNotifications,
 	MarkUserAsDeleted,
+	ResetRankings,
 	UpdateUserWithBio,
 	UpdateUserWithRoles
 } from '../modules/users'
@@ -31,7 +32,12 @@ export const subscribers = {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
-		if (type === CronTypes.weekly) await DeleteOldSeenNotifications.execute()
+		if (type === CronTypes.daily) await ResetRankings.execute('daily')
+		if (type === CronTypes.weekly) {
+			await ResetRankings.execute('weekly')
+			await DeleteOldSeenNotifications.execute()
+		}
+		if (type === CronTypes.monthly) await ResetRankings.execute('monthly')
 	})
 }
 

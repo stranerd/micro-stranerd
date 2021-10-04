@@ -3,11 +3,18 @@ import { UserFromModel } from '../models/users'
 import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
 import { UserEntity } from '../../domain/entities/users'
 import { UserMapper } from '../mappers/users'
-import { UserAccount } from '../../domain/types'
+import { UserMeta, UserRankings } from '../../domain/types'
 
-const metaKeys: (keyof UserAccount['meta'])[] = ['questions', 'answers', 'bestAnswers', 'answerComments', 'sessions', 'tutorSessions']
-const UserMeta = Object.fromEntries(
-	metaKeys.map((key) => [key, {
+const Meta = Object.fromEntries(
+	Object.keys(UserMeta).map((key) => [key, {
+		type: Number,
+		required: false,
+		default: 0
+	}])
+)
+
+const Rankings = Object.fromEntries(
+	Object.keys(UserRankings).map((key) => [key, {
 		type: Number,
 		required: false,
 		default: 0
@@ -101,15 +108,15 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		}
 	},
 	session: {
-		currentSession: {
-			type: String,
+		currentSessions: {
+			type: [String],
 			required: false,
-			default: null
+			default: []
 		},
-		currentTutorSession: {
-			type: String,
+		currentTutorSessions: {
+			type: [String],
 			required: false,
-			default: null
+			default: []
 		},
 		requests: {
 			type: [String],
@@ -128,6 +135,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			required: false,
 			default: 0
 		},
+		rankings: Rankings,
 		coins: {
 			gold: {
 				type: Number,
@@ -140,7 +148,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 				default: 0
 			}
 		},
-		meta: UserMeta,
+		meta: Meta,
 		ratings: UserRating,
 		streak: UserStreak
 	}

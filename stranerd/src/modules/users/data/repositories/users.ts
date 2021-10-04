@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserAccount, UserBio, UserRoles } from '../../domain/types'
+import { UserAccount, UserBio, UserRankings, UserRoles } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
@@ -50,10 +50,20 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updateNerdScore (userId: string, amount: number) {
+		const rankings = Object.fromEntries(
+			Object.keys(UserRankings).map((key) => [`account.rankings.${key}`, amount])
+		)
 		const user = await User.findByIdAndUpdate(userId, {
-			$inc: { 'account.score': amount }
+			$inc: { ...rankings, 'account.score': amount }
 		})
 		return !!user
+	}
+
+	async resetRankings (key: keyof UserAccount['rankings']) {
+		const res = await User.updateMany({}, {
+			$set: { [`account.rankings.${key}`]: 0 }
+		})
+		return !!res.acknowledged
 	}
 
 	async updateUserWithRoles (userId: string, data: UserRoles) {
@@ -79,11 +89,12 @@ export class UserRepository implements IUserRepository {
 		})
 	}
 
-	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string | null) {
+	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean) {
 		const session = await mongoose.startSession()
+		const key = add ? '$push' : '$pull'
 		await session.withTransaction(async (session) => {
-			await User.findByIdAndUpdate(studentId, { $set: { 'session.currentSession': sessionId } }, { session })
-			await User.findByIdAndUpdate(tutorId, { $set: { 'session.currentTutorSession': sessionId } }, { session })
+			await User.findByIdAndUpdate(studentId, { [key]: { 'session.currentSessions': sessionId } }, { session })
+			await User.findByIdAndUpdate(tutorId, { [key]: { 'session.currentTutorSessions': sessionId } }, { session })
 		})
 		await session.endSession()
 	}

@@ -32,6 +32,7 @@ import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeU
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
 import { UpdateUserSubjectsUseCase } from './domain/useCases/users/updateUserSubjects'
 import { UpdateUserStreakUseCase } from './domain/useCases/users/updateUserStreak'
+import { ResetRankingsUseCase } from './domain/useCases/users/resetRankings'
 import { ReferralRepository } from './data/repositories/referrals'
 import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
 import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
@@ -63,6 +64,7 @@ export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
 export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
+export const ResetRankings = new ResetRankingsUseCase(userRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

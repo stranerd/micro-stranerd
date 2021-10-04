@@ -1,7 +1,7 @@
 import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
 
-type Input = { studentId: string, tutorId: string, sessionId: string | null }
+type Input = { studentId: string, tutorId: string, sessionId: string, add: boolean }
 
 export class SetUsersCurrentSessionUseCase implements BaseUseCase<Input, void> {
 	repository: IUserRepository
@@ -11,6 +11,6 @@ export class SetUsersCurrentSessionUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (params: Input) {
-		return await this.repository.setUsersCurrentSession(params.studentId, params.tutorId, params.sessionId)
+		return await this.repository.setUsersCurrentSession(params.studentId, params.tutorId, params.sessionId, params.add)
 	}
 }
