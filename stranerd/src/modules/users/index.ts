@@ -38,8 +38,15 @@ import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
 import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
 import { GetReferralsUseCase } from './domain/useCases/referrals/getReferrals'
 import { ResetAllUsersStatusUseCase } from './domain/useCases/users/resetAllUsersStatus'
+import { BadgeRepository } from './data/repositories/badges'
+import { GetBadgesUseCase } from './domain/useCases/badges/getBadges'
+import { FindBadgeUseCase } from './domain/useCases/badges/findBadge'
+import { RecordRankUseCase } from './domain/useCases/badges/recordRank'
+import { RecordSpendCoinUseCase } from './domain/useCases/badges/recordSpendCoin'
+import { RecordCountStreakUseCase } from './domain/useCases/badges/recordCountStreak'
 
 const userRepository = UserRepository.getInstance()
+const badgeRepository = BadgeRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
 const referralRepository = ReferralRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
@@ -65,6 +72,12 @@ export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
 export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
 export const ResetRankings = new ResetRankingsUseCase(userRepository)
+
+export const GetBadges = new GetBadgesUseCase(badgeRepository)
+export const FindBadge = new FindBadgeUseCase(badgeRepository)
+export const RecordRank = new RecordRankUseCase(badgeRepository)
+export const RecordSpendCoin = new RecordSpendCoinUseCase(badgeRepository)
+export const RecordCountStreak = new RecordCountStreakUseCase(badgeRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)

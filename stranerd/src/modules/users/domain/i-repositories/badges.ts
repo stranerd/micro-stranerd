@@ -7,6 +7,8 @@ export interface IBadgeRepository {
 
 	getBadges (query: QueryParams): Promise<QueryResults<BadgeEntity>>
 
+	recordRank (userId: string, rank: number, add: boolean): Promise<void>
+
 	recordSpendCoin (userId: string, coin: 'gold' | 'bronze', amount: number): Promise<void>
 
 	recordCountStreak (userId: string, activity: CountStreakBadges, add: boolean): Promise<void>

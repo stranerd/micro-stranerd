@@ -28,6 +28,25 @@ export class BadgeRepository implements IBadgeRepository {
 		return this.mapper.mapFrom(badge)
 	}
 
+	async recordRank (userId: string, rank: number, add: boolean) {
+		const session = await mongoose.startSession()
+		await session.withTransaction(async (session) => {
+			const badgeModel = await Badge.findOneAndUpdate(
+				{ _id: userId, userId },
+				{ $setOnInsert: { _id: userId, userId } },
+				{ session, upsert: true, new: true }
+			)
+			const badge = this.mapper.mapFrom(badgeModel)!
+
+			const updateData = {
+				[add ? '$addToSet' : '$pull']: { ['badges.rank']: rank }
+			}
+
+			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
+		})
+		await session.endSession()
+	}
+
 	async recordSpendCoin (userId: string, coin: 'gold' | 'bronze', amount: number) {
 		const key = coin === 'gold' ? CoinBadges.SpendGold : CoinBadges.SpendBronze
 
@@ -88,7 +107,6 @@ export class BadgeRepository implements IBadgeRepository {
 			} else {
 				updateData.$inc[`data.count.${activity}.value`] = -1
 				updateData.$pull[`badges.count.${activity}`] = { $in: countLevels.oldLevels }
-				updateData.$pull[`badges.streak.${activity}`] = { $in: streakLevels.oldLevels }
 			}
 			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
 		})

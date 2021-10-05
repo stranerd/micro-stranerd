@@ -17,5 +17,6 @@ export interface BadgeToModel {
 		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
 		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
 		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
+		rank: number[]
 	}
 }

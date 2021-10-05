@@ -13,6 +13,7 @@ export class BadgeEntity extends BaseEntity {
 		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
 		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
 		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
+		rank: number[]
 	}
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -67,6 +68,7 @@ type BadgeConstructorArgs = {
 		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
 		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
 		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
+		rank: number[]
 	}
 	createdAt: number
 	updatedAt: number
