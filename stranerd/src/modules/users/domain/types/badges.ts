@@ -16,16 +16,16 @@ export enum CoinBadges {
 }
 
 export const CountValues = [
-	{ level: 1, value: 10 },
-	{ level: 2, value: 25 },
-	{ level: 3, value: 50 },
-	{ level: 4, value: 100 },
-	{ level: 5, value: 250 },
-	{ level: 6, value: 500 },
-	{ level: 7, value: 1000 },
-	{ level: 8, value: 2500 },
-	{ level: 9, value: 5000 },
-	{ level: 10, value: 10000 }
+	{ level: 1, value: 10, name: 'beginner' },
+	{ level: 2, value: 25, name: 'amateur' },
+	{ level: 3, value: 50, name: 'average' },
+	{ level: 4, value: 100, name: 'reasonable' },
+	{ level: 5, value: 250, name: 'competent' },
+	{ level: 6, value: 500, name: 'veteran' },
+	{ level: 7, value: 1000, name: 'celebrity' },
+	{ level: 8, value: 2500, name: 'professional' },
+	{ level: 9, value: 5000, name: 'master' },
+	{ level: 10, value: 10000, name: 'legendary' }
 ] as const
 
 export const StreakValues = [
