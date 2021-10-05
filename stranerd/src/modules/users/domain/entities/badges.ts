@@ -1,5 +1,14 @@
 import { BaseEntity } from '@utils/commons'
-import { CoinBadges, CoinValues, CountStreakBadges, CountValues, StreakValues } from '../types'
+import {
+	CoinBadgeNames,
+	CoinBadges,
+	CoinValues,
+	CountStreakBadgeNames,
+	CountStreakBadges,
+	CountValues,
+	StreakValues
+} from '../types'
+import { ranks } from './ranks'
 
 export class BadgeEntity extends BaseEntity {
 	public readonly id: string
@@ -26,6 +35,62 @@ export class BadgeEntity extends BaseEntity {
 		this.userId = userId
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
+	}
+
+	get allBadges () {
+		const rankBadges = this.badges.rank
+			.map((level) => ranks.find((r) => r.level === level))
+			.filter((r) => !!r)
+			.map((r) => ({
+				name: r!.id,
+				key: r!.id.toLowerCase(),
+				levelName: r!.id,
+				level: r!.level
+			}))
+
+		const coinBadges = Object.keys(CoinBadges)
+			.map((key) => this.badges.coin[key as CoinBadges]
+				.map((b) => {
+					const badge = CoinValues.find((v) => v.level === b)
+					if (!badge) return null
+					const name = CoinBadgeNames[key as CoinBadges]
+					return {
+						name, key,
+						levelName: badge.name,
+						level: badge.level
+					}
+				}).filter((r) => !!r)
+			).flat(1)
+
+		const streakBadges = Object.keys(CountStreakBadges)
+			.map((key) => this.badges.streak[key as CountStreakBadges]
+				.map((b) => {
+					const badge = StreakValues.find((v) => v.level === b)
+					if (!badge) return null
+					const name = CountStreakBadgeNames[key as CountStreakBadges]
+					return {
+						name, key,
+						levelName: badge.name,
+						level: badge.level
+					}
+				}).filter((r) => !!r)
+			).flat(1)
+
+		const countBadges = Object.keys(CountStreakBadges)
+			.map((key) => this.badges.count[key as CountStreakBadges]
+				.map((b) => {
+					const badge = CountValues.find((v) => v.level === b)
+					if (!badge) return null
+					const name = CountStreakBadgeNames[key as CountStreakBadges]
+					return {
+						name, key,
+						levelName: badge.name,
+						level: badge.level
+					}
+				}).filter((r) => !!r)
+			).flat(1)
+
+		return { rankBadges, coinBadges, streakBadges, countBadges }
 	}
 
 	unlockCoinBadge (coin: 'gold' | 'bronze', amount: number) {
