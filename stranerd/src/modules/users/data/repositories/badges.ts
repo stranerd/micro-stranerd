@@ -3,7 +3,7 @@ import { BadgeMapper } from '../mappers/badges'
 import { Badge } from '../mongooseModels/badges'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { BadgeFromModel } from '../models/badges'
-import { CountStreakBadges } from '../../domain/types'
+import { CoinBadges, CountStreakBadges } from '../../domain/types'
 import { getDateDifference } from '@utils/functions'
 
 export class BadgeRepository implements IBadgeRepository {
@@ -29,27 +29,46 @@ export class BadgeRepository implements IBadgeRepository {
 	}
 
 	async recordSpendCoin (userId: string, coin: 'gold' | 'bronze', amount: number) {
-		await Badge.findOneAndUpdate({ userId }, {
-			$inc: {
-				[`data.coin.${coin === 'gold' ? 'SpendGold' : 'SpendBronze'}`]: amount
+		const key = coin === 'gold' ? CoinBadges.SpendGold : CoinBadges.SpendBronze
+
+		const session = await mongoose.startSession()
+		await session.withTransaction(async (session) => {
+			const badgeModel = await Badge.findOneAndUpdate(
+				{ _id: userId, userId },
+				{ $setOnInsert: { _id: userId, userId } },
+				{ session, upsert: true, new: true }
+			)
+			const badge = this.mapper.mapFrom(badgeModel)!
+			const { oldLevels, newLevels } = badge.unlockCoinBadge(coin, amount)
+
+			const updateData = {
+				$addToSet: { [`badges.coin.${key}`]: { $each: newLevels } },
+				$pull: { [`badges.coin.${key}`]: { $each: oldLevels } },
+				$inc: { [`data.coin.${key}.value`]: amount }
 			}
-		}, { upsert: true })
+
+			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
+		})
+		await session.endSession()
 	}
 
 	async recordCountStreak (userId: string, activity: CountStreakBadges, add: boolean) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
 			const badgeModel = await Badge.findOneAndUpdate(
-				{ userId },
-				{ $set: { userId } },
+				{ _id: userId, userId },
+				{ $setOnInsert: { _id: userId, userId } },
 				{ session, upsert: true, new: true }
 			)
 			const badge = this.mapper.mapFrom(badgeModel)!
+			const countLevels = badge.unlockCountBadge(activity, add)
+			const streakLevels = badge.unlockStreakBadge(activity, add)
 
-			const updateData = { $set: {}, $inc: {} }
+			const updateData = { $set: {}, $inc: {}, $addToSet: {}, $pull: {} }
 
 			if (add) {
 				updateData.$inc[`data.count.${activity}.value`] = 1
+				updateData.$addToSet[`badges.count.${activity}`] = { $each: countLevels.newLevels }
 
 				const { lastEvaluatedAt = 0, value = 0, longestStreak = 0 } = badge.data.streak[activity] ?? {}
 				const { isLessThan, isNextDay } = getDateDifference(new Date(lastEvaluatedAt), new Date())
@@ -59,10 +78,18 @@ export class BadgeRepository implements IBadgeRepository {
 
 				if (!skip) {
 					if (increase) updateData.$inc[`data.streak.${activity}.value`] = 1
-					if (increase && value === longestStreak) updateData.$inc[`data.streak.${activity}.longestStreak`] = 1
+					else updateData.$set[`data.streak.${activity}.value`] = 1
+					if (increase && value === longestStreak) {
+						updateData.$inc[`data.streak.${activity}.longestStreak`] = 1
+						updateData.$addToSet[`badges.streak.${activity}`] = { $each: streakLevels.newLevels }
+					}
 					updateData.$set[`data.streak.${activity}.lastEvaluatedAt`] = Date.now()
 				}
-			} else updateData.$inc[`data.count.${activity}.value`] = -1
+			} else {
+				updateData.$inc[`data.count.${activity}.value`] = -1
+				updateData.$pull[`badges.count.${activity}`] = { $in: countLevels.oldLevels }
+				updateData.$pull[`badges.streak.${activity}`] = { $in: streakLevels.oldLevels }
+			}
 			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
 		})
 		await session.endSession()
