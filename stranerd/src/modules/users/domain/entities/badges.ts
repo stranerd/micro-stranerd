@@ -93,12 +93,11 @@ export class BadgeEntity extends BaseEntity {
 		return { rankBadges, coinBadges, streakBadges, countBadges }
 	}
 
-	unlockCoinBadge (coin: 'gold' | 'bronze', amount: number) {
-		const key = coin === 'gold' ? CoinBadges.SpendGold : CoinBadges.SpendBronze
-		const value = this.data.coin[key].value
+	unlockCoinBadge (activity: CoinBadges, amount: number) {
+		const value = this.data.coin[activity].value
 		const clearedLevels = CoinValues.filter((v) => (value + amount) >= v.value).map((l) => l.level)
-		const oldLevels = this.badges.coin[key].filter((l) => !clearedLevels.includes(l))
-		const newLevels = clearedLevels.filter((l) => !this.badges.coin[key].includes(l))
+		const oldLevels = this.badges.coin[activity].filter((l) => !clearedLevels.includes(l))
+		const newLevels = clearedLevels.filter((l) => !this.badges.coin[activity].includes(l))
 		return { oldLevels, newLevels }
 	}
 

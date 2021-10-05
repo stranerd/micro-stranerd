@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks, Conditions, EventTypes } from '@utils/commons'
+import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import {
 	DeleteQuestionAnswers,
 	QuestionEntity,
@@ -7,7 +7,14 @@ import {
 	UpdateTagsCount
 } from '@modules/questions'
 import { addUserCoins } from '@utils/modules/users/transactions'
-import { GetUsers, IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import {
+	CountStreakBadges,
+	GetUsers,
+	IncrementUserMetaCount,
+	RecordCountStreak,
+	ScoreRewards,
+	UpdateUserNerdScore
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
@@ -34,9 +41,16 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			amount: ScoreRewards.NewQuestion
 		})
 
+		await RecordCountStreak.execute({
+			userId: after.userId,
+			activity: CountStreakBadges.NewQuestion,
+			add: true
+		})
+
 		const tutors = await GetUsers.execute({
 			where: [
-				{ field: 'tutor.strongestSubject', value: after.subjectId, condition: Conditions.eq }
+				{ field: `roles.${AuthApps.Stranerd}.isTutor`, value: true },
+				{ field: 'tutor.strongestSubject', value: after.subjectId }
 			]
 		})
 		await Promise.all([
@@ -97,5 +111,11 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
 		)
+
+		await RecordCountStreak.execute({
+			userId: before.userId,
+			activity: CountStreakBadges.NewQuestion,
+			add: false
+		})
 	}
 }

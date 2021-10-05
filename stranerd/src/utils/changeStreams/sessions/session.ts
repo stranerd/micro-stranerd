@@ -4,8 +4,10 @@ import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import {
 	AddUserQueuedSessions,
+	CountStreakBadges,
 	FindUser,
 	IncrementUsersSessionsCount,
+	RecordCountStreak,
 	RemoveUserQueuedSessions,
 	ScoreRewards,
 	SetUsersCurrentSession,
@@ -145,6 +147,16 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				tutorId: after.tutorId,
 				studentId: after.studentId,
 				value: 1
+			})
+			await RecordCountStreak.execute({
+				userId: after.studentId,
+				activity: CountStreakBadges.AttendSession,
+				add: true
+			})
+			await RecordCountStreak.execute({
+				userId: after.tutorId,
+				activity: CountStreakBadges.HostSession,
+				add: true
 			})
 		}
 	},

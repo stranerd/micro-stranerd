@@ -42,7 +42,7 @@ import { BadgeRepository } from './data/repositories/badges'
 import { GetBadgesUseCase } from './domain/useCases/badges/getBadges'
 import { FindBadgeUseCase } from './domain/useCases/badges/findBadge'
 import { RecordRankUseCase } from './domain/useCases/badges/recordRank'
-import { RecordSpendCoinUseCase } from './domain/useCases/badges/recordSpendCoin'
+import { RecordCoinUseCase } from './domain/useCases/badges/recordCoin'
 import { RecordCountStreakUseCase } from './domain/useCases/badges/recordCountStreak'
 
 const userRepository = UserRepository.getInstance()
@@ -76,7 +76,7 @@ export const ResetRankings = new ResetRankingsUseCase(userRepository)
 export const GetBadges = new GetBadgesUseCase(badgeRepository)
 export const FindBadge = new FindBadgeUseCase(badgeRepository)
 export const RecordRank = new RecordRankUseCase(badgeRepository)
-export const RecordSpendCoin = new RecordSpendCoinUseCase(badgeRepository)
+export const RecordCoin = new RecordCoinUseCase(badgeRepository)
 export const RecordCountStreak = new RecordCountStreakUseCase(badgeRepository)
 
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
@@ -110,4 +110,6 @@ export { ReferralEntity } from './domain/entities/referrals'
 export { ReviewEntity } from './domain/entities/reviews'
 export { TransactionEntity } from './domain/entities/transactions'
 export { UserEntity } from './domain/entities/users'
-export { ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, CoinValues } from './domain/types'
+export {
+	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, CoinValues, CoinBadges
+} from './domain/types'

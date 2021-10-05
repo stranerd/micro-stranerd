@@ -47,9 +47,7 @@ export class BadgeRepository implements IBadgeRepository {
 		await session.endSession()
 	}
 
-	async recordSpendCoin (userId: string, coin: 'gold' | 'bronze', amount: number) {
-		const key = coin === 'gold' ? CoinBadges.SpendGold : CoinBadges.SpendBronze
-
+	async recordSpendCoin (userId: string, activity: CoinBadges, amount: number) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
 			const badgeModel = await Badge.findOneAndUpdate(
@@ -58,12 +56,12 @@ export class BadgeRepository implements IBadgeRepository {
 				{ session, upsert: true, new: true }
 			)
 			const badge = this.mapper.mapFrom(badgeModel)!
-			const { oldLevels, newLevels } = badge.unlockCoinBadge(coin, amount)
+			const { oldLevels, newLevels } = badge.unlockCoinBadge(activity, amount)
 
 			const updateData = {
-				$addToSet: { [`badges.coin.${key}`]: { $each: newLevels } },
-				$pull: { [`badges.coin.${key}`]: { $each: oldLevels } },
-				$inc: { [`data.coin.${key}.value`]: amount }
+				$addToSet: { [`badges.coin.${activity}`]: { $each: newLevels } },
+				$pull: { [`badges.coin.${activity}`]: { $each: oldLevels } },
+				$inc: { [`data.coin.${activity}.value`]: amount }
 			}
 
 			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
