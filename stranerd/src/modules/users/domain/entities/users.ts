@@ -2,6 +2,7 @@ import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, Us
 import { BaseEntity } from '@utils/commons'
 import { getNextRank, getRank } from './ranks'
 import { getPercentage } from '@utils/functions'
+import { AuthApps } from '@utils/common'
 
 export class UserEntity extends BaseEntity {
 	public readonly id: string
@@ -35,6 +36,16 @@ export class UserEntity extends BaseEntity {
 
 	get nextRank () {
 		return getNextRank(this.rank.id)
+	}
+
+	get isAdmin () {
+		const app = AuthApps.Stranerd
+		return this.roles[app]?.['isAdmin'] ?? false
+	}
+
+	get isTutor () {
+		const app = AuthApps.Stranerd
+		return this.roles[app]?.['isTutor'] ?? false
 	}
 }
 

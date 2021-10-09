@@ -1,4 +1,4 @@
-import { AcceptSession, AddSession, CancelSession, FindSession, GetSessions } from '@modules/sessions'
+import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -28,20 +28,27 @@ export class SessionController {
 		const data = validate({
 			message: req.body.message,
 			tutorId: req.body.tutorId,
-			duration: req.body.duration
+			duration: req.body.duration,
+			isScheduled: req.body.isScheduled ?? false,
+			scheduledAt: req.body.scheduledAt
 		}, {
 			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			tutorId: { required: true, rules: [Validation.isString] },
 			duration: {
 				required: true,
 				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val)]
+			},
+			isScheduled: { required: true, rules: [Validation.isBoolean] },
+			scheduledAt: {
+				required: false,
+				rules: [Validation.isRequiredIfX(!!req.body.isScheduled), Validation.isNumberX('is not a valid date'), Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			}
 		})
 
 		const studentUser = await FindUser.execute(req.authUser!.id)
 		const tutorUser = await FindUser.execute(data.tutorId)
 
-		if (studentUser && tutorUser) return await AddSession.execute({
+		if (studentUser && tutorUser && tutorUser.isTutor) return await AddSession.execute({
 			...data,
 			price: sessions.find((s) => s.duration === data.duration)!.price,
 			tutorBio: tutorUser.bio,
@@ -75,8 +82,18 @@ export class SessionController {
 
 		return await CancelSession.execute({
 			sessionIds: [sessionId],
-			reason: 'tutor',
+			reason: 'student',
 			userId
+		})
+	}
+
+	static async endSession (req: Request) {
+		const sessionId = req.params.id
+		const userId = req.authUser!.id
+
+		return await EndSession.execute({
+			sessionIds: [sessionId],
+			studentId: userId
 		})
 	}
 }

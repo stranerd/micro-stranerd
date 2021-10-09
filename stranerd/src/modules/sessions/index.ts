@@ -14,8 +14,9 @@ import { GetSessionsUseCase } from './domain/usecases/sessions/getSessions'
 import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
 import { AcceptSessionUseCase } from './domain/usecases/sessions/acceptSession'
 import { CancelSessionUseCase } from './domain/usecases/sessions/cancelSession'
+import { EndSessionUseCase } from './domain/usecases/sessions/endSession'
 import { UpdateMySessionsBioUseCase } from './domain/usecases/sessions/updateMySessionsBio'
-import { UpdateTaskIdAndStartedAtUseCase } from './domain/usecases/sessions/updateTaskIdAndStartedAt'
+import { UpdateTaskIdsAndTimesUseCase } from './domain/usecases/sessions/updateTaskIdsAndTimes'
 import { MarkSessionDoneUseCase } from './domain/usecases/sessions/markSessionDone'
 
 const personalChatRepository = ChatRepository.getInstance()
@@ -32,8 +33,9 @@ export const GetSessions = new GetSessionsUseCase(sessionRepository)
 export const AddSession = new AddSessionUseCase(sessionRepository)
 export const AcceptSession = new AcceptSessionUseCase(sessionRepository)
 export const CancelSession = new CancelSessionUseCase(sessionRepository)
+export const EndSession = new EndSessionUseCase(sessionRepository)
 export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionRepository)
-export const UpdateTaskIdAndStartedAt = new UpdateTaskIdAndStartedAtUseCase(sessionRepository)
+export const UpdateTaskIdsAndTimes = new UpdateTaskIdsAndTimesUseCase(sessionRepository)
 export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 
 export const FindChatMeta = new FindChatMetaUseCase(chatMetaRepository)

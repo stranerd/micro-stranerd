@@ -1,8 +1,8 @@
 import { ISessionRepository } from '../../irepositories/session'
 import { BaseUseCase } from '@utils/commons'
-import { CancelReason } from '../../types'
+import { SessionFromModel } from '../../../data/models/session'
 
-type Input = { sessionIds: string[], userId: string, reason: CancelReason }
+type Input = { sessionIds: string[], userId: string, reason: keyof SessionFromModel['cancelled'] }
 
 export class CancelSessionUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISessionRepository

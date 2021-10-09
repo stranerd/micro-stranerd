@@ -5,13 +5,13 @@ import { TaskID } from '../../types'
 type Input = {
 	sessionId: string
 	data: {
-		taskId: TaskID
+		taskIds: TaskID[]
 		startedAt?: number
+		delayInMs?: number
 	}
-	delayInMs: number
 }
 
-export class UpdateTaskIdAndStartedAtUseCase extends BaseUseCase<Input, void> {
+export class UpdateTaskIdsAndTimesUseCase extends BaseUseCase<Input, void> {
 	private repository: ISessionRepository
 
 	constructor (repository: ISessionRepository) {
@@ -20,6 +20,6 @@ export class UpdateTaskIdAndStartedAtUseCase extends BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateTaskIdAndStartedAt(input.sessionId, input.data, input.delayInMs)
+		return await this.repository.updateTaskIdsAndTimes(input.sessionId, input.data)
 	}
 }

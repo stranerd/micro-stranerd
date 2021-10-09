@@ -1,14 +1,18 @@
 export enum DelayedJobs {
 	SessionTimer = 'SessionTimer',
-	Test = 'Test'
+	ScheduledSessionStart = 'ScheduledSessionStart',
+	ScheduledSessionNotification = 'ScheduledSessionNotification',
 }
 
 export type DelayedEvent = {
 	type: DelayedJobs.SessionTimer,
 	data: { sessionId: string }
 } | {
-	type: typeof DelayedJobs.Test,
-	data: { test: number }
+	type: typeof DelayedJobs.ScheduledSessionStart,
+	data: { sessionId: string, studentId: string, tutorId: string }
+} | {
+	type: typeof DelayedJobs.ScheduledSessionNotification,
+	data: { sessionId: string, studentId: string, tutorId: string, timeInSec: number }
 }
 
 export enum JobNames {
