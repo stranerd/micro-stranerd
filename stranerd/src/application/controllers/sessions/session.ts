@@ -1,4 +1,4 @@
-import { AcceptSession, AddSession, CancelSession, FindSession, GetSessions } from '@modules/sessions'
+import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -82,8 +82,18 @@ export class SessionController {
 
 		return await CancelSession.execute({
 			sessionIds: [sessionId],
-			reason: 'tutor',
+			reason: 'student',
 			userId
+		})
+	}
+
+	static async endSession (req: Request) {
+		const sessionId = req.params.id
+		const userId = req.authUser!.id
+
+		return await EndSession.execute({
+			sessionIds: [sessionId],
+			studentId: userId
 		})
 	}
 }

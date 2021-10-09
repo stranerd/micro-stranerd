@@ -48,6 +48,10 @@ export class SessionEntity extends BaseEntity {
 		this.isScheduled = isScheduled
 		this.scheduledAt = scheduledAt
 	}
+
+	get wasCancelled () {
+		return this.cancelled.student || this.cancelled.tutor || this.cancelled.busy
+	}
 }
 
 type SessionConstructorArgs = {

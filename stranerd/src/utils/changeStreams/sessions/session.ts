@@ -85,11 +85,6 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					}
 				})
 
-				// Pay Tutor
-				await addUserCoins(after.tutorId, { gold: after.price, bronze: 0 },
-					'You got paid for a session'
-				)
-
 				// Cancel All Other Lobbied Sessions
 				await CancelSession.execute({
 					sessionIds: filteredLobbiedSessionIds,
@@ -130,22 +125,26 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 		// Session was just concluded or cancelled, so cleanup
 		if (!before.done && after.done) {
-			await cancelSessionTask(after)
-			await SetUsersCurrentSession.execute({
-				studentId: after.studentId,
-				tutorId: after.tutorId,
-				sessionId: after.id,
-				add: false
-			})
-			await UpdateUserNerdScore.execute({
-				userId: after.studentId,
-				amount: ScoreRewards.CompleteSession
-			})
-			await IncrementUsersSessionsCount.execute({
-				tutorId: after.tutorId,
-				studentId: after.studentId,
-				value: 1
-			})
+			if (!after.wasCancelled) {
+				await SetUsersCurrentSession.execute({
+					studentId: after.studentId,
+					tutorId: after.tutorId,
+					sessionId: after.id,
+					add: false
+				})
+				await addUserCoins(after.tutorId, { gold: after.price, bronze: 0 },
+					'You got paid for a session'
+				)
+				await UpdateUserNerdScore.execute({
+					userId: after.studentId,
+					amount: ScoreRewards.CompleteSession
+				})
+				await IncrementUsersSessionsCount.execute({
+					tutorId: after.tutorId,
+					studentId: after.studentId,
+					value: 1
+				})
+			} else await cancelSessionTask(after)
 		}
 	},
 	deleted: async ({ before }) => {

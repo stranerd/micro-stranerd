@@ -66,5 +66,18 @@ export const SessionRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/sessions/:id/end',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await SessionController.endSession(req)
+				}
+			})
+		]
 	}
 ]
