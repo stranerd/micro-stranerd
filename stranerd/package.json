@@ -13,13 +13,13 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^1.0.8",
-		"stripe": "^8.178.0"
+		"@stranerd/api-commons": "^1.1.0",
+		"stripe": "^8.179.0"
 	},
 	"devDependencies": {
-		"@types/node": "^16.10.2",
-		"@typescript-eslint/eslint-plugin": "^4.32.0",
-		"@typescript-eslint/parser": "^4.32.0",
+		"@types/node": "^16.10.3",
+		"@typescript-eslint/eslint-plugin": "^4.33.0",
+		"@typescript-eslint/parser": "^4.33.0",
 		"eslint": "^7.32.0",
 		"eslint-plugin-promise": "^5.1.0",
 		"ts-node-dev": "^1.1.8",
