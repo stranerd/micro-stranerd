@@ -41,14 +41,14 @@ export class SessionController {
 			isScheduled: { required: true, rules: [Validation.isBoolean] },
 			scheduledAt: {
 				required: false,
-				rules: [Validation.isRequiredIfX(!!req.body.isScheduled), Validation.isNumber, Validation.isMoreThanX(Date.now())]
+				rules: [Validation.isRequiredIfX(!!req.body.isScheduled), Validation.isNumberX('is not a valid date'), Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			}
 		})
 
 		const studentUser = await FindUser.execute(req.authUser!.id)
 		const tutorUser = await FindUser.execute(data.tutorId)
 
-		if (studentUser && tutorUser) return await AddSession.execute({
+		if (studentUser && tutorUser && tutorUser.isTutor) return await AddSession.execute({
 			...data,
 			price: sessions.find((s) => s.duration === data.duration)!.price,
 			tutorBio: tutorUser.bio,
