@@ -91,7 +91,7 @@ export class UserRepository implements IUserRepository {
 
 	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean) {
 		const session = await mongoose.startSession()
-		const key = add ? '$push' : '$pull'
+		const key = add ? '$addToSet' : '$pull'
 		await session.withTransaction(async (session) => {
 			await User.findByIdAndUpdate(studentId, { [key]: { 'session.currentSessions': sessionId } }, { session })
 			await User.findByIdAndUpdate(tutorId, { [key]: { 'session.currentTutorSessions': sessionId } }, { session })
@@ -99,20 +99,11 @@ export class UserRepository implements IUserRepository {
 		await session.endSession()
 	}
 
-	async addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string) {
+	async updateUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[], add: boolean) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
-			await User.findByIdAndUpdate(studentId, { $push: { 'session.lobby': sessionId } }, { session })
-			await User.findByIdAndUpdate(tutorId, { $push: { 'session.requests': sessionId } }, { session })
-		})
-		await session.endSession()
-	}
-
-	async removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]) {
-		const session = await mongoose.startSession()
-		await session.withTransaction(async (session) => {
-			await User.findByIdAndUpdate(studentId, { $pull: { 'session.lobby': { $in: sessionIds } } }, { session })
-			await User.findByIdAndUpdate(tutorId, { $pull: { 'session.requests': { $in: sessionIds } } }, { session })
+			await User.findByIdAndUpdate(studentId, { [add ? '$addToSet' : '$pull']: { 'session.lobby': { [add ? '$each' : '$in']: sessionIds } } }, { session })
+			await User.findByIdAndUpdate(tutorId, { [add ? '$addToSet' : '$pull']: { 'session.requests': { [add ? '$each' : '$in']: sessionIds } } }, { session })
 		})
 		await session.endSession()
 	}

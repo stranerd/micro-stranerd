@@ -63,11 +63,6 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 			type: Boolean,
 			required: false,
 			default: false
-		},
-		busy: {
-			type: Boolean,
-			required: false,
-			default: false
 		}
 	},
 	startedAt: {

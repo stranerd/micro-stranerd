@@ -62,7 +62,7 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async modifyAnswers (id: string, answerId: string, userId: string, add: boolean) {
 		const question = await Question.findByIdAndUpdate(id, {
-			[add ? '$push' : '$pull']: { answers: { id: answerId, userId } }
+			[add ? '$addToSet' : '$pull']: { answers: { id: answerId, userId } }
 		}, { new: true })
 		return !!question
 	}

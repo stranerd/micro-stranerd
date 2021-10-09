@@ -32,7 +32,7 @@ export class ChatRepository implements IChatRepository {
 				{ ownerId: path[1], userId: path[0] },
 				{
 					$set: { last: chatData, ownerId: path[1], userId: path[0] },
-					$push: { unRead: chat.id }
+					$addToSet: { unRead: chat.id }
 				},
 				{ upsert: true, session }
 			)

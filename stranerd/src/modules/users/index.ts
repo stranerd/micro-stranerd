@@ -27,8 +27,7 @@ import { UpdateUserRatingsUseCase } from './domain/useCases/users/updateUserRati
 import { UpdateUserTagsUseCase } from './domain/useCases/users/updateUserTags'
 import { UpdateUserStatusUseCase } from './domain/useCases/users/updateUserStatus'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
-import { AddUserQueuedSessionsUseCase } from './domain/useCases/users/addUserQueuedSessions'
-import { RemoveUserQueuedSessionsUseCase } from './domain/useCases/users/removeUserQueuedSessions'
+import { UpdateUserQueuedSessionsUseCase } from './domain/useCases/users/updateUserQueuedSessions'
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
 import { UpdateUserSubjectsUseCase } from './domain/useCases/users/updateUserSubjects'
 import { UpdateUserStreakUseCase } from './domain/useCases/users/updateUserStreak'
@@ -54,8 +53,7 @@ export const MarkUserAsDeleted = new MarkUserAsDeletedUseCase(userRepository)
 export const AddUserCoins = new AddUserCoinsUseCase(userRepository)
 export const UpdateUserNerdScore = new UpdateUserNerdScoreUseCase(userRepository)
 export const SetUsersCurrentSession = new SetUsersCurrentSessionUseCase(userRepository)
-export const AddUserQueuedSessions = new AddUserQueuedSessionsUseCase(userRepository)
-export const RemoveUserQueuedSessions = new RemoveUserQueuedSessionsUseCase(userRepository)
+export const UpdateUserQueuedSessions = new UpdateUserQueuedSessionsUseCase(userRepository)
 export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCase(userRepository)
 export const IncrementUserMetaCount = new IncrementUserMetaCountUseCase(userRepository)
 export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)

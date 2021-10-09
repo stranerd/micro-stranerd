@@ -9,7 +9,7 @@ export interface SessionFromModel extends SessionToModel {
 	accepted: boolean | null
 	taskId: TaskID
 	done: boolean
-	cancelled: { tutor: boolean, student: boolean, busy: boolean }
+	cancelled: { tutor: boolean, student: boolean }
 }
 
 export interface SessionToModel {
