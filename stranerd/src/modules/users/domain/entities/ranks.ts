@@ -1,4 +1,4 @@
-enum RankTypes {
+export enum RankTypes {
 	Rookie = 'Rookie',
 	Comrade = 'Comrade',
 	Scholar = 'Scholar',

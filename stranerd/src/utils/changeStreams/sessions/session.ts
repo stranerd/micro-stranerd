@@ -3,8 +3,10 @@ import { AddChat, CancelSession, SessionEntity, SessionFromModel } from '@module
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import {
+	CountStreakBadges,
 	FindUser,
 	IncrementUsersSessionsCount,
+	RecordCountStreak,
 	ScoreRewards,
 	SetUsersCurrentSession,
 	UpdateUserNerdScore,
@@ -155,6 +157,16 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				{ gold: after.price, bronze: 0 },
 				'You got refunded for a rejected session'
 			)
+			await RecordCountStreak.execute({
+				userId: after.studentId,
+				activity: CountStreakBadges.AttendSession,
+				add: true
+			})
+			await RecordCountStreak.execute({
+				userId: after.tutorId,
+				activity: CountStreakBadges.HostSession,
+				add: true
+			})
 		}
 	},
 	deleted: async ({ before }) => {

@@ -9,7 +9,14 @@ import {
 	RemoveBestAnswer
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
+import {
+	CountStreakBadges,
+	IncrementUserMetaCount,
+	RecordCountStreak,
+	ScoreRewards,
+	UpdateUserNerdScore,
+	UpdateUserTags
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
 
@@ -49,12 +56,19 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				data: { questionId: after.questionId, answerId: after.id }
 			}, 'New Answer')
 		}
+
+		await RecordCountStreak.execute({
+			userId: after.userId,
+			activity: CountStreakBadges.NewAnswer,
+			add: true
+		})
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('answers', after)
 		await getSocketEmitter().emitOpenUpdated(`answers/${after.id}`, after)
 
 		if (changes.best) {
+			const question = await FindQuestion.execute(after.questionId)
 			await UpdateUserNerdScore.execute({
 				userId: after.userId,
 				amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
@@ -63,6 +77,16 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				id: before.userId,
 				value: after.best ? 1 : -1,
 				property: 'bestAnswers'
+			})
+			await RecordCountStreak.execute({
+				userId: after.userId,
+				activity: CountStreakBadges.GetBestAnswer,
+				add: true
+			})
+			if (question) await RecordCountStreak.execute({
+				userId: question.userId,
+				activity: CountStreakBadges.GiveBestAnswer,
+				add: true
 			})
 		}
 
@@ -133,5 +157,25 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
 		)
+
+		await RecordCountStreak.execute({
+			userId: before.userId,
+			activity: CountStreakBadges.NewAnswer,
+			add: false
+		})
+
+		if (before.best) {
+			const question = await FindQuestion.execute(before.questionId)
+			await RecordCountStreak.execute({
+				userId: before.userId,
+				activity: CountStreakBadges.GetBestAnswer,
+				add: false
+			})
+			if (question) await RecordCountStreak.execute({
+				userId: question.userId,
+				activity: CountStreakBadges.GiveBestAnswer,
+				add: false
+			})
+		}
 	}
 }

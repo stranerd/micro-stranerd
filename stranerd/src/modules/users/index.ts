@@ -37,8 +37,15 @@ import { FindReferralUseCase } from './domain/useCases/referrals/findReferral'
 import { CreateReferralUseCase } from './domain/useCases/referrals/createReferral'
 import { GetReferralsUseCase } from './domain/useCases/referrals/getReferrals'
 import { ResetAllUsersStatusUseCase } from './domain/useCases/users/resetAllUsersStatus'
+import { BadgeRepository } from './data/repositories/badges'
+import { GetBadgesUseCase } from './domain/useCases/badges/getBadges'
+import { FindBadgeUseCase } from './domain/useCases/badges/findBadge'
+import { RecordRankUseCase } from './domain/useCases/badges/recordRank'
+import { RecordCoinUseCase } from './domain/useCases/badges/recordCoin'
+import { RecordCountStreakUseCase } from './domain/useCases/badges/recordCountStreak'
 
 const userRepository = UserRepository.getInstance()
+const badgeRepository = BadgeRepository.getInstance()
 const notificationRepository = NotificationRepository.getInstance()
 const referralRepository = ReferralRepository.getInstance()
 const reviewRepository = ReviewRepository.getInstance()
@@ -64,6 +71,12 @@ export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository
 export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
 export const ResetRankings = new ResetRankingsUseCase(userRepository)
 
+export const GetBadges = new GetBadgesUseCase(badgeRepository)
+export const FindBadge = new FindBadgeUseCase(badgeRepository)
+export const RecordRank = new RecordRankUseCase(badgeRepository)
+export const RecordCoin = new RecordCoinUseCase(badgeRepository)
+export const RecordCountStreak = new RecordCountStreakUseCase(badgeRepository)
+
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
 export const CreateNotification = new CreateNotificationUseCase(notificationRepository)
@@ -83,15 +96,19 @@ export const GetReferrals = new GetReferralsUseCase(referralRepository)
 export const FindReferral = new FindReferralUseCase(referralRepository)
 export const CreateReferral = new CreateReferralUseCase(referralRepository)
 
+export { BadgeFromModel } from './data/models/badges'
 export { NotificationFromModel, NotificationToModel } from './data/models/notifications'
 export { ReferralFromModel } from './data/models/referrals'
 export { ReviewFromModel } from './data/models/reviews'
 export { TransactionFromModel } from './data/models/transactions'
 export { UserFromModel } from './data/models/users'
+export { BadgeEntity } from './domain/entities/badges'
 export { NotificationEntity } from './domain/entities/notifications'
 export { ReferralEntity } from './domain/entities/referrals'
 export { ReviewEntity } from './domain/entities/reviews'
 export { TransactionEntity } from './domain/entities/transactions'
 export { UserEntity } from './domain/entities/users'
-export { ScoreRewards } from './domain/types'
-export { UserBio } from './domain/types'
+export { RankTypes } from './domain/entities/ranks'
+export {
+	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, CoinValues, CoinBadges
+} from './domain/types'
