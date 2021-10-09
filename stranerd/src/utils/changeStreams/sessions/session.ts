@@ -10,7 +10,7 @@ import {
 	UpdateUserNerdScore,
 	UpdateUserQueuedSessions
 } from '@modules/users'
-import { cancelSessionTask, startSession } from '@utils/modules/sessions/sessions'
+import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
@@ -77,21 +77,17 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					}
 				})
 
-				// Set both current session and start the session
-				await SetUsersCurrentSession.execute({
-					studentId: after.studentId,
-					tutorId: after.tutorId,
-					sessionId: after.id,
-					add: true
-				})
-				await startSession(after)
+				if (after.isScheduled) await scheduleSession(after)
+				else {
+					await startSession(after)
 
-				// Cancel All Other Lobbied Sessions
-				await CancelSession.execute({
-					sessionIds: filteredLobbiedSessionIds,
-					userId: after.tutorId,
-					reason: 'tutor'
-				})
+					// Cancel All Other Lobbied Sessions
+					await CancelSession.execute({
+						sessionIds: filteredLobbiedSessionIds,
+						userId: after.tutorId,
+						reason: 'tutor'
+					})
+				}
 			} else {
 				await UpdateUserQueuedSessions.execute({
 					studentId: after.studentId,
@@ -116,13 +112,13 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 		// Session was just concluded or cancelled, so cleanup
 		if (!before.done && after.done) {
+			if (after.accepted) await SetUsersCurrentSession.execute({
+				studentId: after.studentId,
+				tutorId: after.tutorId,
+				sessionId: after.id,
+				add: false
+			})
 			if (!after.wasCancelled) {
-				await SetUsersCurrentSession.execute({
-					studentId: after.studentId,
-					tutorId: after.tutorId,
-					sessionId: after.id,
-					add: false
-				})
 				await addUserCoins(after.tutorId, { gold: after.price, bronze: 0 },
 					'You got paid for a session'
 				)

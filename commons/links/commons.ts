@@ -7,8 +7,8 @@
 
 // When running in standalone mode, uncomment this export && comment the other
 //@ts-ignore
-// export * from './common'
+export * from './common'
 
 // For production or in docker, uncomment this export && comment the other
 //@ts-ignore
-export * from '@stranerd/api-commons'
+// export * from '@stranerd/api-commons'

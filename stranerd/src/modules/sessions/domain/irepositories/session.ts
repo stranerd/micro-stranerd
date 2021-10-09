@@ -11,6 +11,6 @@ export interface ISessionRepository {
 	cancel: (ids: string[], userId: string, reason: keyof SessionFromModel['cancelled']) => Promise<boolean>
 	end: (ids: string[], userId: string) => Promise<boolean>
 	updateMySessionsBio: (userId: string, userBio: UserBio) => Promise<boolean>
-	updateTaskIdAndStartedAt: (id: string, data: { taskId: TaskID, startedAt?: number }, delayInMs: number) => Promise<void>
+	updateTaskIdsAndTimes: (id: string, data: { taskIds: TaskID[], startedAt?: number, delayInMs?: number }) => Promise<void>
 	markSessionDone: (id: string) => Promise<void>
 }

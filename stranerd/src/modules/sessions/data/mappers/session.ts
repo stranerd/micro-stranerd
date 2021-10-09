@@ -9,13 +9,13 @@ export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, 
 			_id, duration, price, message,
 			studentId, tutorId, studentBio, tutorBio,
 			accepted, done, cancelled,
-			createdAt, startedAt, endedAt, updatedAt, taskId,
+			createdAt, startedAt, endedAt, updatedAt, taskIds,
 			isScheduled, scheduledAt
 		} = model
 		return new SessionEntity({
 			id: _id.toString(), message, studentId, tutorId, studentBio, tutorBio,
 			duration, price, accepted: accepted, done, cancelled,
-			createdAt, updatedAt, startedAt, endedAt, taskId,
+			createdAt, updatedAt, startedAt, endedAt, taskIds,
 			isScheduled, scheduledAt
 		})
 	}

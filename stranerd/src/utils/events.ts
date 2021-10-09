@@ -8,7 +8,8 @@ import {
 	UpdateUserWithBio,
 	UpdateUserWithRoles
 } from '../modules/users'
-import { endSession } from '@utils/modules/sessions/sessions'
+import { endSession, startSession } from '@utils/modules/sessions/sessions'
+import { FindSession } from '@modules/sessions'
 
 const eventBus = new EventBus()
 
@@ -30,6 +31,16 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
+		if (data.type === DelayedJobs.ScheduledSessionStart) {
+			const { sessionId, studentId: userId } = data.data
+			const session = await FindSession.execute({ sessionId, userId })
+			if (session) await startSession(session)
+		}
+		if (data.type === DelayedJobs.ScheduledSessionNotification) {
+			const { sessionId, studentId, tutorId, timeInSec } = data.data
+			// TODO: send reminder to tutor and session
+			console.log(sessionId, studentId, tutorId, timeInSec)
+		}
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) await ResetRankings.execute('daily')

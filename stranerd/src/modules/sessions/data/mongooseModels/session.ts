@@ -48,10 +48,10 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		type: Number,
 		required: true
 	},
-	taskId: {
-		type: mongoose.Schema.Types.Mixed,
+	taskIds: {
+		type: [mongoose.Schema.Types.Mixed],
 		required: false,
-		default: null
+		default: []
 	},
 	cancelled: {
 		student: {

@@ -70,8 +70,15 @@ export class SessionRepository implements ISessionRepository {
 		return result[0].acknowledged && result[1].acknowledged
 	}
 
-	async updateTaskIdAndStartedAt (id: string, data: { taskId: TaskID, startedAt?: number }, delayInMs: number) {
-		await Session.findByIdAndUpdate(id, { $set: { ...data, endedAt: Date.now() + delayInMs } })
+	async updateTaskIdsAndTimes (id: string, data: { taskIds: TaskID[], delayInMs?: number, startedAt?: number }) {
+		const { taskIds, startedAt, delayInMs } = data
+		await Session.findByIdAndUpdate(id, {
+			$set: {
+				...(startedAt ? { startedAt: startedAt } : {}),
+				...(delayInMs ? { endedAt: Date.now() + delayInMs } : {})
+			},
+			$addToSet: { taskIds: { $each: taskIds } }
+		})
 	}
 
 	async markSessionDone (id: string) {
