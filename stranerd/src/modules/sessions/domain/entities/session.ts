@@ -18,12 +18,15 @@ export class SessionEntity extends BaseEntity {
 	public readonly updatedAt: number
 	public readonly startedAt: number | null
 	public readonly endedAt: number | null
+	public readonly isScheduled: boolean
+	public readonly scheduledAt: number | null
 
 	constructor ({
 		             id, duration, price, message,
 		             studentId, tutorId, studentBio, tutorBio,
 		             accepted, done, cancelled,
-		             createdAt, startedAt, endedAt, updatedAt, taskId
+		             createdAt, startedAt, endedAt, updatedAt, taskId,
+		             isScheduled, scheduledAt
 	             }: SessionConstructorArgs) {
 		super()
 		this.id = id
@@ -42,6 +45,8 @@ export class SessionEntity extends BaseEntity {
 		this.updatedAt = updatedAt
 		this.startedAt = startedAt
 		this.endedAt = endedAt
+		this.isScheduled = isScheduled
+		this.scheduledAt = scheduledAt
 	}
 }
 
@@ -55,4 +60,6 @@ type SessionConstructorArgs = {
 	startedAt: number | null
 	endedAt: number | null
 	taskId: TaskID
+	isScheduled: boolean
+	scheduledAt: number | null
 }

@@ -20,4 +20,6 @@ export interface SessionToModel {
 	tutorBio: UserBio
 	duration: number
 	price: number
+	isScheduled: boolean
+	scheduledAt: number | null
 }
