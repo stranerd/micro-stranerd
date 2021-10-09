@@ -1,4 +1,5 @@
 import { CoinBadges, CoinValues, CountStreakBadges, CountValues, StreakValues } from '../../domain/types'
+import { RankTypes } from '../../domain/entities/ranks'
 
 export interface BadgeFromModel extends BadgeToModel {
 	_id: string
@@ -14,9 +15,9 @@ export interface BadgeToModel {
 		coin: Record<CoinBadges, { value: number }>
 	},
 	badges: {
-		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
-		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
-		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
-		rank: number[]
+		count: Record<CountStreakBadges, (typeof CountValues)[number]['value'][]>,
+		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['value'][]>,
+		coin: Record<CoinBadges, (typeof CoinValues)[number]['value'][]>
+		rank: RankTypes[]
 	}
 }

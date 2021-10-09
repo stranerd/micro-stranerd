@@ -1,7 +1,8 @@
 import { BaseUseCase } from '@utils/commons'
 import { IBadgeRepository } from '../../i-repositories/badges'
+import { RankTypes } from '../../entities/ranks'
 
-type Input = { userId: string, rank: number, add: boolean }
+type Input = { userId: string, rank: RankTypes, add: boolean }
 
 export class RecordRankUseCase implements BaseUseCase<Input, void> {
 	repository: IBadgeRepository

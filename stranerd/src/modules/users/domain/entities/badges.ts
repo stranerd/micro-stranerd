@@ -8,7 +8,7 @@ import {
 	CountValues,
 	StreakValues
 } from '../types'
-import { ranks } from './ranks'
+import { ranks, RankTypes } from './ranks'
 
 export class BadgeEntity extends BaseEntity {
 	public readonly id: string
@@ -19,10 +19,10 @@ export class BadgeEntity extends BaseEntity {
 		coin: Record<CoinBadges, { value: number }>
 	}
 	public readonly badges: {
-		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
-		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
-		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
-		rank: number[]
+		count: Record<CountStreakBadges, (typeof CountValues)[number]['value'][]>,
+		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['value'][]>,
+		coin: Record<CoinBadges, (typeof CoinValues)[number]['value'][]>
+		rank: RankTypes[]
 	}
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -39,7 +39,7 @@ export class BadgeEntity extends BaseEntity {
 
 	get allBadges () {
 		const rankBadges = this.badges.rank
-			.map((level) => ranks.find((r) => r.level === level))
+			.map((id) => ranks.find((r) => r.id.toLowerCase() === id.toLowerCase()))
 			.filter((r) => !!r)
 			.map((r) => ({
 				name: r!.id,
@@ -51,7 +51,7 @@ export class BadgeEntity extends BaseEntity {
 		const coinBadges = Object.keys(CoinBadges)
 			.map((key) => this.badges.coin[key as CoinBadges]
 				.map((b) => {
-					const badge = CoinValues.find((v) => v.level === b)
+					const badge = CoinValues.find((v) => v.value === b)
 					if (!badge) return null
 					const name = CoinBadgeNames[key as CoinBadges]
 					return {
@@ -65,7 +65,7 @@ export class BadgeEntity extends BaseEntity {
 		const streakBadges = Object.keys(CountStreakBadges)
 			.map((key) => this.badges.streak[key as CountStreakBadges]
 				.map((b) => {
-					const badge = StreakValues.find((v) => v.level === b)
+					const badge = StreakValues.find((v) => v.value === b)
 					if (!badge) return null
 					const name = CountStreakBadgeNames[key as CountStreakBadges]
 					return {
@@ -79,7 +79,7 @@ export class BadgeEntity extends BaseEntity {
 		const countBadges = Object.keys(CountStreakBadges)
 			.map((key) => this.badges.count[key as CountStreakBadges]
 				.map((b) => {
-					const badge = CountValues.find((v) => v.level === b)
+					const badge = CountValues.find((v) => v.value === b)
 					if (!badge) return null
 					const name = CountStreakBadgeNames[key as CountStreakBadges]
 					return {
@@ -95,7 +95,7 @@ export class BadgeEntity extends BaseEntity {
 
 	unlockCoinBadge (activity: CoinBadges, amount: number) {
 		const value = this.data.coin[activity].value
-		const clearedLevels = CoinValues.filter((v) => (value + amount) >= v.value).map((l) => l.level)
+		const clearedLevels = CoinValues.filter((v) => (value + amount) >= v.value).map((l) => l.value)
 		const oldLevels = this.badges.coin[activity].filter((l) => !clearedLevels.includes(l))
 		const newLevels = clearedLevels.filter((l) => !this.badges.coin[activity].includes(l))
 		return { oldLevels, newLevels }
@@ -104,7 +104,7 @@ export class BadgeEntity extends BaseEntity {
 	unlockCountBadge (activity: CountStreakBadges, add: boolean) {
 		const amount = add ? 1 : -1
 		const value = this.data.count[activity].value
-		const clearedLevels = CountValues.filter((v) => (value + amount) >= v.value).map((l) => l.level)
+		const clearedLevels = CountValues.filter((v) => (value + amount) >= v.value).map((l) => l.value)
 		const oldLevels = this.badges.count[activity].filter((l) => !clearedLevels.includes(l))
 		const newLevels = clearedLevels.filter((l) => !this.badges.count[activity].includes(l))
 		return { oldLevels, newLevels }
@@ -113,7 +113,7 @@ export class BadgeEntity extends BaseEntity {
 	unlockStreakBadge (activity: CountStreakBadges, add: boolean) {
 		const amount = add ? 1 : -1
 		const value = this.data.streak[activity].value
-		const clearedLevels = StreakValues.filter((v) => (value + amount) >= v.value).map((l) => l.level)
+		const clearedLevels = StreakValues.filter((v) => (value + amount) >= v.value).map((l) => l.value)
 		const oldLevels = this.badges.streak[activity].filter((l) => !clearedLevels.includes(l))
 		const newLevels = clearedLevels.filter((l) => !this.badges.streak[activity].includes(l))
 		return { oldLevels, newLevels }
@@ -129,10 +129,10 @@ type BadgeConstructorArgs = {
 		coin: Record<CoinBadges, { value: number }>
 	}
 	badges: {
-		count: Record<CountStreakBadges, (typeof CountValues)[number]['level'][]>,
-		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['level'][]>,
-		coin: Record<CoinBadges, (typeof CoinValues)[number]['level'][]>
-		rank: number[]
+		count: Record<CountStreakBadges, (typeof CountValues)[number]['value'][]>,
+		streak: Record<CountStreakBadges, (typeof StreakValues)[number]['value'][]>,
+		coin: Record<CoinBadges, (typeof CoinValues)[number]['value'][]>
+		rank: RankTypes[]
 	}
 	createdAt: number
 	updatedAt: number

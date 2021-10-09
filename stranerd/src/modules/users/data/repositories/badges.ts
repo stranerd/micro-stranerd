@@ -5,6 +5,7 @@ import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { BadgeFromModel } from '../models/badges'
 import { CoinBadges, CountStreakBadges } from '../../domain/types'
 import { getDateDifference } from '@utils/functions'
+import { RankTypes } from '../../domain/entities/ranks'
 
 export class BadgeRepository implements IBadgeRepository {
 	private static instance: BadgeRepository
@@ -28,7 +29,7 @@ export class BadgeRepository implements IBadgeRepository {
 		return this.mapper.mapFrom(badge)
 	}
 
-	async recordRank (userId: string, rank: number, add: boolean) {
+	async recordRank (userId: string, rank: RankTypes, add: boolean) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
 			const badgeModel = await Badge.findOneAndUpdate(

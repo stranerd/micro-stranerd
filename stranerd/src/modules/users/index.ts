@@ -110,6 +110,7 @@ export { ReferralEntity } from './domain/entities/referrals'
 export { ReviewEntity } from './domain/entities/reviews'
 export { TransactionEntity } from './domain/entities/transactions'
 export { UserEntity } from './domain/entities/users'
+export { RankTypes } from './domain/entities/ranks'
 export {
 	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, CoinValues, CoinBadges
 } from './domain/types'

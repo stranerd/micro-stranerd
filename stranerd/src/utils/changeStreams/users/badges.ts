@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { BadgeEntity, BadgeFromModel, CountStreakBadges } from '@modules/users'
+import { BadgeEntity, BadgeFromModel, CountStreakBadges, RankTypes } from '@modules/users'
 import { getSocketEmitter } from '@index'
 
 const handleCountBadges = async (activity: CountStreakBadges, newLevels: number[], oldLevels: number[]) => {
@@ -14,7 +14,7 @@ const handleCoinBadges = async (coin: 'gold' | 'bronze', newLevels: number[], ol
 	console.log(coin, newLevels, oldLevels)
 }
 
-const handleRankBadges = async (newLevels: number[], oldLevels: number[]) => {
+const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) => {
 	console.log(newLevels, oldLevels)
 }
 
