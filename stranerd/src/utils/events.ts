@@ -10,6 +10,7 @@ import {
 } from '../modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { FindSession } from '@modules/sessions'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 const eventBus = new EventBus()
 
@@ -38,8 +39,18 @@ export const subscribers = {
 		}
 		if (data.type === DelayedJobs.ScheduledSessionNotification) {
 			const { sessionId, studentId, tutorId, timeInSec } = data.data
-			// TODO: send reminder to tutor and session
-			console.log(sessionId, studentId, tutorId, timeInSec)
+			await Promise.all([
+				await sendNotification(tutorId, {
+					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					action: 'sessions',
+					data: { userId: studentId, sessionId }
+				}),
+				await sendNotification(studentId, {
+					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					action: 'sessions',
+					data: { userId: tutorId, sessionId }
+				})
+			])
 		}
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {

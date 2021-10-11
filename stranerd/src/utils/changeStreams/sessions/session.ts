@@ -41,7 +41,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await sendNotification(after.tutorId, {
 			body: `${after.studentBio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
 			action: 'sessions',
-			data: { userId: after.studentId }
+			data: { userId: after.studentId, sessionId: after.id }
 		}, 'New Session Request')
 
 		await addUserCoins(after.studentId, { gold: 0 - after.price, bronze: 0 },
