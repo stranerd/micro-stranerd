@@ -58,11 +58,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
 	bio: {
-		type: Object as unknown as UserFromModel['bio'],
+		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['bio'],
 		required: true
 	},
 	roles: {
-		type: Object as unknown as UserFromModel['roles'],
+		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['roles'],
 		required: false,
 		default: {} as unknown as UserFromModel['roles']
 	},
@@ -78,7 +78,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: []
 		},
 		tags: {
-			type: Object,
+			type: mongoose.Schema.Types.Mixed,
 			required: false,
 			default: {}
 		}

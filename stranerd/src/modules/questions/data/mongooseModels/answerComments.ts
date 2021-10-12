@@ -22,7 +22,7 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as AnswerCommentFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerCommentFromModel['userBio'],
 		required: false,
 		default: {} as unknown as AnswerCommentFromModel['userBio']
 	},

@@ -22,7 +22,7 @@ const PaymentSchema = new mongoose.Schema<PaymentFromModel>({
 		required: true
 	},
 	data: {
-		type: Object,
+		type: mongoose.Schema.Types.Mixed,
 		required: false,
 		default: {}
 	},

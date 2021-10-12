@@ -31,7 +31,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as QuestionFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['userBio'],
 		required: false,
 		default: {} as unknown as QuestionFromModel['userBio']
 	},

@@ -18,7 +18,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	studentBio: {
-		type: Object as unknown as SessionFromModel['studentBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentBio'],
 		required: true
 	},
 	tutorId: {
@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	tutorBio: {
-		type: Object as unknown as SessionFromModel['tutorBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorBio'],
 		required: true
 	},
 	duration: {

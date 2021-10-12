@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		default: ''
 	},
 	photo: {
-		type: Object,
+		type: mongoose.Schema.Types.Mixed,
 		required: false,
 		default: null
 	},
