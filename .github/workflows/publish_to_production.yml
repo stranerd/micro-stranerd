@@ -4,6 +4,9 @@ on:
   push:
     branches:
       production
+    paths:
+      - 'services/'
+      - 'bin/'
 
 jobs:
   publish-gae:
