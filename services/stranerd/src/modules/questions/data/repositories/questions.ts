@@ -5,6 +5,7 @@ import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types'
+import { BEST_ANSWERS_COUNT } from '@modules/questions/domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -49,7 +50,7 @@ export class QuestionRepository implements IQuestionRepository {
 		await session.withTransaction(async (session) => {
 			const question = await Question.findOneAndUpdate({
 				_id: id, userId,
-				...(add ? { 'bestAnswers.2': { $exists: false } } : { 'bestAnswers': answerId })
+				...(add ? { [`bestAnswers.${BEST_ANSWERS_COUNT}`]: { $exists: false } } : { 'bestAnswers': answerId })
 			}, {
 				[add ? '$addToSet' : 'pull']: { bestAnswers: answerId }
 			}, { session, new: true })
@@ -64,7 +65,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return res
 	}
 
-	async modifyAnswers (id: string, answerId: string, userId: string, add: boolean) {
+	async updateAnswers (id: string, answerId: string, userId: string, add: boolean) {
 		const question = await Question.findByIdAndUpdate(id, {
 			[add ? '$push' : '$pull']: { answers: { id: answerId, userId } }
 		}, { new: true })

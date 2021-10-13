@@ -4,8 +4,8 @@ import {
 	AnswerFromModel,
 	DeleteAnswerComments,
 	FindQuestion,
-	ModifyQuestionAnswers,
-	UpdateBestAnswer
+	UpdateBestAnswer,
+	UpdateQuestionsAnswers
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UpdateUserTags } from '@modules/users'
@@ -18,7 +18,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitOpenCreated(`answers/${after.id}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answers' })
-		await ModifyQuestionAnswers.execute({
+		await UpdateQuestionsAnswers.execute({
 			questionId: after.questionId,
 			answerId: after.id,
 			userId: after.userId,
@@ -113,7 +113,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answers' })
-		await ModifyQuestionAnswers.execute({
+		await UpdateQuestionsAnswers.execute({
 			questionId: before.questionId,
 			answerId: before.id,
 			userId: before.userId,
