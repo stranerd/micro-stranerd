@@ -14,6 +14,6 @@ if (fs.existsSync('env.json')) {
 			const [key, value] = currentValue
 			return accumulator + `${key.toUpperCase()}=${value}\n`
 		}, '')
-		fs.writeFileSync(`${path}/.env`, envFormattedEntries)
+		fs.writeFileSync(`./services/${path}/.env`, envFormattedEntries)
 	})
 } else throw new Error('Env.json doesn\'t exist. Try creating one by copying the env.example.json')
