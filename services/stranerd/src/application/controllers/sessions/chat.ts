@@ -40,17 +40,15 @@ export class ChatController {
 
 	static async markChatRead (req: Request) {
 		const data = validate({
-			to: req.body.to,
-			chatId: req.body.chatId
+			to: req.body.to
 		}, {
-			to: { required: true, rules: [Validation.isString] },
-			chatId: { required: true, rules: [Validation.isString] }
+			to: { required: true, rules: [Validation.isString] }
 		})
 
 		const authUserId = req.authUser!.id
 		return await MarkChatRead.execute({
 			path: [authUserId, data.to],
-			chatId: data.chatId
+			chatId: req.params.id
 		})
 	}
 }
