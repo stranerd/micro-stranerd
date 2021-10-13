@@ -42,14 +42,17 @@ export class QuestionRepository implements IQuestionRepository {
 		return this.mapper.mapFrom(question)
 	}
 
-	async markBestAnswer (id: string, answerId: string, userId: string) {
+	async updateBestAnswer (id: string, answerId: string, userId: string, add: boolean) {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
-			const question = await Question.findOneAndUpdate({ _id: id, userId, 'answers.2': { $exists: false } }, {
-				$addToSet: { bestAnswers: answerId }
+			const question = await Question.findOneAndUpdate({
+				_id: id, userId,
+				...(add ? { 'bestAnswers.2': { $exists: false } } : { 'bestAnswers': answerId })
+			}, {
+				[add ? '$addToSet' : 'pull']: { bestAnswers: answerId }
 			}, { session, new: true })
-			const answer = question ? await Answer.findByIdAndUpdate(answerId, { $set: { best: true } }, {
+			const answer = question ? await Answer.findByIdAndUpdate(answerId, { $set: { best: add } }, {
 				session,
 				new: true
 			}) : null
@@ -70,11 +73,6 @@ export class QuestionRepository implements IQuestionRepository {
 	async updateQuestionsUserBio (userId: string, userBio: UserBio) {
 		const questions = await Question.updateMany({ userId }, { $set: { userBio } })
 		return questions.acknowledged
-	}
-
-	async removeBestAnswer (id: string, answerId: string) {
-		const question = await Question.findOneAndUpdate({ _id: id }, { $pull: { bestAnswers: answerId } }, { new: true })
-		return !!question
 	}
 
 	async delete (id: string, userId: string) {

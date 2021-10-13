@@ -4,9 +4,8 @@ import {
 	AnswerFromModel,
 	DeleteAnswerComments,
 	FindQuestion,
-	MarkBestAnswer,
 	ModifyQuestionAnswers,
-	RemoveBestAnswer
+	UpdateBestAnswer
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import {
@@ -108,10 +107,11 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		if (!after.best && changes.votes && after.totalVotes >= 20) {
 			const question = await FindQuestion.execute(after.questionId)
 			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
-			if (markBest) await MarkBestAnswer.execute({
+			if (markBest) await UpdateBestAnswer.execute({
 				id: question!.id,
 				answerId: after.id,
-				userId: question!.userId
+				userId: question!.userId,
+				add: true
 			})
 		}
 
@@ -144,14 +144,6 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			add: false
 		})
 
-		if (before.best) {
-			await RemoveBestAnswer.execute({ id: before.questionId, answerId: before.id })
-			await UpdateUserNerdScore.execute({
-				userId: before.userId,
-				amount: -ScoreRewards.NewAnswer
-			})
-			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
-		}
 		await DeleteAnswerComments.execute({ answerId: before.id })
 
 		await Promise.all(
@@ -166,16 +158,19 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		if (before.best) {
 			const question = await FindQuestion.execute(before.questionId)
-			await RecordCountStreak.execute({
-				userId: before.userId,
-				activity: CountStreakBadges.GetBestAnswer,
-				add: false
-			})
-			if (question) await RecordCountStreak.execute({
-				userId: question.userId,
-				activity: CountStreakBadges.GiveBestAnswer,
-				add: false
-			})
+			if (question) {
+				await UpdateBestAnswer.execute({
+					id: question.id,
+					userId: question.userId,
+					answerId: before.id,
+					add: false
+				})
+				await UpdateUserNerdScore.execute({
+					userId: before.userId,
+					amount: -ScoreRewards.NewAnswer
+				})
+				await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
+			}
 		}
 	}
 }
