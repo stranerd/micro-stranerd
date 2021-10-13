@@ -1,4 +1,4 @@
-import { TagFromModel, TagToModel } from '../models'
+import { TagFromModel, TagToModel } from '../models/tags'
 import { TagEntity } from '../../domain/entities/tags'
 import { BaseMapper } from '@utils/commons'
 

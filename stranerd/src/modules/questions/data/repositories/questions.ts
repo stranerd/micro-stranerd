@@ -1,7 +1,8 @@
 import { IQuestionRepository } from '../../domain/irepositories/questions'
-import { QuestionMapper } from '../mappers'
+import { QuestionMapper } from '../mappers/questions'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
-import { Answer, Question } from '../mongooseModels'
+import { Question } from '../mongooseModels/questions'
+import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types'
 

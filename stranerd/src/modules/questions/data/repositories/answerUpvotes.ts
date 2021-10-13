@@ -1,8 +1,9 @@
 import { IAnswerUpvoteRepository } from '../../domain/irepositories/answerUpvotes'
-import { AnswerUpvoteMapper } from '../mappers'
-import { AnswerUpvoteFromModel, AnswerUpvoteToModel } from '../models'
+import { AnswerUpvoteMapper } from '../mappers/answerUpvotes'
+import { AnswerUpvoteFromModel, AnswerUpvoteToModel } from '../models/answerUpvotes'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { Answer, AnswerUpvote } from '../mongooseModels'
+import { Answer } from '../mongooseModels/answers'
+import { AnswerUpvote } from '../mongooseModels/answerUpvotes'
 
 export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 	private static instance: AnswerUpvoteRepository

@@ -1,6 +1,6 @@
 import { ITagRepository } from '../../irepositories/tags'
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { TagEntity } from '../../entities'
+import { TagEntity } from '../../entities/tags'
 
 export class GetTagsUseCase extends BaseUseCase<QueryParams, QueryResults<TagEntity>> {
 	private repository: ITagRepository

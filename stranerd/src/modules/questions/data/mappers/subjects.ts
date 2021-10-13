@@ -1,4 +1,4 @@
-import { SubjectFromModel, SubjectToModel } from '../models'
+import { SubjectFromModel, SubjectToModel } from '../models/subjects'
 import { SubjectEntity } from '../../domain/entities/subjects'
 import { BaseMapper } from '@utils/commons'
 

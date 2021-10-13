@@ -1,7 +1,7 @@
 import { IAnswerRepository } from '../../domain/irepositories/answers'
-import { AnswerMapper } from '../mappers'
+import { AnswerMapper } from '../mappers/answers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
-import { Answer } from '../mongooseModels'
+import { Answer } from '../mongooseModels/answers'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio } from '../../domain/types'
 

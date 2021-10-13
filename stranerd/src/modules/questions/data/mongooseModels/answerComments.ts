@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
-import { AnswerCommentFromModel } from '../models'
+import { AnswerCommentFromModel } from '../models/answerComments'
 import { AnswerCommentChangeStreamCallbacks } from '@utils/changeStreams/questions/answerComments'
-import { AnswerCommentEntity } from '../../domain/entities'
-import { AnswerCommentMapper } from '../mappers'
+import { AnswerCommentEntity } from '../../domain/entities/answerComments'
+import { AnswerCommentMapper } from '../mappers/answerComments'
 
 const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 	_id: {

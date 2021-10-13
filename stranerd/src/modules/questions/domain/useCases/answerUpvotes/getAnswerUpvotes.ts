@@ -1,6 +1,6 @@
 import { IAnswerUpvoteRepository } from '../../irepositories/answerUpvotes'
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { AnswerUpvoteEntity } from '../../entities'
+import { AnswerUpvoteEntity } from '../../entities/answerUpvotes'
 
 export class GetAnswerUpvotesUseCase extends BaseUseCase<QueryParams, QueryResults<AnswerUpvoteEntity>> {
 	private repository: IAnswerUpvoteRepository

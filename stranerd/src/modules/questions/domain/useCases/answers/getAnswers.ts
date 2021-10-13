@@ -1,6 +1,6 @@
 import { IAnswerRepository } from '../../irepositories/answers'
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { AnswerEntity } from '../../entities'
+import { AnswerEntity } from '../../entities/answers'
 
 export class GetAnswersUseCase extends BaseUseCase<QueryParams, QueryResults<AnswerEntity>> {
 	private repository: IAnswerRepository

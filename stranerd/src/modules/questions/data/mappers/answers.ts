@@ -1,5 +1,5 @@
 import { BaseMapper } from '@utils/commons'
-import { AnswerFromModel, AnswerToModel } from '../models'
+import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { AnswerEntity } from '../../domain/entities/answers'
 
 export class AnswerMapper extends BaseMapper<AnswerFromModel, AnswerToModel, AnswerEntity> {

@@ -1,5 +1,5 @@
-import { AnswerUpvoteFromModel, AnswerUpvoteToModel } from '../models'
-import { AnswerUpvoteEntity } from '../../domain/entities'
+import { AnswerUpvoteFromModel, AnswerUpvoteToModel } from '../models/answerUpvotes'
+import { AnswerUpvoteEntity } from '../../domain/entities/answerUpvotes'
 import { BaseMapper } from '@utils/commons'
 
 export class AnswerUpvoteMapper extends BaseMapper<AnswerUpvoteFromModel, AnswerUpvoteToModel, AnswerUpvoteEntity> {
