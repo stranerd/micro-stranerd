@@ -3,7 +3,7 @@ import { ReviewsController } from '../../controllers/users/reviews'
 
 export const reviewsRoutes: Route[] = [
 	{
-		path: '/reviews/',
+		path: '/users/reviews/',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const reviewsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reviews/:id',
+		path: '/users/reviews/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const reviewsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reviews/',
+		path: '/users/reviews/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,

@@ -3,7 +3,7 @@ import { NotificationsController } from '../../controllers/users/notifications'
 
 export const notificationsRoutes: Route[] = [
 	{
-		path: '/notifications/',
+		path: '/users/notifications/',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const notificationsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/notifications/:id',
+		path: '/users/notifications/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const notificationsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/notifications/:id/seen',
+		path: '/users/notifications/:id/seen',
 		method: 'put',
 		controllers: [
 			requireAuthUser,

@@ -3,7 +3,7 @@ import { ChatController } from '../../controllers/sessions'
 
 export const ChatRoutes: Route[] = [
 	{
-		path: '/chats',
+		path: '/sessions/chats',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const ChatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/chats/:id',
+		path: '/sessions/chats/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const ChatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/chats',
+		path: '/sessions/chats',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const ChatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/chats/read',
+		path: '/sessions/chats/read',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
