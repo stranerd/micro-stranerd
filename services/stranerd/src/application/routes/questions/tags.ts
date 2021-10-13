@@ -1,5 +1,5 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { TagController } from '../../controllers/questions'
+import { TagController } from '../../controllers/questions/tags'
 
 export const tagsRoutes: Route[] = [
 	{

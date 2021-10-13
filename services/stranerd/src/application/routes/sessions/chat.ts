@@ -1,7 +1,7 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { ChatController } from '../../controllers/sessions'
 
-export const ChatRoutes: Route[] = [
+export const chatRoutes: Route[] = [
 	{
 		path: '/chats',
 		method: 'get',

@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { SubjectController } from '../../controllers/questions'
+import { SubjectController } from '../../controllers/questions/subjects'
 import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const subjectsRoutes: Route[] = [

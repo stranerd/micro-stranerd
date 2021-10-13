@@ -7,7 +7,11 @@ import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 const app = getNewServerInstance(routes, {
 	mine: ['notifications', 'transactions', 'referrals', 'chats', 'chatMetas', 'sessions', 'payments'],
 	admin: ['reports'],
-	open: ['users', 'reviews', 'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags']
+	open: [
+		'users', 'reviews',
+		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags',
+		'courses', 'notes', 'schools', 'videoComments', 'videos'
+	]
 }, {
 	onConnect: async (userId, socketId) => {
 		await UpdateUserStatus.execute({

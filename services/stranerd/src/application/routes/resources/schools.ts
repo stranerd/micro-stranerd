@@ -1,81 +1,70 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { SessionController } from '../../controllers/sessions'
+import { SchoolController } from '../../controllers/resources/schools'
+import { isAdmin } from '@application/middlewares/isAdmin'
 
-export const sessionRoutes: Route[] = [
+export const schoolsRoutes: Route[] = [
 	{
-		path: '/sessions',
+		path: '/resources/schools',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.getSessions(req)
+					result: await SchoolController.GetSchools(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/sessions/:id',
+		path: '/resources/schools/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.findSession(req)
+					result: await SchoolController.FindSchool(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/sessions',
+		path: '/resources/schools',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.addSession(req)
+					result: await SchoolController.CreateSchool(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/sessions/:id/accept',
+		path: '/resources/schools/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.acceptSession(req)
+					result: await SchoolController.UpdateSchool(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/sessions/:id/cancel',
-		method: 'put',
+		path: '/resources/schools/:id',
+		method: 'delete',
 		controllers: [
 			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SessionController.cancelSession(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/sessions/:id/end',
-		method: 'put',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await SessionController.endSession(req)
+					result: await SchoolController.DeleteSchool(req)
 				}
 			})
 		]

@@ -53,7 +53,7 @@ export const GetSchools = new GetSchoolsUseCase(schoolRepository)
 export const GetVideoComments = new GetVideoCommentsUseCase(videoCommentRepository)
 export const FindVideoComment = new FindVideoCommentUseCase(videoCommentRepository)
 export const AddVideoComment = new AddVideoCommentUseCase(videoCommentRepository)
-export const DeleteVideoComments = new DeleteVideosCommentsUseCase(videoCommentRepository)
+export const DeleteVideosComments = new DeleteVideosCommentsUseCase(videoCommentRepository)
 export const UpdateVideoCommentsUserBio = new UpdateVideoCommentsUserBioUseCase(videoCommentRepository)
 
 export const GetVideos = new GetVideosUseCase(videoRepository)

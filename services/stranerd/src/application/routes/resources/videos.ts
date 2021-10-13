@@ -1,79 +1,69 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { QuestionController } from '../../controllers/questions/questions'
+import { VideoController } from '../../controllers/resources/videos'
+import { isTutor } from '@application/middlewares/isTutor'
 
-export const questionsRoutes: Route[] = [
+export const videosRoutes: Route[] = [
 	{
-		path: '/questions',
+		path: '/resources/videos',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.GetQuestion(req)
+					result: await VideoController.GetVideo(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/videos/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.FindQuestion(req)
+					result: await VideoController.FindVideo(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/videos/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
+			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.UpdateQuestion(req)
+					result: await VideoController.UpdateVideo(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions',
+		path: '/resources/videos',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
+			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.CreateQuestion(req)
+					result: await VideoController.CreateVideo(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/videos/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.DeleteQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/questions/:id/best',
-		method: 'put',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await QuestionController.MarkBestAnswer(req)
+					result: await VideoController.DeleteVideo(req)
 				}
 			})
 		]

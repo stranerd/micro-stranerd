@@ -1,79 +1,69 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { QuestionController } from '../../controllers/questions/questions'
+import { NoteController } from '../../controllers/resources/notes'
+import { isTutor } from '@application/middlewares/isTutor'
 
-export const questionsRoutes: Route[] = [
+export const notesRoutes: Route[] = [
 	{
-		path: '/questions',
+		path: '/resources/notes',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.GetQuestion(req)
+					result: await NoteController.GetNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/notes/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.FindQuestion(req)
+					result: await NoteController.FindNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/notes/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
+			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.UpdateQuestion(req)
+					result: await NoteController.UpdateNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions',
+		path: '/resources/notes',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
+			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.CreateQuestion(req)
+					result: await NoteController.CreateNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/resources/notes/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await QuestionController.DeleteQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/questions/:id/best',
-		method: 'put',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await QuestionController.MarkBestAnswer(req)
+					result: await NoteController.DeleteNote(req)
 				}
 			})
 		]

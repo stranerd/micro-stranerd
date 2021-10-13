@@ -2,6 +2,7 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { CoinBadges, RecordCoin, RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
+import { UpdateNotesUserBio, UpdateVideoCommentsUserBio, UpdateVideosUserBio } from '@modules/resources'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { getSocketEmitter } from '@index'
@@ -16,14 +17,11 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitOpenUpdated('users', after)
 		await getSocketEmitter().emitOpenUpdated(`users/${after.id}`, after)
 		const updatedBio = !!changes.bio
-		if (updatedBio) {
-			await UpdateQuestionsUserBio.execute({ userId: after.id, userBio: after.bio })
-			await UpdateAnswersUserBio.execute({ userId: after.id, userBio: after.bio })
-			await UpdateAnswerCommentsUserBio.execute({ userId: after.id, userBio: after.bio })
-			await UpdateChatMetaUserBios.execute({ userId: after.id, userBio: after.bio })
-			await UpdateMySessionsBio.execute({ userId: after.id, userBio: after.bio })
-			await UpdateMyReviewsBio.execute({ userId: after.id, userBio: after.bio })
-		}
+		if (updatedBio) await Promise.all([
+			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
+			UpdateChatMetaUserBios, UpdateMySessionsBio, UpdateMyReviewsBio,
+			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio
+		].map(async (useCase) => await useCase.execute({ userId: after.id, userBio: after.bio })))
 
 		const updatedScore = !!changes.account?.score
 		if (updatedScore && after.rank.id !== before.rank.id) {
