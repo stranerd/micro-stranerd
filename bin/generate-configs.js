@@ -63,6 +63,6 @@ if (args.length > 1) {
 		const allContent = appContent(path)
 		const content = allContent[env] ?? allContent['development']
 
-		fs.writeFileSync(`${path}/app.yaml`, content)
+		fs.writeFileSync(`./services/${path}/app.yaml`, content)
 	})
 } else throw new Error('You need to provide both the environment name and paths')

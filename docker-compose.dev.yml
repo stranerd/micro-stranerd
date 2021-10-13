@@ -4,19 +4,19 @@ services:
     build:
       target: base
     volumes:
-      - "./auth/src:/app/src:ro"
+      - "./services/auth/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   stranerd:
     build:
       target: base
     volumes:
-      - "./stranerd/src:/app/src:ro"
+      - "./services/stranerd/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   utils:
     build:
       target: base
     volumes:
-      - "./utils/src:/app/src:ro"
+      - "./services/utils/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
