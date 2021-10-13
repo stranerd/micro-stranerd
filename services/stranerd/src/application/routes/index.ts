@@ -1,5 +1,6 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
 import { appId } from '@utils/environment'
+import { badgesRoutes } from './users/badges'
 import { usersRoutes } from './users/users'
 import { notificationsRoutes } from './users/notifications'
 import { referralsRoutes } from './users/referrals'
@@ -19,6 +20,7 @@ import { searchRoutes } from './meta/search'
 import { reportRoutes } from './reports/reports'
 
 export const routes: Route[] = [
+	...badgesRoutes,
 	...usersRoutes,
 	...notificationsRoutes,
 	...referralsRoutes,
