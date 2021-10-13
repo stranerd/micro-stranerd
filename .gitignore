@@ -2,4 +2,4 @@ env.json
 .env
 .idea/
 
-*/app.yaml
+services/*/app.yaml
