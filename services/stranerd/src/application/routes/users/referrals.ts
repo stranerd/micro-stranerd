@@ -3,7 +3,7 @@ import { ReferralsController } from '../../controllers/users/referrals'
 
 export const referralsRoutes: Route[] = [
 	{
-		path: '/referrals/',
+		path: '/users/referrals/',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const referralsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/referrals/:id',
+		path: '/users/referrals/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,

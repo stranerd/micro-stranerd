@@ -4,7 +4,7 @@ import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const subjectsRoutes: Route[] = [
 	{
-		path: '/subjects',
+		path: '/questions/subjects',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const subjectsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/subjects/:id',
+		path: '/questions/subjects/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const subjectsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/subjects',
+		path: '/questions/subjects',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const subjectsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/subjects/:id',
+		path: '/questions/subjects/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,

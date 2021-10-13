@@ -3,7 +3,7 @@ import { UsersController } from '../../controllers/users/users'
 
 export const usersRoutes: Route[] = [
 	{
-		path: '/users/streak',
+		path: '/users/users/streak',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const usersRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/users/subjects',
+		path: '/users/users/subjects',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const usersRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/users/',
+		path: '/users/users/',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -41,7 +41,7 @@ export const usersRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/users/:id',
+		path: '/users/users/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {

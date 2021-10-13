@@ -4,7 +4,7 @@ import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const reportRoutes: Route[] = [
 	{
-		path: '/reports',
+		path: '/reports/reports',
 		method: 'get',
 		controllers: [
 			requireAuthUser, isAdmin,
@@ -17,7 +17,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports/:id',
+		path: '/reports/reports/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser, isAdmin,
@@ -30,7 +30,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports/:id',
+		path: '/reports/reports/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser, isAdmin,
@@ -43,7 +43,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports',
+		path: '/reports/reports',
 		method: 'post',
 		controllers: [
 			requireAuthUser,

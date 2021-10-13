@@ -3,7 +3,7 @@ import { TransactionsController } from '../../controllers/users/transactions'
 
 export const transactionsRoutes: Route[] = [
 	{
-		path: '/transactions/',
+		path: '/users/transactions/',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const transactionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/transactions/:id',
+		path: '/users/transactions/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
