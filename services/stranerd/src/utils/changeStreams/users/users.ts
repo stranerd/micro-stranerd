@@ -36,7 +36,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				})
 				await RecordRank.execute({
 					userId: after.id,
-					rank: after.rank.level,
+					rank: after.rank.id,
 					add: true
 				})
 			} else {
@@ -47,12 +47,12 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				})
 				await RecordRank.execute({
 					userId: after.id,
-					rank: before.rank.level,
+					rank: before.rank.id,
 					add: false
 				})
 				await RecordRank.execute({
 					userId: after.id,
-					rank: after.rank.level,
+					rank: after.rank.id,
 					add: true
 				})
 			}
