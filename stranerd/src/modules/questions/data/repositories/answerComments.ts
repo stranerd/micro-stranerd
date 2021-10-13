@@ -1,8 +1,8 @@
 import { IAnswerCommentRepository } from '../../domain/irepositories/answerComments'
-import { AnswerCommentMapper } from '../mappers'
-import { AnswerCommentFromModel, AnswerCommentToModel } from '../models'
+import { AnswerCommentMapper } from '../mappers/answerComments'
+import { AnswerCommentFromModel, AnswerCommentToModel } from '../models/answerComments'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { AnswerComment } from '../mongooseModels'
+import { AnswerComment } from '../mongooseModels/answerComments'
 import { UserBio } from '../../domain/types'
 
 export class AnswerCommentRepository implements IAnswerCommentRepository {

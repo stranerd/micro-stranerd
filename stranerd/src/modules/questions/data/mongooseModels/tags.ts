@@ -1,8 +1,8 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
-import { TagFromModel } from '../models'
+import { TagFromModel } from '../models/tags'
 import { TagChangeStreamCallbacks } from '@utils/changeStreams/questions/tags'
-import { TagEntity } from '../../domain/entities'
-import { TagMapper } from '../mappers'
+import { TagEntity } from '../../domain/entities/tags'
+import { TagMapper } from '../mappers/tags'
 
 const Schema = new mongoose.Schema<TagFromModel>({
 	_id: {

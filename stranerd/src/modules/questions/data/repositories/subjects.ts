@@ -1,9 +1,9 @@
-import { SubjectEntity } from '../../domain/entities'
+import { SubjectEntity } from '../../domain/entities/subjects'
 import { ISubjectRepository } from '../../domain/irepositories/subjects'
-import { SubjectMapper } from '../mappers'
+import { SubjectMapper } from '../mappers/subjects'
 import { SubjectFromModel, SubjectToModel } from '../models/subjects'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { Subject } from '../mongooseModels'
+import { Subject } from '../mongooseModels/subjects'
 
 export class SubjectRepository implements ISubjectRepository {
 	private static instance: SubjectRepository

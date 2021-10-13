@@ -1,6 +1,6 @@
 import { IAnswerCommentRepository } from '../../irepositories/answerComments'
 import { BaseUseCase } from '@utils/commons'
-import { AnswerCommentEntity } from '../../entities'
+import { AnswerCommentEntity } from '../../entities/answerComments'
 
 export class FindAnswerCommentUseCase extends BaseUseCase<string, AnswerCommentEntity | null> {
 	private repository: IAnswerCommentRepository

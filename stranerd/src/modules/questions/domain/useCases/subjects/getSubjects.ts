@@ -1,6 +1,6 @@
 import { ISubjectRepository } from '../../irepositories/subjects'
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { SubjectEntity } from '../../entities'
+import { SubjectEntity } from '../../entities/subjects'
 
 export class GetSubjectsUseCase extends BaseUseCase<QueryParams, QueryResults<SubjectEntity>> {
 	private repository: ISubjectRepository
