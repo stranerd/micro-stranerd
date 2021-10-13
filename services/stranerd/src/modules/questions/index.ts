@@ -30,7 +30,7 @@ import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/upd
 import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
 import { UpdateQuestionAnswersTagsUseCase } from './domain/useCases/answers/updateQuestionAnswersTags'
 import { UpdateBestAnswerUseCase } from './domain/useCases/questions/updateBestAnswer'
-import { ModifyQuestionAnswersUseCase } from './domain/useCases/questions/modifyAnswers'
+import { UpdateQuestionsAnswersUseCase } from './domain/useCases/questions/updateQuestionsAnswers'
 import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updateQuestionsUserBio'
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
@@ -77,7 +77,7 @@ export const AddQuestion = new AddQuestionUseCase(questionRepository)
 export const UpdateQuestion = new UpdateQuestionUseCase(questionRepository)
 export const DeleteQuestion = new DeleteQuestionUseCase(questionRepository)
 export const UpdateBestAnswer = new UpdateBestAnswerUseCase(questionRepository)
-export const ModifyQuestionAnswers = new ModifyQuestionAnswersUseCase(questionRepository)
+export const UpdateQuestionsAnswers = new UpdateQuestionsAnswersUseCase(questionRepository)
 export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(questionRepository)
 
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)

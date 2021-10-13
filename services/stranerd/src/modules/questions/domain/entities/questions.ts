@@ -1,6 +1,8 @@
 import { BaseEntity, MediaOutput } from '@utils/commons'
 import { UserBio } from '../types'
-import { BEST_ANSWERS_COUNT, QUESTION_DISCOUNT } from '@utils/constants'
+
+export const BEST_ANSWERS_COUNT = 2
+const QUESTION_DISCOUNT = 0.8
 
 export class QuestionEntity extends BaseEntity {
 	public readonly id: string
