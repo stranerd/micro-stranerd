@@ -3,7 +3,7 @@ import {
 	DeleteQuestion,
 	FindQuestion,
 	GetQuestions,
-	MarkBestAnswer,
+	UpdateBestAnswer,
 	UpdateQuestion
 } from '@modules/questions'
 import { FindUser } from '@modules/users'
@@ -117,10 +117,11 @@ export class QuestionController {
 			messages: ['answer is already marked as a best answer']
 		}])
 
-		return await MarkBestAnswer.execute({
+		return await UpdateBestAnswer.execute({
 			id: question.id,
 			answerId,
-			userId: authUserId
+			userId: authUserId,
+			add: true
 		})
 	}
 

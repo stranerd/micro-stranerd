@@ -1,9 +1,9 @@
 import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { id: string, answerId: string, userId: string }
+type Input = { id: string, answerId: string, userId: string, add: boolean }
 
-export class MarkBestAnswerUseCase extends BaseUseCase<Input, boolean> {
+export class UpdateBestAnswerUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IQuestionRepository
 
 	constructor (repository: IQuestionRepository) {
@@ -12,6 +12,6 @@ export class MarkBestAnswerUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.markBestAnswer(input.id, input.answerId, input.userId)
+		return await this.repository.updateBestAnswer(input.id, input.answerId, input.userId, input.add)
 	}
 }
