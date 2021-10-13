@@ -1,4 +1,4 @@
-import { QuestionFromModel, QuestionToModel } from '../models'
+import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { QuestionEntity } from '../../domain/entities/questions'
 import { BaseMapper } from '@utils/commons'
 

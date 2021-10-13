@@ -1,7 +1,7 @@
-import { QuestionToModel } from '../../../data/models'
+import { QuestionToModel } from '../../../data/models/questions'
 import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase } from '@utils/commons'
-import { QuestionEntity } from '../../entities'
+import { QuestionEntity } from '../../entities/questions'
 
 export class AddQuestionUseCase extends BaseUseCase<QuestionToModel, QuestionEntity> {
 	private repository: IQuestionRepository

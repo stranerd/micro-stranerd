@@ -1,5 +1,5 @@
-import { AnswerCommentFromModel, AnswerCommentToModel } from '../models'
-import { AnswerCommentEntity } from '../../domain/entities'
+import { AnswerCommentFromModel, AnswerCommentToModel } from '../models/answerComments'
+import { AnswerCommentEntity } from '../../domain/entities/answerComments'
 import { BaseMapper } from '@utils/commons'
 
 export class AnswerCommentMapper extends BaseMapper<AnswerCommentFromModel, AnswerCommentToModel, AnswerCommentEntity> {

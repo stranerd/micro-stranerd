@@ -1,7 +1,7 @@
 import { IAnswerRepository } from '../../irepositories/answers'
-import { AnswerToModel } from '../../../data/models'
+import { AnswerToModel } from '../../../data/models/answers'
 import { BaseUseCase } from '@utils/commons'
-import { AnswerEntity } from '../../entities'
+import { AnswerEntity } from '../../entities/answers'
 
 export class AddAnswerUseCase extends BaseUseCase<AnswerToModel, AnswerEntity> {
 	private repository: IAnswerRepository

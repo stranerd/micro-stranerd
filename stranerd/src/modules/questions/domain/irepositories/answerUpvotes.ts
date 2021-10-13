@@ -1,4 +1,4 @@
-import { AnswerUpvoteToModel } from '../../data/models'
+import { AnswerUpvoteToModel } from '../../data/models/answerUpvotes'
 import { AnswerUpvoteEntity } from '../entities/answerUpvotes'
 import { QueryParams, QueryResults } from '@utils/commons'
 

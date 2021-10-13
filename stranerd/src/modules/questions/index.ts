@@ -1,11 +1,9 @@
-import {
-	AnswerCommentRepository,
-	AnswerRepository,
-	AnswerUpvoteRepository,
-	QuestionRepository,
-	SubjectRepository,
-	TagRepository
-} from './data/repositories'
+import { AnswerCommentRepository } from './data/repositories/answerComments'
+import { AnswerRepository } from './data/repositories/answers'
+import { AnswerUpvoteRepository } from './data/repositories/answerUpvotes'
+import { QuestionRepository } from './data/repositories/questions'
+import { SubjectRepository } from './data/repositories/subjects'
+import { TagRepository } from './data/repositories/tags'
 import { FindTagUseCase } from './domain/useCases/tags/findTag'
 import { GetTagsUseCase } from './domain/useCases/tags/getTags'
 import { UpdateCountUseCase } from './domain/useCases/tags/updateTagCount'
@@ -36,7 +34,6 @@ import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updat
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
 import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
-import { CreateAnswerDownvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerDownvote'
 import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
 import { UpdateAnswerCommentsUserBioUseCase } from './domain/useCases/answerComments/updateAnswerCommentsUserBio'
 
@@ -84,12 +81,17 @@ export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(question
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)
 export const CreateAnswerUpvote = new CreateAnswerUpvoteUseCase(answerUpvoteRepository)
-export const CreateAnswerDownvote = new CreateAnswerDownvoteUseCase(answerUpvoteRepository)
 
-export {
-	AnswerCommentFromModel, AnswerUpvoteFromModel, AnswerFromModel,
-	TagFromModel, QuestionFromModel, SubjectFromModel
-} from './data/models'
-export {
-	AnswerCommentEntity, AnswerUpvoteEntity, AnswerEntity, TagEntity, QuestionEntity, SubjectEntity
-} from './domain/entities'
+export { AnswerCommentFromModel } from './data/models/answerComments'
+export { AnswerFromModel } from './data/models/answers'
+export { AnswerUpvoteFromModel } from './data/models/answerUpvotes'
+export { QuestionFromModel } from './data/models/questions'
+export { SubjectFromModel } from './data/models/subjects'
+export { TagFromModel } from './data/models/tags'
+
+export { AnswerCommentEntity } from './domain/entities/answerComments'
+export { AnswerEntity } from './domain/entities/answers'
+export { AnswerUpvoteEntity } from './domain/entities/answerUpvotes'
+export { QuestionEntity } from './domain/entities/questions'
+export { SubjectEntity } from './domain/entities/subjects'
+export { TagEntity } from './domain/entities/tags'

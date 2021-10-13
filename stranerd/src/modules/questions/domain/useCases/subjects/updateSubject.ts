@@ -1,7 +1,7 @@
-import { SubjectToModel } from '../../../data/models'
+import { SubjectToModel } from '../../../data/models/subjects'
 import { ISubjectRepository } from '../../irepositories/subjects'
 import { BaseUseCase } from '@utils/commons'
-import { SubjectEntity } from '../../entities'
+import { SubjectEntity } from '../../entities/subjects'
 
 type Input = { id: string, data: SubjectToModel }
 

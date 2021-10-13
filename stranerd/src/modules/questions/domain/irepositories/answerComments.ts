@@ -1,4 +1,4 @@
-import { AnswerCommentToModel } from '../../data/models'
+import { AnswerCommentToModel } from '../../data/models/answerComments'
 import { AnswerCommentEntity } from '../entities/answerComments'
 import { QueryParams, QueryResults } from '@utils/commons'
 import { UserBio } from '../types'

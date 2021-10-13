@@ -1,6 +1,6 @@
 import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { QuestionEntity } from '../../entities'
+import { QuestionEntity } from '../../entities/questions'
 
 export class GetQuestionsUseCase extends BaseUseCase<QueryParams, QueryResults<QuestionEntity>> {
 	private repository: IQuestionRepository

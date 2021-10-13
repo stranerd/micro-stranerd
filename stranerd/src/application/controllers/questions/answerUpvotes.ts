@@ -1,4 +1,4 @@
-import { CreateAnswerDownvote, CreateAnswerUpvote, FindAnswerUpvote, GetAnswerUpvotes } from '@modules/questions'
+import { CreateAnswerUpvote, FindAnswerUpvote, GetAnswerUpvotes } from '@modules/questions'
 import { QueryParams, Request } from '@utils/commons'
 
 export class AnswerUpvoteController {
@@ -13,9 +13,10 @@ export class AnswerUpvoteController {
 
 	static async VoteAnswer (req: Request) {
 		const vote = !!req.body.vote
-		return await (vote ? CreateAnswerUpvote : CreateAnswerDownvote).execute({
+		return await CreateAnswerUpvote.execute({
 			answerId: req.params.id,
-			userId: req.authUser!.id
+			userId: req.authUser!.id,
+			vote: vote ? 1 : -1
 		})
 	}
 }

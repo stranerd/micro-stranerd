@@ -1,8 +1,8 @@
 import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
-import { AnswerFromModel } from '../models'
+import { AnswerFromModel } from '../models/answers'
 import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
-import { AnswerEntity } from '../../domain/entities'
-import { AnswerMapper } from '../mappers'
+import { AnswerEntity } from '../../domain/entities/answers'
+import { AnswerMapper } from '../mappers/answers'
 
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	_id: {
