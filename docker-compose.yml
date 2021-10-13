@@ -13,7 +13,7 @@ services:
 
   auth:
     build:
-      context: ./auth
+      context: ./services/auth
       target: production
     container_name: auth
     hostname: auth
@@ -26,7 +26,7 @@ services:
 
   stranerd:
     build:
-      context: ./stranerd
+      context: ./services/stranerd
       target: production
     container_name: stranerd
     hostname: stranerd
@@ -39,7 +39,7 @@ services:
 
   utils:
     build:
-      context: ./utils
+      context: ./services/utils
       target: production
     container_name: utils
     hostname: tasks
