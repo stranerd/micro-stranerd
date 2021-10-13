@@ -3,7 +3,7 @@ import { SessionController } from '../../controllers/sessions'
 
 export const sessionRoutes: Route[] = [
 	{
-		path: '/sessions',
+		path: '/sessions/sessions',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/:id',
+		path: '/sessions/sessions/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions',
+		path: '/sessions/sessions',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/:id/accept',
+		path: '/sessions/sessions/:id/accept',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -55,7 +55,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/:id/cancel',
+		path: '/sessions/sessions/:id/cancel',
 		method: 'put',
 		controllers: [
 			requireAuthUser,

@@ -3,7 +3,7 @@ import { QuestionController } from '../../controllers/questions/questions'
 
 export const questionsRoutes: Route[] = [
 	{
-		path: '/questions',
+		path: '/questions/questions',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const questionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/questions/questions/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -27,7 +27,7 @@ export const questionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/questions/questions/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -40,7 +40,7 @@ export const questionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions',
+		path: '/questions/questions',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -53,7 +53,7 @@ export const questionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/:id',
+		path: '/questions/questions/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
@@ -66,7 +66,7 @@ export const questionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/:id/best',
+		path: '/questions/questions/:id/best',
 		method: 'put',
 		controllers: [
 			requireAuthUser,

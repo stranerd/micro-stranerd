@@ -3,7 +3,7 @@ import { TagController } from '../../controllers/questions/tags'
 
 export const tagsRoutes: Route[] = [
 	{
-		path: '/tags',
+		path: '/questions/tags',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const tagsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/tags/:id',
+		path: '/questions/tags/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
