@@ -3,14 +3,16 @@ import { addDelayedJob, DelayedJobs, removeDelayedJob } from '@utils/commons'
 import { SetUsersCurrentSession } from '@modules/users'
 
 export const startSession = async (session: SessionEntity) => {
-	if (session.startedAt) return
-
 	await SetUsersCurrentSession.execute({
 		studentId: session.studentId,
 		tutorId: session.tutorId,
 		sessionId: session.id,
 		add: true
 	})
+}
+
+export const startSessionTimer = async (session: SessionEntity) => {
+	if (session.startedAt) return
 
 	const delay = session.duration * 60 * 1000
 	const taskId = await addDelayedJob({
