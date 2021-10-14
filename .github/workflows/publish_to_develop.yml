@@ -5,8 +5,8 @@ on:
     branches:
       develop
     paths:
-      - 'services/'
-      - 'bin/'
+      - 'services/**'
+      - 'bin/**'
 
 jobs:
   publish-gae:
