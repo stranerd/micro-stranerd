@@ -42,7 +42,7 @@ export const ChatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/chats/read',
+		path: '/sessions/chats/:id/read',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
