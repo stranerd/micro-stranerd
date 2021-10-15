@@ -78,7 +78,12 @@ const badges = {
 				default: []
 			}]
 		})
-	)
+	),
+	rank: {
+		type: [String],
+		required: false,
+		default: []
+	}
 }
 
 const BadgeSchema = new mongoose.Schema<BadgeFromModel>({
