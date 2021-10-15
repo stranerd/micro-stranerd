@@ -25,9 +25,10 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	const dbName = collection.collection.collectionName
 	const cloneName = dbName + '_streams_clone'
 	const getClone = () => collection.collection.conn.db.collection(cloneName)
+	const getStreamTokens = () => collection.collection.conn.db.collection('stream-tokens')
 
-	const cacheKey = `streams-token-${dbName}`
-	const resumeToken = await getCacheInstance.get(cacheKey)
+	const res = await getStreamTokens().findOne({ _id: dbName })
+	const resumeToken = res?.resumeToken ?? null
 
 	const changeStream = collection.watch([], {
 		fullDocument: 'updateLookup',
@@ -40,7 +41,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 		const cacheName = `streams-${streamId}`
 		const cached = await getCacheInstance.setInTransaction(cacheName, streamId, 15)
 		if (cached[0]) return
-		await getCacheInstance.set(cacheKey, JSON.stringify(data._id), 0)
+		await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
 
 		if (data.operationType === 'insert') {
 			// @ts-ignore
