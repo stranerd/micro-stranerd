@@ -5,13 +5,19 @@ import { Logger } from '../logger'
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
 
+const collections = [] as {
+	collection: mongoose.Model<any>,
+	callbacks: ChangeStreamCallbacks<any, any>,
+	mapper: (model: any | null) => any | null
+}[]
+
 export type ChangeStreamCallbacks<Model, Entity> = {
 	created?: (data: { before: null, after: Entity }) => Promise<void>
 	updated?: (data: { before: Entity, after: Entity, changes: DeepPartial<Model> }) => Promise<void>
 	deleted?: (data: { before: Entity, after: null }) => Promise<void>
 }
 
-export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (
+async function startChangeStream<Model extends { _id: string }, Entity extends BaseEntity> (
 	collection: mongoose.Model<Model | any>,
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
 	mapper: (model: Model | null) => Entity | null) {
@@ -87,6 +93,22 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 			process.exit(1)
 		}
 	})
+}
+
+export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (
+	collection: mongoose.Model<Model | any>,
+	callbacks: ChangeStreamCallbacks<Model, Entity>,
+	mapper: (model: Model | null) => Entity | null) {
+
+	collections.push({ collection, callbacks, mapper })
+}
+
+export async function startAllChangeStreams () {
+	await Promise.all(
+		collections.map(async ({ collection, callbacks, mapper }) => {
+			await startChangeStream(collection, callbacks, mapper)
+		})
+	)
 }
 
 const deepMerge = (objFrom: any, objTo: any) => Object.keys(objFrom)
