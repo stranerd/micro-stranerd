@@ -17,12 +17,13 @@ export async function addDelayedJob (data: DelayedEvent, delayInMs: number): Pro
 }
 
 const addCronJob = async (type: CronTypes, cron: string) => {
-	await queue.add(JobNames.CronJob, type, {
+	const job = await queue.add(JobNames.CronJob, { type }, {
 		repeat: { cron },
 		removeOnComplete: true,
 		backoff: 1000,
 		attempts: 3
 	})
+	return job.id
 }
 
 export const removeDelayedJob = async (jobId: string | number) => {
@@ -54,9 +55,8 @@ export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCa
 	await Promise.all(
 		crons.map(({ cron, name }) => addCronJob(name, cron))
 	)
-	await queue.process(async (job) => {
-		job.name === JobNames.CronJob ?
-			await callbacks.onCron(job.data as CronTypes) :
-			await callbacks.onDelayed(job.data)
-	})
+	await Promise.all([
+		queue.process(JobNames.DelayedJob, async (job) => await callbacks.onDelayed(job.data)),
+		queue.process(JobNames.CronJob, async (job) => await callbacks.onCron(job.data as CronTypes))
+	])
 }

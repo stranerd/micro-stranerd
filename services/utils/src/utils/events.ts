@@ -27,6 +27,5 @@ export const subscribers = {
 
 export const publishers = {
 	[EventTypes.TASKSCRON]: eventBus.createPublisher(EventTypes.TASKSCRON),
-	[EventTypes.TASKSDELAYED]: eventBus.createPublisher(EventTypes.TASKSDELAYED),
-	[EventTypes.TEST]: eventBus.createPublisher(EventTypes.TEST)
+	[EventTypes.TASKSDELAYED]: eventBus.createPublisher(EventTypes.TASKSDELAYED)
 }
