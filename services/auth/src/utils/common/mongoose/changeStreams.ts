@@ -25,7 +25,7 @@ export async function generateChangeStreams<Model extends { _id: string }, Entit
 
 	const changeStream = collection.watch([], {
 		fullDocument: 'updateLookup',
-		resumeAfter: resumeToken ? JSON.parse(resumeToken) : undefined
+		startAfter: resumeToken ? JSON.parse(resumeToken) : undefined
 	})
 
 	changeStream.on('change', async (data) => {
