@@ -47,11 +47,11 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 			// @ts-ignore
 			const _id = data.documentKey!._id
 			const after = data.fullDocument as Model
-			await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
+			const { value } = await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
 				upsert: true,
 				returnDocument: 'after'
 			})
-			await callbacks.created?.({
+			if (value) await callbacks.created?.({
 				before: null,
 				after: mapper(after)!
 			})
@@ -61,7 +61,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 			// @ts-ignore
 			const _id = data.documentKey!._id
 			const { value: before } = await getClone().findOneAndDelete({ _id })
-			await callbacks.deleted?.({
+			if (before) await callbacks.deleted?.({
 				before: mapper(before as Model)!,
 				after: null
 			})
@@ -79,7 +79,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 				.concat(truncatedArrays)
 				.concat(Object.keys(updatedFields))
 			const changes = getObjectsFromKeys(changed)
-			await callbacks.updated?.({
+			if (before) await callbacks.updated?.({
 				before: mapper(before as Model)!,
 				after: mapper(after)!,
 				changes
