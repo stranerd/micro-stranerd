@@ -3,6 +3,7 @@ import { SchoolRepository } from './data/repositories/schools'
 import { VideoCommentRepository } from './data/repositories/videoComments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
+import { FlashCardRepository } from './data/repositories/flashCards'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -31,12 +32,19 @@ import { AddNoteUseCase } from './domain/useCases/notes/addNote'
 import { UpdateNoteUseCase } from './domain/useCases/notes/updateNote'
 import { DeleteNoteUseCase } from './domain/useCases/notes/deleteNote'
 import { UpdateNotesUserBioUseCase } from './domain/useCases/notes/updateNotesUserBio'
+import { GetFlashCardsUseCase } from './domain/useCases/flashCards/getFlashCards'
+import { FindFlashCardUseCase } from './domain/useCases/flashCards/findFlashCard'
+import { AddFlashCardUseCase } from './domain/useCases/flashCards/addFlashCard'
+import { UpdateFlashCardUseCase } from './domain/useCases/flashCards/updateFlashCard'
+import { DeleteFlashCardUseCase } from './domain/useCases/flashCards/deleteFlashCard'
+import { UpdateFlashCardsUserBioUseCase } from './domain/useCases/flashCards/updateFlashCardsUserBio'
 
 const courseRepository = CourseRepository.getInstance()
 const schoolRepository = SchoolRepository.getInstance()
 const videoCommentRepository = VideoCommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
+const flashCardRepository = FlashCardRepository.getInstance()
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)
@@ -71,14 +79,23 @@ export const UpdateNote = new UpdateNoteUseCase(noteRepository)
 export const DeleteNote = new DeleteNoteUseCase(noteRepository)
 export const UpdateNotesUserBio = new UpdateNotesUserBioUseCase(noteRepository)
 
+export const GetFlashCards = new GetFlashCardsUseCase(flashCardRepository)
+export const FindFlashCard = new FindFlashCardUseCase(flashCardRepository)
+export const AddFlashCard = new AddFlashCardUseCase(flashCardRepository)
+export const UpdateFlashCard = new UpdateFlashCardUseCase(flashCardRepository)
+export const DeleteFlashCard = new DeleteFlashCardUseCase(flashCardRepository)
+export const UpdateFlashCardsUserBio = new UpdateFlashCardsUserBioUseCase(flashCardRepository)
+
 export { CourseFromModel } from './data/models/courses'
 export { SchoolFromModel } from './data/models/schools'
 export { VideoCommentFromModel } from './data/models/videoComments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
+export { FlashCardFromModel } from './data/models/flashCards'
 
 export { CourseEntity } from './domain/entities/courses'
 export { SchoolEntity } from './domain/entities/schools'
 export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
+export { FlashCardEntity } from './domain/entities/flashCards'

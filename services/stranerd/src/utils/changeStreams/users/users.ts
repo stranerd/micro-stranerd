@@ -2,7 +2,7 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { CoinBadges, RecordCoin, RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
-import { UpdateNotesUserBio, UpdateVideoCommentsUserBio, UpdateVideosUserBio } from '@modules/resources'
+import { UpdateFlashCardsUserBio, UpdateNotesUserBio, UpdateVideoCommentsUserBio, UpdateVideosUserBio } from '@modules/resources'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { addUserCoins } from '@utils/modules/users/transactions'
 import { getSocketEmitter } from '@index'
@@ -20,7 +20,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBio) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
 			UpdateChatMetaUserBios, UpdateMySessionsBio, UpdateMyReviewsBio,
-			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio
+			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio
 		].map(async (useCase) => await useCase.execute({ userId: after.id, userBio: after.bio })))
 
 		const updatedScore = !!changes.account?.score
