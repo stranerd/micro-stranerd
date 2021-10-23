@@ -6,7 +6,7 @@ import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 
 const app = getNewServerInstance(routes, {
 	mine: ['notifications', 'transactions', 'referrals', 'chats', 'chatMetas', 'sessions', 'payments'],
-	admin: ['reports'],
+	admin: ['reports', 'pastTheoryQuestions', 'pastObjQuestions'],
 	open: [
 		'users', 'reviews',
 		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags',

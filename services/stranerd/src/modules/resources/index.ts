@@ -4,6 +4,7 @@ import { VideoCommentRepository } from './data/repositories/videoComments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
+import { PastQuestionObjRepository, PastQuestionTheoryRepository } from './data/repositories/pastQuestions'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -38,6 +39,13 @@ import { AddFlashCardUseCase } from './domain/useCases/flashCards/addFlashCard'
 import { UpdateFlashCardUseCase } from './domain/useCases/flashCards/updateFlashCard'
 import { DeleteFlashCardUseCase } from './domain/useCases/flashCards/deleteFlashCard'
 import { UpdateFlashCardsUserBioUseCase } from './domain/useCases/flashCards/updateFlashCardsUserBio'
+import { GetPastQuestionsUseCase } from './domain/useCases/pastQuestions/getPastQuestions'
+import { FindPastQuestionUseCase } from './domain/useCases/pastQuestions/findPastQuestion'
+import { AddPastQuestionUseCase } from './domain/useCases/pastQuestions/addPastQuestion'
+import { UpdatePastQuestionUseCase } from './domain/useCases/pastQuestions/updatePastQuestion'
+import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/deletePastQuestion'
+import { PastQuestionObjToModel, PastQuestionTheoryToModel } from './data/models/pastQuestions'
+import { PastQuestionObjEntity, PastQuestionTheoryEntity } from './domain/entities/pastQuestions'
 
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
@@ -45,6 +53,8 @@ const videoCommentRepository = VideoCommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
+const pastQuestionTheoryRepository = PastQuestionTheoryRepository.getInstance()
+const pastQuestionObjRepository = PastQuestionObjRepository.getInstance()
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)
@@ -86,12 +96,24 @@ export const UpdateFlashCard = new UpdateFlashCardUseCase(flashCardRepository)
 export const DeleteFlashCard = new DeleteFlashCardUseCase(flashCardRepository)
 export const UpdateFlashCardsUserBio = new UpdateFlashCardsUserBioUseCase(flashCardRepository)
 
+export const GetPastTheoryQuestions = new GetPastQuestionsUseCase<PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
+export const GetPastObjQuestions = new GetPastQuestionsUseCase<PastQuestionObjEntity>(pastQuestionObjRepository)
+export const FindPastTheoryQuestion = new FindPastQuestionUseCase<PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
+export const FindPastObjQuestion = new FindPastQuestionUseCase<PastQuestionObjEntity>(pastQuestionObjRepository)
+export const AddPastTheoryQuestion = new AddPastQuestionUseCase<PastQuestionTheoryToModel, PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
+export const AddPastObjQuestion = new AddPastQuestionUseCase<PastQuestionObjToModel, PastQuestionObjEntity>(pastQuestionObjRepository)
+export const UpdatePastTheoryQuestion = new UpdatePastQuestionUseCase<PastQuestionTheoryToModel, PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
+export const UpdatePastObjQuestion = new UpdatePastQuestionUseCase<PastQuestionObjToModel, PastQuestionObjEntity>(pastQuestionObjRepository)
+export const DeletePastTheoryQuestion = new DeletePastQuestionUseCase(pastQuestionTheoryRepository)
+export const DeletePastObjQuestion = new DeletePastQuestionUseCase(pastQuestionObjRepository)
+
 export { CourseFromModel } from './data/models/courses'
 export { InstitutionFromModel } from './data/models/institutions'
 export { VideoCommentFromModel } from './data/models/videoComments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
+export { PastQuestionObjFromModel, PastQuestionTheoryFromModel } from './data/models/pastQuestions'
 
 export { CourseEntity } from './domain/entities/courses'
 export { InstitutionEntity } from './domain/entities/institutions'
@@ -99,3 +121,4 @@ export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'
+export { PastQuestionTheoryEntity, PastQuestionObjEntity }
