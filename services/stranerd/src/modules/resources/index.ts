@@ -1,5 +1,5 @@
 import { CourseRepository } from './data/repositories/courses'
-import { SchoolRepository } from './data/repositories/schools'
+import { InstitutionRepository } from './data/repositories/institutions'
 import { VideoCommentRepository } from './data/repositories/videoComments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
@@ -9,11 +9,11 @@ import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
 import { FindCourseUseCase } from './domain/useCases/courses/findCourse'
 import { GetCoursesUseCase } from './domain/useCases/courses/getCourses'
-import { AddSchoolUseCase } from './domain/useCases/schools/addSchool'
-import { UpdateSchoolUseCase } from './domain/useCases/schools/updateSchool'
-import { DeleteSchoolUseCase } from './domain/useCases/schools/deleteSchool'
-import { FindSchoolUseCase } from './domain/useCases/schools/findSchool'
-import { GetSchoolsUseCase } from './domain/useCases/schools/getSchools'
+import { AddInstitutionUseCase } from './domain/useCases/institutions/addInstitution'
+import { UpdateInstitutionUseCase } from './domain/useCases/institutions/updateInstitution'
+import { DeleteInstitutionUseCase } from './domain/useCases/institutions/deleteInstitution'
+import { FindInstitutionUseCase } from './domain/useCases/institutions/findInstitution'
+import { GetInstitutionsUseCase } from './domain/useCases/institutions/getInstitutions'
 import { GetVideoCommentsUseCase } from './domain/useCases/videoComments/getVideoComments'
 import { FindVideoCommentUseCase } from './domain/useCases/videoComments/findVideoComment'
 import { AddVideoCommentUseCase } from './domain/useCases/videoComments/addVideoComment'
@@ -40,7 +40,7 @@ import { DeleteFlashCardUseCase } from './domain/useCases/flashCards/deleteFlash
 import { UpdateFlashCardsUserBioUseCase } from './domain/useCases/flashCards/updateFlashCardsUserBio'
 
 const courseRepository = CourseRepository.getInstance()
-const schoolRepository = SchoolRepository.getInstance()
+const institutionRepository = InstitutionRepository.getInstance()
 const videoCommentRepository = VideoCommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
@@ -52,11 +52,11 @@ export const DeleteCourse = new DeleteCourseUseCase(courseRepository)
 export const FindCourse = new FindCourseUseCase(courseRepository)
 export const GetCourses = new GetCoursesUseCase(courseRepository)
 
-export const AddSchool = new AddSchoolUseCase(schoolRepository)
-export const UpdateSchool = new UpdateSchoolUseCase(schoolRepository)
-export const DeleteSchool = new DeleteSchoolUseCase(schoolRepository)
-export const FindSchool = new FindSchoolUseCase(schoolRepository)
-export const GetSchools = new GetSchoolsUseCase(schoolRepository)
+export const AddInstitution = new AddInstitutionUseCase(institutionRepository)
+export const UpdateInstitution = new UpdateInstitutionUseCase(institutionRepository)
+export const DeleteInstitution = new DeleteInstitutionUseCase(institutionRepository)
+export const FindInstitution = new FindInstitutionUseCase(institutionRepository)
+export const GetInstitutions = new GetInstitutionsUseCase(institutionRepository)
 
 export const GetVideoComments = new GetVideoCommentsUseCase(videoCommentRepository)
 export const FindVideoComment = new FindVideoCommentUseCase(videoCommentRepository)
@@ -87,14 +87,14 @@ export const DeleteFlashCard = new DeleteFlashCardUseCase(flashCardRepository)
 export const UpdateFlashCardsUserBio = new UpdateFlashCardsUserBioUseCase(flashCardRepository)
 
 export { CourseFromModel } from './data/models/courses'
-export { SchoolFromModel } from './data/models/schools'
+export { InstitutionFromModel } from './data/models/institutions'
 export { VideoCommentFromModel } from './data/models/videoComments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
 
 export { CourseEntity } from './domain/entities/courses'
-export { SchoolEntity } from './domain/entities/schools'
+export { InstitutionEntity } from './domain/entities/institutions'
 export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'

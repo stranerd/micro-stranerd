@@ -16,14 +16,14 @@ export class NoteController {
 		const data = validate({
 			title: req.body.title,
 			tags: req.body.tags,
-			schoolId: req.body.schoolId,
+			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			schoolId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			tags: {
 				required: true,
@@ -46,14 +46,14 @@ export class NoteController {
 		const data = validate({
 			title: req.body.title,
 			tags: req.body.tags,
-			schoolId: req.body.schoolId,
+			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			schoolId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			tags: {
 				required: true,

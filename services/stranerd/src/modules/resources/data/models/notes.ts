@@ -15,6 +15,6 @@ export interface NoteToModel {
 	userBio: UserBio
 	title: string
 	tags: string[]
-	schoolId: string
+	institutionId: string
 	courseId: string
 }

@@ -1,12 +1,12 @@
 import { BaseEntity } from '@utils/commons'
 
-export class SchoolEntity extends BaseEntity {
+export class InstitutionEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, name, createdAt, updatedAt }: SchoolConstructorArgs) {
+	constructor ({ id, name, createdAt, updatedAt }: InstitutionConstructorArgs) {
 		super()
 		this.id = id
 		this.name = name
@@ -15,4 +15,4 @@ export class SchoolEntity extends BaseEntity {
 	}
 }
 
-type SchoolConstructorArgs = { id: string, name: string, createdAt: number, updatedAt: number }
+type InstitutionConstructorArgs = { id: string, name: string, createdAt: number, updatedAt: number }

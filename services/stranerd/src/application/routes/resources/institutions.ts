@@ -1,34 +1,34 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { SchoolController } from '../../controllers/resources/schools'
+import { InstitutionController } from '../../controllers/resources/institutions'
 import { isAdmin } from '@application/middlewares/isAdmin'
 
-export const schoolsRoutes: Route[] = [
+export const institutionsRoutes: Route[] = [
 	{
-		path: '/resources/schools',
+		path: '/resources/institutions',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SchoolController.GetSchools(req)
+					result: await InstitutionController.GetInstitutions(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/schools/:id',
+		path: '/resources/institutions/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SchoolController.FindSchool(req)
+					result: await InstitutionController.FindInstitution(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/schools',
+		path: '/resources/institutions',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -36,13 +36,13 @@ export const schoolsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SchoolController.CreateSchool(req)
+					result: await InstitutionController.CreateInstitution(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/schools/:id',
+		path: '/resources/institutions/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -50,13 +50,13 @@ export const schoolsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SchoolController.UpdateSchool(req)
+					result: await InstitutionController.UpdateInstitution(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/schools/:id',
+		path: '/resources/institutions/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
@@ -64,7 +64,7 @@ export const schoolsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await SchoolController.DeleteSchool(req)
+					result: await InstitutionController.DeleteInstitution(req)
 				}
 			})
 		]
