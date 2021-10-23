@@ -48,7 +48,7 @@ export class SessionController {
 		const studentUser = await FindUser.execute(req.authUser!.id)
 		const tutorUser = await FindUser.execute(data.tutorId)
 
-		if (studentUser && tutorUser && tutorUser.isTutor) return await AddSession.execute({
+		if (studentUser && tutorUser && tutorUser.isTutor()) return await AddSession.execute({
 			...data,
 			price: sessions.find((s) => s.duration === data.duration)!.price,
 			tutorBio: tutorUser.bio,

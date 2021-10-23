@@ -38,12 +38,12 @@ export class UserEntity extends BaseEntity {
 		return getNextRank(this.rank.id)
 	}
 
-	get isAdmin () {
+	isAdmin () {
 		const app = AuthApps.Stranerd
 		return this.roles[app]?.['isAdmin'] ?? false
 	}
 
-	get isTutor () {
+	isTutor () {
 		const app = AuthApps.Stranerd
 		return this.roles[app]?.['isTutor'] ?? false
 	}
