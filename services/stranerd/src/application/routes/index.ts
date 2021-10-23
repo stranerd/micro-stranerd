@@ -18,6 +18,13 @@ import { transactionsRoutes } from './users/transactions'
 import { messagesRoutes } from './meta/messages'
 import { searchRoutes } from './meta/search'
 import { reportRoutes } from './reports/reports'
+import { pastQuestionsRoutes } from './resources/pastQuestions'
+import { flashcardsRoutes } from './resources/flashCards'
+import { notesRoutes } from './resources/notes'
+import { videoCommentsRoutes } from './resources/videoComments'
+import { videosRoutes } from './resources/videos'
+import { institutionsRoutes } from './resources/institutions'
+import { coursesRoutes } from './resources/courses'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -39,6 +46,13 @@ export const routes: Route[] = [
 	...messagesRoutes,
 	...searchRoutes,
 	...reportRoutes,
+	...pastQuestionsRoutes,
+	...flashcardsRoutes,
+	...notesRoutes,
+	...videosRoutes,
+	...videoCommentsRoutes,
+	...institutionsRoutes,
+	...coursesRoutes,
 	{
 		path: '/',
 		method: 'get',
