@@ -68,7 +68,7 @@ export const SessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/:id/end',
+		path: '/sessions/sessions/:id/end',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
