@@ -107,16 +107,54 @@ export class PastQuestionController {
 			order: req.body.order,
 			year: req.body.year,
 			question: req.body.question,
+			questionMedia: req.body.questionMedia,
 			answer: req.body.answer,
-			questionMedia: req.body.questionMedia
+			a: req.body.a,
+			b: req.body.b,
+			c: req.body.c,
+			d: req.body.d,
+			e: req.body.e,
+			aMedia: req.body.aMedia,
+			bMedia: req.body.bMedia,
+			cMedia: req.body.cMedia,
+			dMedia: req.body.dMedia,
+			eMedia: req.body.eMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			questionMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			answer: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(0), Validation.isShorterThanX(2)]
+			},
+			a: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			b: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			c: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			d: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			e: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			aMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			bMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			cMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			dMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			eMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
@@ -135,16 +173,54 @@ export class PastQuestionController {
 			order: req.body.order,
 			year: req.body.year,
 			question: req.body.question,
+			questionMedia: req.body.questionMedia,
 			answer: req.body.answer,
-			questionMedia: req.body.questionMedia
+			a: req.body.a,
+			b: req.body.b,
+			c: req.body.c,
+			d: req.body.d,
+			e: req.body.e,
+			aMedia: req.body.aMedia,
+			bMedia: req.body.bMedia,
+			cMedia: req.body.cMedia,
+			dMedia: req.body.dMedia,
+			eMedia: req.body.eMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			questionMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			answer: {
+				required: true,
+				rules: [Validation.isString, Validation.isLongerThanX(0), Validation.isShorterThanX(2)]
+			},
+			a: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			b: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			c: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			d: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			e: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			aMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			bMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			cMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			dMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			eMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}

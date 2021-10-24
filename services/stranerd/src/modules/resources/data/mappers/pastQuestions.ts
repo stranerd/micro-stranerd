@@ -42,13 +42,13 @@ export class PastQuestionObjMapper extends BaseMapper<PastQuestionObjFromModel, 
 		if (!model) return null
 		const {
 			_id, order, year, question, questionMedia, institutionId, courseId,
-			answer,
+			answer, a, b, c, d, e, aMedia, bMedia, cMedia, dMedia, eMedia,
 			createdAt, updatedAt
 		} = model
 		return new PastQuestionObjEntity({
 			id: _id.toString(), order, year,
 			question, questionMedia, institutionId, courseId,
-			answer,
+			answer, a, b, c, d, e, aMedia, bMedia, cMedia, dMedia, eMedia,
 			createdAt, updatedAt
 		})
 	}
@@ -61,7 +61,17 @@ export class PastQuestionObjMapper extends BaseMapper<PastQuestionObjFromModel, 
 			courseId: entity.courseId,
 			questionMedia: entity.questionMedia,
 			question: entity.question,
-			answer: entity.answer
+			answer: entity.answer,
+			a: entity.a,
+			b: entity.b,
+			c: entity.c,
+			d: entity.d,
+			e: entity.e,
+			aMedia: entity.aMedia,
+			bMedia: entity.bMedia,
+			cMedia: entity.cMedia,
+			dMedia: entity.dMedia,
+			eMedia: entity.eMedia
 		}
 	}
 }
