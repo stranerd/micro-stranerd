@@ -3,7 +3,7 @@ import { NoteMapper } from '../mappers/notes'
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { Note } from '../mongooseModels/notes'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { OmitUser, UserBio } from '../../domain/types'
 
 export class NoteRepository implements INoteRepository {
 	private static instance: NoteRepository
@@ -37,7 +37,7 @@ export class NoteRepository implements INoteRepository {
 		return this.mapper.mapFrom(note)
 	}
 
-	async update (id: string, userId: string, data: Partial<NoteToModel>) {
+	async update (id: string, userId: string, data: OmitUser<NoteToModel>) {
 		const note = await Note.findOneAndUpdate({ _id: id, userId }, { $set: data })
 		return this.mapper.mapFrom(note)
 	}

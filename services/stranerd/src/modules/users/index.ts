@@ -112,3 +112,5 @@ export { RankTypes } from './domain/entities/ranks'
 export {
 	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, CoinValues, CoinBadges
 } from './domain/types'
+
+export type OmitUser<Type> = Omit<Type, 'userId' | 'userBio' | 'user'>

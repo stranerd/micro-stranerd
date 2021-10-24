@@ -2,8 +2,9 @@ import { VideoToModel } from '../../../data/models/videos'
 import { IVideoRepository } from '../../irepositories/videos'
 import { BaseUseCase } from '@utils/commons'
 import { VideoEntity } from '../../entities/videos'
+import { OmitUser } from '../../types'
 
-type Input = { id: string, userId: string, data: Partial<VideoToModel> }
+type Input = { id: string, userId: string, data: OmitUser<VideoToModel> }
 
 export class UpdateVideoUseCase extends BaseUseCase<Input, VideoEntity | null> {
 	private repository: IVideoRepository

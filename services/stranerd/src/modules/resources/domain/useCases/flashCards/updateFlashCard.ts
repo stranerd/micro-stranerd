@@ -2,8 +2,9 @@ import { FlashCardToModel } from '../../../data/models/flashCards'
 import { IFlashCardRepository } from '../../irepositories/flashCards'
 import { BaseUseCase } from '@utils/commons'
 import { FlashCardEntity } from '../../entities/flashCards'
+import { OmitUser } from '../../types'
 
-type Input = { id: string, userId: string, data: Partial<FlashCardToModel> }
+type Input = { id: string, userId: string, data: OmitUser<FlashCardToModel> }
 
 export class UpdateFlashCardUseCase extends BaseUseCase<Input, FlashCardEntity | null> {
 	private repository: IFlashCardRepository
