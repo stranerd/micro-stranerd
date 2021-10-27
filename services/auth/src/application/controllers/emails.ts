@@ -7,7 +7,7 @@ import {
 	UpdateUserDetails,
 	VerifyEmail
 } from '@modules/index'
-import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { Request, validate, Validation, ValidationError } from '@utils/commons'
 import { generateAuthOutput } from '@utils/modules/auth'
 
 export class EmailsController {
@@ -23,10 +23,7 @@ export class EmailsController {
 		}
 
 		const res = await GetUsers.execute({
-			where: [
-				{ field: 'email', value: userCredential.email.toLowerCase() },
-				{ field: 'authTypes', value: AuthTypes.email }
-			],
+			where: [{ field: 'email', value: userCredential.email.toLowerCase() }],
 			limit: 1
 		})
 		const emailExist = !!res.results[0]

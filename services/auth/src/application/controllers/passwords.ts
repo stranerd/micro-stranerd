@@ -51,7 +51,7 @@ export class PasswordsController {
 		const user = await FindUser.execute(userId)
 		if (!user) throw new BadRequestError('No account with such id exists')
 
-		const match = await hashCompare(oldPassword, user.password ?? '')
+		const match = await hashCompare(oldPassword, user.password)
 		if (!match) throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
 
 		return await UpdatePassword.execute({ userId, password })

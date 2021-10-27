@@ -9,7 +9,7 @@ import { AddUserCoinsUseCase } from './domain/useCases/users/addUserCoins'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
-import { MarkNotificationSeenUseCase } from './domain/useCases/notifications/markNotificationSeen'
+import { MarkNotificationsSeenUseCase } from './domain/useCases/notifications/markNotificationsSeen'
 import { DeleteOldSeenNotificationsUseCase } from './domain/useCases/notifications/deleteOldSeenNotifications'
 import { GetNotificationsUseCase } from './domain/useCases/notifications/getNotifications'
 import { ReviewRepository } from './data/repositories/reviews'
@@ -80,7 +80,7 @@ export const RecordCountStreak = new RecordCountStreakUseCase(badgeRepository)
 export const GetNotifications = new GetNotificationsUseCase(notificationRepository)
 export const FindNotification = new FindNotificationUseCase(notificationRepository)
 export const CreateNotification = new CreateNotificationUseCase(notificationRepository)
-export const MarkNotificationSeen = new MarkNotificationSeenUseCase(notificationRepository)
+export const MarkNotificationsSeen = new MarkNotificationsSeenUseCase(notificationRepository)
 export const DeleteOldSeenNotifications = new DeleteOldSeenNotificationsUseCase(notificationRepository)
 
 export const GetReviews = new GetReviewsUseCase(reviewRepository)
