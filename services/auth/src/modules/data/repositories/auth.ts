@@ -48,7 +48,12 @@ export class AuthRepository implements IAuthRepository {
 		const user = await User.findOne({ email: details.email })
 		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
 
-		const match = passwordValidate ? await hashCompare(details.password, user.password) : true
+		const match = passwordValidate
+			? user.authTypes.includes(AuthTypes.email)
+				? await hashCompare(details.password, user.password)
+				: false
+			: true
+
 		if (!match) throw new ValidationError([{ field: 'password', messages: ['Invalid password'] }])
 
 		return this.signInUser(user, type)

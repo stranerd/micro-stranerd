@@ -29,6 +29,19 @@ export const notificationsRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/users/notifications/seen',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await NotificationsController.markAllNotificationsSeen(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/users/notifications/:id/seen',
 		method: 'put',
 		controllers: [

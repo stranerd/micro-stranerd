@@ -31,8 +31,11 @@ export class NotificationRepository implements INotificationRepository {
 		return this.mapper.mapFrom(notification)!
 	}
 
-	async markNotificationSeen (data: { userId: string, id: string, seen: boolean }) {
-		await Notification.findOneAndUpdate({ _id: data.id, userId: data.userId }, { $set: { seen: data.seen } })
+	async markNotificationsSeen (data: { userId: string, ids?: string[], seen: boolean }) {
+		await Notification.findOneAndUpdate({
+			userId: data.userId,
+			...(data.ids ? { _id: { $in: data.ids } } : {})
+		}, { $set: { seen: data.seen } })
 	}
 
 	async deleteOldSeenNotifications () {
