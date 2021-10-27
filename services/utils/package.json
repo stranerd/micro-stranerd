@@ -14,7 +14,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@google-cloud/storage": "^5.14.4",
-		"@stranerd/api-commons": "^1.0.8",
+		"@stranerd/api-commons": "^1.0.10",
 		"nodemailer": "^6.6.5"
 	},
 	"devDependencies": {

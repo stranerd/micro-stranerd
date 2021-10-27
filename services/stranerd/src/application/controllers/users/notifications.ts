@@ -1,4 +1,4 @@
-import { FindNotification, GetNotifications, MarkNotificationSeen } from '@modules/users'
+import { FindNotification, GetNotifications, MarkNotificationsSeen } from '@modules/users'
 import { QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class NotificationsController {
@@ -22,8 +22,23 @@ export class NotificationsController {
 			seen: { required: true, rules: [Validation.isBoolean] }
 		})
 
-		await MarkNotificationSeen.execute({
-			id: req.params.id,
+		await MarkNotificationsSeen.execute({
+			ids: [req.params.id],
+			userId: req.authUser!.id,
+			seen: !!data.seen
+		})
+
+		return true
+	}
+
+	static async markAllNotificationsSeen (req: Request) {
+		const data = validate({
+			seen: req.body.seen
+		}, {
+			seen: { required: true, rules: [Validation.isBoolean] }
+		})
+
+		await MarkNotificationsSeen.execute({
 			userId: req.authUser!.id,
 			seen: !!data.seen
 		})

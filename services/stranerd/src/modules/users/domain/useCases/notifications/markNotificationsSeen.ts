@@ -1,9 +1,9 @@
 import { BaseUseCase } from '@utils/commons'
 import { INotificationRepository } from '../../i-repositories/notifications'
 
-type Input = { userId: string, id: string, seen: boolean }
+type Input = { userId: string, ids?: string[], seen: boolean }
 
-export class MarkNotificationSeenUseCase implements BaseUseCase<Input, void> {
+export class MarkNotificationsSeenUseCase implements BaseUseCase<Input, void> {
 	repository: INotificationRepository
 
 	constructor (repo: INotificationRepository) {
@@ -11,6 +11,6 @@ export class MarkNotificationSeenUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.markNotificationSeen(input)
+		return await this.repository.markNotificationsSeen(input)
 	}
 }

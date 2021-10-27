@@ -4,11 +4,14 @@ import io from 'socket.io'
 import cors from 'cors'
 import morgan from 'morgan'
 import fileUpload from 'express-fileupload'
+import slowDown from 'express-slow-down'
+import rateLimit from 'express-rate-limit'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import { isDev } from '../config'
 import path from 'path'
 import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
+import { StatusCodes } from './statusCodes'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -40,6 +43,16 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	app.use(express.urlencoded({ extended: false }))
 	app.use(express.static(path.join(process.cwd(), 'public')))
 	app.use(cors({ origin: '*' }))
+	app.use(rateLimit({
+		windowMs: 30 * 60 * 1000,
+		max: 1000,
+		handler: (_: express.Request, res: express.Response) => res.status(StatusCodes.TooManyRequests).json([{ message: 'Too Many Requests' }])
+	}))
+	app.use(slowDown({
+		windowMs: 10 * 60 * 1000,
+		delayAfter: 500,
+		delayMs: 500
+	}))
 	app.use(
 		fileUpload({
 			limits: { fileSize: 100 * 1024 * 1024 },
