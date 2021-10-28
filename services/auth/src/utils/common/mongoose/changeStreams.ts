@@ -30,70 +30,65 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	const res = await getStreamTokens().findOne({ _id: dbName })
 	const resumeToken = res?.resumeToken ?? undefined
 
-	const changeStream = collection.watch([], {
-		fullDocument: 'updateLookup',
-		startAfter: resumeToken
-	})
-
-	changeStream.on('change', async (data) => {
-		// @ts-ignore
-		const streamId = data._id._data
-		const cacheName = `streams-${streamId}`
-		const cached = await getCacheInstance.setInTransaction(cacheName, streamId, 15)
-		if (cached[0]) return
-		await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
-
-		if (data.operationType === 'insert') {
+	const changeStream = collection
+		.watch([], { fullDocument: 'updateLookup', startAfter: resumeToken })
+		.on('change', async (data) => {
 			// @ts-ignore
-			const _id = data.documentKey!._id
-			const after = data.fullDocument as Model
-			const { value } = await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
-				upsert: true,
-				returnDocument: 'after'
-			})
-			if (value) await callbacks.created?.({
-				before: null,
-				after: mapper(after)!
-			})
-		}
+			const streamId = data._id._data
+			const cacheName = `streams-${streamId}`
+			const cached = await getCacheInstance.setInTransaction(cacheName, streamId, 15)
+			if (cached[0]) return
+			await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
 
-		if (data.operationType === 'delete') {
-			// @ts-ignore
-			const _id = data.documentKey!._id
-			const { value: before } = await getClone().findOneAndDelete({ _id })
-			if (before) await callbacks.deleted?.({
-				before: mapper(before as Model)!,
-				after: null
-			})
-		}
+			if (data.operationType === 'insert') {
+				// @ts-ignore
+				const _id = data.documentKey!._id
+				const after = data.fullDocument as Model
+				const { value } = await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
+					upsert: true,
+					returnDocument: 'after'
+				})
+				if (value) await callbacks.created?.({
+					before: null,
+					after: mapper(after)!
+				})
+			}
 
-		if (data.operationType === 'update') {
-			// @ts-ignore
-			const _id = data.documentKey!._id
-			const after = data.fullDocument as Model
-			const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
-			// @ts-ignore
-			const { updatedFields = {}, removedFields = [], truncatedArrays = [] } = data.updateDescription ?? {}
-			const changed = removedFields
-				.map((f) => f.toString())
-				.concat(truncatedArrays)
-				.concat(Object.keys(updatedFields))
-			const changes = getObjectsFromKeys(changed)
-			if (before) await callbacks.updated?.({
-				before: mapper(before as Model)!,
-				after: mapper(after)!,
-				changes
-			})
-		}
-	})
-	changeStream.on('error', async (err) => {
-		await Logger.error(`Change Stream errored out: ${dbName}`)
-		await Logger.error(err.message)
-		if (!err.message.startsWith('Resume of change stream was not possible, as the resume point may no longer be in the oplog')) {
-			await changeStream.close()
-			process.exit(1)
-		}
-	})
+			if (data.operationType === 'delete') {
+				// @ts-ignore
+				const _id = data.documentKey!._id
+				const { value: before } = await getClone().findOneAndDelete({ _id })
+				if (before) await callbacks.deleted?.({
+					before: mapper(before as Model)!,
+					after: null
+				})
+			}
+
+			if (data.operationType === 'update') {
+				// @ts-ignore
+				const _id = data.documentKey!._id
+				const after = data.fullDocument as Model
+				const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
+				// @ts-ignore
+				const { updatedFields = {}, removedFields = [], truncatedArrays = [] } = data.updateDescription ?? {}
+				const changed = removedFields
+					.map((f) => f.toString())
+					.concat(truncatedArrays)
+					.concat(Object.keys(updatedFields))
+				const changes = getObjectsFromKeys(changed)
+				if (before) await callbacks.updated?.({
+					before: mapper(before as Model)!,
+					after: mapper(after)!,
+					changes
+				})
+			}
+		})
+		.on('error', async (err) => {
+			await Logger.error(`Change Stream errored out: ${dbName}`)
+			await Logger.error(err.message)
+			changeStream.close()
+			await startChangeStream(collection, callbacks, mapper)
+		})
 }
 
 export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (
