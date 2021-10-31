@@ -3,7 +3,7 @@ import { AnswerMapper } from '../mappers/answers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels/answers'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { OmitAnswerInit, UserBio } from '../../domain/types'
+import { UserBio } from '../../domain/types'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository
@@ -37,7 +37,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return this.mapper.mapFrom(answer)
 	}
 
-	async update (id: string, userId, data: OmitAnswerInit<AnswerToModel>) {
+	async update (id: string, userId, data: Partial<AnswerToModel>) {
 		const answer = await Answer.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(answer)
 	}

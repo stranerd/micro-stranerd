@@ -2,9 +2,8 @@ import { IAnswerRepository } from '../../irepositories/answers'
 import { BaseUseCase } from '@utils/commons'
 import { AnswerToModel } from '../../../data/models/answers'
 import { AnswerEntity } from '../../entities/answers'
-import { OmitAnswerInit } from '../../types'
 
-type Input = { id: string, userId: string, data: OmitAnswerInit<AnswerToModel> }
+type Input = { id: string, userId: string, data: Partial<AnswerToModel> }
 
 export class UpdateAnswerUseCase extends BaseUseCase<Input, AnswerEntity | null> {
 	private repository: IAnswerRepository

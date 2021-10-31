@@ -4,7 +4,7 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { OmitUser, UserBio } from '../../domain/types'
+import { UserBio } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '@modules/questions/domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
@@ -39,7 +39,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return this.mapper.mapFrom(question)
 	}
 
-	async update (id: string, userId: string, data: OmitUser<QuestionToModel>) {
+	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
 		const question = await Question.findOneAndUpdate({ _id: id, userId }, { $set: data })
 		return this.mapper.mapFrom(question)
 	}
