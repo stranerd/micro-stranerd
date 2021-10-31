@@ -32,15 +32,10 @@ export class QuestionController {
 		const data = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
-			coins: req.body.coins,
 			tags: req.body.tags,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			coins: {
-				required: true,
-				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
-			},
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
@@ -61,6 +56,11 @@ export class QuestionController {
 	}
 
 	static async CreateQuestion (req: Request) {
+		const authUserId = req.authUser!.id
+		const user = await FindUser.execute(authUserId)
+
+		if (!user) throw new NotFoundError()
+
 		const data = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
@@ -71,7 +71,12 @@ export class QuestionController {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			coins: {
 				required: true,
-				rules: [Validation.isNumber, Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1), Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1)]
+				rules: [
+					Validation.isNumber,
+					Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1),
+					Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1),
+					Validation.isMoreThanX(user.account.coins.bronze, 'dont have enough bronze coins')
+				]
 			},
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
@@ -84,16 +89,11 @@ export class QuestionController {
 			}
 		})
 
-		const authUserId = req.authUser!.id
-
-		const user = await FindUser.execute(authUserId)
-
-		if (user) return await AddQuestion.execute({
+		return await AddQuestion.execute({
 			...data,
 			userBio: user.bio,
 			userId: authUserId
 		})
-		throw new NotFoundError()
 	}
 
 	static async MarkBestAnswer (req: Request) {
