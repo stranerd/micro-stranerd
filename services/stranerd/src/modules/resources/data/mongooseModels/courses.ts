@@ -13,6 +13,10 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 		type: String,
 		required: true
 	},
+	institutionId: {
+		type: String,
+		required: true
+	},
 	createdAt: {
 		type: Number,
 		required: false,

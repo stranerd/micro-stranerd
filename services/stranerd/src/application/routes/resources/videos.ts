@@ -60,6 +60,7 @@ export const videosRoutes: Route[] = [
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
+			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

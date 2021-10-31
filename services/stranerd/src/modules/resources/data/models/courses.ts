@@ -6,4 +6,5 @@ export interface CourseFromModel extends CourseToModel {
 
 export interface CourseToModel {
 	name: string
+	institutionId: string
 }

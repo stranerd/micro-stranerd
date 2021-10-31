@@ -13,9 +13,11 @@ export class CourseController {
 
 	static async CreateCourse (req: Request) {
 		const data = validate({
-			name: req.body.name
+			name: req.body.name,
+			institutionId: req.body.institutionId
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			institutionId: { required: true, rules: [Validation.isString] }
 		})
 
 		return await AddCourse.execute(data)
@@ -23,9 +25,11 @@ export class CourseController {
 
 	static async UpdateCourse (req: Request) {
 		const data = validate({
-			name: req.body.name
+			name: req.body.name,
+			institutionId: req.body.institutionId
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			institutionId: { required: true, rules: [Validation.isString] }
 		})
 
 		return await UpdateCourse.execute({ id: req.params.id, data })

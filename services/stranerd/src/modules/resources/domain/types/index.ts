@@ -1,1 +1,1 @@
-export { UserBio, OmitUser } from '@modules/users'
+export { UserBio } from '@modules/users'

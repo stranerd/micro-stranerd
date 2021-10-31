@@ -5,15 +5,16 @@ import { BaseMapper } from '@utils/commons'
 export class CourseMapper extends BaseMapper<CourseFromModel, CourseToModel, CourseEntity> {
 	mapFrom (model: CourseFromModel | null) {
 		if (!model) return null
-		const { _id, name, createdAt, updatedAt } = model
+		const { _id, name, institutionId, createdAt, updatedAt } = model
 		return new CourseEntity({
-			id: _id.toString(), name, createdAt, updatedAt
+			id: _id.toString(), name, institutionId, createdAt, updatedAt
 		})
 	}
 
 	mapTo (entity: CourseEntity) {
 		return {
-			name: entity.name
+			name: entity.name,
+			institutionId: entity.institutionId
 		}
 	}
 }
