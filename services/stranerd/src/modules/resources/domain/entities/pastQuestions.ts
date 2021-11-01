@@ -42,11 +42,13 @@ export class PastQuestionObjEntity extends PastQuestionEntity {
 	public readonly c: string
 	public readonly d: string
 	public readonly e: string
+	public readonly explanation: string
 	public readonly aMedia: MediaOutput[]
 	public readonly bMedia: MediaOutput[]
 	public readonly cMedia: MediaOutput[]
 	public readonly dMedia: MediaOutput[]
 	public readonly eMedia: MediaOutput[]
+	public readonly explanationMedia: MediaOutput[]
 
 	constructor (data: PastQuestionObjConstructorArgs) {
 		super(data)
@@ -55,11 +57,13 @@ export class PastQuestionObjEntity extends PastQuestionEntity {
 		this.c = data.c
 		this.d = data.d
 		this.e = data.e
+		this.explanation = data.explanation
 		this.aMedia = data.eMedia
 		this.bMedia = data.bMedia
 		this.cMedia = data.cMedia
 		this.dMedia = data.dMedia
 		this.eMedia = data.eMedia
+		this.explanationMedia = data.explanationMedia
 	}
 }
 
@@ -86,9 +90,11 @@ type PastQuestionObjConstructorArgs = PastQuestionConstructorArgs & {
 	c: string
 	d: string
 	e: string
+	explanation: string
 	aMedia: MediaOutput[]
 	bMedia: MediaOutput[]
 	cMedia: MediaOutput[]
 	dMedia: MediaOutput[]
 	eMedia: MediaOutput[]
+	explanationMedia: MediaOutput[]
 }

@@ -62,7 +62,61 @@ export const PastQuestionTheory = mongoose.model<PastQuestionTheoryFromModel>('S
 	}
 }, { timestamps: { currentTime: Date.now } }))
 export const PastQuestionObj = mongoose.model<PastQuestionObjFromModel>('StranerdPastQuestionObj', new mongoose.Schema({
-	...genericSchema
+	...genericSchema,
+	a: {
+		type: String,
+		required: true
+	},
+	b: {
+		type: String,
+		required: true
+	},
+	c: {
+		type: String,
+		required: true
+	},
+	d: {
+		type: String,
+		required: true
+	},
+	e: {
+		type: String,
+		required: true
+	},
+	explanation: {
+		type: String,
+		required: true
+	},
+	aMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	},
+	bMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	},
+	cMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	},
+	dMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	},
+	eMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	},
+	explanationMedia: {
+		type: [Object] as unknown as MediaOutput[],
+		required: false,
+		default: []
+	}
 }, { timestamps: { currentTime: Date.now } }))
 
 generateChangeStreams<PastQuestionTheoryFromModel, PastQuestionTheoryEntity>(PastQuestionTheory, PastQuestionTheoryChangeStreamCallbacks, new PastQuestionTheoryMapper().mapFrom).then()

@@ -26,11 +26,13 @@ export interface PastQuestionObjToModel extends PastQuestionToModel {
 	c: string
 	d: string
 	e: string
+	explanation: string
 	aMedia: MediaOutput[]
 	bMedia: MediaOutput[]
 	cMedia: MediaOutput[]
 	dMedia: MediaOutput[]
 	eMedia: MediaOutput[]
+	explanationMedia: MediaOutput[]
 }
 
 export type PastQuestionTheoryFromModel = PastQuestionTheoryToModel & PastQuestionFromModel

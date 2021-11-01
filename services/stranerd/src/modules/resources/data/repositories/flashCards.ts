@@ -3,7 +3,7 @@ import { FlashCardMapper } from '../mappers/flashCards'
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCard } from '../mongooseModels/flashCards'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { OmitUser, UserBio } from '../../domain/types'
+import { UserBio } from '../../domain/types'
 
 export class FlashCardRepository implements IFlashCardRepository {
 	private static instance: FlashCardRepository
@@ -37,7 +37,7 @@ export class FlashCardRepository implements IFlashCardRepository {
 		return this.mapper.mapFrom(flashCard)
 	}
 
-	async update (id: string, userId: string, data: OmitUser<FlashCardToModel>) {
+	async update (id: string, userId: string, data: Partial<FlashCardToModel>) {
 		const flashCard = await FlashCard.findOneAndUpdate({ _id: id, userId }, { $set: data })
 		return this.mapper.mapFrom(flashCard)
 	}

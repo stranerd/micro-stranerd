@@ -38,7 +38,7 @@ export class PastQuestionController {
 			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			answer: { required: true, rules: [Validation.isString] },
 			questionMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
@@ -71,7 +71,7 @@ export class PastQuestionController {
 			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			answer: { required: true, rules: [Validation.isString] },
 			questionMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
@@ -114,11 +114,13 @@ export class PastQuestionController {
 			c: req.body.c,
 			d: req.body.d,
 			e: req.body.e,
+			explanation: req.body.explanation,
 			aMedia: req.body.aMedia,
 			bMedia: req.body.bMedia,
 			cMedia: req.body.cMedia,
 			dMedia: req.body.dMedia,
-			eMedia: req.body.eMedia
+			eMedia: req.body.eMedia,
+			explanationMedia: req.body.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -131,13 +133,14 @@ export class PastQuestionController {
 			},
 			answer: {
 				required: true,
-				rules: [Validation.isString, Validation.isLongerThanX(0), Validation.isShorterThanX(2)]
+				rules: [Validation.isString, Validation.arrayContainsX(['a', 'b', 'c', 'd', 'e'], (curr, val) => curr === val)]
 			},
-			a: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			b: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			c: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			d: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			e: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			a: { required: true, rules: [Validation.isString] },
+			b: { required: true, rules: [Validation.isString] },
+			c: { required: true, rules: [Validation.isString] },
+			d: { required: true, rules: [Validation.isString] },
+			e: { required: true, rules: [Validation.isString] },
+			explanation: { required: true, rules: [Validation.isString] },
 			aMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
@@ -155,6 +158,10 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 			eMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			explanationMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
@@ -180,11 +187,13 @@ export class PastQuestionController {
 			c: req.body.c,
 			d: req.body.d,
 			e: req.body.e,
+			explanation: req.body.explanation,
 			aMedia: req.body.aMedia,
 			bMedia: req.body.bMedia,
 			cMedia: req.body.cMedia,
 			dMedia: req.body.dMedia,
-			eMedia: req.body.eMedia
+			eMedia: req.body.eMedia,
+			explanationMedia: req.body.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -197,13 +206,14 @@ export class PastQuestionController {
 			},
 			answer: {
 				required: true,
-				rules: [Validation.isString, Validation.isLongerThanX(0), Validation.isShorterThanX(2)]
+				rules: [Validation.isString, Validation.arrayContainsX(['a', 'b', 'c', 'd', 'e'], (curr, val) => curr === val)]
 			},
-			a: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			b: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			c: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			d: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			e: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			a: { required: true, rules: [Validation.isString] },
+			b: { required: true, rules: [Validation.isString] },
+			c: { required: true, rules: [Validation.isString] },
+			d: { required: true, rules: [Validation.isString] },
+			e: { required: true, rules: [Validation.isString] },
+			explanation: { required: true, rules: [Validation.isString] },
 			aMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
@@ -221,6 +231,10 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 			eMedia: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+			explanationMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
