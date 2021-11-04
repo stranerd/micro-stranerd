@@ -37,10 +37,6 @@ const genericSchema: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<Pas
 		required: false,
 		default: []
 	},
-	answer: {
-		type: String,
-		required: true
-	},
 	createdAt: {
 		type: Number,
 		required: false,
@@ -55,6 +51,10 @@ const genericSchema: mongoose.SchemaDefinition<mongoose.SchemaDefinitionType<Pas
 
 export const PastQuestionTheory = mongoose.model<PastQuestionTheoryFromModel>('StranerdPastQuestionTheory', new mongoose.Schema({
 	...genericSchema,
+	answer: {
+		type: String,
+		required: true
+	},
 	answerMedia: {
 		type: [Object] as unknown as MediaOutput[],
 		required: false,
@@ -63,54 +63,22 @@ export const PastQuestionTheory = mongoose.model<PastQuestionTheoryFromModel>('S
 }, { timestamps: { currentTime: Date.now } }))
 export const PastQuestionObj = mongoose.model<PastQuestionObjFromModel>('StranerdPastQuestionObj', new mongoose.Schema({
 	...genericSchema,
-	a: {
-		type: String,
+	correctIndex: {
+		type: Number,
 		required: true
 	},
-	b: {
-		type: String,
+	options: {
+		type: [String],
 		required: true
 	},
-	c: {
-		type: String,
-		required: true
-	},
-	d: {
-		type: String,
-		required: true
-	},
-	e: {
-		type: String,
-		required: true
+	optionsMedia: {
+		type: [[Object]] as unknown as MediaOutput[][],
+		required: false,
+		default: []
 	},
 	explanation: {
 		type: String,
 		required: true
-	},
-	aMedia: {
-		type: [Object] as unknown as MediaOutput[],
-		required: false,
-		default: []
-	},
-	bMedia: {
-		type: [Object] as unknown as MediaOutput[],
-		required: false,
-		default: []
-	},
-	cMedia: {
-		type: [Object] as unknown as MediaOutput[],
-		required: false,
-		default: []
-	},
-	dMedia: {
-		type: [Object] as unknown as MediaOutput[],
-		required: false,
-		default: []
-	},
-	eMedia: {
-		type: [Object] as unknown as MediaOutput[],
-		required: false,
-		default: []
 	},
 	explanationMedia: {
 		type: [Object] as unknown as MediaOutput[],

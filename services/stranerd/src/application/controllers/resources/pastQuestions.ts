@@ -108,18 +108,10 @@ export class PastQuestionController {
 			year: req.body.year,
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
-			answer: req.body.answer,
-			a: req.body.a,
-			b: req.body.b,
-			c: req.body.c,
-			d: req.body.d,
-			e: req.body.e,
+			correctIndex: req.body.correctIndex,
+			options: req.body.options,
+			optionsMedia: req.body.optionsMedia,
 			explanation: req.body.explanation,
-			aMedia: req.body.aMedia,
-			bMedia: req.body.bMedia,
-			cMedia: req.body.cMedia,
-			dMedia: req.body.dMedia,
-			eMedia: req.body.eMedia,
 			explanationMedia: req.body.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -131,36 +123,22 @@ export class PastQuestionController {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
-			answer: {
+			correctIndex: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(['a', 'b', 'c', 'd', 'e'], (curr, val) => curr === val)]
+				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
 			},
-			a: { required: true, rules: [Validation.isString] },
-			b: { required: true, rules: [Validation.isString] },
-			c: { required: true, rules: [Validation.isString] },
-			d: { required: true, rules: [Validation.isString] },
-			e: { required: true, rules: [Validation.isString] },
+			options: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+			},
+			optionsMedia: {
+				required: true,
+				rules: [
+					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
+					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
+				]
+			},
 			explanation: { required: true, rules: [Validation.isString] },
-			aMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			bMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			cMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			dMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			eMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
 			explanationMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
@@ -181,18 +159,10 @@ export class PastQuestionController {
 			year: req.body.year,
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
-			answer: req.body.answer,
-			a: req.body.a,
-			b: req.body.b,
-			c: req.body.c,
-			d: req.body.d,
-			e: req.body.e,
+			correctIndex: req.body.correctIndex,
+			options: req.body.options,
+			optionsMedia: req.body.optionsMedia,
 			explanation: req.body.explanation,
-			aMedia: req.body.aMedia,
-			bMedia: req.body.bMedia,
-			cMedia: req.body.cMedia,
-			dMedia: req.body.dMedia,
-			eMedia: req.body.eMedia,
 			explanationMedia: req.body.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -204,36 +174,22 @@ export class PastQuestionController {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
-			answer: {
+			correctIndex: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(['a', 'b', 'c', 'd', 'e'], (curr, val) => curr === val)]
+				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
 			},
-			a: { required: true, rules: [Validation.isString] },
-			b: { required: true, rules: [Validation.isString] },
-			c: { required: true, rules: [Validation.isString] },
-			d: { required: true, rules: [Validation.isString] },
-			e: { required: true, rules: [Validation.isString] },
+			options: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+			},
+			optionsMedia: {
+				required: true,
+				rules: [
+					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
+					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
+				]
+			},
 			explanation: { required: true, rules: [Validation.isString] },
-			aMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			bMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			cMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			dMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			eMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
 			explanationMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]

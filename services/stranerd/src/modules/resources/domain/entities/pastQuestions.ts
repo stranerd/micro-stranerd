@@ -8,7 +8,6 @@ export class PastQuestionEntity extends BaseEntity {
 	public readonly courseId: string
 	public readonly question: string
 	public readonly questionMedia: MediaOutput[]
-	public readonly answer: string
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -20,7 +19,6 @@ export class PastQuestionEntity extends BaseEntity {
 		this.institutionId = data.institutionId
 		this.courseId = data.courseId
 		this.question = data.question
-		this.answer = data.answer
 		this.questionMedia = data.questionMedia
 		this.createdAt = data.createdAt
 		this.updatedAt = data.updatedAt
@@ -28,41 +26,29 @@ export class PastQuestionEntity extends BaseEntity {
 }
 
 export class PastQuestionTheoryEntity extends PastQuestionEntity {
+	public readonly answer: string
 	public readonly answerMedia: MediaOutput[]
 
 	constructor (data: PastQuestionTheoryConstructorArgs) {
 		super(data)
+		this.answer = data.answer
 		this.answerMedia = data.answerMedia
 	}
 }
 
 export class PastQuestionObjEntity extends PastQuestionEntity {
-	public readonly a: string
-	public readonly b: string
-	public readonly c: string
-	public readonly d: string
-	public readonly e: string
+	public readonly correctIndex: number
+	public readonly options: string[]
+	public readonly optionsMedia: MediaOutput[][]
 	public readonly explanation: string
-	public readonly aMedia: MediaOutput[]
-	public readonly bMedia: MediaOutput[]
-	public readonly cMedia: MediaOutput[]
-	public readonly dMedia: MediaOutput[]
-	public readonly eMedia: MediaOutput[]
 	public readonly explanationMedia: MediaOutput[]
 
 	constructor (data: PastQuestionObjConstructorArgs) {
 		super(data)
-		this.a = data.a
-		this.b = data.b
-		this.c = data.c
-		this.d = data.d
-		this.e = data.e
+		this.correctIndex = data.correctIndex
+		this.options = data.options
+		this.optionsMedia = data.optionsMedia
 		this.explanation = data.explanation
-		this.aMedia = data.eMedia
-		this.bMedia = data.bMedia
-		this.cMedia = data.cMedia
-		this.dMedia = data.dMedia
-		this.eMedia = data.eMedia
 		this.explanationMedia = data.explanationMedia
 	}
 }
@@ -75,26 +61,19 @@ type PastQuestionConstructorArgs = {
 	year: number
 	question: string
 	questionMedia: MediaOutput[]
-	answer: string
 	createdAt: number
 	updatedAt: number
 }
 
 type PastQuestionTheoryConstructorArgs = PastQuestionConstructorArgs & {
+	answer: string
 	answerMedia: MediaOutput[]
 }
 
 type PastQuestionObjConstructorArgs = PastQuestionConstructorArgs & {
-	a: string
-	b: string
-	c: string
-	d: string
-	e: string
+	options: string[]
+	optionsMedia: MediaOutput[][]
+	correctIndex: number
 	explanation: string
-	aMedia: MediaOutput[]
-	bMedia: MediaOutput[]
-	cMedia: MediaOutput[]
-	dMedia: MediaOutput[]
-	eMedia: MediaOutput[]
 	explanationMedia: MediaOutput[]
 }

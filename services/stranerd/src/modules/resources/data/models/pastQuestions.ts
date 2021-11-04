@@ -13,25 +13,18 @@ export interface PastQuestionToModel {
 	year: number
 	question: string
 	questionMedia: MediaOutput[]
-	answer: string
 }
 
 export interface PastQuestionTheoryToModel extends PastQuestionToModel {
+	answer: string
 	answerMedia: MediaOutput[]
 }
 
 export interface PastQuestionObjToModel extends PastQuestionToModel {
-	a: string
-	b: string
-	c: string
-	d: string
-	e: string
+	correctIndex: number
+	options: string[]
+	optionsMedia: MediaOutput[][]
 	explanation: string
-	aMedia: MediaOutput[]
-	bMedia: MediaOutput[]
-	cMedia: MediaOutput[]
-	dMedia: MediaOutput[]
-	eMedia: MediaOutput[]
 	explanationMedia: MediaOutput[]
 }
 
