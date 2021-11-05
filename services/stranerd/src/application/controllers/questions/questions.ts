@@ -75,7 +75,7 @@ export class QuestionController {
 					Validation.isNumber,
 					Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1),
 					Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1),
-					Validation.isMoreThanX(user.account.coins.bronze, 'dont have enough bronze coins')
+					Validation.isLessThanX(user.account.coins.bronze + 1, 'dont have enough bronze coins')
 				]
 			},
 			subjectId: { required: true, rules: [Validation.isString] },
