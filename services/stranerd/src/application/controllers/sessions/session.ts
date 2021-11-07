@@ -1,6 +1,6 @@
 import { AcceptSession, AddSession, CancelSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { NotFoundError, QueryParams, Request, validate, Validation, ValidationError } from '@utils/commons'
 
 export class SessionController {
 	static async getSessions (req: Request) {
@@ -25,6 +25,11 @@ export class SessionController {
 			{ duration: 120, price: 80 }, { duration: 180, price: 120 }
 		]
 
+		const studentUser = await FindUser.execute(req.authUser!.id)
+		const tutorUser = await FindUser.execute(req.body.tutorId)
+
+		if (!studentUser || !tutorUser) throw new NotFoundError()
+
 		const data = validate({
 			message: req.body.message,
 			tutorId: req.body.tutorId,
@@ -34,22 +39,30 @@ export class SessionController {
 			tutorId: { required: true, rules: [Validation.isString] },
 			duration: {
 				required: true,
-				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val)]
+				rules: [
+					Validation.isNumber,
+					Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val, 'is not a supported duration')
+				]
 			}
 		})
 
-		const studentUser = await FindUser.execute(req.authUser!.id)
-		const tutorUser = await FindUser.execute(data.tutorId)
+		const requestedSession = sessions.find((s) => s.duration === data.duration)
+		if (!requestedSession) throw new ValidationError([{
+			field: 'duration',
+			messages: ['is not a supported duration']
+		}])
+		if (requestedSession.price > studentUser.account.coins.bronze) throw new ValidationError([{
+			field: 'duration',
+			messages: ['cannot afford this session duration']
+		}])
 
-		if (studentUser && tutorUser) return await AddSession.execute({
+		return await AddSession.execute({
 			...data,
-			price: sessions.find((s) => s.duration === data.duration)!.price,
+			price: requestedSession.price,
 			tutorBio: tutorUser.bio,
 			studentId: studentUser.id,
 			studentBio: studentUser.bio
 		})
-
-		throw new NotFoundError()
 	}
 
 	static async acceptSession (req: Request) {
