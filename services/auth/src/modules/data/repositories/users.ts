@@ -76,7 +76,10 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async updatePassword (userId: string, password: string) {
-		const user = await User.findByIdAndUpdate(userId, { $set: { password: await hash(password) } })
+		const user = await User.findByIdAndUpdate(userId, {
+			$set: { password: await hash(password) },
+			$addToSet: { authTypes: AuthTypes.email }
+		})
 		return !!user
 	}
 }
