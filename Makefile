@@ -19,13 +19,13 @@ prod-start:
 	docker-compose -f docker-compose.yml up --build;
 
 install-all:
-	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder);)
+	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) &&) echo
 
 lint-all:
-	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) lint;)
+	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) lint &&) echo
 
 build-all:
-	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) build;)
+	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) build &&) echo
 
 publish-commons:
 	yarn --cwd ./services/${COMMONS} pub;
@@ -34,7 +34,7 @@ pub-and-inst:
 	make publish-commons && make install-commons
 
 install-commons:
-	$(foreach app, $(APPS), yarn --cwd ./services/$(app) add @stranerd/api-commons@latest;)
+	$(foreach app, $(APPS), yarn --cwd ./services/$(app) add @stranerd/api-commons@latest &&) echo
 
 copy-envs:
 	node bin/copy-envs.js $(APPS);
@@ -44,11 +44,11 @@ echo-apps:
 
 link-commons:
 	$(foreach app, $(APPS),\
-	rm ./services/$(app)/src/utils/commons.ts;\
-	ln ./services/commons/links/commons.ts ./services/$(app)/src/utils;\
-	rm -r ./services/$(app)/src/utils/common;\
-	mkdir ./services/$(app)/src/utils/common -p;\
-	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common;\
+	rm ./services/$(app)/src/utils/commons.ts &&\
+	ln ./services/commons/links/commons.ts ./services/$(app)/src/utils &&\
+	rm -r ./services/$(app)/src/utils/common &&\
+	mkdir ./services/$(app)/src/utils/common -p &&\
+	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
 )
 
 generate-config-development:
