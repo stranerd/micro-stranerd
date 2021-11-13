@@ -13,19 +13,19 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@google-cloud/storage": "^5.14.4",
-		"@stranerd/api-commons": "^1.0.11",
-		"nodemailer": "^6.6.5"
+		"@google-cloud/storage": "^5.16.0",
+		"@stranerd/api-commons": "^1.0.13",
+		"nodemailer": "^6.7.0"
 	},
 	"devDependencies": {
-		"@types/node": "^16.10.2",
-		"@typescript-eslint/eslint-plugin": "^4.32.0",
-		"@typescript-eslint/parser": "^4.32.0",
-		"eslint": "^7.32.0",
-		"eslint-plugin-promise": "^5.1.0",
+		"@types/node": "^16.11.7",
+		"@typescript-eslint/eslint-plugin": "^5.3.1",
+		"@typescript-eslint/parser": "^5.3.1",
+		"eslint": "^8.2.0",
+		"eslint-plugin-promise": "^5.1.1",
 		"ts-node-dev": "^1.1.8",
 		"tsconfig-paths": "^3.11.0",
 		"tscpaths": "^0.0.9",
-		"typescript": "^4.4.3"
+		"typescript": "^4.4.4"
 	}
 }
