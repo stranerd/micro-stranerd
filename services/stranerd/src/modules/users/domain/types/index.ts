@@ -68,7 +68,8 @@ export enum UserMeta {
 export enum UserRankings {
 	daily = 'daily',
 	weekly = 'weekly',
-	monthly = 'monthly'
+	monthly = 'monthly',
+	overall = 'overall'
 }
 
 export interface UserSession {
