@@ -15,16 +15,14 @@ export class NoteController {
 	static async UpdateNote (req: Request) {
 		const data = validate({
 			title: req.body.title,
+			description: req.body.description,
 			tags: req.body.tags,
-			institutionId: req.body.institutionId,
-			courseId: req.body.courseId,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
@@ -45,16 +43,14 @@ export class NoteController {
 	static async CreateNote (req: Request) {
 		const data = validate({
 			title: req.body.title,
+			description: req.body.description,
 			tags: req.body.tags,
-			institutionId: req.body.institutionId,
-			courseId: req.body.courseId,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]

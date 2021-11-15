@@ -4,9 +4,8 @@ import { UserBio } from '../types'
 export class NoteEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
+	public readonly description: string
 	public readonly tags: string[]
-	public readonly institutionId: string
-	public readonly courseId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly isHosted: boolean
@@ -18,9 +17,8 @@ export class NoteEntity extends BaseEntity {
 	constructor ({
 		             id,
 		             title,
+		             description,
 		             tags,
-		             institutionId,
-		             courseId,
 		             userId,
 		             userBio,
 		             isHosted,
@@ -32,9 +30,8 @@ export class NoteEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.title = title
+		this.description = description
 		this.tags = tags
-		this.institutionId = institutionId
-		this.courseId = courseId
 		this.userId = userId
 		this.userBio = userBio
 		this.isHosted = isHosted
@@ -53,9 +50,8 @@ type NoteConstructorArgs = {
 	userId: string
 	userBio: UserBio
 	title: string
+	description: string
 	tags: string[]
-	institutionId: string
-	courseId: string
 	createdAt: number
 	updatedAt: number
 }

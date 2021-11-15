@@ -16,4 +16,5 @@ export interface VideoToModel {
 	userBio: UserBio
 	title: string
 	description: string
+	tags: string[]
 }

@@ -6,13 +6,12 @@ export class VideoMapper extends BaseMapper<VideoFromModel, VideoToModel, VideoE
 	mapFrom (model: VideoFromModel | null) {
 		if (!model) return null
 		const {
-			_id, title, description, userId, userBio, isHosted, link, media, commentsCount,
+			_id, title, description, tags, userId, userBio, isHosted, link, media, commentsCount,
 			createdAt, updatedAt
 		} = model
 		return new VideoEntity({
-			id: _id.toString(), title, description, userId, userBio,
-			isHosted, link, media, commentsCount,
-			createdAt, updatedAt
+			id: _id.toString(), title, description, tags, userId, userBio,
+			isHosted, link, media, commentsCount, createdAt, updatedAt
 		})
 	}
 
@@ -20,6 +19,7 @@ export class VideoMapper extends BaseMapper<VideoFromModel, VideoToModel, VideoE
 		return {
 			title: entity.title,
 			description: entity.description,
+			tags: entity.tags,
 			userId: entity.userId,
 			userBio: entity.userBio,
 			isHosted: entity.isHosted,
