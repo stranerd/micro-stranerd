@@ -35,10 +35,6 @@ export type UserAccount = {
 		weekly: number
 		monthly: number
 	}
-	coins: {
-		gold: number,
-		bronze: number
-	},
 	meta: {
 		questions: number
 		answers: number

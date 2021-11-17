@@ -136,18 +136,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: 0
 		},
 		rankings: Rankings,
-		coins: {
-			gold: {
-				type: Number,
-				required: false,
-				default: 0
-			},
-			bronze: {
-				type: Number,
-				required: false,
-				default: 0
-			}
-		},
 		meta: Meta,
 		ratings: UserRating,
 		streak: UserStreak

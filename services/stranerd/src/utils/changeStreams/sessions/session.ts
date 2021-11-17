@@ -1,7 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AddChat, CancelSession, SessionEntity, SessionFromModel } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { addUserCoins } from '@utils/modules/users/transactions'
 import {
 	CountStreakBadges,
 	FindUser,
@@ -43,10 +42,6 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			action: 'sessions',
 			data: { userId: after.studentId, sessionId: after.id }
 		}, 'New Session Request')
-
-		await addUserCoins(after.studentId, { gold: 0 - after.price, bronze: 0 },
-			'You paid coins for a session'
-		)
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitMineUpdated('sessions', after, after.studentId)
@@ -106,10 +101,6 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 						media: null
 					}
 				})
-
-				await addUserCoins(after.studentId, { gold: after.price, bronze: 0 },
-					'You got refunded for a rejected session'
-				)
 			}
 		}
 		// Session was just concluded or cancelled, so cleanup
@@ -121,9 +112,6 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				add: false
 			})
 			if (!after.wasCancelled) {
-				await addUserCoins(after.tutorId, { gold: after.price, bronze: 0 },
-					'You got paid for a session'
-				)
 				await UpdateUserNerdScore.execute({
 					userId: after.studentId,
 					amount: ScoreRewards.CompleteSession
@@ -152,11 +140,6 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					media: null
 				}
 			})
-			await addUserCoins(
-				after.studentId,
-				{ gold: after.price, bronze: 0 },
-				'You got refunded for a rejected session'
-			)
 			await RecordCountStreak.execute({
 				userId: after.studentId,
 				activity: CountStreakBadges.AttendSession,

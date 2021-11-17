@@ -1,6 +1,6 @@
 import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class SessionController {
 	static async getSessions (req: Request) {
@@ -41,7 +41,7 @@ export class SessionController {
 			tutorId: { required: true, rules: [Validation.isString] },
 			duration: {
 				required: true,
-				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val)]
+				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val, 'is not a supported duration')]
 			},
 			isScheduled: { required: true, rules: [Validation.isBoolean] },
 			scheduledAt: {
@@ -50,15 +50,7 @@ export class SessionController {
 			}
 		})
 
-		const requestedSession = sessions.find((s) => s.duration === data.duration)
-		if (!requestedSession) throw new ValidationError([{
-			field: 'duration',
-			messages: ['is not a supported duration']
-		}])
-		if (requestedSession.price > studentUser.account.coins.bronze) throw new ValidationError([{
-			field: 'duration',
-			messages: ['cannot afford this session duration']
-		}])
+		const requestedSession = sessions.find((s) => s.duration === data.duration)!
 
 		return await AddSession.execute({
 			...data,

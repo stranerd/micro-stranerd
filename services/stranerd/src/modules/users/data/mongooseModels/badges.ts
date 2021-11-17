@@ -3,7 +3,7 @@ import { BadgeFromModel } from '../models/badges'
 import { BadgeChangeStreamCallbacks } from '@utils/changeStreams/users/badges'
 import { BadgeEntity } from '../../domain/entities/badges'
 import { BadgeMapper } from '../mappers/badges'
-import { CoinBadges, CountStreakBadges } from '../../domain/types'
+import { CountStreakBadges } from '../../domain/types'
 
 const data = {
 	count: Object.fromEntries(
@@ -37,17 +37,6 @@ const data = {
 				}
 			}]
 		})
-	),
-	coin: Object.fromEntries(
-		Object.keys(CoinBadges).map((key) => {
-			return [key, {
-				value: {
-					type: Number,
-					required: false,
-					default: 0
-				}
-			}]
-		})
 	)
 }
 
@@ -63,15 +52,6 @@ const badges = {
 	),
 	streak: Object.fromEntries(
 		Object.keys(CountStreakBadges).map((key) => {
-			return [key, {
-				type: [Number],
-				required: false,
-				default: []
-			}]
-		})
-	),
-	coin: Object.fromEntries(
-		Object.keys(CoinBadges).map((key) => {
 			return [key, {
 				type: [Number],
 				required: false,

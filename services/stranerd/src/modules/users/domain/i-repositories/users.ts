@@ -17,8 +17,6 @@ export interface IUserRepository {
 
 	incrementUserMetaProperty (userId: string, propertyName: keyof UserAccount['meta'], value: 1 | -1): Promise<void>
 
-	addUserCoins (userId: string, coins: { gold: number, bronze: number })
-
 	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
 
 	resetRankings (key: keyof UserAccount['rankings']): Promise<boolean>
