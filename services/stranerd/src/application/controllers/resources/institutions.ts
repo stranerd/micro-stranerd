@@ -19,9 +19,13 @@ export class InstitutionController {
 
 	static async CreateInstitution (req: Request) {
 		const data = validate({
-			name: req.body.name
+			name: req.body.name,
+			isSchool: req.body.isSchool,
+			isGateway: req.body.isGateway
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			isSchool: { required: true, rules: [Validation.isBoolean] },
+			isGateway: { required: true, rules: [Validation.isBoolean] }
 		})
 
 		return await AddInstitution.execute(data)
@@ -29,9 +33,13 @@ export class InstitutionController {
 
 	static async UpdateInstitution (req: Request) {
 		const data = validate({
-			name: req.body.name
+			name: req.body.name,
+			isSchool: req.body.isSchool,
+			isGateway: req.body.isGateway
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			isSchool: { required: true, rules: [Validation.isBoolean] },
+			isGateway: { required: true, rules: [Validation.isBoolean] }
 		})
 
 		return await UpdateInstitution.execute({ id: req.params.id, data })

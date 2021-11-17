@@ -13,6 +13,16 @@ const Schema = new mongoose.Schema<InstitutionFromModel>({
 		type: String,
 		required: true
 	},
+	isSchool: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
+	isGateway: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
 	createdAt: {
 		type: Number,
 		required: false,
