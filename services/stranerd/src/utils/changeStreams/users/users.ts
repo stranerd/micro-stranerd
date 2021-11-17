@@ -2,7 +2,14 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
-import { UpdateFlashCardsUserBio, UpdateNotesUserBio, UpdateVideoCommentsUserBio, UpdateVideosUserBio } from '@modules/resources'
+import {
+	AddSet,
+	UpdateFlashCardsUserBio,
+	UpdateNotesUserBio,
+	UpdateSetsUserBio,
+	UpdateVideoCommentsUserBio,
+	UpdateVideosUserBio
+} from '@modules/resources'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -10,6 +17,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('users', after)
 		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
+
+		await AddSet.execute({ name: '', isRoot: true, userId: after.id, userBio: after.bio })
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users', after)
@@ -18,7 +27,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBio) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
 			UpdateChatMetaUserBios, UpdateMySessionsBio, UpdateMyReviewsBio,
-			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio
+			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio
 		].map(async (useCase) => await useCase.execute({ userId: after.id, userBio: after.bio })))
 
 		const updatedScore = !!changes.account?.score

@@ -1,3 +1,4 @@
+import { SetRepository } from './data/repositories/sets'
 import { CourseRepository } from './data/repositories/courses'
 import { InstitutionRepository } from './data/repositories/institutions'
 import { VideoCommentRepository } from './data/repositories/videoComments'
@@ -5,6 +6,13 @@ import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
 import { PastQuestionObjRepository, PastQuestionTheoryRepository } from './data/repositories/pastQuestions'
+import { GetSetsUseCase } from './domain/useCases/sets/getSets'
+import { FindSetUseCase } from './domain/useCases/sets/findSet'
+import { AddSetUseCase } from './domain/useCases/sets/addSet'
+import { DeleteSetUseCase } from './domain/useCases/sets/deleteSet'
+import { UpdateSetUseCase } from './domain/useCases/sets/updateSet'
+import { UpdateSetsUserBioUseCase } from './domain/useCases/sets/updateSetsUserBio'
+import { UpdateSetPropUseCase } from './domain/useCases/sets/updateSetProp'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -47,6 +55,7 @@ import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/delet
 import { PastQuestionObjToModel, PastQuestionTheoryToModel } from './data/models/pastQuestions'
 import { PastQuestionObjEntity, PastQuestionTheoryEntity } from './domain/entities/pastQuestions'
 
+const setRepository = SetRepository.getInstance()
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
 const videoCommentRepository = VideoCommentRepository.getInstance()
@@ -55,6 +64,14 @@ const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
 const pastQuestionTheoryRepository = PastQuestionTheoryRepository.getInstance()
 const pastQuestionObjRepository = PastQuestionObjRepository.getInstance()
+
+export const GetSets = new GetSetsUseCase(setRepository)
+export const FindSet = new FindSetUseCase(setRepository)
+export const AddSet = new AddSetUseCase(setRepository)
+export const UpdateSet = new UpdateSetUseCase(setRepository)
+export const DeleteSet = new DeleteSetUseCase(setRepository)
+export const UpdateSetsUserBio = new UpdateSetsUserBioUseCase(setRepository)
+export const UpdateSetProp = new UpdateSetPropUseCase(setRepository)
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)
@@ -108,6 +125,7 @@ export const DeletePastTheoryQuestion = new DeletePastQuestionUseCase(pastQuesti
 export const DeletePastObjQuestion = new DeletePastQuestionUseCase(pastQuestionObjRepository)
 
 export { CourseFromModel } from './data/models/courses'
+export { SetFromModel } from './data/models/sets'
 export { InstitutionFromModel } from './data/models/institutions'
 export { VideoCommentFromModel } from './data/models/videoComments'
 export { VideoFromModel } from './data/models/videos'
@@ -116,6 +134,7 @@ export { FlashCardFromModel } from './data/models/flashCards'
 export { PastQuestionObjFromModel, PastQuestionTheoryFromModel } from './data/models/pastQuestions'
 
 export { CourseEntity } from './domain/entities/courses'
+export { SetEntity } from './domain/entities/sets'
 export { InstitutionEntity } from './domain/entities/institutions'
 export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
