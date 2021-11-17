@@ -13,10 +13,6 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		type: String,
 		required: true
 	},
-	coins: {
-		type: Number,
-		required: true
-	},
 	tags: {
 		type: [String],
 		set: (tags: string[]) => Array.from(new Set(tags)),

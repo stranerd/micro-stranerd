@@ -1,16 +1,14 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { CoinBadges, RecordCoin, RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
+import { RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { addUserCoins } from '@utils/modules/users/transactions'
 import { getSocketEmitter } from '@index'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('users', after)
 		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
-		await addUserCoins(after.id, { gold: 10, bronze: 100 }, 'Congrats for signing up to Stranerd')
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users', after)
@@ -56,22 +54,6 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 					add: true
 				})
 			}
-		}
-
-		const updatedCoins = !!changes.account?.coins
-		if (updatedCoins) {
-			const spentGold = before.account.coins.gold - after.account.coins.gold
-			const spentBronze = before.account.coins.bronze - after.account.coins.bronze
-			if (spentGold > 0) await RecordCoin.execute({
-				userId: after.id,
-				activity: CoinBadges.SpendGold,
-				amount: spentGold
-			})
-			if (spentBronze > 0) await RecordCoin.execute({
-				userId: after.id,
-				activity: CoinBadges.SpendBronze,
-				amount: spentBronze
-			})
 		}
 	},
 	deleted: async ({ before }) => {

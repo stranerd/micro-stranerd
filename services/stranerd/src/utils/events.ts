@@ -11,7 +11,6 @@ import {
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { handleUnansweredQuestions } from '@utils/modules/questions/questions'
 
 const eventBus = new EventBus()
 
@@ -57,7 +56,6 @@ export const subscribers = {
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {
 			await ResetRankings.execute('daily')
-			await handleUnansweredQuestions()
 		}
 		if (type === CronTypes.weekly) {
 			await ResetRankings.execute('weekly')

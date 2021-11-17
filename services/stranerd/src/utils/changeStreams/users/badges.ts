@@ -10,10 +10,6 @@ const handleStreakBadges = async (activity: CountStreakBadges, newLevels: number
 	console.log(activity, newLevels, oldLevels)
 }
 
-const handleCoinBadges = async (coin: 'gold' | 'bronze', newLevels: number[], oldLevels: number[]) => {
-	console.log(coin, newLevels, oldLevels)
-}
-
 const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) => {
 	console.log(newLevels, oldLevels)
 }
@@ -34,8 +30,6 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		})
 
 		funcs.push(() => handleRankBadges(after.badges.rank, []))
-		funcs.push(() => handleCoinBadges('bronze', after.badges.coin.SpendBronze, []))
-		funcs.push(() => handleCoinBadges('gold', after.badges.coin.SpendGold, []))
 
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
@@ -60,14 +54,6 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		const oldRankBadges = before.badges.rank.filter((level) => !after.badges.rank.includes(level))
 		funcs.push(() => handleRankBadges(newRankBadges, oldRankBadges))
 
-		const newBronzeBadges = after.badges.coin.SpendBronze.filter((level) => !before.badges.coin.SpendBronze.includes(level))
-		const oldBronzeBadges = before.badges.coin.SpendBronze.filter((level) => !after.badges.coin.SpendBronze.includes(level))
-		funcs.push(() => handleCoinBadges('bronze', newBronzeBadges, oldBronzeBadges))
-
-		const newGoldBadges = after.badges.coin.SpendGold.filter((level) => !before.badges.coin.SpendGold.includes(level))
-		const oldGoldBadges = before.badges.coin.SpendGold.filter((level) => !after.badges.coin.SpendGold.includes(level))
-		funcs.push(() => handleCoinBadges('gold', newGoldBadges, oldGoldBadges))
-
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	deleted: async ({ before }) => {
@@ -85,8 +71,6 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		})
 
 		funcs.push(() => handleRankBadges([], before.badges.rank))
-		funcs.push(() => handleCoinBadges('bronze', [], before.badges.coin.SpendBronze))
-		funcs.push(() => handleCoinBadges('gold', [], before.badges.coin.SpendGold))
 
 		await Promise.all(funcs.map(async (func) => await func()))
 	}

@@ -1,6 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { FindUser, ReferralEntity, ReferralFromModel } from '@modules/users'
-import { addUserCoins } from '@utils/modules/users/transactions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -8,11 +7,6 @@ export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromMo
 	created: async ({ after }) => {
 		await getSocketEmitter().emitMineCreated('referrals', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`referrals/${after.id}`, after, after.userId)
-		await addUserCoins(
-			after.userId,
-			{ gold: 1, bronze: 20 },
-			'Someone signed up with your referral link'
-		)
 		const user = await FindUser.execute(after.referred)
 		if (user) await sendNotification(
 			after.userId,

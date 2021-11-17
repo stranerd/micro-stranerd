@@ -16,7 +16,6 @@ import {
 	Validation,
 	ValidationError
 } from '@utils/commons'
-import { MAXIMUM_QUESTION_COINS, MINIMUM_QUESTION_COINS } from '@utils/environment'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -64,20 +63,10 @@ export class QuestionController {
 		const data = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
-			coins: req.body.coins,
 			tags: req.body.tags,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			coins: {
-				required: true,
-				rules: [
-					Validation.isNumber,
-					Validation.isMoreThanX(MINIMUM_QUESTION_COINS - 1),
-					Validation.isLessThanX(MAXIMUM_QUESTION_COINS + 1),
-					Validation.isLessThanX(user.account.coins.bronze + 1, 'dont have enough bronze coins')
-				]
-			},
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
