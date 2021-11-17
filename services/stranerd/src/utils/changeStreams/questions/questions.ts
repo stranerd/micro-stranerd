@@ -6,7 +6,6 @@ import {
 	UpdateQuestionAnswersTags,
 	UpdateTagsCount
 } from '@modules/questions'
-import { addUserCoins } from '@utils/modules/users/transactions'
 import {
 	CountStreakBadges,
 	GetUsers,
@@ -23,11 +22,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('questions', after)
 		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
-
-		await addUserCoins(after.userId, {
-			bronze: 0 - after.coins,
-			gold: 0
-		}, 'You paid coins to ask a question!')
 
 		await UpdateTagsCount.execute({
 			tagNames: after.tags,
@@ -73,14 +67,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			await UpdateTagsCount.execute({ tagNames: oldTags, increment: false })
 			await UpdateTagsCount.execute({ tagNames: newTags, increment: true })
 			await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
-		}
-
-		if (changes.coins) {
-			const coins = after.coins - after.coins
-			if (coins !== 0) await addUserCoins(after.userId,
-				{ bronze: 0 - coins, gold: 0 },
-				coins > 0 ? 'You paid coins to upgrade a question' : 'You got refunded coins from downgrading a question'
-			)
 		}
 
 		if (changes.attachments) {

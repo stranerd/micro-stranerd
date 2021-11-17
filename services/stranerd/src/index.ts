@@ -5,10 +5,10 @@ import { routes } from '@application/routes'
 import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 
 const app = getNewServerInstance(routes, {
-	mine: ['notifications', 'transactions', 'referrals', 'chats', 'chatMetas', 'sessions', 'payments'],
+	mine: ['notifications', 'referrals', 'chats', 'chatMetas', 'sessions'],
 	admin: ['reports', 'pastTheoryQuestions', 'pastObjQuestions'],
 	open: [
-		'users', 'reviews',
+		'users', 'reviews', 'badges',
 		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags',
 		'courses', 'notes', 'institutions', 'videoComments', 'videos', 'flashCards'
 	]

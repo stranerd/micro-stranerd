@@ -41,10 +41,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: []
 	},
-	coins: {
-		type: Number,
-		required: true
-	},
 	best: {
 		type: Boolean,
 		required: false,

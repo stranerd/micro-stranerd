@@ -3,7 +3,7 @@ import { BadgeMapper } from '../mappers/badges'
 import { Badge } from '../mongooseModels/badges'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { BadgeFromModel } from '../models/badges'
-import { CoinBadges, CountStreakBadges } from '../../domain/types'
+import { CountStreakBadges } from '../../domain/types'
 import { getDateDifference } from '@utils/functions'
 import { RankTypes } from '../../domain/entities/ranks'
 
@@ -41,28 +41,6 @@ export class BadgeRepository implements IBadgeRepository {
 
 			const updateData = {
 				[add ? '$addToSet' : '$pull']: { ['badges.rank']: rank }
-			}
-
-			await Badge.findByIdAndUpdate(badge.id, updateData, { session })
-		})
-		await session.endSession()
-	}
-
-	async recordSpendCoin (userId: string, activity: CoinBadges, amount: number) {
-		const session = await mongoose.startSession()
-		await session.withTransaction(async (session) => {
-			const badgeModel = await Badge.findOneAndUpdate(
-				{ _id: userId, userId },
-				{ $setOnInsert: { _id: userId, userId } },
-				{ session, upsert: true, new: true }
-			)
-			const badge = this.mapper.mapFrom(badgeModel)!
-			const { oldLevels, newLevels } = badge.unlockCoinBadge(activity, amount)
-
-			const updateData = {
-				$addToSet: { [`badges.coin.${activity}`]: { $each: newLevels } },
-				$pull: { [`badges.coin.${activity}`]: { $each: oldLevels } },
-				$inc: { [`data.coin.${activity}.value`]: amount }
 			}
 
 			await Badge.findByIdAndUpdate(badge.id, updateData, { session })

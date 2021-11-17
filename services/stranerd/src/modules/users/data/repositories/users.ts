@@ -80,15 +80,6 @@ export class UserRepository implements IUserRepository {
 		})
 	}
 
-	async addUserCoins (userId: string, coins: { gold: number, bronze: number }) {
-		await User.findByIdAndUpdate(userId, {
-			$inc: {
-				'account.coins.gold': coins.gold,
-				'account.coins.bronze': coins.bronze
-			}
-		})
-	}
-
 	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean) {
 		const session = await mongoose.startSession()
 		const key = add ? '$addToSet' : '$pull'
