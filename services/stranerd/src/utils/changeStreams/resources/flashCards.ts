@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { FlashCardEntity, FlashCardFromModel } from '@modules/resources'
+import { FlashCardEntity, FlashCardFromModel, RemoveSetProp } from '@modules/resources'
 import { getSocketEmitter } from '@index'
 
 export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFromModel, FlashCardEntity> = {
@@ -14,5 +14,7 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('flashCards', before)
 		await getSocketEmitter().emitOpenDeleted(`flashCards/${before.id}`, before)
+
+		await RemoveSetProp.execute({ prop: 'flashCards', value: before.id })
 	}
 }

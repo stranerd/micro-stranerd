@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { DeleteVideosComments, VideoEntity, VideoFromModel } from '@modules/resources'
+import { DeleteVideosComments, RemoveSetProp, VideoEntity, VideoFromModel } from '@modules/resources'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
@@ -21,5 +21,7 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await DeleteVideosComments.execute({ videoId: before.id })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
+
+		await RemoveSetProp.execute({ prop: 'videos', value: before.id })
 	}
 }

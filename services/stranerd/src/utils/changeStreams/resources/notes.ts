@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { NoteEntity, NoteFromModel } from '@modules/resources'
+import { NoteEntity, NoteFromModel, RemoveSetProp } from '@modules/resources'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
@@ -19,5 +19,7 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitOpenDeleted(`notes/${before.id}`, before)
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
+
+		await RemoveSetProp.execute({ prop: 'notes', value: before.id })
 	}
 }

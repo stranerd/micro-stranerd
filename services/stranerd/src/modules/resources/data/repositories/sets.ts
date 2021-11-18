@@ -62,4 +62,11 @@ export class SetRepository implements ISetRepository {
 		})
 		return !!set
 	}
+
+	async removeSetProp (prop: keyof SetFromModel['saved'], value: string) {
+		const sets = await Set.updateMany({ [`saved.${prop}`]: value }, {
+			$pull: { [`saved.${prop}`]: value }
+		})
+		return sets.acknowledged
+	}
 }
