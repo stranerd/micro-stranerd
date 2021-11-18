@@ -24,6 +24,7 @@ import { videoCommentsRoutes } from './resources/videoComments'
 import { videosRoutes } from './resources/videos'
 import { institutionsRoutes } from './resources/institutions'
 import { coursesRoutes } from './resources/courses'
+import { setsRoutes } from './resources/sets'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -51,6 +52,7 @@ export const routes: Route[] = [
 	...videoCommentsRoutes,
 	...institutionsRoutes,
 	...coursesRoutes,
+	...setsRoutes,
 	{
 		path: '/',
 		method: 'get',
