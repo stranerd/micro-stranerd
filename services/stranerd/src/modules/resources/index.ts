@@ -1,3 +1,4 @@
+import { TestPrepRepository } from './data/repositories/testPreps'
 import { SetRepository } from './data/repositories/sets'
 import { CourseRepository } from './data/repositories/courses'
 import { InstitutionRepository } from './data/repositories/institutions'
@@ -6,6 +7,11 @@ import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
 import { PastQuestionObjRepository, PastQuestionTheoryRepository } from './data/repositories/pastQuestions'
+import { GetTestPrepsUseCase } from './domain/useCases/testPreps/getTestPreps'
+import { FindTestPrepUseCase } from './domain/useCases/testPreps/findTestPrep'
+import { AddTestPrepUseCase } from './domain/useCases/testPreps/addTestPrep'
+import { DeleteTestPrepUseCase } from './domain/useCases/testPreps/deleteTestPrep'
+import { UpdateTestPrepUseCase } from './domain/useCases/testPreps/updateTestPrep'
 import { GetSetsUseCase } from './domain/useCases/sets/getSets'
 import { FindSetUseCase } from './domain/useCases/sets/findSet'
 import { AddSetUseCase } from './domain/useCases/sets/addSet'
@@ -56,6 +62,7 @@ import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/delet
 import { PastQuestionObjToModel, PastQuestionTheoryToModel } from './data/models/pastQuestions'
 import { PastQuestionObjEntity, PastQuestionTheoryEntity } from './domain/entities/pastQuestions'
 
+const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
@@ -65,6 +72,12 @@ const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
 const pastQuestionTheoryRepository = PastQuestionTheoryRepository.getInstance()
 const pastQuestionObjRepository = PastQuestionObjRepository.getInstance()
+
+export const GetTestPreps = new GetTestPrepsUseCase(testPrepRepository)
+export const FindTestPrep = new FindTestPrepUseCase(testPrepRepository)
+export const AddTestPrep = new AddTestPrepUseCase(testPrepRepository)
+export const UpdateTestPrep = new UpdateTestPrepUseCase(testPrepRepository)
+export const DeleteTestPrep = new DeleteTestPrepUseCase(testPrepRepository)
 
 export const GetSets = new GetSetsUseCase(setRepository)
 export const FindSet = new FindSetUseCase(setRepository)
@@ -126,6 +139,9 @@ export const UpdatePastObjQuestion = new UpdatePastQuestionUseCase<PastQuestionO
 export const DeletePastTheoryQuestion = new DeletePastQuestionUseCase(pastQuestionTheoryRepository)
 export const DeletePastObjQuestion = new DeletePastQuestionUseCase(pastQuestionObjRepository)
 
+export { PrepType, PrepData } from './domain/types'
+
+export { TestPrepFromModel } from './data/models/testPreps'
 export { CourseFromModel } from './data/models/courses'
 export { SetFromModel } from './data/models/sets'
 export { InstitutionFromModel } from './data/models/institutions'
@@ -135,6 +151,7 @@ export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
 export { PastQuestionObjFromModel, PastQuestionTheoryFromModel } from './data/models/pastQuestions'
 
+export { TestPrepEntity } from './domain/entities/testPreps'
 export { CourseEntity } from './domain/entities/courses'
 export { SetEntity } from './domain/entities/sets'
 export { InstitutionEntity } from './domain/entities/institutions'
