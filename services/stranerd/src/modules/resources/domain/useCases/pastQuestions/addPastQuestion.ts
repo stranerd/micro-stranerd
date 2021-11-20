@@ -3,7 +3,7 @@ import { IPastQuestionRepository } from '../../irepositories/pastQuestions'
 import { BaseUseCase } from '@utils/commons'
 import { PastQuestionEntity } from '../../entities/pastQuestions'
 
-export class AddPastQuestionUseCase<ToModel extends PastQuestionToModel, Entity extends PastQuestionEntity> extends BaseUseCase<ToModel, Entity> {
+export class AddPastQuestionUseCase extends BaseUseCase<PastQuestionToModel, PastQuestionEntity> {
 	private repository: IPastQuestionRepository
 
 	constructor (repository: IPastQuestionRepository) {
@@ -11,7 +11,7 @@ export class AddPastQuestionUseCase<ToModel extends PastQuestionToModel, Entity 
 		this.repository = repository
 	}
 
-	async execute (data: ToModel) {
-		return await this.repository.add(data) as Entity
+	async execute (data: PastQuestionToModel) {
+		return await this.repository.add(data)
 	}
 }

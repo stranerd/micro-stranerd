@@ -3,9 +3,9 @@ import { IPastQuestionRepository } from '../../irepositories/pastQuestions'
 import { BaseUseCase } from '@utils/commons'
 import { PastQuestionEntity } from '../../entities/pastQuestions'
 
-type Input<ToModel> = { id: string, data: ToModel }
+type Input = { id: string, data: PastQuestionToModel }
 
-export class UpdatePastQuestionUseCase<ToModel extends PastQuestionToModel, Entity extends PastQuestionEntity> extends BaseUseCase<Input<ToModel>, Entity | null> {
+export class UpdatePastQuestionUseCase extends BaseUseCase<Input, PastQuestionEntity | null> {
 
 	private repository: IPastQuestionRepository
 
@@ -14,7 +14,7 @@ export class UpdatePastQuestionUseCase<ToModel extends PastQuestionToModel, Enti
 		this.repository = repository
 	}
 
-	async execute (input: Input<ToModel>) {
-		return await this.repository.update(input.id, input.data) as Entity | null
+	async execute (input: Input) {
+		return await this.repository.update(input.id, input.data)
 	}
 }

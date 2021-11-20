@@ -4,55 +4,31 @@ import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const pastQuestionsRoutes: Route[] = [
 	{
-		path: '/resources/pastQuestions/objectives',
+		path: '/resources/pastQuestions',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await PastQuestionController.GetPastObjQuestion(req)
+					result: await PastQuestionController.GetPastQuestion(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/pastQuestions/theory',
+		path: '/resources/pastQuestions/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await PastQuestionController.GetPastTheoryQuestion(req)
+					result: await PastQuestionController.FindPastQuestion(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/pastQuestions/objectives/:id',
-		method: 'get',
-		controllers: [
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await PastQuestionController.FindPastObjQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/resources/pastQuestions/theory/:id',
-		method: 'get',
-		controllers: [
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await PastQuestionController.FindPastTheoryQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/resources/pastQuestions/objectives',
+		path: '/resources/pastQuestions/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -60,27 +36,13 @@ export const pastQuestionsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await PastQuestionController.CreatePastObjQuestion(req)
+					result: await PastQuestionController.CreatePastQuestion(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/pastQuestions/theory',
-		method: 'post',
-		controllers: [
-			requireAuthUser,
-			isAdmin,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await PastQuestionController.CreatePastTheoryQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/resources/pastQuestions/objectives/:id',
+		path: '/resources/pastQuestions/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -88,27 +50,13 @@ export const pastQuestionsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await PastQuestionController.UpdatePastObjQuestion(req)
+					result: await PastQuestionController.UpdatePastQuestion(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/resources/pastQuestions/theory/:id',
-		method: 'put',
-		controllers: [
-			requireAuthUser,
-			isAdmin,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await PastQuestionController.UpdatePastTheoryQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/resources/pastQuestions/objectives/:id',
+		path: '/resources/pastQuestions/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
@@ -116,21 +64,7 @@ export const pastQuestionsRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await PastQuestionController.DeletePastObjQuestion(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/resources/pastQuestions/theory/:id',
-		method: 'delete',
-		controllers: [
-			requireAuthUser,
-			isAdmin,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await PastQuestionController.DeletePastTheoryQuestion(req)
+					result: await PastQuestionController.DeletePastQuestion(req)
 				}
 			})
 		]

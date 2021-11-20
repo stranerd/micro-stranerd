@@ -1,20 +1,25 @@
+import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { IPastQuestionRepository } from '../../domain/irepositories/pastQuestions'
+import { PastQuestionMapper } from '../mappers/pastQuestions'
 import { PastQuestionFromModel, PastQuestionToModel } from '../models/pastQuestions'
-import { BaseMapper, mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { PastQuestionObj, PastQuestionTheory } from '../mongooseModels/pastQuestions'
-import { PastQuestionObjMapper, PastQuestionTheoryMapper } from '../mappers/pastQuestions'
+import { parseQueryParams, QueryParams } from '@utils/commons'
+import { PastQuestion } from '../mongooseModels/pastQuestions'
 
-class PastQuestionRepository implements IPastQuestionRepository {
-	private readonly model: mongoose.Model<any>
-	private readonly mapper: BaseMapper<any, any, any>
+export class PastQuestionRepository implements IPastQuestionRepository {
+	private static instance: PastQuestionRepository
+	private mapper: PastQuestionMapper
 
-	constructor (model: mongoose.Model<any>, mapper: BaseMapper<any, any, any>) {
-		this.model = model
-		this.mapper = mapper
+	private constructor () {
+		this.mapper = new PastQuestionMapper()
+	}
+
+	static getInstance () {
+		if (!PastQuestionRepository.instance) PastQuestionRepository.instance = new PastQuestionRepository()
+		return PastQuestionRepository.instance
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<PastQuestionFromModel>(this.model, query)
+		const data = await parseQueryParams<PastQuestionFromModel>(PastQuestion, query)
 
 		return {
 			...data,
@@ -22,41 +27,23 @@ class PastQuestionRepository implements IPastQuestionRepository {
 		}
 	}
 
+	async delete (id: string): Promise<boolean> {
+		const deleteData = await PastQuestion.findByIdAndDelete(id)
+		return !!deleteData
+	}
+
 	async add (data: PastQuestionToModel) {
-		const pastQuestion = await new this.model(data).save()
+		const pastQuestion = await new PastQuestion(data).save()
 		return this.mapper.mapFrom(pastQuestion)!
 	}
 
-	async find (id: string) {
-		const pastQuestion = await this.model.findById(id)
-		return this.mapper.mapFrom(pastQuestion)
-	}
-
 	async update (id: string, data: PastQuestionToModel) {
-		const pastQuestion = await this.model.findOneAndUpdate({ _id: id }, { $set: data })
+		const pastQuestion = await PastQuestion.findByIdAndUpdate(id, { $set: data }, { new: true })
+		return this.mapper.mapFrom(pastQuestion)!
+	}
+
+	async find (id: string): Promise<PastQuestionEntity | null> {
+		const pastQuestion = await PastQuestion.findById(id)
 		return this.mapper.mapFrom(pastQuestion)
-	}
-
-	async delete (id: string) {
-		const pastQuestion = await this.model.findOneAndDelete({ _id: id })
-		return !!pastQuestion
-	}
-}
-
-export class PastQuestionTheoryRepository extends PastQuestionRepository {
-	private static instance: PastQuestionTheoryRepository
-
-	static getInstance () {
-		if (!PastQuestionTheoryRepository.instance) PastQuestionTheoryRepository.instance = new PastQuestionRepository(PastQuestionTheory, new PastQuestionTheoryMapper())
-		return PastQuestionTheoryRepository.instance
-	}
-}
-
-export class PastQuestionObjRepository extends PastQuestionRepository {
-	private static instance: PastQuestionObjRepository
-
-	static getInstance () {
-		if (!PastQuestionObjRepository.instance) PastQuestionObjRepository.instance = new PastQuestionRepository(PastQuestionObj, new PastQuestionObjMapper())
-		return PastQuestionObjRepository.instance
 	}
 }

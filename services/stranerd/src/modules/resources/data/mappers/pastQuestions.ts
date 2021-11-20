@@ -1,71 +1,29 @@
-import {
-	PastQuestionObjFromModel,
-	PastQuestionObjToModel,
-	PastQuestionTheoryFromModel,
-	PastQuestionTheoryToModel
-} from '../models/pastQuestions'
-import { PastQuestionObjEntity, PastQuestionTheoryEntity } from '../../domain/entities/pastQuestions'
+import { PastQuestionFromModel, PastQuestionToModel } from '../models/pastQuestions'
+import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { BaseMapper } from '@utils/commons'
 
-export class PastQuestionTheoryMapper extends BaseMapper<PastQuestionTheoryFromModel, PastQuestionTheoryToModel, PastQuestionTheoryEntity> {
-	mapFrom (model: PastQuestionTheoryFromModel | null) {
+export class PastQuestionMapper extends BaseMapper<PastQuestionFromModel, PastQuestionToModel, PastQuestionEntity> {
+	mapFrom (model: PastQuestionFromModel | null) {
 		if (!model) return null
 		const {
-			_id, order, year, question, questionMedia, institutionId, courseId,
-			answerMedia, answer,
-			createdAt, updatedAt
+			_id, year, question, questionMedia, institutionId, courseId,
+			data, createdAt, updatedAt
 		} = model
-		return new PastQuestionTheoryEntity({
-			id: _id.toString(), order, year,
+		return new PastQuestionEntity({
+			id: _id.toString(), year,
 			question, questionMedia, institutionId, courseId,
-			answerMedia, answer,
-			createdAt, updatedAt
+			data, createdAt, updatedAt
 		})
 	}
 
-	mapTo (entity: PastQuestionTheoryEntity) {
+	mapTo (entity: PastQuestionEntity) {
 		return {
-			order: entity.order,
 			year: entity.year,
 			institutionId: entity.institutionId,
 			courseId: entity.courseId,
 			questionMedia: entity.questionMedia,
 			question: entity.question,
-			answerMedia: entity.answerMedia,
-			answer: entity.answer
-		}
-	}
-}
-
-export class PastQuestionObjMapper extends BaseMapper<PastQuestionObjFromModel, PastQuestionObjToModel, PastQuestionObjEntity> {
-	mapFrom (model: PastQuestionObjFromModel | null) {
-		if (!model) return null
-		const {
-			_id, order, year, question, questionMedia, institutionId, courseId,
-			correctIndex, options, explanation, optionsMedia, explanationMedia,
-			createdAt, updatedAt
-		} = model
-		return new PastQuestionObjEntity({
-			id: _id.toString(), order, year,
-			question, questionMedia, institutionId, courseId,
-			correctIndex, options, optionsMedia,
-			createdAt, updatedAt, explanation, explanationMedia
-		})
-	}
-
-	mapTo (entity: PastQuestionObjEntity) {
-		return {
-			order: entity.order,
-			year: entity.year,
-			institutionId: entity.institutionId,
-			courseId: entity.courseId,
-			questionMedia: entity.questionMedia,
-			question: entity.question,
-			correctIndex: entity.correctIndex,
-			options: entity.options,
-			optionsMedia: entity.optionsMedia,
-			explanation: entity.explanation,
-			explanationMedia: entity.explanationMedia
+			data: entity.data
 		}
 	}
 }

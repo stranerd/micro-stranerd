@@ -1,8 +1,8 @@
 import { IPastQuestionRepository } from '../../irepositories/pastQuestions'
 import { BaseUseCase } from '@utils/commons'
-import { PastQuestionEntity } from '../../../domain/entities/pastQuestions'
+import { PastQuestionEntity } from '../../entities/pastQuestions'
 
-export class FindPastQuestionUseCase<Entity extends PastQuestionEntity> extends BaseUseCase<string, Entity | null> {
+export class FindPastQuestionUseCase extends BaseUseCase<string, PastQuestionEntity | null> {
 	private repository: IPastQuestionRepository
 
 	constructor (repository: IPastQuestionRepository) {
@@ -11,6 +11,6 @@ export class FindPastQuestionUseCase<Entity extends PastQuestionEntity> extends 
 	}
 
 	async execute (id: string) {
-		return await this.repository.find(id) as Entity
+		return await this.repository.find(id)
 	}
 }

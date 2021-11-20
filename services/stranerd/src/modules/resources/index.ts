@@ -6,7 +6,7 @@ import { VideoCommentRepository } from './data/repositories/videoComments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
-import { PastQuestionObjRepository, PastQuestionTheoryRepository } from './data/repositories/pastQuestions'
+import { PastQuestionRepository } from './data/repositories/pastQuestions'
 import { GetTestPrepsUseCase } from './domain/useCases/testPreps/getTestPreps'
 import { FindTestPrepUseCase } from './domain/useCases/testPreps/findTestPrep'
 import { AddTestPrepUseCase } from './domain/useCases/testPreps/addTestPrep'
@@ -59,8 +59,6 @@ import { FindPastQuestionUseCase } from './domain/useCases/pastQuestions/findPas
 import { AddPastQuestionUseCase } from './domain/useCases/pastQuestions/addPastQuestion'
 import { UpdatePastQuestionUseCase } from './domain/useCases/pastQuestions/updatePastQuestion'
 import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/deletePastQuestion'
-import { PastQuestionObjToModel, PastQuestionTheoryToModel } from './data/models/pastQuestions'
-import { PastQuestionObjEntity, PastQuestionTheoryEntity } from './domain/entities/pastQuestions'
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
@@ -70,8 +68,7 @@ const videoCommentRepository = VideoCommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
-const pastQuestionTheoryRepository = PastQuestionTheoryRepository.getInstance()
-const pastQuestionObjRepository = PastQuestionObjRepository.getInstance()
+const pastQuestionRepository = PastQuestionRepository.getInstance()
 
 export const GetTestPreps = new GetTestPrepsUseCase(testPrepRepository)
 export const FindTestPrep = new FindTestPrepUseCase(testPrepRepository)
@@ -128,18 +125,14 @@ export const UpdateFlashCard = new UpdateFlashCardUseCase(flashCardRepository)
 export const DeleteFlashCard = new DeleteFlashCardUseCase(flashCardRepository)
 export const UpdateFlashCardsUserBio = new UpdateFlashCardsUserBioUseCase(flashCardRepository)
 
-export const GetPastTheoryQuestions = new GetPastQuestionsUseCase<PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
-export const GetPastObjQuestions = new GetPastQuestionsUseCase<PastQuestionObjEntity>(pastQuestionObjRepository)
-export const FindPastTheoryQuestion = new FindPastQuestionUseCase<PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
-export const FindPastObjQuestion = new FindPastQuestionUseCase<PastQuestionObjEntity>(pastQuestionObjRepository)
-export const AddPastTheoryQuestion = new AddPastQuestionUseCase<PastQuestionTheoryToModel, PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
-export const AddPastObjQuestion = new AddPastQuestionUseCase<PastQuestionObjToModel, PastQuestionObjEntity>(pastQuestionObjRepository)
-export const UpdatePastTheoryQuestion = new UpdatePastQuestionUseCase<PastQuestionTheoryToModel, PastQuestionTheoryEntity>(pastQuestionTheoryRepository)
-export const UpdatePastObjQuestion = new UpdatePastQuestionUseCase<PastQuestionObjToModel, PastQuestionObjEntity>(pastQuestionObjRepository)
-export const DeletePastTheoryQuestion = new DeletePastQuestionUseCase(pastQuestionTheoryRepository)
-export const DeletePastObjQuestion = new DeletePastQuestionUseCase(pastQuestionObjRepository)
+export const GetPastQuestions = new GetPastQuestionsUseCase(pastQuestionRepository)
+export const FindPastQuestion = new FindPastQuestionUseCase(pastQuestionRepository)
+export const AddPastQuestion = new AddPastQuestionUseCase(pastQuestionRepository)
+export const UpdatePastQuestion = new UpdatePastQuestionUseCase(pastQuestionRepository)
+export const DeletePastQuestion = new DeletePastQuestionUseCase(pastQuestionRepository)
 
 export { PrepType, PrepData } from './domain/types'
+export { PastQuestionData, PastQuestionType } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
 export { CourseFromModel } from './data/models/courses'
@@ -149,7 +142,7 @@ export { VideoCommentFromModel } from './data/models/videoComments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
-export { PastQuestionObjFromModel, PastQuestionTheoryFromModel } from './data/models/pastQuestions'
+export { PastQuestionFromModel } from './data/models/pastQuestions'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
 export { CourseEntity } from './domain/entities/courses'
@@ -159,4 +152,4 @@ export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'
-export { PastQuestionTheoryEntity, PastQuestionObjEntity }
+export { PastQuestionEntity } from './domain/entities/pastQuestions'

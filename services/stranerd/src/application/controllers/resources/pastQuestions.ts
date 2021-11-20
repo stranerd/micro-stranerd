@@ -1,113 +1,51 @@
 import {
-	AddPastObjQuestion,
-	AddPastTheoryQuestion,
-	DeletePastObjQuestion,
-	DeletePastTheoryQuestion,
-	FindPastObjQuestion,
-	FindPastTheoryQuestion,
-	GetPastObjQuestions,
-	GetPastTheoryQuestions,
-	UpdatePastObjQuestion,
-	UpdatePastTheoryQuestion
+	AddPastQuestion,
+	DeletePastQuestion,
+	FindPastQuestion,
+	GetPastQuestions,
+	PastQuestionType,
+	UpdatePastQuestion
 } from '@modules/resources'
 import { NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class PastQuestionController {
-	static async FindPastTheoryQuestion (req: Request) {
-		return await FindPastTheoryQuestion.execute(req.params.id)
+	static async FindPastQuestion (req: Request) {
+		return await FindPastQuestion.execute(req.params.id)
 	}
 
-	static async GetPastTheoryQuestion (req: Request) {
+	static async GetPastQuestion (req: Request) {
 		const query = req.query as QueryParams
-		return await GetPastTheoryQuestions.execute(query)
+		return await GetPastQuestions.execute(query)
 	}
 
-	static async UpdatePastTheoryQuestion (req: Request) {
-		const data = validate({
+	static async UpdatePastQuestion (req: Request) {
+		const isObjective = req.body.type === PastQuestionType.objective
+		const isTheory = req.body.type === PastQuestionType.theory
+
+		const {
+			institutionId,
+			courseId,
+			year,
+			type,
+			question,
+			questionMedia,
+			answer,
+			answerMedia,
+			correctIndex,
+			options,
+			optionsMedia,
+			explanation,
+			explanationMedia
+		} = validate({
 			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
-			order: req.body.order,
 			year: req.body.year,
+			type: req.body.type,
 			question: req.body.question,
+			questionMedia: req.body.questionMedia,
+
 			answer: req.body.answer,
-			questionMedia: req.body.questionMedia,
-			answerMedia: req.body.answerMedia
-		}, {
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString] },
-			questionMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			answerMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			}
-		})
-
-		const updatedPastQuestion = await UpdatePastTheoryQuestion.execute({ id: req.params.id, data })
-
-		if (updatedPastQuestion) return updatedPastQuestion
-		throw new NotAuthorizedError()
-	}
-
-	static async CreatePastTheoryQuestion (req: Request) {
-		const data = validate({
-			institutionId: req.body.institutionId,
-			courseId: req.body.courseId,
-			order: req.body.order,
-			year: req.body.year,
-			question: req.body.question,
-			answer: req.body.answer,
-			questionMedia: req.body.questionMedia,
-			answerMedia: req.body.answerMedia
-		}, {
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			answer: { required: true, rules: [Validation.isString] },
-			questionMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			},
-			answerMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
-			}
-		})
-
-		return await AddPastTheoryQuestion.execute(data)
-	}
-
-	static async DeletePastTheoryQuestion (req: Request) {
-		const isDeleted = await DeletePastTheoryQuestion.execute(req.params.id)
-		if (isDeleted) return isDeleted
-		throw new NotAuthorizedError()
-	}
-
-	static async FindPastObjQuestion (req: Request) {
-		return await FindPastObjQuestion.execute(req.params.id)
-	}
-
-	static async GetPastObjQuestion (req: Request) {
-		const query = req.query as QueryParams
-		return await GetPastObjQuestions.execute(query)
-	}
-
-	static async UpdatePastObjQuestion (req: Request) {
-		const data = validate({
-			institutionId: req.body.institutionId,
-			courseId: req.body.courseId,
-			order: req.body.order,
-			year: req.body.year,
-			question: req.body.question,
-			questionMedia: req.body.questionMedia,
+			answerMedia: req.body.answerMedia,
 			correctIndex: req.body.correctIndex,
 			options: req.body.options,
 			optionsMedia: req.body.optionsMedia,
@@ -116,49 +54,89 @@ export class PastQuestionController {
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
+			},
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			questionMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
+
+			answer: { required: false, rules: [Validation.isRequiredIfX(isTheory), Validation.isString] },
+			answerMedia: {
+				required: false,
+				rules: [Validation.isRequiredIfX(isTheory), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+
 			correctIndex: {
-				required: true,
-				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
 			},
 			options: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			optionsMedia: {
-				required: true,
+				required: false,
 				rules: [
+					Validation.isRequiredIfX(isObjective),
 					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
-			explanation: { required: true, rules: [Validation.isString] },
+			explanation: { required: false, rules: [Validation.isRequiredIfX(isObjective), Validation.isString] },
 			explanationMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
 
-		const updatedPastQuestion = await UpdatePastObjQuestion.execute({ id: req.params.id, data })
+		const data = {
+			institutionId, courseId, year, question, questionMedia,
+			data: isObjective ? {
+				type, correctIndex, options, optionsMedia, explanation, explanationMedia
+			} : isTheory ? {
+				type, answer, answerMedia
+			} : {} as any
+		}
+
+		const updatedPastQuestion = await UpdatePastQuestion.execute({ id: req.params.id, data })
 
 		if (updatedPastQuestion) return updatedPastQuestion
 		throw new NotAuthorizedError()
 	}
 
-	static async CreatePastObjQuestion (req: Request) {
-		const data = validate({
+	static async CreatePastQuestion (req: Request) {
+		const isObjective = req.body.type === PastQuestionType.objective
+		const isTheory = req.body.type === PastQuestionType.theory
+
+		const {
+			institutionId,
+			courseId,
+			year,
+			type,
+			question,
+			questionMedia,
+			answer,
+			answerMedia,
+			correctIndex,
+			options,
+			optionsMedia,
+			explanation,
+			explanationMedia
+		} = validate({
 			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
-			order: req.body.order,
 			year: req.body.year,
+			type: req.body.type,
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
+
+			answer: req.body.answer,
+			answerMedia: req.body.answerMedia,
 			correctIndex: req.body.correctIndex,
 			options: req.body.options,
 			optionsMedia: req.body.optionsMedia,
@@ -167,40 +145,60 @@ export class PastQuestionController {
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			order: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
+			},
 			question: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			questionMedia: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
+
+			answer: { required: false, rules: [Validation.isRequiredIfX(isTheory), Validation.isString] },
+			answerMedia: {
+				required: false,
+				rules: [Validation.isRequiredIfX(isTheory), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+			},
+
 			correctIndex: {
-				required: true,
-				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
 			},
 			options: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			optionsMedia: {
-				required: true,
+				required: false,
 				rules: [
+					Validation.isRequiredIfX(isObjective),
 					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
-			explanation: { required: true, rules: [Validation.isString] },
+			explanation: { required: false, rules: [Validation.isRequiredIfX(isObjective), Validation.isString] },
 			explanationMedia: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: false,
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
 
-		return await AddPastObjQuestion.execute(data)
+		const data = {
+			institutionId, courseId, year, question, questionMedia,
+			data: isObjective ? {
+				type, correctIndex, options, optionsMedia, explanation, explanationMedia
+			} : isTheory ? {
+				type, answer, answerMedia
+			} : {} as any
+		}
+
+		return await AddPastQuestion.execute(data)
 	}
 
-	static async DeletePastObjQuestion (req: Request) {
-		const isDeleted = await DeletePastObjQuestion.execute(req.params.id)
+	static async DeletePastQuestion (req: Request) {
+		const isDeleted = await DeletePastQuestion.execute(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
