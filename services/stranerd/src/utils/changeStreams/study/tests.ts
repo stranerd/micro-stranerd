@@ -1,5 +1,13 @@
-import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
-import { GetPastQuestions, PastQuestionType, TestEntity, TestFromModel, UpdateTest } from '@modules/study'
+import { addDelayedJob, ChangeStreamCallbacks, Conditions, DelayedJobs, removeDelayedJob } from '@utils/commons'
+import {
+	GetPastQuestions,
+	PastQuestionType,
+	TestEntity,
+	TestFromModel,
+	TestType,
+	UpdateTest,
+	UpdateTestTaskIds
+} from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
 
@@ -7,6 +15,15 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 	created: async ({ after }) => {
 		await getSocketEmitter().emitMineCreated('tests', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`tests/${after.id}`, after, after.userId)
+
+		if (after.data.type === TestType.timed) {
+			const delay = after.data.time * 60 * 1000
+			const taskId = await addDelayedJob({
+				type: DelayedJobs.TestTimer,
+				data: { testId: after.id, userId: after.userId }
+			}, delay)
+			await UpdateTestTaskIds.execute({ testId: after.id, taskIds: [taskId] })
+		}
 	},
 	updated: async ({ after, before, changes }) => {
 		await getSocketEmitter().emitMineUpdated('tests', after, after.userId)
@@ -28,10 +45,13 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 				userId: after.userId,
 				data: { score }
 			})
+			await Promise.all(after.taskIds.map(removeDelayedJob))
 		}
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitMineDeleted('tests', before, before.userId)
 		await getSocketEmitter().emitMineDeleted(`tests/${before.id}`, before, before.userId)
+
+		await Promise.all(before.taskIds.map(removeDelayedJob))
 	}
 }
