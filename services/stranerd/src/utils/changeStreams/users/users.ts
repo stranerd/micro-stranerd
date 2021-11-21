@@ -9,7 +9,7 @@ import {
 	UpdateSetsUserBio,
 	UpdateVideoCommentsUserBio,
 	UpdateVideosUserBio
-} from '@modules/resources'
+} from '@modules/study'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
