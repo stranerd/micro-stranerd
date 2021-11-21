@@ -5,7 +5,7 @@ import { TestPrepEntity } from '../../entities/testPreps'
 
 type Input = { id: string, data: TestPrepToModel }
 
-export class UpdateTestPrepUseCase extends BaseUseCase<Input, TestPrepEntity> {
+export class UpdateTestPrepUseCase extends BaseUseCase<Input, TestPrepEntity | null> {
 	private repository: ITestPrepRepository
 
 	constructor (repository: ITestPrepRepository) {

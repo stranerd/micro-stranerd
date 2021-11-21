@@ -7,6 +7,7 @@ import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
 import { PastQuestionRepository } from './data/repositories/pastQuestions'
+import { TestRepository } from './data/repositories/tests'
 import { GetTestPrepsUseCase } from './domain/useCases/testPreps/getTestPreps'
 import { FindTestPrepUseCase } from './domain/useCases/testPreps/findTestPrep'
 import { AddTestPrepUseCase } from './domain/useCases/testPreps/addTestPrep'
@@ -59,6 +60,11 @@ import { FindPastQuestionUseCase } from './domain/useCases/pastQuestions/findPas
 import { AddPastQuestionUseCase } from './domain/useCases/pastQuestions/addPastQuestion'
 import { UpdatePastQuestionUseCase } from './domain/useCases/pastQuestions/updatePastQuestion'
 import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/deletePastQuestion'
+import { GetTestsUseCase } from './domain/useCases/tests/getTests'
+import { FindTestUseCase } from './domain/useCases/tests/findTest'
+import { AddTestUseCase } from './domain/useCases/tests/addTest'
+import { UpdateTestUseCase } from './domain/useCases/tests/updateTest'
+import { DeleteTestUseCase } from './domain/useCases/tests/deleteTest'
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
@@ -69,6 +75,7 @@ const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
 const pastQuestionRepository = PastQuestionRepository.getInstance()
+const testRepository = TestRepository.getInstance()
 
 export const GetTestPreps = new GetTestPrepsUseCase(testPrepRepository)
 export const FindTestPrep = new FindTestPrepUseCase(testPrepRepository)
@@ -131,8 +138,15 @@ export const AddPastQuestion = new AddPastQuestionUseCase(pastQuestionRepository
 export const UpdatePastQuestion = new UpdatePastQuestionUseCase(pastQuestionRepository)
 export const DeletePastQuestion = new DeletePastQuestionUseCase(pastQuestionRepository)
 
+export const GetTests = new GetTestsUseCase(testRepository)
+export const FindTest = new FindTestUseCase(testRepository)
+export const AddTest = new AddTestUseCase(testRepository)
+export const UpdateTest = new UpdateTestUseCase(testRepository)
+export const DeleteTest = new DeleteTestUseCase(testRepository)
+
 export { PrepType, PrepData } from './domain/types'
 export { PastQuestionData, PastQuestionType } from './domain/types'
+export { TestData, TestType } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
 export { CourseFromModel } from './data/models/courses'
@@ -143,6 +157,7 @@ export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
 export { PastQuestionFromModel } from './data/models/pastQuestions'
+export { TestFromModel } from './data/models/tests'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
 export { CourseEntity } from './domain/entities/courses'
@@ -153,3 +168,4 @@ export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'
 export { PastQuestionEntity } from './domain/entities/pastQuestions'
+export { TestEntity } from './domain/entities/tests'

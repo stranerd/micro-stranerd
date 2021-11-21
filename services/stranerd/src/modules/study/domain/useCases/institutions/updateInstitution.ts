@@ -5,7 +5,7 @@ import { InstitutionEntity } from '../../entities/institutions'
 
 type Input = { id: string, data: InstitutionToModel }
 
-export class UpdateInstitutionUseCase extends BaseUseCase<Input, InstitutionEntity> {
+export class UpdateInstitutionUseCase extends BaseUseCase<Input, InstitutionEntity | null> {
 	private repository: IInstitutionRepository
 
 	constructor (repository: IInstitutionRepository) {

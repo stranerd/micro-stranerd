@@ -39,7 +39,7 @@ export class TestPrepRepository implements ITestPrepRepository {
 
 	async update (id: string, data: TestPrepToModel) {
 		const testPrep = await TestPrep.findByIdAndUpdate(id, { $set: data }, { new: true })
-		return this.mapper.mapFrom(testPrep)!
+		return this.mapper.mapFrom(testPrep)
 	}
 
 	async find (id: string): Promise<TestPrepEntity | null> {

@@ -39,7 +39,7 @@ export class InstitutionRepository implements IInstitutionRepository {
 
 	async update (id: string, data: InstitutionToModel) {
 		const institution = await Institution.findByIdAndUpdate(id, { $set: data }, { new: true })
-		return this.mapper.mapFrom(institution)!
+		return this.mapper.mapFrom(institution)
 	}
 
 	async find (id: string): Promise<InstitutionEntity | null> {

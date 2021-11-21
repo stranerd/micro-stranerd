@@ -5,7 +5,7 @@ import { CourseEntity } from '../../entities/courses'
 
 type Input = { id: string, data: CourseToModel }
 
-export class UpdateCourseUseCase extends BaseUseCase<Input, CourseEntity> {
+export class UpdateCourseUseCase extends BaseUseCase<Input, CourseEntity | null> {
 	private repository: ICourseRepository
 
 	constructor (repository: ICourseRepository) {

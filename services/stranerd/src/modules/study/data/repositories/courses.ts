@@ -39,7 +39,7 @@ export class CourseRepository implements ICourseRepository {
 
 	async update (id: string, data: CourseToModel) {
 		const course = await Course.findByIdAndUpdate(id, { $set: data }, { new: true })
-		return this.mapper.mapFrom(course)!
+		return this.mapper.mapFrom(course)
 	}
 
 	async find (id: string): Promise<CourseEntity | null> {
