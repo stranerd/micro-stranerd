@@ -26,6 +26,7 @@ import { institutionsRoutes } from './study/institutions'
 import { coursesRoutes } from './study/courses'
 import { setsRoutes } from './study/sets'
 import { testPrepsRoutes } from './study/testPreps'
+import { testsRoutes } from './study/tests'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -55,6 +56,7 @@ export const routes: Route[] = [
 	...coursesRoutes,
 	...setsRoutes,
 	...testPrepsRoutes,
+	...testsRoutes,
 	{
 		path: '/',
 		method: 'get',

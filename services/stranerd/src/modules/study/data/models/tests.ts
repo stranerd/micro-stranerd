@@ -14,4 +14,5 @@ export interface TestToModel {
 	done: boolean
 	score: number
 	userId: string
+	prepId: string
 }

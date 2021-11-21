@@ -8,6 +8,7 @@ export class TestEntity extends BaseEntity {
 	public readonly answers: Record<string, number>
 	public readonly score: number
 	public readonly userId: string
+	public readonly prepId: string
 	public readonly taskIds: TaskID[]
 	public readonly done: boolean
 	public readonly createdAt: number
@@ -20,6 +21,7 @@ export class TestEntity extends BaseEntity {
 		             answers,
 		             score,
 		             userId,
+		             prepId,
 		             taskIds,
 		             done,
 		             createdAt,
@@ -32,6 +34,7 @@ export class TestEntity extends BaseEntity {
 		this.answers = answers
 		this.score = score
 		this.userId = userId
+		this.prepId = prepId
 		this.taskIds = taskIds
 		this.done = done
 		this.createdAt = createdAt
@@ -46,6 +49,7 @@ type TestConstructorArgs = {
 	answers: Record<string, number>
 	score: number
 	userId: string
+	prepId: string
 	taskIds: TaskID[]
 	done: boolean
 	createdAt: number

@@ -5,15 +5,16 @@ import { BaseMapper } from '@utils/commons'
 export class TestMapper extends BaseMapper<TestFromModel, TestToModel, TestEntity> {
 	mapFrom (model: TestFromModel | null) {
 		if (!model) return null
-		const { _id, userId, questions, answers, score, done, taskIds, data, createdAt, updatedAt } = model
+		const { _id, userId, prepId, questions, answers, score, done, taskIds, data, createdAt, updatedAt } = model
 		return new TestEntity({
-			id: _id.toString(), userId, questions, answers, score, done, taskIds, data, createdAt, updatedAt
+			id: _id.toString(), userId, prepId, questions, answers, score, done, taskIds, data, createdAt, updatedAt
 		})
 	}
 
 	mapTo (entity: TestEntity) {
 		return {
 			userId: entity.userId,
+			prepId: entity.prepId,
 			questions: entity.questions,
 			answers: entity.answers,
 			data: entity.data,

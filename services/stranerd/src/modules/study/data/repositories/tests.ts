@@ -45,4 +45,13 @@ export class TestRepository implements ITestRepository {
 		const test = await Test.findOneAndDelete({ _id: id, userId })
 		return !!test
 	}
+
+	async updateAnswer (id: string, userId: string, questionId: string, answer: number) {
+		const test = await Test.findOneAndUpdate({
+			_id: id,
+			userId,
+			questions: questionId
+		}, { $set: { [`answers.${questionId}`]: answer } })
+		return !!test
+	}
 }
