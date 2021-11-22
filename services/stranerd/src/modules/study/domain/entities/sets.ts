@@ -5,6 +5,8 @@ export class SetEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
 	public readonly isRoot: boolean
+	public readonly isPublic: boolean
+	public readonly tags: string[]
 	public readonly saved: {
 		notes: string[]
 		videos: string[]
@@ -20,7 +22,9 @@ export class SetEntity extends BaseEntity {
 		             id,
 		             name,
 		             isRoot,
+		             isPublic,
 		             saved,
+		             tags,
 		             userId,
 		             userBio,
 		             createdAt,
@@ -30,7 +34,9 @@ export class SetEntity extends BaseEntity {
 		this.id = id
 		this.name = name
 		this.isRoot = isRoot
+		this.isPublic = isPublic
 		this.saved = saved
+		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
 		this.createdAt = createdAt
@@ -42,6 +48,8 @@ type SetConstructorArgs = {
 	id: string
 	name: string
 	isRoot: boolean
+	isPublic: boolean
+	tags: string[]
 	saved: {
 		notes: string[]
 		videos: string[]

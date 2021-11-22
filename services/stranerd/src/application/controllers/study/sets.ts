@@ -9,7 +9,6 @@ export class SetController {
 
 	static async GetSets (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'userId', value: req.authUser!.id }]
 		return await GetSets.execute(query)
 	}
 
@@ -19,9 +18,16 @@ export class SetController {
 		if (!user) throw new NotFoundError()
 
 		const data = validate({
-			name: req.body.name
+			name: req.body.name,
+			isPublic: !!req.body.isPublic,
+			tags: req.body.tags
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			isPublic: { required: true, rules: [Validation.isBoolean] },
+			tags: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+			}
 		})
 
 		return await AddSet.execute({ ...data, isRoot: false, userId: user.id, userBio: user.bio })
@@ -30,10 +36,15 @@ export class SetController {
 	static async UpdateSet (req: Request) {
 		const data = validate({
 			name: req.body.name,
-			institutionId: req.body.institutionId
+			isPublic: !!req.body.isPublic,
+			tags: req.body.tags
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString] }
+			isPublic: { required: true, rules: [Validation.isBoolean] },
+			tags: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+			}
 		})
 
 		return await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
