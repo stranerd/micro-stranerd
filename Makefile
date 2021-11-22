@@ -49,7 +49,7 @@ link-commons:
 	rm -r ./services/$(app)/src/utils/common &&\
 	mkdir ./services/$(app)/src/utils/common -p &&\
 	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
-)
+) echo
 
 generate-config-development:
 	node bin/generate-configs.js development $(APPS);
