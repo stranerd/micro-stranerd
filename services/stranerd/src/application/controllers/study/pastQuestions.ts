@@ -21,6 +21,7 @@ export class PastQuestionController {
 	static async UpdatePastQuestion (req: Request) {
 		const isObjective = req.body.type === PastQuestionType.objective
 		const isTheory = req.body.type === PastQuestionType.theory
+		const isPractical = req.body.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -65,10 +66,13 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
-			answer: { required: false, rules: [Validation.isRequiredIfX(isTheory), Validation.isString] },
+			answer: {
+				required: false,
+				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isString]
+			},
 			answerMedia: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
@@ -100,6 +104,8 @@ export class PastQuestionController {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
 			} : isTheory ? {
 				type, answer, answerMedia
+			} : isPractical ? {
+				type, answer, answerMedia
 			} : {} as any
 		}
 
@@ -112,6 +118,7 @@ export class PastQuestionController {
 	static async CreatePastQuestion (req: Request) {
 		const isObjective = req.body.type === PastQuestionType.objective
 		const isTheory = req.body.type === PastQuestionType.theory
+		const isPractical = req.body.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -156,10 +163,13 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
-			answer: { required: false, rules: [Validation.isRequiredIfX(isTheory), Validation.isString] },
+			answer: {
+				required: false,
+				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isString]
+			},
 			answerMedia: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
@@ -190,6 +200,8 @@ export class PastQuestionController {
 			data: isObjective ? {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
 			} : isTheory ? {
+				type, answer, answerMedia
+			} : isPractical ? {
 				type, answer, answerMedia
 			} : {} as any
 		}

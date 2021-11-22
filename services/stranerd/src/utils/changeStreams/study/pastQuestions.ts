@@ -15,6 +15,7 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 
 		let oldMedia = [...before.questionMedia]
 		if (before.data.type === PastQuestionType.theory) oldMedia = oldMedia.concat(before.data.answerMedia)
+		if (before.data.type === PastQuestionType.practical) oldMedia = oldMedia.concat(before.data.answerMedia)
 		else if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
 
 		let newMedia = [...after.questionMedia]
@@ -31,6 +32,7 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 
 		let oldMedia = [...before.questionMedia]
 		if (before.data.type === PastQuestionType.theory) oldMedia = oldMedia.concat(before.data.answerMedia)
+		if (before.data.type === PastQuestionType.practical) oldMedia = oldMedia.concat(before.data.answerMedia)
 		else if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
 
 		await Promise.all(oldMedia.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
