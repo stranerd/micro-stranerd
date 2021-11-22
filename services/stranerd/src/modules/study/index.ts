@@ -42,7 +42,6 @@ import { AddVideoUseCase } from './domain/useCases/videos/addVideo'
 import { UpdateVideoUseCase } from './domain/useCases/videos/updateVideo'
 import { DeleteVideoUseCase } from './domain/useCases/videos/deleteVideo'
 import { UpdateVideosUserBioUseCase } from './domain/useCases/videos/updateVideosUserBio'
-import { UpdateVideosCommentsCountUseCase } from './domain/useCases/videos/updateVideosCommentsCount'
 import { GetNotesUseCase } from './domain/useCases/notes/getNotes'
 import { FindNoteUseCase } from './domain/useCases/notes/findNote'
 import { AddNoteUseCase } from './domain/useCases/notes/addNote'
@@ -118,7 +117,6 @@ export const AddVideo = new AddVideoUseCase(videoRepository)
 export const UpdateVideo = new UpdateVideoUseCase(videoRepository)
 export const DeleteVideo = new DeleteVideoUseCase(videoRepository)
 export const UpdateVideosUserBio = new UpdateVideosUserBioUseCase(videoRepository)
-export const UpdateVideosCommentsCount = new UpdateVideosCommentsCountUseCase(videoRepository)
 
 export const GetNotes = new GetNotesUseCase(noteRepository)
 export const FindNote = new FindNoteUseCase(noteRepository)

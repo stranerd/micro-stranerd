@@ -9,6 +9,7 @@ export interface NoteFromModel extends NoteToModel {
 
 export interface NoteToModel {
 	isHosted: boolean
+	preview: MediaOutput
 	link: string | null
 	media: MediaOutput | null
 	userId: string

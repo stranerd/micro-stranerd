@@ -46,11 +46,6 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: null
 	},
-	commentsCount: {
-		type: Number,
-		required: false,
-		default: 0
-	},
 	createdAt: {
 		type: Number,
 		required: false,

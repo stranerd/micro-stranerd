@@ -10,5 +10,4 @@ export interface IVideoRepository {
 	update: (id: string, userId: string, data: Partial<VideoToModel>) => Promise<VideoEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateVideosUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
-	updateCommentsCount: (id: string, add: boolean) => Promise<boolean>
 }

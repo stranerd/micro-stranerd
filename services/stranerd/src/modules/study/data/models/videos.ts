@@ -3,13 +3,13 @@ import { UserBio } from '../../domain/types'
 
 export interface VideoFromModel extends VideoToModel {
 	_id: string
-	commentsCount: number
 	createdAt: number
 	updatedAt: number
 }
 
 export interface VideoToModel {
 	isHosted: boolean
+	preview: MediaOutput
 	link: string | null
 	media: MediaOutput | null
 	userId: string

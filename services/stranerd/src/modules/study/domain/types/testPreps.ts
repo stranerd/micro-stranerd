@@ -5,7 +5,7 @@ export enum PrepType {
 type PastQuestionType = {
 	type: PrepType.pastQuestion
 	courseId: string
-	year: string
+	year: number
 	institutionId: string
 }
 

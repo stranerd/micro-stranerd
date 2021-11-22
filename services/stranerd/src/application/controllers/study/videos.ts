@@ -19,7 +19,8 @@ export class VideoController {
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media
+			media: req.body.media,
+			preview: req.body.preview
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
@@ -29,7 +30,8 @@ export class VideoController {
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
+			preview: { required: true, rules: [Validation.isImage] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -47,7 +49,8 @@ export class VideoController {
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media
+			media: req.body.media,
+			preview: req.body.preview
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
@@ -57,7 +60,8 @@ export class VideoController {
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
+			preview: { required: true, rules: [Validation.isImage] }
 		})
 
 		const authUserId = req.authUser!.id

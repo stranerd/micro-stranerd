@@ -47,13 +47,6 @@ export class VideoRepository implements IVideoRepository {
 		return videos.acknowledged
 	}
 
-	async updateCommentsCount (id: string, increment: boolean) {
-		const video = await Video.findByIdAndUpdate(id, {
-			$inc: { commentsCount: increment ? 1 : -1 }
-		})
-		return !!video
-	}
-
 	async delete (id: string, userId: string) {
 		const video = await Video.findOneAndDelete({ _id: id, userId })
 		return !!video
