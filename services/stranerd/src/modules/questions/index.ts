@@ -8,6 +8,7 @@ import { FindTagUseCase } from './domain/useCases/tags/findTag'
 import { GetTagsUseCase } from './domain/useCases/tags/getTags'
 import { UpdateCountUseCase } from './domain/useCases/tags/updateTagCount'
 import { AddSubjectUseCase } from './domain/useCases/subjects/addSubject'
+import { UpdateSubjectUseCase } from './domain/useCases/subjects/updateSubject'
 import { DeleteSubjectUseCase } from './domain/useCases/subjects/deleteSubject'
 import { FindSubjectUseCase } from './domain/useCases/subjects/findSubject'
 import { GetSubjectsUseCase } from './domain/useCases/subjects/getSubjects'
@@ -25,7 +26,7 @@ import { AddQuestionUseCase } from './domain/useCases/questions/addQuestion'
 import { UpdateQuestionUseCase } from './domain/useCases/questions/updateQuestion'
 import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestion'
 import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
-import { ModifyCommentsCountUseCase } from './domain/useCases/answers/modifyCommentsCount'
+import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/updateAnswersCommentsCount'
 import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
 import { UpdateQuestionAnswersTagsUseCase } from './domain/useCases/answers/updateQuestionAnswersTags'
 import { UpdateBestAnswerUseCase } from './domain/useCases/questions/updateBestAnswer'
@@ -49,6 +50,7 @@ export const GetTags = new GetTagsUseCase(tagRepository)
 export const UpdateTagsCount = new UpdateCountUseCase(tagRepository)
 
 export const AddSubject = new AddSubjectUseCase(subjectRepository)
+export const UpdateSubject = new UpdateSubjectUseCase(subjectRepository)
 export const DeleteSubject = new DeleteSubjectUseCase(subjectRepository)
 export const FindSubject = new FindSubjectUseCase(subjectRepository)
 export const GetSubjects = new GetSubjectsUseCase(subjectRepository)
@@ -65,7 +67,7 @@ export const AddAnswer = new AddAnswerUseCase(answerRepository)
 export const UpdateAnswer = new UpdateAnswerUseCase(answerRepository)
 export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
 export const DeleteQuestionAnswers = new DeleteQuestionAnswersUseCase(answerRepository)
-export const ModifyCommentsCount = new ModifyCommentsCountUseCase(answerRepository)
+export const UpdateAnswersCommentsCount = new UpdateAnswersCommentsCountUseCase(answerRepository)
 export const UpdateAnswersUserBio = new UpdateAnswersUserBioUseCase(answerRepository)
 export const UpdateQuestionAnswersTags = new UpdateQuestionAnswersTagsUseCase(answerRepository)
 

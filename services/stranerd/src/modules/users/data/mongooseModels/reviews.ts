@@ -26,7 +26,7 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as ReviewFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as ReviewFromModel['userBio'],
 		required: true
 	},
 	createdAt: {

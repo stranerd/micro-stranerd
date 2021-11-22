@@ -17,3 +17,29 @@ export const getDateDifference = (date1: Date, date2: Date) => {
 	res.isNextDay = date2 < start
 	return res
 }
+
+export function getRandomN<Type> (population: Array<Type>, n: number) {
+	const result = new Array<Type>(n)
+	let setsize = 21
+
+	if (n > 5) setsize += Math.pow(4, Math.ceil(Math.log(n * 3) / Math.log(4)))
+
+	if (n <= setsize) {
+		const pool = population.slice()
+		for (let i = 0; i < n; i++) {
+			const j = Math.random() * (n - i) | 0
+			result[i] = pool[j]
+			pool[j] = pool[n - i - 1]
+		}
+	} else {
+		const selected = new Set()
+		for (let i = 0; i < n; i++) {
+			let j = Math.random() * n | 0
+			while (selected.has(j)) j = Math.random() * n | 0
+			selected.add(j)
+			result[i] = population[j]
+		}
+	}
+
+	return result
+}

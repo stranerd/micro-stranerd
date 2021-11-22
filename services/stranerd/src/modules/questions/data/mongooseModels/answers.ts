@@ -32,12 +32,12 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as AnswerFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['userBio'],
 		required: false,
 		default: {} as unknown as AnswerFromModel['userBio']
 	},
 	attachments: {
-		type: [Object] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
 		required: false,
 		default: []
 	},

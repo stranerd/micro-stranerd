@@ -1,7 +1,7 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { SessionController } from '../../controllers/sessions'
 
-export const SessionRoutes: Route[] = [
+export const sessionRoutes: Route[] = [
 	{
 		path: '/sessions/sessions',
 		method: 'get',

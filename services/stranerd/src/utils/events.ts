@@ -11,6 +11,7 @@ import {
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { UpdateTest } from '@modules/study'
 
 const eventBus = new EventBus()
 
@@ -52,6 +53,11 @@ export const subscribers = {
 				})
 			])
 		}
+		if (data.type === DelayedJobs.TestTimer) await UpdateTest.execute({
+			id: data.data.testId,
+			userId: data.data.userId,
+			data: { done: true }
+		})
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {

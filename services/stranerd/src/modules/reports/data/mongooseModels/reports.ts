@@ -18,7 +18,7 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		required: true
 	},
 	reporterBio: {
-		type: Object as unknown as ReportToModel['reporterBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['reporterBio'],
 		required: true
 	},
 	reportedId: {
@@ -26,7 +26,7 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		required: true
 	},
 	reported: {
-		type: Object,
+		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
 	message: {
