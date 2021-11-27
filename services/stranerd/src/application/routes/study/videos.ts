@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { VideoController } from '../../controllers/study/videos'
-import { isTutor } from '@application/middlewares/isTutor'
+import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const videosRoutes: Route[] = [
 	{
@@ -32,7 +32,7 @@ export const videosRoutes: Route[] = [
 		method: 'put',
 		controllers: [
 			requireAuthUser,
-			isTutor,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -46,7 +46,7 @@ export const videosRoutes: Route[] = [
 		method: 'post',
 		controllers: [
 			requireAuthUser,
-			isTutor,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -60,7 +60,7 @@ export const videosRoutes: Route[] = [
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
-			isTutor,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

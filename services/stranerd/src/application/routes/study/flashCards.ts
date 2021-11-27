@@ -1,6 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { FlashCardController } from '../../controllers/study/flashCards'
-import { isTutor } from '@application/middlewares/isTutor'
 
 export const flashcardsRoutes: Route[] = [
 	{
@@ -32,7 +31,6 @@ export const flashcardsRoutes: Route[] = [
 		method: 'put',
 		controllers: [
 			requireAuthUser,
-			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -46,7 +44,6 @@ export const flashcardsRoutes: Route[] = [
 		method: 'post',
 		controllers: [
 			requireAuthUser,
-			isTutor,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
