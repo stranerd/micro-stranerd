@@ -9,6 +9,15 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
+	title: {
+		type: String,
+		required: true
+	},
+	isPublic: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
 	set: {
 		type: [Object],
 		required: true

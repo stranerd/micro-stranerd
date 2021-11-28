@@ -14,9 +14,13 @@ export class FlashCardController {
 
 	static async UpdateFlashCard (req: Request) {
 		const data = validate({
+			title: req.body.title,
+			isPublic: req.body.isPublic,
 			set: req.body.set,
 			tags: req.body.tags
 		}, {
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			isPublic: { required: true, rules: [Validation.isBoolean] },
 			set: {
 				required: true,
 				rules: [
@@ -40,9 +44,13 @@ export class FlashCardController {
 
 	static async CreateFlashCard (req: Request) {
 		const data = validate({
+			title: req.body.title,
+			isPublic: req.body.isPublic,
 			set: req.body.set,
 			tags: req.body.tags
 		}, {
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			isPublic: { required: true, rules: [Validation.isBoolean] },
 			set: {
 				required: true,
 				rules: [

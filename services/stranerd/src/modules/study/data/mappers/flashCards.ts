@@ -6,17 +6,19 @@ export class FlashCardMapper extends BaseMapper<FlashCardFromModel, FlashCardToM
 	mapFrom (model: FlashCardFromModel | null) {
 		if (!model) return null
 		const {
-			_id, set, tags, userId, userBio,
+			_id, title, isPublic, set, tags, userId, userBio,
 			createdAt, updatedAt
 		} = model
 		return new FlashCardEntity({
-			id: _id.toString(), set, tags, userId, userBio,
+			id: _id.toString(), title, isPublic, set, tags, userId, userBio,
 			createdAt, updatedAt
 		})
 	}
 
 	mapTo (entity: FlashCardEntity) {
 		return {
+			title: entity.title,
+			isPublic: entity.isPublic,
 			set: entity.set,
 			tags: entity.tags,
 			userId: entity.userId,
