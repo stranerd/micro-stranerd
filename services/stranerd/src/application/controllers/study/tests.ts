@@ -4,7 +4,6 @@ import {
 	FindTestPrep,
 	GetPastQuestions,
 	GetTests,
-	PastQuestionType,
 	TestType,
 	UpdateTest,
 	UpdateTestAnswer
@@ -42,7 +41,7 @@ export class TestController {
 		if (!prep) throw new NotFoundError()
 		const { results } = await GetPastQuestions.execute({
 			where: [
-				{ field: 'data.type', value: PastQuestionType.objective },
+				{ field: 'data.type', value: prep.data.questionType },
 				{ field: 'institutionId', value: prep.data.institutionId },
 				{ field: 'courseId', value: prep.data.courseId },
 				{ field: 'year', value: prep.data.year }

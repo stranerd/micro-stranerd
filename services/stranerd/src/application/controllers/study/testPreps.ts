@@ -1,4 +1,12 @@
-import { AddTestPrep, DeleteTestPrep, FindTestPrep, GetTestPreps, PrepType, UpdateTestPrep } from '@modules/study'
+import {
+	AddTestPrep,
+	DeleteTestPrep,
+	FindTestPrep,
+	GetTestPreps,
+	PastQuestionType,
+	PrepType,
+	UpdateTestPrep
+} from '@modules/study'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class TestPrepController {
@@ -14,11 +22,12 @@ export class TestPrepController {
 	static async CreateTestPrep (req: Request) {
 		const isPastQuestionsType = req.body.type === PrepType.pastQuestion
 
-		const { name, questions, time, type, courseId, year, institutionId } = validate({
+		const { name, questions, time, type, questionType, courseId, year, institutionId } = validate({
 			name: req.body.name,
 			questions: req.body.questions,
 			time: req.body.time,
 			type: req.body.type,
+			questionType: req.body.questionType,
 			courseId: req.body.courseId,
 			year: req.body.year,
 			institutionId: req.body.institutionId
@@ -29,6 +38,10 @@ export class TestPrepController {
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
+			},
+			questionType: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
 				required: true,
@@ -46,7 +59,7 @@ export class TestPrepController {
 
 		const data = {
 			name, questions, time,
-			data: isPastQuestionsType ? { type, courseId, year, institutionId } : ({} as any)
+			data: isPastQuestionsType ? { type, questionType, courseId, year, institutionId } : ({} as any)
 		}
 
 		return await AddTestPrep.execute(data)
@@ -55,11 +68,12 @@ export class TestPrepController {
 	static async UpdateTestPrep (req: Request) {
 		const isPastQuestionsType = req.body.type === PrepType.pastQuestion
 
-		const { name, questions, time, type, courseId, year, institutionId } = validate({
+		const { name, questions, time, type, questionType, courseId, year, institutionId } = validate({
 			name: req.body.name,
 			questions: req.body.questions,
 			time: req.body.time,
 			type: req.body.type,
+			questionType: req.body.questionType,
 			courseId: req.body.courseId,
 			year: req.body.year,
 			institutionId: req.body.institutionId
@@ -70,6 +84,10 @@ export class TestPrepController {
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
+			},
+			questionType: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
 				required: true,
@@ -87,7 +105,7 @@ export class TestPrepController {
 
 		const data = {
 			name, questions, time,
-			data: isPastQuestionsType ? { type, courseId, year, institutionId } : ({} as any)
+			data: isPastQuestionsType ? { type, questionType, courseId, year, institutionId } : ({} as any)
 		}
 
 		return await UpdateTestPrep.execute({ id: req.params.id, data })
