@@ -27,7 +27,7 @@ const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Referral = mongoose.model<ReferralFromModel>('StranerdReferral', ReferralSchema)
 

@@ -32,7 +32,7 @@ const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const AnswerUpvote = mongoose.model<AnswerUpvoteFromModel>('StranerdAnswerUpvote', Schema)
 

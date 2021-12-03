@@ -39,7 +39,7 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Review = mongoose.model<ReviewFromModel>('StranerdReview', ReviewSchema)
 

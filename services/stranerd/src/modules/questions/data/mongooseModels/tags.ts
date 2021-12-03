@@ -31,7 +31,7 @@ const Schema = new mongoose.Schema<TagFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Tag = mongoose.model<TagFromModel>('StranerdTag', Schema)
 

@@ -36,7 +36,7 @@ const TransactionSchema = new mongoose.Schema<TransactionFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Transaction = mongoose.model<TransactionFromModel>('StranerdTransaction', TransactionSchema)
 

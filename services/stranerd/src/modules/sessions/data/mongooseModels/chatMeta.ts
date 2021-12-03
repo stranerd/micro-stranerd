@@ -42,7 +42,7 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdChatMeta', Schema)
 

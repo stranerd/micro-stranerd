@@ -36,7 +36,7 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const AnswerComment = mongoose.model<AnswerCommentFromModel>('StranerdAnswerComment', Schema)
 

@@ -43,7 +43,7 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Report = mongoose.model<ReportFromModel>('StranerdReport', ReportSchema)
 

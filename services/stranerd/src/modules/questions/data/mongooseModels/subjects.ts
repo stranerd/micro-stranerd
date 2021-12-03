@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<SubjectFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Subject = mongoose.model<SubjectFromModel>('StranerdSubject', Schema)
 
