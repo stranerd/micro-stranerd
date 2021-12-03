@@ -36,7 +36,7 @@ const Schema = new mongoose.Schema<TestPrepFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const TestPrep = mongoose.model<TestPrepFromModel>('StranerdTestPrep', Schema)
 

@@ -52,7 +52,7 @@ const Schema = new mongoose.Schema<TestFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Test = mongoose.model<TestFromModel>('StranerdTest', Schema)
 

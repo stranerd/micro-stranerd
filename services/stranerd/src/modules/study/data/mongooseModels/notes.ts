@@ -56,7 +56,7 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Note = mongoose.model<NoteFromModel>('StranerdNote', Schema)
 

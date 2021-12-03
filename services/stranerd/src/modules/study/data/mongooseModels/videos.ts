@@ -56,7 +56,7 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Video = mongoose.model<VideoFromModel>('StranerdVideo', Schema)
 

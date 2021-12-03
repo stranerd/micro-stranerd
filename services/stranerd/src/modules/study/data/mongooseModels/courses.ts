@@ -27,7 +27,7 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Course = mongoose.model<CourseFromModel>('StranerdCourse', Schema)
 

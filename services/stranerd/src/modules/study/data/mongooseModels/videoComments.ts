@@ -36,7 +36,7 @@ const Schema = new mongoose.Schema<VideoCommentFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const VideoComment = mongoose.model<VideoCommentFromModel>('StranerdVideoComment', Schema)
 

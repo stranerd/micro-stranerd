@@ -33,7 +33,7 @@ const Schema = new mongoose.Schema<InstitutionFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Institution = mongoose.model<InstitutionFromModel>('StranerdInstitution', Schema)
 

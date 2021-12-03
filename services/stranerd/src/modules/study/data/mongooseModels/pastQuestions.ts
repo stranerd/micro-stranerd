@@ -45,7 +45,7 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdPastQuestion', Schema)
 

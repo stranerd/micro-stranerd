@@ -66,7 +66,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Answer = mongoose.model<AnswerFromModel>('StranerdAnswer', Schema)
 

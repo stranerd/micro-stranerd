@@ -69,7 +69,7 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const Set = mongoose.model<SetFromModel>('StranerdSet', Schema)
 

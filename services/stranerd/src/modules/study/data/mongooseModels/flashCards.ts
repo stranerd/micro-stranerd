@@ -46,7 +46,7 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		required: false,
 		default: Date.now
 	}
-}, { timestamps: { currentTime: Date.now } })
+}, { timestamps: { currentTime: Date.now }, minimize: false })
 
 export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdFlashCard', Schema)
 
