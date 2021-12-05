@@ -9,7 +9,6 @@ import { answersRoutes } from './questions/answers'
 import { answerUpvotesRoutes } from './questions/answerUpvotes'
 import { questionsRoutes } from './questions/questions'
 import { subjectsRoutes } from './questions/subjects'
-import { tagsRoutes } from './questions/tags'
 import { chatMetaRoutes } from './sessions/chatMeta'
 import { chatRoutes } from './sessions/chat'
 import { sessionRoutes } from './sessions/session'
@@ -39,11 +38,9 @@ export const routes: Route[] = [
 	...answerUpvotesRoutes,
 	...questionsRoutes,
 	...subjectsRoutes,
-	...tagsRoutes,
 	...sessionRoutes,
 	...chatMetaRoutes,
 	...chatRoutes,
-	...tagsRoutes,
 	...messagesRoutes,
 	...searchRoutes,
 	...reportRoutes,

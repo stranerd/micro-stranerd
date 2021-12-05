@@ -3,10 +3,6 @@ import { AnswerRepository } from './data/repositories/answers'
 import { AnswerUpvoteRepository } from './data/repositories/answerUpvotes'
 import { QuestionRepository } from './data/repositories/questions'
 import { SubjectRepository } from './data/repositories/subjects'
-import { TagRepository } from './data/repositories/tags'
-import { FindTagUseCase } from './domain/useCases/tags/findTag'
-import { GetTagsUseCase } from './domain/useCases/tags/getTags'
-import { UpdateCountUseCase } from './domain/useCases/tags/updateTagCount'
 import { AddSubjectUseCase } from './domain/useCases/subjects/addSubject'
 import { UpdateSubjectUseCase } from './domain/useCases/subjects/updateSubject'
 import { DeleteSubjectUseCase } from './domain/useCases/subjects/deleteSubject'
@@ -38,16 +34,11 @@ import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/creat
 import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
 import { UpdateAnswerCommentsUserBioUseCase } from './domain/useCases/answerComments/updateAnswerCommentsUserBio'
 
-const tagRepository = TagRepository.getInstance()
 const subjectRepository = SubjectRepository.getInstance()
 const answerCommentRepository = AnswerCommentRepository.getInstance()
 const answerRepository = AnswerRepository.getInstance()
 const questionRepository = QuestionRepository.getInstance()
 const answerUpvoteRepository = AnswerUpvoteRepository.getInstance()
-
-export const FindTag = new FindTagUseCase(tagRepository)
-export const GetTags = new GetTagsUseCase(tagRepository)
-export const UpdateTagsCount = new UpdateCountUseCase(tagRepository)
 
 export const AddSubject = new AddSubjectUseCase(subjectRepository)
 export const UpdateSubject = new UpdateSubjectUseCase(subjectRepository)
@@ -89,11 +80,9 @@ export { AnswerFromModel } from './data/models/answers'
 export { AnswerUpvoteFromModel } from './data/models/answerUpvotes'
 export { QuestionFromModel } from './data/models/questions'
 export { SubjectFromModel } from './data/models/subjects'
-export { TagFromModel } from './data/models/tags'
 
 export { AnswerCommentEntity } from './domain/entities/answerComments'
 export { AnswerEntity } from './domain/entities/answers'
 export { AnswerUpvoteEntity } from './domain/entities/answerUpvotes'
 export { QuestionEntity } from './domain/entities/questions'
 export { SubjectEntity } from './domain/entities/subjects'
-export { TagEntity } from './domain/entities/tags'

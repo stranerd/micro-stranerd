@@ -9,7 +9,7 @@ const app = getNewServerInstance(routes, {
 	admin: ['reports', 'pastQuestions', 'testPreps'],
 	open: [
 		'users', 'reviews', 'badges',
-		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects', 'tags',
+		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects',
 		'courses', 'notes', 'institutions', 'videoComments', 'videos', 'flashCards'
 	]
 }, {
