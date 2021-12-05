@@ -26,10 +26,12 @@ export class TestController {
 		const isTimed = req.body.type === TestType.timed
 		const isUnTimed = req.body.type === TestType.unTimed
 
-		const { prepId, type } = validate({
+		const { name, prepId, type } = validate({
+			name: req.body.name,
 			prepId: req.body.prepId,
 			type: req.body.type
 		}, {
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			prepId: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
@@ -51,7 +53,7 @@ export class TestController {
 		const questions = getRandomN(results, prep.questions).map((q) => q.id)
 
 		const data = {
-			score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,
+			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,
 			data: isTimed ? { type, time: prep.time } : isUnTimed ? { type } : ({} as any)
 		}
 

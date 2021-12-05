@@ -9,6 +9,10 @@ const Schema = new mongoose.Schema<TestFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
+	name: {
+		type: String,
+		required: true
+	},
 	userId: {
 		type: String,
 		required: true

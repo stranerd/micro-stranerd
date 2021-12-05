@@ -8,6 +8,7 @@ export interface TestFromModel extends TestToModel {
 }
 
 export interface TestToModel {
+	name: string
 	data: TestData
 	questions: string[]
 	answers: Record<string, number>
