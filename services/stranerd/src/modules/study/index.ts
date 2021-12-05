@@ -2,7 +2,7 @@ import { TestPrepRepository } from './data/repositories/testPreps'
 import { SetRepository } from './data/repositories/sets'
 import { CourseRepository } from './data/repositories/courses'
 import { InstitutionRepository } from './data/repositories/institutions'
-import { VideoCommentRepository } from './data/repositories/videoComments'
+import { CommentRepository } from './data/repositories/comments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
@@ -31,11 +31,11 @@ import { UpdateInstitutionUseCase } from './domain/useCases/institutions/updateI
 import { DeleteInstitutionUseCase } from './domain/useCases/institutions/deleteInstitution'
 import { FindInstitutionUseCase } from './domain/useCases/institutions/findInstitution'
 import { GetInstitutionsUseCase } from './domain/useCases/institutions/getInstitutions'
-import { GetVideoCommentsUseCase } from './domain/useCases/videoComments/getVideoComments'
-import { FindVideoCommentUseCase } from './domain/useCases/videoComments/findVideoComment'
-import { AddVideoCommentUseCase } from './domain/useCases/videoComments/addVideoComment'
-import { DeleteVideosCommentsUseCase } from './domain/useCases/videoComments/deleteVideoComments'
-import { UpdateVideoCommentsUserBioUseCase } from './domain/useCases/videoComments/updateVideoCommentsUserBio'
+import { GetCommentsUseCase } from './domain/useCases/comments/getComments'
+import { FindCommentUseCase } from './domain/useCases/comments/findComment'
+import { AddCommentUseCase } from './domain/useCases/comments/addComment'
+import { DeletePropertyCommentsUseCase } from './domain/useCases/comments/deletePropertyComments'
+import { UpdateCommentsUserBioUseCase } from './domain/useCases/comments/updateCommentsUserBio'
 import { GetVideosUseCase } from './domain/useCases/videos/getVideos'
 import { FindVideoUseCase } from './domain/useCases/videos/findVideo'
 import { AddVideoUseCase } from './domain/useCases/videos/addVideo'
@@ -71,7 +71,7 @@ const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
-const videoCommentRepository = VideoCommentRepository.getInstance()
+const commentRepository = CommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
@@ -105,11 +105,11 @@ export const DeleteInstitution = new DeleteInstitutionUseCase(institutionReposit
 export const FindInstitution = new FindInstitutionUseCase(institutionRepository)
 export const GetInstitutions = new GetInstitutionsUseCase(institutionRepository)
 
-export const GetVideoComments = new GetVideoCommentsUseCase(videoCommentRepository)
-export const FindVideoComment = new FindVideoCommentUseCase(videoCommentRepository)
-export const AddVideoComment = new AddVideoCommentUseCase(videoCommentRepository)
-export const DeleteVideosComments = new DeleteVideosCommentsUseCase(videoCommentRepository)
-export const UpdateVideoCommentsUserBio = new UpdateVideoCommentsUserBioUseCase(videoCommentRepository)
+export const GetComments = new GetCommentsUseCase(commentRepository)
+export const FindComment = new FindCommentUseCase(commentRepository)
+export const AddComment = new AddCommentUseCase(commentRepository)
+export const DeletePropertyComments = new DeletePropertyCommentsUseCase(commentRepository)
+export const UpdateCommentsUserBio = new UpdateCommentsUserBioUseCase(commentRepository)
 
 export const GetVideos = new GetVideosUseCase(videoRepository)
 export const FindVideo = new FindVideoUseCase(videoRepository)
@@ -149,12 +149,13 @@ export const UpdateTestTaskIds = new UpdateTestTaskIdsUseCase(testRepository)
 export { PrepType, PrepData } from './domain/types'
 export { PastQuestionData, PastQuestionType } from './domain/types'
 export { TestData, TestType } from './domain/types'
+export { CommentData, CommentType } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
 export { CourseFromModel } from './data/models/courses'
 export { SetFromModel } from './data/models/sets'
 export { InstitutionFromModel } from './data/models/institutions'
-export { VideoCommentFromModel } from './data/models/videoComments'
+export { CommentFromModel } from './data/models/comments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
@@ -162,10 +163,10 @@ export { PastQuestionFromModel } from './data/models/pastQuestions'
 export { TestFromModel } from './data/models/tests'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
+export { CommentEntity } from './domain/entities/comments'
 export { CourseEntity } from './domain/entities/courses'
 export { SetEntity } from './domain/entities/sets'
 export { InstitutionEntity } from './domain/entities/institutions'
-export { VideoCommentEntity } from './domain/entities/videoComments'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'

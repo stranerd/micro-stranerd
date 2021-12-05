@@ -4,10 +4,10 @@ import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserB
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import {
 	AddSet,
+	UpdateCommentsUserBio,
 	UpdateFlashCardsUserBio,
 	UpdateNotesUserBio,
 	UpdateSetsUserBio,
-	UpdateVideoCommentsUserBio,
 	UpdateVideosUserBio
 } from '@modules/study'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -34,7 +34,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBio) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
 			UpdateChatMetaUserBios, UpdateMySessionsBio, UpdateMyReviewsBio,
-			UpdateVideosUserBio, UpdateVideoCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio
+			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio
 		].map(async (useCase) => await useCase.execute({ userId: after.id, userBio: after.bio })))
 
 		const updatedScore = !!changes.account?.score

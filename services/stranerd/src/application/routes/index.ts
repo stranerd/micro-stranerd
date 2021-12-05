@@ -19,7 +19,7 @@ import { reportRoutes } from './reports/reports'
 import { pastQuestionsRoutes } from './study/pastQuestions'
 import { flashcardsRoutes } from './study/flashCards'
 import { notesRoutes } from './study/notes'
-import { videoCommentsRoutes } from './study/videoComments'
+import { commentsRoutes } from './study/comments'
 import { videosRoutes } from './study/videos'
 import { institutionsRoutes } from './study/institutions'
 import { coursesRoutes } from './study/courses'
@@ -48,7 +48,7 @@ export const routes: Route[] = [
 	...flashcardsRoutes,
 	...notesRoutes,
 	...videosRoutes,
-	...videoCommentsRoutes,
+	...commentsRoutes,
 	...institutionsRoutes,
 	...coursesRoutes,
 	...setsRoutes,

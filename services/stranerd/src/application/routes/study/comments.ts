@@ -1,40 +1,40 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { VideoCommentController } from '../../controllers/study/videoComments'
+import { CommentController } from '../../controllers/study/comments'
 
-export const videoCommentsRoutes: Route[] = [
+export const commentsRoutes: Route[] = [
 	{
-		path: '/study/videoComments',
+		path: '/study/comments',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await VideoCommentController.GetVideoComments(req)
+					result: await CommentController.GetComments(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/videoComments/:id',
+		path: '/study/comments/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await VideoCommentController.FindVideoComment(req)
+					result: await CommentController.FindComment(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/videoComments',
+		path: '/study/comments',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await VideoCommentController.CreateVideoComment(req)
+					result: await CommentController.CreateComment(req)
 				}
 			})
 		]

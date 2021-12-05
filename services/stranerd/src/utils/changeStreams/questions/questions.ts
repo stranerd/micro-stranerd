@@ -1,11 +1,5 @@
 import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import {
-	DeleteQuestionAnswers,
-	QuestionEntity,
-	QuestionFromModel,
-	UpdateQuestionAnswersTags,
-	UpdateTagsCount
-} from '@modules/questions'
+import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel, UpdateQuestionAnswersTags } from '@modules/questions'
 import {
 	CountStreakBadges,
 	GetUsers,
@@ -22,11 +16,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('questions', after)
 		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
-
-		await UpdateTagsCount.execute({
-			tagNames: after.tags,
-			increment: true
-		})
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'questions' })
 
@@ -61,13 +50,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenUpdated('questions', after)
 		await getSocketEmitter().emitOpenUpdated(`questions/${after.id}`, after)
 
-		if (changes.tags) {
-			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
-			const newTags = after.tags.filter((t) => !before.tags.includes(t))
-			await UpdateTagsCount.execute({ tagNames: oldTags, increment: false })
-			await UpdateTagsCount.execute({ tagNames: newTags, increment: true })
-			await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
-		}
+		if (changes.tags) await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
 
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
@@ -81,11 +64,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenDeleted(`questions/${before.id}`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
-
-		await UpdateTagsCount.execute({
-			tagNames: before.tags,
-			increment: false
-		})
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
