@@ -19,9 +19,9 @@ export class PastQuestionController {
 	}
 
 	static async UpdatePastQuestion (req: Request) {
-		const isObjective = req.body.type === PastQuestionType.objective
-		const isTheory = req.body.type === PastQuestionType.theory
-		const isPractical = req.body.type === PastQuestionType.practical
+		const isObjective = req.body.data?.type === PastQuestionType.objective
+		const isTheory = req.body.data?.type === PastQuestionType.theory
+		const isPractical = req.body.data?.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -41,17 +41,17 @@ export class PastQuestionController {
 			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			year: req.body.year,
-			type: req.body.type,
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
 
-			answer: req.body.answer,
-			answerMedia: req.body.answerMedia,
-			correctIndex: req.body.correctIndex,
-			options: req.body.options,
-			optionsMedia: req.body.optionsMedia,
-			explanation: req.body.explanation,
-			explanationMedia: req.body.explanationMedia
+			type: req.body.data?.type,
+			answer: req.body.data?.answer,
+			answerMedia: req.body.data?.answerMedia,
+			correctIndex: req.body.data?.correctIndex,
+			options: req.body.data?.options,
+			optionsMedia: req.body.data?.optionsMedia,
+			explanation: req.body.data?.explanation,
+			explanationMedia: req.body.data?.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -116,9 +116,9 @@ export class PastQuestionController {
 	}
 
 	static async CreatePastQuestion (req: Request) {
-		const isObjective = req.body.type === PastQuestionType.objective
-		const isTheory = req.body.type === PastQuestionType.theory
-		const isPractical = req.body.type === PastQuestionType.practical
+		const isObjective = req.body.data?.type === PastQuestionType.objective
+		const isTheory = req.body.data?.type === PastQuestionType.theory
+		const isPractical = req.body.data?.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -138,17 +138,17 @@ export class PastQuestionController {
 			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			year: req.body.year,
-			type: req.body.type,
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
 
-			answer: req.body.answer,
-			answerMedia: req.body.answerMedia,
-			correctIndex: req.body.correctIndex,
-			options: req.body.options,
-			optionsMedia: req.body.optionsMedia,
-			explanation: req.body.explanation,
-			explanationMedia: req.body.explanationMedia
+			answer: req.body.data?.answer,
+			type: req.body.data?.type,
+			answerMedia: req.body.data?.answerMedia,
+			correctIndex: req.body.data?.correctIndex,
+			options: req.body.data?.options,
+			optionsMedia: req.body.data?.optionsMedia,
+			explanation: req.body.data?.explanation,
+			explanationMedia: req.body.data?.explanationMedia
 		}, {
 			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },

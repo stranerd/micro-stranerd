@@ -23,19 +23,24 @@ export class TestController {
 	}
 
 	static async CreateTest (req: Request) {
-		const isTimed = req.body.type === TestType.timed
-		const isUnTimed = req.body.type === TestType.unTimed
+		const isTimed = req.body.data?.type === TestType.timed
+		const isUnTimed = req.body.data?.type === TestType.unTimed
 
-		const { name, prepId, type } = validate({
+		const { name, prepId, type, time } = validate({
 			name: req.body.name,
 			prepId: req.body.prepId,
-			type: req.body.type
+			type: req.body.data?.type,
+			time: req.body.data?.time
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			prepId: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.keys(TestType), (cur, val) => cur === val)]
+			},
+			time: {
+				required: false,
+				rules: [Validation.isRequiredIfX(isTimed), Validation.isNumber, Validation.isMoreThanX(0)]
 			}
 		})
 
@@ -54,7 +59,7 @@ export class TestController {
 
 		const data = {
 			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,
-			data: isTimed ? { type, time: prep.time } : isUnTimed ? { type } : ({} as any)
+			data: isTimed ? { type, time } : isUnTimed ? { type } : ({} as any)
 		}
 
 		return await AddTest.execute(data)

@@ -20,17 +20,17 @@ export class TestPrepController {
 	}
 
 	static async CreateTestPrep (req: Request) {
-		const isPastQuestionsType = req.body.type === PrepType.pastQuestion
+		const isPastQuestionsType = req.body.data?.type === PrepType.pastQuestion
 
 		const { name, questions, time, type, questionType, courseId, year, institutionId } = validate({
 			name: req.body.name,
 			questions: req.body.questions,
 			time: req.body.time,
-			type: req.body.type,
-			questionType: req.body.questionType,
-			courseId: req.body.courseId,
-			year: req.body.year,
-			institutionId: req.body.institutionId
+			type: req.body.data?.type,
+			questionType: req.body.data?.questionType,
+			courseId: req.body.data?.courseId,
+			year: req.body.data?.year,
+			institutionId: req.body.data?.institutionId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
@@ -66,17 +66,17 @@ export class TestPrepController {
 	}
 
 	static async UpdateTestPrep (req: Request) {
-		const isPastQuestionsType = req.body.type === PrepType.pastQuestion
+		const isPastQuestionsType = req.body.data?.type === PrepType.pastQuestion
 
 		const { name, questions, time, type, questionType, courseId, year, institutionId } = validate({
 			name: req.body.name,
 			questions: req.body.questions,
 			time: req.body.time,
-			type: req.body.type,
-			questionType: req.body.questionType,
-			courseId: req.body.courseId,
-			year: req.body.year,
-			institutionId: req.body.institutionId
+			type: req.body.data?.type,
+			questionType: req.body.data?.questionType,
+			courseId: req.body.data?.courseId,
+			year: req.body.data?.year,
+			institutionId: req.body.data?.institutionId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },

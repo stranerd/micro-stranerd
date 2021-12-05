@@ -13,12 +13,12 @@ export class CommentController {
 	}
 
 	static async CreateComment (req: Request) {
-		const isVideoType = req.body.type === CommentType.video
+		const isVideoType = req.body.data?.type === CommentType.video
 
 		const { body, type, videoId } = validate({
 			body: req.body.body,
-			type: req.body.type,
-			videoId: req.body.videoId
+			type: req.body.data?.type,
+			videoId: req.body.data?.videoId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			type: {
