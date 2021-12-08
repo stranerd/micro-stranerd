@@ -59,6 +59,7 @@ export class TestController {
 
 		const data = {
 			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,
+			questionType: prep.data.questionType,
 			data: isTimed ? { type, time } : isUnTimed ? { type } : ({} as any)
 		}
 

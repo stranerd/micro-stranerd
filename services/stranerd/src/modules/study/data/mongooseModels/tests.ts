@@ -27,6 +27,10 @@ const Schema = new mongoose.Schema<TestFromModel>({
 		required: true,
 		default: []
 	},
+	questionType: {
+		type: String,
+		required: true
+	},
 	answers: {
 		type: mongoose.Schema.Types.Mixed,
 		required: false,

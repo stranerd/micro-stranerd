@@ -30,22 +30,24 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		await getSocketEmitter().emitMineUpdated(`tests/${after.id}`, after, after.userId)
 
 		if (changes.done && !before.done && after.done) {
-			// calculate score
-			const { results: questions } = await GetPastQuestions.execute({
-				where: [{ field: 'id', condition: Conditions.in, value: after.questions }]
-			})
+			if (after.questionType === PastQuestionType.objective) {
+				// calculate score
+				const { results: questions } = await GetPastQuestions.execute({
+					where: [{ field: 'id', condition: Conditions.in, value: after.questions }]
+				})
 
-			const correct = questions
-				.filter((q) => q.data.type === PastQuestionType.objective)
-				.map((q) => q.data.type === PastQuestionType.objective && after.answers[q.id] === q.data.correctIndex)
+				const correct = questions
+					.filter((q) => q.data.type === PastQuestionType.objective)
+					.map((q) => q.data.type === PastQuestionType.objective && after.answers[q.id] === q.data.correctIndex)
 
-			const score = getPercentage(correct.filter((c) => c).length, correct.length)
-			await UpdateTest.execute({
-				id: after.id,
-				userId: after.userId,
-				data: { score }
-			})
-			await Promise.all(after.taskIds.map(removeDelayedJob))
+				const score = getPercentage(correct.filter((c) => c).length, correct.length)
+				await UpdateTest.execute({
+					id: after.id,
+					userId: after.userId,
+					data: { score }
+				})
+				await Promise.all(after.taskIds.map(removeDelayedJob))
+			}
 		}
 	},
 	deleted: async ({ before }) => {

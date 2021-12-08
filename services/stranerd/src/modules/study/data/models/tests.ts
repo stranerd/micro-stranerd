@@ -1,4 +1,4 @@
-import { TaskID, TestData } from '../../domain/types'
+import { PastQuestionType, TaskID, TestData } from '../../domain/types'
 
 export interface TestFromModel extends TestToModel {
 	_id: string
@@ -9,6 +9,7 @@ export interface TestFromModel extends TestToModel {
 
 export interface TestToModel {
 	name: string
+	questionType: PastQuestionType
 	data: TestData
 	questions: string[]
 	answers: Record<string, number>
