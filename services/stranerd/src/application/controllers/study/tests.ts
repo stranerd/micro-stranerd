@@ -72,7 +72,7 @@ export class TestController {
 			answer: req.body.answer
 		}, {
 			questionId: { required: true, rules: [Validation.isString] },
-			answer: { required: true, rules: [Validation.isNumber] }
+			answer: { required: true, rules: [] }
 		})
 
 		const updated = await UpdateTestAnswer.execute({

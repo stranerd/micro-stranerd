@@ -13,4 +13,6 @@ type UnTimedType = {
 	time: number
 }
 
+export type AnswerType = number | string
+
 export type TestData = TimedType | UnTimedType

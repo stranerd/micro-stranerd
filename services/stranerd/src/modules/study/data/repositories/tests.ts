@@ -3,7 +3,7 @@ import { TestMapper } from '../mappers/tests'
 import { TestFromModel, TestToModel } from '../models/tests'
 import { Test } from '../mongooseModels/tests'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { TaskID } from '@modules/sessions/domain/types'
+import { AnswerType, TaskID } from '../../domain/types'
 
 export class TestRepository implements ITestRepository {
 	private static instance: TestRepository
@@ -47,7 +47,7 @@ export class TestRepository implements ITestRepository {
 		return !!test
 	}
 
-	async updateAnswer (id: string, userId: string, questionId: string, answer: number) {
+	async updateAnswer (id: string, userId: string, questionId: string, answer: AnswerType) {
 		const test = await Test.findOneAndUpdate({
 			_id: id,
 			userId,

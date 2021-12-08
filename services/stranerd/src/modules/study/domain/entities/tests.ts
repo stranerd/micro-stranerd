@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { PastQuestionType, TaskID, TestData } from '../types'
+import { AnswerType, PastQuestionType, TaskID, TestData } from '../types'
 
 export class TestEntity extends BaseEntity {
 	public readonly id: string
@@ -7,7 +7,7 @@ export class TestEntity extends BaseEntity {
 	public readonly data: TestData
 	public readonly questionType: PastQuestionType
 	public readonly questions: string[]
-	public readonly answers: Record<string, number>
+	public readonly answers: Record<string, AnswerType>
 	public readonly score: number
 	public readonly userId: string
 	public readonly prepId: string
@@ -54,7 +54,7 @@ type TestConstructorArgs = {
 	data: TestData
 	questionType: PastQuestionType,
 	questions: string[]
-	answers: Record<string, number>
+	answers: Record<string, AnswerType>
 	score: number
 	userId: string
 	prepId: string
