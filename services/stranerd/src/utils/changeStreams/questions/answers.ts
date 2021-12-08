@@ -157,20 +157,18 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		if (before.best) {
+			await UpdateUserNerdScore.execute({
+				userId: before.userId,
+				amount: -ScoreRewards.BestAnswer
+			})
+			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
 			const question = await FindQuestion.execute(before.questionId)
-			if (question) {
-				await UpdateBestAnswer.execute({
-					id: question.id,
-					userId: question.userId,
-					answerId: before.id,
-					add: false
-				})
-				await UpdateUserNerdScore.execute({
-					userId: before.userId,
-					amount: -ScoreRewards.NewAnswer
-				})
-				await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
-			}
+			if (question) await UpdateBestAnswer.execute({
+				id: question.id,
+				userId: question.userId,
+				answerId: before.id,
+				add: false
+			})
 		}
 	}
 }

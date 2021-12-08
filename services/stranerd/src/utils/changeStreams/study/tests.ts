@@ -10,6 +10,7 @@ import {
 } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
+import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
@@ -30,6 +31,10 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		await getSocketEmitter().emitMineUpdated(`tests/${after.id}`, after, after.userId)
 
 		if (changes.done && !before.done && after.done) {
+			if (after.data.type === TestType.timed) await UpdateUserNerdScore.execute({
+				userId: after.userId,
+				amount: ScoreRewards.CompleteTest
+			})
 			if (after.questionType === PastQuestionType.objective) {
 				// calculate score
 				const { results: questions } = await GetPastQuestions.execute({

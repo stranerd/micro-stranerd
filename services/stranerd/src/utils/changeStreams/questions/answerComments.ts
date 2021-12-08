@@ -1,7 +1,13 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer, UpdateAnswersCommentsCount } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { CountStreakBadges, IncrementUserMetaCount, RecordCountStreak } from '@modules/users'
+import {
+	CountStreakBadges,
+	IncrementUserMetaCount,
+	RecordCountStreak,
+	ScoreRewards,
+	UpdateUserNerdScore
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
@@ -11,6 +17,10 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 
 		await UpdateAnswersCommentsCount.execute({ id: after.answerId, increment: true })
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answerComments' })
+		await UpdateUserNerdScore.execute({
+			userId: after.userId,
+			amount: ScoreRewards.NewComment
+		})
 
 		const answer = await FindAnswer.execute(after.answerId)
 		if (answer && answer.userId !== after.userId) await sendNotification(answer.userId, {
@@ -35,7 +45,10 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 
 		await UpdateAnswersCommentsCount.execute({ id: before.answerId, increment: false })
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answerComments' })
-
+		await UpdateUserNerdScore.execute({
+			userId: before.userId,
+			amount: -ScoreRewards.NewComment
+		})
 		await RecordCountStreak.execute({
 			userId: before.userId,
 			activity: CountStreakBadges.NewAnswerComment,
