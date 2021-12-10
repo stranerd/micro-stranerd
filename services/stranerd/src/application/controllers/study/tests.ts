@@ -8,7 +8,15 @@ import {
 	UpdateTest,
 	UpdateTestAnswer
 } from '@modules/study'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import {
+	NotAuthorizedError,
+	NotFoundError,
+	QueryParams,
+	Request,
+	validate,
+	Validation,
+	ValidationError
+} from '@utils/commons'
 import { getRandomN } from '@utils/functions'
 
 export class TestController {
@@ -55,6 +63,9 @@ export class TestController {
 			],
 			all: true
 		})
+		if (results.length < prep.questions) throw new ValidationError([{
+			field: '', messages: ['Not enough questions to take this test.']
+		}])
 		const questions = getRandomN(results, prep.questions).map((q) => q.id)
 
 		const data = {

@@ -31,7 +31,7 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 		default: []
 	},
 	data: {
-		type: mongoose.Schema.Types.ObjectId as unknown as PastQuestionFromModel['data'],
+		type: mongoose.Schema.Types.Mixed as unknown as PastQuestionFromModel['data'],
 		required: true,
 		default: {} as unknown as PastQuestionFromModel['data']
 	},
