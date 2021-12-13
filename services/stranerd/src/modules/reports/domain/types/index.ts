@@ -1,11 +1,13 @@
 import { UserBio } from '@modules/users'
+import { MediaOutput } from '@utils/common'
 
 export { UserBio }
 
 export enum ReportType {
 	users = 'users',
 	questions = 'questions',
-	answers = 'answers'
+	answers = 'answers',
+	pastQuestions = 'pastQuestions'
 }
 
 type UserReportType = {
@@ -24,6 +26,11 @@ type AnswerReportType = {
 	userId: string
 }
 
+type PastQuestionType = {
+	question: string
+	questionMedia: MediaOutput[]
+}
+
 export type ReportData = {
 	type: ReportType.users,
 	reported: UserReportType
@@ -33,4 +40,7 @@ export type ReportData = {
 } | {
 	type: ReportType.answers,
 	reported: AnswerReportType
+} | {
+	type: ReportType.pastQuestions,
+	reported: PastQuestionType
 }

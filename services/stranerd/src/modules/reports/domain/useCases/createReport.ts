@@ -2,9 +2,8 @@ import { BaseUseCase } from '@utils/commons'
 import { ReportToModel } from '../../data/models/reports'
 import { ReportEntity } from '../entities/reports'
 import { IReportRepository } from '../i-repositories/reports'
-import { ReportData } from '../types'
 
-type Input = Omit<ReportToModel, 'reported'> & ReportData
+type Input = ReportToModel
 
 export class CreateReportUseCase implements BaseUseCase<Input, ReportEntity> {
 	repository: IReportRepository

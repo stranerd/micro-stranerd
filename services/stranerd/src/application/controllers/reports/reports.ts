@@ -1,6 +1,7 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
 import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
 import { FindUser } from '@modules/users'
+import { FindPastQuestion } from '@modules/study'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReportController {
@@ -18,7 +19,7 @@ export class ReportController {
 	}
 
 	static async CreateReport (req: Request) {
-		const data = validate({
+		const { type, reportedId, message } = validate({
 			type: req.body.type,
 			reportedId: req.body.reportedId,
 			message: req.body.message
@@ -36,8 +37,8 @@ export class ReportController {
 		const reporter = await FindUser.execute(req.authUser!.id)
 		if (!reporter) throw new NotFoundError()
 
-		if (data.type == ReportType.users) {
-			const user = await FindUser.execute(data.reportedId)
+		if (type == ReportType.users) {
+			const user = await FindUser.execute(reportedId)
 			if (!user) throw new NotFoundError()
 			reportedData = {
 				type: ReportType.users,
@@ -45,8 +46,8 @@ export class ReportController {
 			}
 		}
 
-		if (data.type == ReportType.questions) {
-			const question = await FindQuestion.execute(data.reportedId)
+		if (type == ReportType.questions) {
+			const question = await FindQuestion.execute(reportedId)
 			if (!question) throw new NotFoundError()
 			reportedData = {
 				type: ReportType.questions,
@@ -54,8 +55,8 @@ export class ReportController {
 			}
 		}
 
-		if (data.type == ReportType.answers) {
-			const answer = await FindAnswer.execute(data.reportedId)
+		if (type == ReportType.answers) {
+			const answer = await FindAnswer.execute(reportedId)
 			if (!answer) throw new NotFoundError()
 			reportedData = {
 				type: ReportType.answers,
@@ -68,10 +69,22 @@ export class ReportController {
 			}
 		}
 
+		if (type == ReportType.pastQuestions) {
+			const question = await FindPastQuestion.execute(reportedId)
+			if (!question) throw new NotFoundError()
+			reportedData = {
+				type: ReportType.pastQuestions,
+				reported: {
+					question: question.question,
+					questionMedia: question.questionMedia
+				}
+			}
+		}
+
 		if (!reportedData) throw new NotFoundError()
 
 		return await CreateReport.execute({
-			...data, ...reportedData,
+			message, reportedId, data: reportedData,
 			reporterId: reporter.id,
 			reporterBio: reporter.bio
 		})

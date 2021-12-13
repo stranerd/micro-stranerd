@@ -51,7 +51,8 @@ export class TestRepository implements ITestRepository {
 		const test = await Test.findOneAndUpdate({
 			_id: id,
 			userId,
-			questions: questionId
+			questions: questionId,
+			done: false
 		}, { $set: { [`answers.${questionId}`]: answer } })
 		return !!test
 	}

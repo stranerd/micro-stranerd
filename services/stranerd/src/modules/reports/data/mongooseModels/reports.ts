@@ -9,10 +9,6 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId() as unknown as string
 	},
-	type: {
-		type: String,
-		required: true
-	},
 	reporterId: {
 		type: String,
 		required: true
@@ -25,7 +21,7 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		type: String,
 		required: true
 	},
-	reported: {
+	data: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
