@@ -34,6 +34,7 @@ export type UserAccount = {
 		daily: number
 		weekly: number
 		monthly: number
+		overall: number
 	}
 	meta: {
 		questions: number

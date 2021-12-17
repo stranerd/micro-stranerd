@@ -28,7 +28,13 @@ export class TestRepository implements ITestRepository {
 	}
 
 	async add (data: TestToModel) {
-		const test = await new Test(data).save()
+		const test = await Test.findOne({
+			prepId: data.prepId,
+			userId: data.userId,
+			questionType: data.questionType,
+			'data.type': data.data.type,
+			done: false
+		}) ?? await new Test(data).save()
 		return this.mapper.mapFrom(test)!
 	}
 
