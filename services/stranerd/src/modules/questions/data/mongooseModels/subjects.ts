@@ -7,7 +7,7 @@ import { SubjectMapper } from '../mappers/subjects'
 const Schema = new mongoose.Schema<SubjectFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	name: {
 		type: String,

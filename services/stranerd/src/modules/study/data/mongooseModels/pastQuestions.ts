@@ -7,7 +7,7 @@ import { PastQuestionMapper } from '../mappers/pastQuestions'
 const Schema = new mongoose.Schema<PastQuestionFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	year: {
 		type: Number,

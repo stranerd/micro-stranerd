@@ -7,7 +7,7 @@ import { AnswerMapper } from '../mappers/answers'
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	title: {
 		type: String,

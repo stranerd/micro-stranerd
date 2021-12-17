@@ -69,7 +69,7 @@ const badges = {
 const BadgeSchema = new mongoose.Schema<BadgeFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	data,
 	badges,

@@ -7,7 +7,7 @@ import { SetMapper } from '../mappers/sets'
 const Schema = new mongoose.Schema<SetFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	name: {
 		type: String,

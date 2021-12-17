@@ -7,7 +7,7 @@ import { NoteMapper } from '../mappers/notes'
 const Schema = new mongoose.Schema<NoteFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	title: {
 		type: String,

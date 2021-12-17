@@ -7,7 +7,7 @@ import { FlashCardMapper } from '../mappers/flashCards'
 const Schema = new mongoose.Schema<FlashCardFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	title: {
 		type: String,

@@ -7,7 +7,7 @@ import { CommentMapper } from '../mappers/comments'
 const Schema = new mongoose.Schema<CommentFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	body: {
 		type: String,

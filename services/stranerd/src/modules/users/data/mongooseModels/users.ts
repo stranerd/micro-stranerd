@@ -55,7 +55,7 @@ const UserStreak = {
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	bio: {
 		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['bio'],

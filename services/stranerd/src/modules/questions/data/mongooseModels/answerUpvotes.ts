@@ -7,7 +7,7 @@ import { AnswerUpvoteMapper } from '../mappers/answerUpvotes'
 const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	vote: {
 		type: Number,
