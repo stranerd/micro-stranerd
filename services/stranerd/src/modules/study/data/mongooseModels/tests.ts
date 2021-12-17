@@ -17,6 +17,10 @@ const Schema = new mongoose.Schema<TestFromModel>({
 		type: String,
 		required: true
 	},
+	prepId: {
+		type: String,
+		required: true
+	},
 	data: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true,
