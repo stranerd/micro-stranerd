@@ -57,6 +57,6 @@ export const startProcessingQueues = async (callbacks: { onDelayed: DelayedJobCa
 	)
 	await Promise.all([
 		queue.process(JobNames.DelayedJob, async (job) => await callbacks.onDelayed(job.data)),
-		queue.process(JobNames.CronJob, async (job) => await callbacks.onCron(job.data as CronTypes))
+		queue.process(JobNames.CronJob, async (job) => await callbacks.onCron(job.data.type as CronTypes))
 	])
 }
