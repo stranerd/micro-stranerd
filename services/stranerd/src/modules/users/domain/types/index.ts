@@ -30,27 +30,15 @@ export type UserStatus = {
 
 export type UserAccount = {
 	score: number
-	rankings: {
-		daily: number
-		weekly: number
-		monthly: number
-		overall: number
-	}
-	meta: {
-		questions: number
-		answers: number
-		bestAnswers: number
-		answerComments: number
-		sessions: number
-		tutorSessions: number
-	},
+	rankings: Record<UserRankings, number>
+	meta: Record<UserMeta, number>
 	ratings: {
 		total: number
 		count: number
-	},
+	}
 	streak: {
-		count: number,
-		longestStreak: number,
+		count: number
+		longestStreak: number
 		lastEvaluatedAt: number
 	}
 }
@@ -61,7 +49,9 @@ export enum UserMeta {
 	bestAnswers = 'bestAnswers',
 	answerComments = 'answerComments',
 	sessions = 'sessions',
-	tutorSessions = 'tutorSessions'
+	tutorSessions = 'tutorSessions',
+	flashCards = 'flashCards',
+	sets = 'sets'
 }
 
 export enum UserRankings {

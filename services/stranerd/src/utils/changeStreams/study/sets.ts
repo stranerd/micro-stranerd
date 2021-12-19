@@ -1,17 +1,20 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { SetEntity, SetFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
-import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitMineCreated('sets', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`sets/${after.id}`, after, after.userId)
 
-		if (!after.isRoot) await UpdateUserNerdScore.execute({
-			userId: after.userId,
-			amount: ScoreRewards.NewSet
-		})
+		if (!after.isRoot) {
+			await UpdateUserNerdScore.execute({
+				userId: after.userId,
+				amount: ScoreRewards.NewSet
+			})
+			await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'sets' })
+		}
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitMineUpdated('sets', after, after.userId)
@@ -21,9 +24,12 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await getSocketEmitter().emitMineDeleted('sets', before, before.userId)
 		await getSocketEmitter().emitMineDeleted(`sets/${before.id}`, before, before.userId)
 
-		if (!before.isRoot) await UpdateUserNerdScore.execute({
-			userId: before.userId,
-			amount: -ScoreRewards.NewSet
-		})
+		if (!before.isRoot) {
+			await UpdateUserNerdScore.execute({
+				userId: before.userId,
+				amount: -ScoreRewards.NewSet
+			})
+			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'sets' })
+		}
 	}
 }
