@@ -6,7 +6,8 @@ import {
 	IncrementUserMetaCount,
 	RecordCountStreak,
 	ScoreRewards,
-	UpdateUserNerdScore
+	UpdateUserNerdScore,
+	UserMeta
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
@@ -16,7 +17,7 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitOpenCreated(`answersComments/${after.answerId}`, after)
 
 		await UpdateAnswersCommentsCount.execute({ id: after.answerId, increment: true })
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answerComments' })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: ScoreRewards.NewComment
@@ -44,7 +45,7 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitOpenDeleted(`answersComments/${before.answerId}`, before)
 
 		await UpdateAnswersCommentsCount.execute({ id: before.answerId, increment: false })
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answerComments' })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewComment

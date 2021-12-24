@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { FlashCardEntity, FlashCardFromModel, RemoveSetProp } from '@modules/study'
 import { getSocketEmitter } from '@index'
-import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
 export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFromModel, FlashCardEntity> = {
 	created: async ({ after }) => {
@@ -12,7 +12,7 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 			userId: after.userId,
 			amount: ScoreRewards.NewFlashCard
 		})
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'flashCards' })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.flashCards })
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitOpenUpdated('flashCards', after)
@@ -28,6 +28,6 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		})
 
 		await RemoveSetProp.execute({ prop: 'flashCards', value: before.id })
-		await IncrementUserMetaCount.execute({ id: before.userId, value: 1, property: 'flashCards' })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: 1, property: UserMeta.flashCards })
 	}
 }

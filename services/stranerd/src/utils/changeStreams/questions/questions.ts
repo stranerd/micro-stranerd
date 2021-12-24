@@ -6,7 +6,8 @@ import {
 	IncrementUserMetaCount,
 	RecordCountStreak,
 	ScoreRewards,
-	UpdateUserNerdScore
+	UpdateUserNerdScore,
+	UserMeta
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
@@ -17,7 +18,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenCreated('questions', after)
 		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
 
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'questions' })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.questions })
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -70,7 +71,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			amount: -ScoreRewards.NewQuestion
 		})
 
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'questions' })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.questions })
 
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))

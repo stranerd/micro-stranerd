@@ -14,7 +14,8 @@ import {
 	RecordCountStreak,
 	ScoreRewards,
 	UpdateUserNerdScore,
-	UpdateUserTags
+	UpdateUserTags,
+	UserMeta
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
@@ -24,7 +25,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitOpenCreated('answers', after)
 		await getSocketEmitter().emitOpenCreated(`answers/${after.id}`, after)
 
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answers' })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answers })
 		await UpdateQuestionsAnswers.execute({
 			questionId: after.questionId,
 			answerId: after.id,
@@ -75,7 +76,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			await IncrementUserMetaCount.execute({
 				id: before.userId,
 				value: after.best ? 1 : -1,
-				property: 'bestAnswers'
+				property: UserMeta.bestAnswers
 			})
 			await RecordCountStreak.execute({
 				userId: after.userId,
@@ -136,7 +137,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			add: false
 		})
 
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answers' })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answers })
 		await UpdateQuestionsAnswers.execute({
 			questionId: before.questionId,
 			answerId: before.id,
@@ -161,7 +162,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				userId: before.userId,
 				amount: -ScoreRewards.BestAnswer
 			})
-			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'bestAnswers' })
+			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.bestAnswers })
 			const question = await FindQuestion.execute(before.questionId)
 			if (question) await UpdateBestAnswer.execute({
 				id: question.id,

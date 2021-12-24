@@ -95,5 +95,5 @@ export { ReviewEntity } from './domain/entities/reviews'
 export { UserEntity } from './domain/entities/users'
 export { RankTypes } from './domain/entities/ranks'
 export {
-	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues
+	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta
 } from './domain/types'

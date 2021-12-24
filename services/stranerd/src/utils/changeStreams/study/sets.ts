@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { SetEntity, SetFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
-import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
@@ -13,7 +13,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 				userId: after.userId,
 				amount: ScoreRewards.NewSet
 			})
-			await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'sets' })
+			await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.sets })
 		}
 	},
 	updated: async ({ after }) => {
@@ -29,7 +29,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 				userId: before.userId,
 				amount: -ScoreRewards.NewSet
 			})
-			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'sets' })
+			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.sets })
 		}
 	}
 }

@@ -6,7 +6,8 @@ import {
 	MarkUserAsDeleted,
 	ResetRankings,
 	UpdateUserWithBio,
-	UpdateUserWithRoles
+	UpdateUserWithRoles,
+	UserRankings
 } from '../modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { FindSession } from '@modules/sessions'
@@ -61,13 +62,13 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {
-			await ResetRankings.execute('daily')
+			await ResetRankings.execute(UserRankings.daily)
 		}
 		if (type === CronTypes.weekly) {
-			await ResetRankings.execute('weekly')
+			await ResetRankings.execute(UserRankings.weekly)
 			await DeleteOldSeenNotifications.execute()
 		}
-		if (type === CronTypes.monthly) await ResetRankings.execute('monthly')
+		if (type === CronTypes.monthly) await ResetRankings.execute(UserRankings.monthly)
 	})
 }
 
