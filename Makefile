@@ -51,11 +51,14 @@ link-commons:
 	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
 ) echo
 
+rm-dockerfile:
+	$(foreach app, $(APPS), rm ./services/$(app)/Dockerfile &&) echo
+
 generate-config-development:
-	node bin/generate-configs.js development $(APPS);
+	node bin/generate-configs.js development $(APPS) && make rm-dockerfile;
 
 generate-config-staging:
-	node bin/generate-configs.js staging $(APPS);
+	node bin/generate-configs.js staging $(APPS) && make rm-dockerfile;
 
 generate-config-production:
-	node bin/generate-configs.js production $(APPS);
+	node bin/generate-configs.js production $(APPS) && make rm-dockerfile;
