@@ -2,11 +2,9 @@ const fs = require('fs')
 
 const appContent = (name) => {
 	return {
-		development: `runtime: nodejs16
+		development: `runtime: nodejs
 service: ${name}
 env: flex
-
-instance_class: B1
 
 env_variables:
   PORT: 8080
@@ -24,10 +22,8 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		staging: `runtime: nodejs16
+		staging: `runtime: nodejs
 service: ${name}
-
-instance_class: B1
 
 env_variables:
   PORT: 8080
@@ -45,10 +41,8 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		production: `runtime: nodejs16
+		production: `runtime: nodejs
 service: ${name}
-
-instance_class: B1
 
 env_variables:
   PORT: 8080
