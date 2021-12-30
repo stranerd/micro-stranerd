@@ -4,6 +4,7 @@ const appContent = (name) => {
 	return {
 		development: `runtime: nodejs16
 service: ${name}
+env: flex
 
 instance_class: B1
 
@@ -15,6 +16,11 @@ handlers:
     script: auto
     secure: always
     redirect_http_response_code: 301
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
 
 manual_scaling:
   instances: 1`,
@@ -31,6 +37,11 @@ handlers:
     script: auto
     secure: always
     redirect_http_response_code: 301
+    
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
 
 manual_scaling:
   instances: 1`,
@@ -47,6 +58,11 @@ handlers:
     script: auto
     secure: always
     redirect_http_response_code: 301
+
+resources:
+  cpu: 2
+  memory_gb: 1
+  disk_size_gb: 10
 
 manual_scaling:
   instances: 1`
