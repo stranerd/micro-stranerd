@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const appContent = (name) => {
 	return {
-		development: `runtime: nodejs
+		development: `runtime: nodejs16
 service: ${name}
 env: flex
 
@@ -22,7 +22,7 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		staging: `runtime: nodejs
+		staging: `runtime: nodejs16
 service: ${name}
 
 env_variables:
@@ -41,7 +41,7 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		production: `runtime: nodejs
+		production: `runtime: nodejs16
 service: ${name}
 
 env_variables:
