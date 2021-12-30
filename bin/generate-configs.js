@@ -24,6 +24,7 @@ manual_scaling:
   instances: 1`,
 		staging: `runtime: nodejs16
 service: ${name}
+env: flex
 
 env_variables:
   PORT: 8080
@@ -43,6 +44,7 @@ manual_scaling:
   instances: 1`,
 		production: `runtime: nodejs16
 service: ${name}
+env: flex
 
 env_variables:
   PORT: 8080
@@ -54,8 +56,8 @@ handlers:
     redirect_http_response_code: 301
 
 resources:
-  cpu: 2
-  memory_gb: 1
+  cpu: 1
+  memory_gb: 2
   disk_size_gb: 10
 
 manual_scaling:
