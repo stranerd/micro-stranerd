@@ -52,7 +52,7 @@ link-commons:
 ) echo
 
 rm-dockerfile:
-	$(foreach app, $(APPS), rm ./services/$(app)/Dockerfile &&) echo
+	$(foreach app, $(APPS), rm ./services/$(app)/Dockerfile && rm ./services/$(app)/.dockerignore &&) echo
 
 generate-config-development:
 	node bin/generate-configs.js development $(APPS) && make rm-dockerfile;
