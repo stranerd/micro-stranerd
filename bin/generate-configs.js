@@ -6,8 +6,8 @@ const appContent = (name) => {
 service: ${name}
 env: flex
 
-env_variables:
-  PORT: 8080
+network:
+  session_affinity: true
 
 handlers:
   - url: /.*
@@ -26,8 +26,8 @@ manual_scaling:
 service: ${name}
 env: flex
 
-env_variables:
-  PORT: 8080
+network:
+  session_affinity: true
 
 handlers:
   - url: /.*
@@ -46,8 +46,8 @@ manual_scaling:
 service: ${name}
 env: flex
 
-env_variables:
-  PORT: 8080
+network:
+  session_affinity: true
 
 handlers:
   - url: /.*

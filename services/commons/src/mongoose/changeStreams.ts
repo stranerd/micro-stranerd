@@ -22,7 +22,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
 	mapper: (model: Model | null) => Entity | null) {
 
-	const dbName = collection.collection.collectionName
+	const dbName = collection.collection.collectionName as any
 	const cloneName = dbName + '_streams_clone'
 	const getClone = () => collection.collection.conn.db.collection(cloneName)
 	const getStreamTokens = () => collection.collection.conn.db.collection('stream-tokens')
