@@ -15,12 +15,3 @@
 
 # Node.js dependencies:
 node_modules/
-
-README.md
-src
-.eslintrc.js
-tsconfig.json
-
-Dockerfile
-.dockerignore
-wait-for-it.sh
