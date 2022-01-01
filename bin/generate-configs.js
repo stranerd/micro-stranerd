@@ -72,7 +72,7 @@ if (args.length > 1) {
 	const paths = args.slice(1)
 
 	paths.forEach((path) => {
-		const allContent = appContent(path)
+		const allContent = appContent(path + 'flex')
 		const content = allContent[env] ?? allContent['development']
 
 		fs.writeFileSync(`./services/${path}/app.yaml`, content)
