@@ -2,9 +2,9 @@ const fs = require('fs')
 
 const appContent = (name) => {
 	return {
-		development: `runtime: nodejs
+		development: `runtime: nodejs16
 service: ${name}
-env: flex
+env: standard
 
 network:
   session_affinity: true
@@ -22,9 +22,9 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		staging: `runtime: nodejs
+		staging: `runtime: nodejs16
 service: ${name}
-env: flex
+env: standard
 
 network:
   session_affinity: true
@@ -42,9 +42,9 @@ resources:
 
 manual_scaling:
   instances: 1`,
-		production: `runtime: nodejs
+		production: `runtime: nodejs16
 service: ${name}
-env: flex
+env: standard
 
 network:
   session_affinity: true
