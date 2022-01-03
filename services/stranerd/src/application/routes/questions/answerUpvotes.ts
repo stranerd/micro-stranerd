@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { AnswerUpvoteController } from '../../controllers/questions'
+import { AnswerUpvoteController } from '../../controllers/questions/answerUpvotes'
 
 export const answerUpvotesRoutes: Route[] = [
 	{

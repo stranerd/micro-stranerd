@@ -7,14 +7,10 @@ import { QuestionMapper } from '../mappers/questions'
 const Schema = new mongoose.Schema<QuestionFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	body: {
 		type: String,
-		required: true
-	},
-	coins: {
-		type: Number,
 		required: true
 	},
 	tags: {
@@ -31,7 +27,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as QuestionFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['userBio'],
 		required: false,
 		default: {} as unknown as QuestionFromModel['userBio']
 	},

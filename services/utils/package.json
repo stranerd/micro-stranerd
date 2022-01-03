@@ -9,9 +9,6 @@
 		"dev": "ts-node-dev -r tsconfig-paths/register --transpile-only src/index.ts",
 		"lint": "eslint src/ --ext .ts,.js --fix"
 	},
-	"engines": {
-		"node": ">16.0.0"
-	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",

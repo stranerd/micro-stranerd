@@ -7,7 +7,7 @@ import { SessionMapper } from '../mappers/session'
 const Schema = new mongoose.Schema<SessionFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	message: {
 		type: String,
@@ -18,7 +18,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	studentBio: {
-		type: Object as unknown as SessionFromModel['studentBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentBio'],
 		required: true
 	},
 	tutorId: {
@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	tutorBio: {
-		type: Object as unknown as SessionFromModel['tutorBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorBio'],
 		required: true
 	},
 	duration: {
@@ -48,10 +48,10 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		type: Number,
 		required: true
 	},
-	taskId: {
-		type: mongoose.Schema.Types.Mixed,
+	taskIds: {
+		type: [mongoose.Schema.Types.Mixed],
 		required: false,
-		default: null
+		default: []
 	},
 	cancelled: {
 		student: {
@@ -60,11 +60,6 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 			default: false
 		},
 		tutor: {
-			type: Boolean,
-			required: false,
-			default: false
-		},
-		busy: {
 			type: Boolean,
 			required: false,
 			default: false

@@ -1,7 +1,14 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer, ModifyCommentsCount } from '@modules/questions'
+import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer, UpdateAnswersCommentsCount } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { IncrementUserMetaCount } from '@modules/users'
+import {
+	CountStreakBadges,
+	IncrementUserMetaCount,
+	RecordCountStreak,
+	ScoreRewards,
+	UpdateUserNerdScore,
+	UserMeta
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
@@ -9,14 +16,24 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitOpenCreated('answersComments', after)
 		await getSocketEmitter().emitOpenCreated(`answersComments/${after.answerId}`, after)
 
-		await ModifyCommentsCount.execute({ id: after.answerId, increment: true })
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'answerComments' })
+		await UpdateAnswersCommentsCount.execute({ id: after.answerId, increment: true })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answerComments })
+		await UpdateUserNerdScore.execute({
+			userId: after.userId,
+			amount: ScoreRewards.NewComment
+		})
 
 		const answer = await FindAnswer.execute(after.answerId)
 		if (answer && answer.userId !== after.userId) await sendNotification(answer.userId, {
 			body: 'Your answer has a new comment. Go have a look',
 			action: 'answerComments',
 			data: { questionId: answer.questionId, answerId: answer.id, commentId: after.id }
+		})
+
+		await RecordCountStreak.execute({
+			userId: after.userId,
+			activity: CountStreakBadges.NewAnswerComment,
+			add: true
 		})
 	},
 	updated: async ({ after }) => {
@@ -27,7 +44,16 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitOpenDeleted('answersComments', before)
 		await getSocketEmitter().emitOpenDeleted(`answersComments/${before.answerId}`, before)
 
-		await ModifyCommentsCount.execute({ id: before.answerId, increment: false })
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'answerComments' })
+		await UpdateAnswersCommentsCount.execute({ id: before.answerId, increment: false })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answerComments })
+		await UpdateUserNerdScore.execute({
+			userId: before.userId,
+			amount: -ScoreRewards.NewComment
+		})
+		await RecordCountStreak.execute({
+			userId: before.userId,
+			activity: CountStreakBadges.NewAnswerComment,
+			add: false
+		})
 	}
 }

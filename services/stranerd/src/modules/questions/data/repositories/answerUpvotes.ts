@@ -35,7 +35,7 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			if (!upvote) {
 				upvote = new AnswerUpvote(data)
 				await Answer.findByIdAndUpdate(data.answerId, {
-					$push: {
+					$addToSet: {
 						votes: { userId: data.userId, vote: data.vote }
 					}
 				}, { session })

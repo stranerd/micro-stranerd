@@ -1,17 +1,17 @@
-import { ChangeStreamCallbacks, Conditions } from '@utils/commons'
-import { AddChat, CancelSession, GetSessions, SessionEntity, SessionFromModel } from '@modules/sessions'
+import { ChangeStreamCallbacks } from '@utils/commons'
+import { AddChat, CancelSession, SessionEntity, SessionFromModel } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { addUserCoins } from '@utils/modules/users/transactions'
 import {
-	AddUserQueuedSessions,
+	CountStreakBadges,
 	FindUser,
 	IncrementUsersSessionsCount,
-	RemoveUserQueuedSessions,
+	RecordCountStreak,
 	ScoreRewards,
 	SetUsersCurrentSession,
-	UpdateUserNerdScore
+	UpdateUserNerdScore,
+	UpdateUserQueuedSessions
 } from '@modules/users'
-import { cancelSessionTask, startSession } from '@utils/modules/sessions/sessions'
+import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
@@ -20,6 +20,14 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await getSocketEmitter().emitMineCreated(`sessions/${after.id}`, after, after.studentId)
 		await getSocketEmitter().emitMineCreated('sessions', after, after.tutorId)
 		await getSocketEmitter().emitMineCreated(`sessions/${after.id}`, after, after.tutorId)
+
+		await UpdateUserQueuedSessions.execute({
+			studentId: after.studentId,
+			tutorId: after.tutorId,
+			sessionIds: [after.id],
+			add: true
+		})
+
 		await AddChat.execute({
 			path: [after.studentId, after.tutorId],
 			data: {
@@ -29,21 +37,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			}
 		})
 
-		await addUserCoins(after.studentId, { gold: 0 - after.price, bronze: 0 },
-			'You paid coins for a session'
-		)
-
 		await sendNotification(after.tutorId, {
 			body: `${after.studentBio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
 			action: 'sessions',
-			data: { userId: after.studentId }
+			data: { userId: after.studentId, sessionId: after.id }
 		}, 'New Session Request')
-
-		await AddUserQueuedSessions.execute({
-			studentId: after.studentId,
-			tutorId: after.tutorId,
-			sessionId: after.id
-		})
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitMineUpdated('sessions', after, after.studentId)
@@ -54,25 +52,16 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
 			if (after.accepted) {
-				await startSession(after)
-
 				const tutor = await FindUser.execute(after.tutorId)
 				const tutorLobby = tutor?.session.lobby ?? []
 				const filteredLobbiedSessionIds = tutorLobby.filter((s) => s !== after.id)
 
 				// Delete current session key and other lobbied sessions from both users
-				await RemoveUserQueuedSessions.execute({
+				await UpdateUserQueuedSessions.execute({
 					studentId: after.studentId,
 					tutorId: after.tutorId,
-					sessionIds: tutorLobby
-				})
-
-				// Set both current session
-				await SetUsersCurrentSession.execute({
-					studentId: after.studentId,
-					tutorId: after.tutorId,
-					sessionId: after.id,
-					add: true
+					sessionIds: tutorLobby,
+					add: false
 				})
 
 				// Send accepted message
@@ -85,33 +74,23 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					}
 				})
 
-				// Pay Tutor
-				await addUserCoins(after.tutorId, { gold: after.price, bronze: 0 },
-					'You got paid for a session'
-				)
+				if (after.isScheduled) await scheduleSession(after)
+				else {
+					await startSession(after)
 
-				// Cancel All Other Lobbied Sessions
-				await CancelSession.execute({
-					sessionIds: filteredLobbiedSessionIds,
-					userId: after.tutorId,
-					reason: 'tutor'
-				})
-
-				// Get All Other Lobbied Sessions and Refund the owners
-				const { results: filteredLobbiedSessions } = await GetSessions.execute({
-					where: [{ field: 'id', condition: Conditions.in, value: filteredLobbiedSessionIds }],
-					all: true
-				})
-				await Promise.all(filteredLobbiedSessions.map((s) => addUserCoins(
-					s.studentId,
-					{ gold: s.price, bronze: 0 },
-					'You got refunded for a rejected session'
-				)))
+					// Cancel All Other Lobbied Sessions
+					await CancelSession.execute({
+						sessionIds: filteredLobbiedSessionIds,
+						userId: after.tutorId,
+						reason: 'tutor'
+					})
+				}
 			} else {
-				await RemoveUserQueuedSessions.execute({
+				await UpdateUserQueuedSessions.execute({
 					studentId: after.studentId,
 					tutorId: after.tutorId,
-					sessionIds: [after.id]
+					sessionIds: [after.id],
+					add: false
 				})
 
 				await AddChat.execute({
@@ -122,29 +101,54 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 						media: null
 					}
 				})
-
-				await addUserCoins(after.studentId, { gold: after.price, bronze: 0 },
-					'You got refunded for a rejected session'
-				)
 			}
 		}
 		// Session was just concluded or cancelled, so cleanup
 		if (!before.done && after.done) {
-			await cancelSessionTask(after)
-			await SetUsersCurrentSession.execute({
+			if (after.accepted) await SetUsersCurrentSession.execute({
 				studentId: after.studentId,
 				tutorId: after.tutorId,
 				sessionId: after.id,
 				add: false
 			})
-			await UpdateUserNerdScore.execute({
-				userId: after.studentId,
-				amount: ScoreRewards.CompleteSession
-			})
-			await IncrementUsersSessionsCount.execute({
-				tutorId: after.tutorId,
+			if (!after.wasCancelled) {
+				await UpdateUserNerdScore.execute({
+					userId: after.studentId,
+					amount: ScoreRewards.CompleteSession
+				})
+				await IncrementUsersSessionsCount.execute({
+					tutorId: after.tutorId,
+					studentId: after.studentId,
+					value: 1
+				})
+			} else await cancelSessionTask(after)
+		}
+
+		// Session was cancelled by the system cos the tutor accepted another session
+		if (!after.accepted && !before.cancelled.student && after.cancelled.tutor) {
+			await UpdateUserQueuedSessions.execute({
 				studentId: after.studentId,
-				value: 1
+				tutorId: after.tutorId,
+				sessionIds: [after.id],
+				add: false
+			})
+			await AddChat.execute({
+				path: [after.tutorId, after.studentId],
+				data: {
+					sessionId: after.id,
+					content: 'Session rejected',
+					media: null
+				}
+			})
+			await RecordCountStreak.execute({
+				userId: after.studentId,
+				activity: CountStreakBadges.AttendSession,
+				add: true
+			})
+			await RecordCountStreak.execute({
+				userId: after.tutorId,
+				activity: CountStreakBadges.HostSession,
+				add: true
 			})
 		}
 	},

@@ -100,10 +100,7 @@ export type QueryResults<Model> = {
 const buildWhereQuery = (params: Where[], type: 'and' | 'or') => {
 	const where = params.map(({ field, value, condition }) => {
 		const checkedField = field === 'id' ? '_id' : (field ?? '')
-		const parsedValue = value ?? ''
-		const checkedValue = field === 'id'
-			? mongoose.Types.ObjectId.isValid(parsedValue) ? parsedValue : new mongoose.Types.ObjectId()
-			: (parsedValue ?? '')
+		const checkedValue = value === undefined ? '' : value
 		const checkedCondition = Object.keys(Conditions).indexOf(condition as unknown as string) > -1 ? condition : Conditions.eq
 		return ({
 			field: checkedField,

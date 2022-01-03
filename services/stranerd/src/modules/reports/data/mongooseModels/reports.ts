@@ -7,26 +7,22 @@ import { ReportChangeStreamCallbacks } from '@utils/changeStreams/reports/report
 const ReportSchema = new mongoose.Schema<ReportFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
-	},
-	type: {
-		type: String,
-		required: true
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	reporterId: {
 		type: String,
 		required: true
 	},
 	reporterBio: {
-		type: Object as unknown as ReportToModel['reporterBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['reporterBio'],
 		required: true
 	},
 	reportedId: {
 		type: String,
 		required: true
 	},
-	reported: {
-		type: Object,
+	data: {
+		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
 	message: {

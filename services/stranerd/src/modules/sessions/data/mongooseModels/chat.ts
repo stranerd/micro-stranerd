@@ -7,7 +7,7 @@ import { ChatMapper } from '../mappers/chat'
 const Schema = new mongoose.Schema<ChatFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	path: {
 		type: [String],
@@ -19,7 +19,7 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 		default: null as unknown as string
 	},
 	media: {
-		type: Object,
+		type: mongoose.Schema.Types.Mixed,
 		required: false,
 		default: null
 	},

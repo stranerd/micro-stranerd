@@ -6,9 +6,13 @@ import {
 	MarkUserAsDeleted,
 	ResetRankings,
 	UpdateUserWithBio,
-	UpdateUserWithRoles
+	UpdateUserWithRoles,
+	UserRankings
 } from '../modules/users'
-import { endSession } from '@utils/modules/sessions/sessions'
+import { endSession, startSession } from '@utils/modules/sessions/sessions'
+import { FindSession } from '@modules/sessions'
+import { sendNotification } from '@utils/modules/users/notifications'
+import { UpdateTest } from '@modules/study'
 
 const eventBus = new EventBus()
 
@@ -30,14 +34,41 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
+		if (data.type === DelayedJobs.ScheduledSessionStart) {
+			const { sessionId, studentId: userId } = data.data
+			const session = await FindSession.execute({ sessionId, userId })
+			if (session) await startSession(session)
+		}
+		if (data.type === DelayedJobs.ScheduledSessionNotification) {
+			const { sessionId, studentId, tutorId, timeInSec } = data.data
+			await Promise.all([
+				await sendNotification(tutorId, {
+					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					action: 'sessions',
+					data: { userId: studentId, sessionId }
+				}),
+				await sendNotification(studentId, {
+					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					action: 'sessions',
+					data: { userId: tutorId, sessionId }
+				})
+			])
+		}
+		if (data.type === DelayedJobs.TestTimer) await UpdateTest.execute({
+			id: data.data.testId,
+			userId: data.data.userId,
+			data: { done: true }
+		})
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
-		if (type === CronTypes.daily) await ResetRankings.execute('daily')
+		if (type === CronTypes.daily) {
+			await ResetRankings.execute(UserRankings.daily)
+		}
 		if (type === CronTypes.weekly) {
-			await ResetRankings.execute('weekly')
+			await ResetRankings.execute(UserRankings.weekly)
 			await DeleteOldSeenNotifications.execute()
 		}
-		if (type === CronTypes.monthly) await ResetRankings.execute('monthly')
+		if (type === CronTypes.monthly) await ResetRankings.execute(UserRankings.monthly)
 	})
 }
 

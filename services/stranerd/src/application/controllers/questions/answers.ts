@@ -58,7 +58,6 @@ export class AnswerController {
 		if (user && question) {
 			return await AddAnswer.execute({
 				...data,
-				coins: question.creditable,
 				tags: question.tags,
 				userBio: user.bio,
 				userId: req.authUser!.id

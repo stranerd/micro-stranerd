@@ -7,7 +7,7 @@ import { AnswerMapper } from '../mappers/answers'
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	title: {
 		type: String,
@@ -32,18 +32,14 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as AnswerFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['userBio'],
 		required: false,
 		default: {} as unknown as AnswerFromModel['userBio']
 	},
 	attachments: {
-		type: [Object] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
 		required: false,
 		default: []
-	},
-	coins: {
-		type: Number,
-		required: true
 	},
 	best: {
 		type: Boolean,

@@ -3,7 +3,7 @@ import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { CancelReason, TaskID, UserBio } from '../../domain/types'
+import { TaskID, UserBio } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
@@ -48,10 +48,17 @@ export class SessionRepository implements ISessionRepository {
 		return !!session
 	}
 
-	async cancel (ids: string[], userId: string, reason: CancelReason) {
+	async cancel (ids: string[], userId: string, reason: keyof SessionFromModel['cancelled']) {
 		const result = await Session.updateMany({
 			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
 		}, { $set: { [`cancelled.${reason}`]: true, done: true } })
+		return result.acknowledged
+	}
+
+	async end (ids: string[], userId: string) {
+		const result = await Session.updateMany({
+			_id: { $in: ids }, studentId: userId
+		}, { $set: { done: true } })
 		return result.acknowledged
 	}
 
@@ -63,8 +70,15 @@ export class SessionRepository implements ISessionRepository {
 		return result[0].acknowledged && result[1].acknowledged
 	}
 
-	async updateTaskIdAndStartedAt (id: string, data: { taskId: TaskID, startedAt?: number }, delayInMs: number) {
-		await Session.findByIdAndUpdate(id, { $set: { ...data, endedAt: Date.now() + delayInMs } })
+	async updateTaskIdsAndTimes (id: string, data: { taskIds: TaskID[], delayInMs?: number, startedAt?: number }) {
+		const { taskIds, startedAt, delayInMs } = data
+		await Session.findByIdAndUpdate(id, {
+			$set: {
+				...(startedAt ? { startedAt: startedAt } : {}),
+				...(delayInMs ? { endedAt: Date.now() + delayInMs } : {})
+			},
+			$addToSet: { taskIds: { $each: taskIds } }
+		})
 	}
 
 	async markSessionDone (id: string) {

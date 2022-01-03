@@ -1,13 +1,14 @@
-import { ChangeStreamCallbacks, Conditions, EventTypes } from '@utils/commons'
+import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel, UpdateQuestionAnswersTags } from '@modules/questions'
 import {
-	DeleteQuestionAnswers,
-	QuestionEntity,
-	QuestionFromModel,
-	UpdateQuestionAnswersTags,
-	UpdateTagsCount
-} from '@modules/questions'
-import { addUserCoins } from '@utils/modules/users/transactions'
-import { GetUsers, IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+	CountStreakBadges,
+	GetUsers,
+	IncrementUserMetaCount,
+	RecordCountStreak,
+	ScoreRewards,
+	UpdateUserNerdScore,
+	UserMeta
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
@@ -17,26 +18,23 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenCreated('questions', after)
 		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
 
-		await addUserCoins(after.userId, {
-			bronze: 0 - after.coins,
-			gold: 0
-		}, 'You paid coins to ask a question!')
-
-		await UpdateTagsCount.execute({
-			tagNames: after.tags,
-			increment: true
-		})
-
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: 'questions' })
+		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.questions })
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: ScoreRewards.NewQuestion
 		})
 
+		await RecordCountStreak.execute({
+			userId: after.userId,
+			activity: CountStreakBadges.NewQuestion,
+			add: true
+		})
+
 		const tutors = await GetUsers.execute({
 			where: [
-				{ field: 'tutor.strongestSubject', value: after.subjectId, condition: Conditions.eq }
+				{ field: `roles.${AuthApps.Stranerd}.isTutor`, value: true },
+				{ field: 'tutor.strongestSubject', value: after.subjectId }
 			]
 		})
 		await Promise.all([
@@ -53,21 +51,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenUpdated('questions', after)
 		await getSocketEmitter().emitOpenUpdated(`questions/${after.id}`, after)
 
-		if (changes.tags) {
-			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
-			const newTags = after.tags.filter((t) => !before.tags.includes(t))
-			await UpdateTagsCount.execute({ tagNames: oldTags, increment: false })
-			await UpdateTagsCount.execute({ tagNames: newTags, increment: true })
-			await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
-		}
-
-		if (changes.coins) {
-			const coins = after.coins - after.coins
-			if (coins !== 0) await addUserCoins(after.userId,
-				{ bronze: 0 - coins, gold: 0 },
-				coins > 0 ? 'You paid coins to upgrade a question' : 'You got refunded coins from downgrading a question'
-			)
-		}
+		if (changes.tags) await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
 
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
@@ -82,20 +66,21 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 
-		await UpdateTagsCount.execute({
-			tagNames: before.tags,
-			increment: false
-		})
-
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewQuestion
 		})
 
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: 'questions' })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.questions })
 
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
 		)
+
+		await RecordCountStreak.execute({
+			userId: before.userId,
+			activity: CountStreakBadges.NewQuestion,
+			add: false
+		})
 	}
 }

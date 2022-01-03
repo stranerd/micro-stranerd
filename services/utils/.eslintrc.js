@@ -14,7 +14,7 @@ module.exports = {
 		ecmaVersion: 2021
 	},
 	rules: {
-		'no-console': 'error',
+		'no-console': 'warn',
 		'no-debugger': 'error',
 		'no-tabs': 'off',
 		'no-var': 'error',

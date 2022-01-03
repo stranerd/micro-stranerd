@@ -1,7 +1,7 @@
 import { AuthUser, RefreshUser } from '../../utils/authUser'
 import { StorageFile } from '../../storage'
 
-type HeaderTypes = 'AccessToken' | 'RefreshToken' | 'Referer' | 'ContentType' | 'UserAgent'
+type HeaderKeys = 'AccessToken' | 'RefreshToken' | 'Referer' | 'ContentType' | 'UserAgent'
 
 export class Request {
 	readonly method: string
@@ -9,7 +9,7 @@ export class Request {
 	readonly body: Record<string, any>
 	readonly params: Record<string, string>
 	readonly query: Record<string, string>
-	readonly headers: Record<HeaderTypes, any>
+	readonly headers: Record<HeaderKeys, any>
 	readonly files: StorageFile[]
 	authUser: null | AuthUser = null
 	refreshUser: null | RefreshUser = null
@@ -22,7 +22,7 @@ export class Request {
 		body: Record<string, any>
 		params: Record<string, any>
 		query: Record<string, any>
-		headers: Record<HeaderTypes, any>
+		headers: Record<HeaderKeys, any>
 		files: StorageFile[]
 		method: string
 		path: string,

@@ -1,5 +1,7 @@
 import { AuthRoles, MediaOutput } from '@utils/commons'
 
+export * from './badges'
+
 export type UserBio = {
 	email: string
 	firstName: string
@@ -28,30 +30,15 @@ export type UserStatus = {
 
 export type UserAccount = {
 	score: number
-	rankings: {
-		daily: number
-		weekly: number
-		monthly: number
-	}
-	coins: {
-		gold: number,
-		bronze: number
-	},
-	meta: {
-		questions: number
-		answers: number
-		bestAnswers: number
-		answerComments: number
-		sessions: number
-		tutorSessions: number
-	},
+	rankings: Record<UserRankings, number>
+	meta: Record<UserMeta, number>
 	ratings: {
 		total: number
 		count: number
-	},
+	}
 	streak: {
-		count: number,
-		longestStreak: number,
+		count: number
+		longestStreak: number
 		lastEvaluatedAt: number
 	}
 }
@@ -62,7 +49,9 @@ export enum UserMeta {
 	bestAnswers = 'bestAnswers',
 	answerComments = 'answerComments',
 	sessions = 'sessions',
-	tutorSessions = 'tutorSessions'
+	tutorSessions = 'tutorSessions',
+	flashCards = 'flashCards',
+	sets = 'sets'
 }
 
 export enum UserRankings {
@@ -80,8 +69,15 @@ export interface UserSession {
 }
 
 export enum ScoreRewards {
-	BestAnswer = 4,
+	BestAnswer = 3,
+	NewAnswer = 1,
+	NewQuestion = 0.5,
+	UpvoteAnswer = 0.5,
+	NewComment = 0.5,
+
 	CompleteSession = 1,
-	NewAnswer = 0.1,
-	NewQuestion = 0.05
+
+	CompleteTest = 2,
+	NewFlashCard = 3,
+	NewSet = 3
 }

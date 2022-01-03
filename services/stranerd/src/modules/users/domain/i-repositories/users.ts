@@ -17,17 +17,13 @@ export interface IUserRepository {
 
 	incrementUserMetaProperty (userId: string, propertyName: keyof UserAccount['meta'], value: 1 | -1): Promise<void>
 
-	addUserCoins (userId: string, coins: { gold: number, bronze: number })
-
 	updateNerdScore (userId: string, amount: ScoreRewards): Promise<boolean>
 
 	resetRankings (key: keyof UserAccount['rankings']): Promise<boolean>
 
 	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean): Promise<void>
 
-	addUserQueuedSessions (studentId: string, tutorId: string, sessionId: string): Promise<void>
-
-	removeUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[]): Promise<void>
+	updateUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[], add: boolean): Promise<void>
 
 	updateUserStreak (userId: string): Promise<{ skip: boolean, increase: boolean, reset: boolean, streak: number }>
 

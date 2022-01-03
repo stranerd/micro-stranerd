@@ -7,7 +7,7 @@ import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	unRead: {
 		type: [String],
@@ -15,7 +15,7 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		default: []
 	},
 	last: {
-		type: Object as unknown as ChatMetaFromModel['last'],
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['last'],
 		required: false,
 		default: null as unknown as ChatMetaFromModel['last']
 	},
@@ -28,7 +28,7 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as ChatMetaFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['userBio'],
 		required: false,
 		default: null as unknown as ChatMetaFromModel['userBio']
 	},

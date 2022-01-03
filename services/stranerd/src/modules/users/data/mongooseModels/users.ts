@@ -55,14 +55,14 @@ const UserStreak = {
 const UserSchema = new mongoose.Schema<UserFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	bio: {
-		type: Object as unknown as UserFromModel['bio'],
+		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['bio'],
 		required: true
 	},
 	roles: {
-		type: Object as unknown as UserFromModel['roles'],
+		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['roles'],
 		required: false,
 		default: {} as unknown as UserFromModel['roles']
 	},
@@ -78,7 +78,7 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: []
 		},
 		tags: {
-			type: Object,
+			type: mongoose.Schema.Types.Mixed,
 			required: false,
 			default: {}
 		}
@@ -136,18 +136,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: 0
 		},
 		rankings: Rankings,
-		coins: {
-			gold: {
-				type: Number,
-				required: false,
-				default: 0
-			},
-			bronze: {
-				type: Number,
-				required: false,
-				default: 0
-			}
-		},
 		meta: Meta,
 		ratings: UserRating,
 		streak: UserStreak

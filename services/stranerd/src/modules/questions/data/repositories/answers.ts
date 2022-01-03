@@ -47,7 +47,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answer
 	}
 
-	async modifyCommentsCount (id: string, increment: boolean) {
+	async updateCommentsCount (id: string, increment: boolean) {
 		const answer = await Answer.findByIdAndUpdate(id, {
 			$inc: { commentsCount: increment ? 1 : -1 }
 		})

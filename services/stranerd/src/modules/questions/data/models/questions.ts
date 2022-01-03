@@ -12,7 +12,6 @@ export interface QuestionFromModel extends QuestionToModel {
 
 export interface QuestionToModel {
 	body: string
-	coins: number
 	tags: string[]
 	attachments: MediaOutput[]
 	subjectId: string

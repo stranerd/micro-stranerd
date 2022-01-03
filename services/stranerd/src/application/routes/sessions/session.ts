@@ -1,7 +1,7 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { SessionController } from '../../controllers/sessions'
 
-export const SessionRoutes: Route[] = [
+export const sessionRoutes: Route[] = [
 	{
 		path: '/sessions/sessions',
 		method: 'get',
@@ -63,6 +63,19 @@ export const SessionRoutes: Route[] = [
 				return {
 					status: StatusCodes.Ok,
 					result: await SessionController.cancelSession(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/sessions/sessions/:id/end',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await SessionController.endSession(req)
 				}
 			})
 		]

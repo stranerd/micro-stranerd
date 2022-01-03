@@ -14,7 +14,7 @@ export const makeController = (cb: (_: CustomRequest) => Promise<CustomResponse>
 	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const { status = StatusCodes.Ok, result } = await cb(extractRequest(req))
-			return res.status(status).json(result)
+			return res.status(status).json(result).end()
 		} catch (e) {
 			next(e)
 			return
@@ -36,7 +36,7 @@ export const makeMiddleware = (cb: (_: CustomRequest) => Promise<void>): Control
 export const makeErrorMiddleware = (cb: (_: CustomRequest, __: Error) => Promise<CustomResponse>): Controller => {
 	return async (err: Error, req: Request, res: Response, _: NextFunction) => {
 		const { status = StatusCodes.BadRequest, result } = await cb(extractRequest(req), err)
-		return res.status(status).json(result)
+		return res.status(status).json(result).end()
 	}
 }
 

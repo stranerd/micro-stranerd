@@ -7,9 +7,9 @@ export interface SessionFromModel extends SessionToModel {
 	createdAt: number,
 	updatedAt: number,
 	accepted: boolean | null
-	taskId: TaskID
+	taskIds: TaskID[]
 	done: boolean
-	cancelled: { tutor: boolean, student: boolean, busy: boolean }
+	cancelled: { tutor: boolean, student: boolean }
 }
 
 export interface SessionToModel {
@@ -20,4 +20,6 @@ export interface SessionToModel {
 	tutorBio: UserBio
 	duration: number
 	price: number
+	isScheduled: boolean
+	scheduledAt: number | null
 }

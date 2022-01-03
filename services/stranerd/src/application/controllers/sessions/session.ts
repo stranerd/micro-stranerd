@@ -1,6 +1,6 @@
-import { AcceptSession, AddSession, CancelSession, FindSession, GetSessions } from '@modules/sessions'
+import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class SessionController {
 	static async getSessions (req: Request) {
@@ -33,28 +33,24 @@ export class SessionController {
 		const data = validate({
 			message: req.body.message,
 			tutorId: req.body.tutorId,
-			duration: req.body.duration
+			duration: req.body.duration,
+			isScheduled: req.body.isScheduled ?? false,
+			scheduledAt: req.body.scheduledAt
 		}, {
 			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			tutorId: { required: true, rules: [Validation.isString] },
 			duration: {
 				required: true,
-				rules: [
-					Validation.isNumber,
-					Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val, 'is not a supported duration')
-				]
+				rules: [Validation.isNumber, Validation.arrayContainsX(sessions.map((s) => s.duration), (curr, val) => curr === val, 'is not a supported duration')]
+			},
+			isScheduled: { required: true, rules: [Validation.isBoolean] },
+			scheduledAt: {
+				required: false,
+				rules: [Validation.isRequiredIfX(!!req.body.isScheduled), Validation.isNumberX('is not a valid date'), Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			}
 		})
 
-		const requestedSession = sessions.find((s) => s.duration === data.duration)
-		if (!requestedSession) throw new ValidationError([{
-			field: 'duration',
-			messages: ['is not a supported duration']
-		}])
-		if (requestedSession.price > studentUser.account.coins.bronze) throw new ValidationError([{
-			field: 'duration',
-			messages: ['cannot afford this session duration']
-		}])
+		const requestedSession = sessions.find((s) => s.duration === data.duration)!
 
 		return await AddSession.execute({
 			...data,
@@ -88,8 +84,18 @@ export class SessionController {
 
 		return await CancelSession.execute({
 			sessionIds: [sessionId],
-			reason: 'tutor',
+			reason: 'student',
 			userId
+		})
+	}
+
+	static async endSession (req: Request) {
+		const sessionId = req.params.id
+		const userId = req.authUser!.id
+
+		return await EndSession.execute({
+			sessionIds: [sessionId],
+			studentId: userId
 		})
 	}
 }

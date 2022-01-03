@@ -36,6 +36,7 @@ const postRoutes: Route[] = [
 
 export const getNewServerInstance = (routes: Route[], socketChannels: SocketParams, socketCallers: SocketCallers) => {
 	const app = express()
+	app.disable('x-powered-by')
 	const server = http.createServer(app)
 	const socket = new io.Server(server, { cors: { origin: '*' } })
 	if (isDev) app.use(morgan('dev'))

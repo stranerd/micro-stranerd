@@ -7,7 +7,7 @@ import { AnswerCommentMapper } from '../mappers/answerComments'
 const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	body: {
 		type: String,
@@ -22,7 +22,7 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as AnswerCommentFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerCommentFromModel['userBio'],
 		required: false,
 		default: {} as unknown as AnswerCommentFromModel['userBio']
 	},

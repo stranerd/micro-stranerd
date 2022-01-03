@@ -7,7 +7,7 @@ import { ReviewMapper } from '../mappers/reviews'
 const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 	_id: {
 		type: String,
-		default: () => new mongoose.Types.ObjectId() as unknown as string
+		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	review: {
 		type: String,
@@ -26,7 +26,7 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		required: true
 	},
 	userBio: {
-		type: Object as unknown as ReviewFromModel['userBio'],
+		type: mongoose.Schema.Types.Mixed as unknown as ReviewFromModel['userBio'],
 		required: true
 	},
 	createdAt: {

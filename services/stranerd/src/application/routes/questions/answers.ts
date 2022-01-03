@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { AnswerController } from '../../controllers/questions'
+import { AnswerController } from '../../controllers/questions/answers'
 
 export const answersRoutes: Route[] = [
 	{

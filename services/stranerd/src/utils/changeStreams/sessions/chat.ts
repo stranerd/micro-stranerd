@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { ChatEntity, ChatFromModel, FindSession, GetChats } from '@modules/sessions'
 import { publishers } from '@utils/events'
-import { startSession } from '@utils/modules/sessions/sessions'
+import { startSessionTimer } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
@@ -19,7 +19,7 @@ export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, Cha
 		})
 		if (sessionChats.docs.total < 2) return
 		if (sessionChats.results[1].id !== after.id) return
-		await startSession(session)
+		await startSessionTimer(session)
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitMineUpdated('chats', after, after.path[0])
