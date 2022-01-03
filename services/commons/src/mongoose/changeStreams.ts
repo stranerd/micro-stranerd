@@ -20,7 +20,8 @@ export type ChangeStreamCallbacks<Model, Entity> = {
 async function startChangeStream<Model extends { _id: string }, Entity extends BaseEntity> (
 	collection: mongoose.Model<Model | any>,
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
-	mapper: (model: Model | null) => Entity | null) {
+	mapper: (model: Model | null) => Entity | null,
+	skipResume = false) {
 
 	const dbName = collection.collection.collectionName as any
 	const cloneName = dbName + '_streams_clone'
@@ -28,7 +29,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	const getStreamTokens = () => collection.collection.conn.db.collection('stream-tokens')
 
 	const res = await getStreamTokens().findOne({ _id: dbName })
-	const resumeToken = res?.resumeToken ?? undefined
+	const resumeToken = skipResume ? undefined : res?.resumeToken ?? undefined
 
 	const changeStream = collection
 		.watch([], { fullDocument: 'updateLookup', startAfter: resumeToken })
@@ -87,10 +88,10 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 			await Logger.error(`Change Stream errored out: ${dbName}`)
 			await Logger.error(err.message)
 			const isOutOfBound = err.message.includes('Resume of change stream was not possible, as the resume point may no longer be in the oplog')
-			if (isOutOfBound) return
-			changeStream
-			// changeStream.close()
-			// await startChangeStream(collection, callbacks, mapper)
+			if (isOutOfBound) {
+				changeStream.close()
+				return startChangeStream(collection, callbacks, mapper, true)
+			}
 		})
 }
 
