@@ -46,6 +46,10 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: null
 	},
+	preview: {
+		type: mongoose.Schema.Types.Mixed,
+		default: {} as any
+	},
 	createdAt: {
 		type: Number,
 		required: false,
