@@ -1,14 +1,20 @@
 version: '3.8'
 services:
   nginx:
-    image: 'nginx:1.21.1-alpine'
+    build:
+      context: ./docker/nginx
+      args:
+        BASE_DOMAIN: ${BASE_DOMAIN}
+        USE_SSL: ${USE_SSL}
+        BUILD_SSL: ${BUILD_SSL}
     container_name: nginx
     hostname: nginx
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - './docker/nginx/default.conf:/etc/nginx/nginx.conf:ro'
+      - './docker/nginx/logs/error.log:/var/log/nginx/error_manual.log:rw'
+      - './docker/nginx/logs/access.log:/var/log/nginx/access_manual.log:rw'
     restart: always
 
   auth:
