@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   auth:
+    restart: unless-stopped
     build:
       target: base
     depends_on:
@@ -12,6 +13,7 @@ services:
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   stranerd:
+    restart: unless-stopped
     build:
       target: base
     depends_on:
@@ -23,6 +25,7 @@ services:
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   utils:
+    restart: unless-stopped
     build:
       target: base
     depends_on:
@@ -89,3 +92,6 @@ services:
       - mongodb
     restart: on-failure
     entrypoint: 'bash ./rs.sh'
+
+  nginx:
+    restart: unless-stopped

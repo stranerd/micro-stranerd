@@ -9,7 +9,7 @@ services:
       - '443:443'
     volumes:
       - './docker/nginx/default.conf:/etc/nginx/nginx.conf:ro'
-    restart: unless-stopped
+    restart: always
 
   auth:
     build:
@@ -17,7 +17,7 @@ services:
       target: production
     container_name: auth
     hostname: auth
-    restart: unless-stopped
+    restart: always
     command: 'yarn start'
 
   stranerd:
@@ -26,7 +26,7 @@ services:
       target: production
     container_name: stranerd
     hostname: stranerd
-    restart: unless-stopped
+    restart: always
     command: 'yarn start'
 
   utils:
@@ -35,5 +35,5 @@ services:
       target: production
     container_name: utils
     hostname: tasks
-    restart: unless-stopped
+    restart: always
     command: 'yarn start'
