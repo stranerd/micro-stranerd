@@ -12,11 +12,23 @@ dev-start-detach:
 dev-stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans;
 
-watch-logs:
+dev-watch-logs:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml logs -f;
 
+prod-build:
+	docker-compose -f docker-compose.yml build;
+
 prod-start:
-	docker-compose -f docker-compose.yml up --build;
+	docker-compose -f docker-compose.yml up --remove-orphans;
+
+prod-start-detach:
+	docker-compose -f docker-compose.yml up -d --remove-orphans;
+
+prod-stop:
+	docker-compose -f docker-compose.yml down --remove-orphans;
+
+prod-watch-logs:
+	docker-compose -f docker-compose.yml logs -f;
 
 install-all:
 	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) &&) echo
@@ -39,9 +51,6 @@ install-commons:
 copy-envs:
 	node bin/copy-envs.js $(APPS);
 
-echo-apps:
-	@echo $(foreach app, $(APPS), ./services/$(app)/app.yaml)
-
 link-commons:
 	$(foreach app, $(APPS),\
 	rm ./services/$(app)/src/utils/commons.ts &&\
@@ -50,12 +59,3 @@ link-commons:
 	mkdir ./services/$(app)/src/utils/common -p &&\
 	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
 ) echo
-
-generate-config-development:
-	node bin/generate-configs.js development $(APPS);
-
-generate-config-staging:
-	node bin/generate-configs.js staging $(APPS);
-
-generate-config-production:
-	node bin/generate-configs.js production $(APPS);

@@ -3,6 +3,10 @@ services:
   auth:
     build:
       target: base
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - "./services/auth/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
@@ -10,6 +14,10 @@ services:
   stranerd:
     build:
       target: base
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - "./services/stranerd/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
@@ -17,10 +25,67 @@ services:
   utils:
     build:
       target: base
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - "./services/utils/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   mongodb:
+    image: mongo
+    container_name: mongodb
+    hostname: mongodb
     ports:
       - '27017:27017'
+    volumes:
+      - './docker/mongo/data/mongo1/db:/data/db'
+      - './docker/mongo/data/mongo1/configdb:/data/configdb'
+    restart: unless-stopped
+    command: '--quiet --bind_ip_all --replSet rs0'
+
+  mongodb-express:
+    image: 'mongo-express:latest'
+    container_name: mongodb-express
+    hostname: mongodb-express
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    ports:
+      - '81:8081'
+
+  rabbitmq:
+    build:
+      context: ./docker/rabbitmq
+    container_name: rabbitmq
+    hostname: rabbitmq
+    restart: unless-stopped
+    ports:
+      - '82:15672'
+
+  redis:
+    image: 'redis:6.2.5-alpine'
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+
+  redis-commander:
+    image: 'rediscommander/redis-commander:latest'
+    container_name: redis-commander
+    hostname: redis-commander
+    restart: unless-stopped
+    environment:
+      - 'REDIS_HOSTS=local:redis:6379'
+    ports:
+      - '83:8081'
+
+  rsinit:
+    build:
+      context: ./docker/mongo
+    container_name: rsinit
+    hostname: rsinit
+    depends_on:
+      - mongodb
+    restart: on-failure
+    entrypoint: 'bash ./rs.sh'
