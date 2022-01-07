@@ -7,32 +7,24 @@ on:
 
 jobs:
   publish-gae:
-    environment: staging
-    runs-on: ubuntu-latest
+    environment: develop
+    runs-on: staging
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Fetch secrets
-        uses: actions-hub/gcloud@master
         env:
-          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
-        with:
-          args: secrets versions access latest --secret=Micro_Stranerd_Environment_Variables > env.json
+          ENV_SECRETS: ${{ secrets.ENV_SECRETS }}
+        run: echo "$ENV_SECRETS" > env.json
+      - name: Create service account for storage
+        env:
+          GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+        run: echo "$GCP_SERVICE_ACCOUNT" > services/utils/credential.json
       - name: Create .env Files
         run: make copy-envs
-      - name: Set Apps In Environment Variables
-        run: echo "APPS=$(make echo-apps)" >> $GITHUB_ENV
-      - name: Install Dependencies
-        run: make install-all
-      - name: Build Apps
-        run: make build-all
-      - name: Create App Engine Config Files
-        run: make generate-config-staging
-      - name: Deploy to GAE
-        uses: actions-hub/gcloud@master
-        env:
-          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
-        with:
-          args: app deploy ${{ env.APPS }} --quiet
+      - name: Docker Build
+        run: make prod-build
+      - name: Docker Stop Existing Run
+        run: make prod-stop
+      - name: Docker Start
+        run: make prod-start-detach
