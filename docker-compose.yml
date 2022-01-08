@@ -10,12 +10,28 @@ services:
     container_name: nginx
     hostname: nginx
     ports:
-      - '80:80'
       - '443:443'
     volumes:
       - './docker/nginx/logs/error.log:/var/log/nginx/error_manual.log:rw'
       - './docker/nginx/logs/access.log:/var/log/nginx/access_manual.log:rw'
       - './docker/certbot/conf/:/etc/nginx/ssl/:ro'
+      - './docker/certbot/www/:/var/www/certbot/:ro'
+    restart: always
+
+  nginxtwo:
+    build:
+      context: ./docker/nginx
+      dockerfile: ./Dockerfile2
+      args:
+        BASE_DOMAIN: ${BASE_DOMAIN}
+        USE_SSL: ${USE_SSL}
+    container_name: nginxtwo
+    hostname: nginxtwo
+    ports:
+      - '80:80'
+    volumes:
+      - './docker/nginx/logs/error2.log:/var/log/nginx/error_manual.log:rw'
+      - './docker/nginx/logs/access2.log:/var/log/nginx/access_manual.log:rw'
       - './docker/certbot/www/:/var/www/certbot/:ro'
     restart: always
 
