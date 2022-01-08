@@ -15,7 +15,21 @@ services:
     volumes:
       - './docker/nginx/logs/error.log:/var/log/nginx/error_manual.log:rw'
       - './docker/nginx/logs/access.log:/var/log/nginx/access_manual.log:rw'
+      - './docker/certbot/conf/:/etc/nginx/ssl/:ro'
+      - './docker/certbot/www/:/var/www/certbot/:ro'
     restart: always
+
+  certbot:
+    build:
+      context: ./docker/certbot
+      args:
+        BASE_DOMAIN: ${BASE_DOMAIN}
+        USE_SSL: ${USE_SSL}
+        BUILD_SSL: ${BUILD_SSL}
+    volumes:
+      - './docker/certbot/conf/:/etc/letsencrypt/:rw'
+      - './docker/certbot/www/:/var/www/certbot/:rw'
+    restart: unless-stopped
 
   auth:
     build:

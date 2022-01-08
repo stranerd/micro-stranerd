@@ -13,7 +13,6 @@ PASSPHRASE=""
 CONFIG_FILE="config.txt"
 
 apk update && apk add openssl
-cd /etc/nginx || exit
 
 cat > $CONFIG_FILE <<-EOF
 [req]
@@ -38,7 +37,7 @@ DNS.2 = $BASE_DOMAIN
 EOF
 
 # The file name can be anything
-FILE_NAME="ssl-cert"
+FILE_NAME="/etc/nginx/ssl/ssl-cert"
 
 # Remove previous keys
 echo "Removing existing certs like $FILE_NAME.*"

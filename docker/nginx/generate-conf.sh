@@ -17,18 +17,25 @@ http {
     client_max_body_size 200M;
     server {
         listen 80;
+        listen [::]:80;
         server_name $BASE_DOMAIN;
-        return 301 \$scheme://\$host\$request_uri;
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://\$host\$request_uri;
+        }
     }
 
     server {
-          listen 443 ssl;
-          server_name $BASE_DOMAIN;
+        listen 443 ssl;
+        listen [::]:443 ssl;
+        server_name $BASE_DOMAIN;
 
-          ssl_certificate /etc/nginx/ssl-cert.crt;
-          ssl_certificate_key /etc/nginx/ssl-cert.key;
-          ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
-          ssl_ciphers         HIGH:!aNULL:!MD5;
+        ssl_certificate /etc/nginx/ssl/live/${BASE_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/nginx/ssl/live/${BASE_DOMAIN}/privkey.pem;
 
         location /auth/ {
             proxy_pass http://auth:8080/;
