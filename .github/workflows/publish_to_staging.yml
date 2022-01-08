@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-gae:
-    environment: develop
+    environment: staging
     runs-on: staging
     steps:
       - name: Checkout Repo
