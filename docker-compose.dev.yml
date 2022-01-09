@@ -93,8 +93,5 @@ services:
     restart: on-failure
     entrypoint: 'bash ./rs.sh'
 
-  nginx:
-    restart: unless-stopped
-
-  nginxtwo:
+  traefik:
     restart: unless-stopped

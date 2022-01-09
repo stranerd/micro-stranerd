@@ -1,46 +1,20 @@
 version: '3.8'
 services:
-  nginx:
+  traefik:
     build:
-      context: ./docker/nginx
+      context: ./docker/traefik
       args:
         BASE_DOMAIN: ${BASE_DOMAIN}
         USE_SSL: ${USE_SSL}
-        BUILD_SSL: ${BUILD_SSL}
-    container_name: nginx
-    hostname: nginx
-    ports:
-      - '443:443'
-    volumes:
-      - './docker/nginx/logs/error.log:/var/log/nginx/error_manual.log:rw'
-      - './docker/nginx/logs/access.log:/var/log/nginx/access_manual.log:rw'
-      - './docker/certbot/conf/:/etc/nginx/ssl/:ro'
-      - './docker/certbot/www/:/var/www/certbot/:ro'
+    container_name: "traefik"
     restart: always
-
-  nginxtwo:
-    build:
-      context: ./docker/nginx
-      dockerfile: ./Dockerfile2
-      args:
-        BASE_DOMAIN: ${BASE_DOMAIN}
-        USE_SSL: ${USE_SSL}
-    container_name: nginxtwo
-    hostname: nginxtwo
     ports:
-      - '80:80'
+      - "80:80"
+      - "443:443"
+      - "90:8080"
     volumes:
-      - './docker/nginx/logs/error2.log:/var/log/nginx/error_manual.log:rw'
-      - './docker/nginx/logs/access2.log:/var/log/nginx/access_manual.log:rw'
-      - './docker/certbot/www/:/var/www/certbot/:ro'
-    restart: always
-
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - './docker/certbot/conf/:/etc/letsencrypt/:rw'
-      - './docker/certbot/www/:/var/www/certbot/:rw'
-    command: 'certonly --webroot --webroot-path=/var/www/certbot/ --email kevin@stranerd.com --agree-tos --no-eff-email -d $BASE_DOMAIN'
+      - "./docker/traefik/certs/:/ssl-certs/"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   auth:
     build:
