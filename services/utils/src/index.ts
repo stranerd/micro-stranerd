@@ -26,7 +26,7 @@ const start = async () => {
 			})
 	)
 	await app.start(port)
-	await Logger.info(`${appId} api has started listening on port`, port)
+	await Logger.success(`${appId} api has started listening on port`, port)
 	await startProcessingQueues({
 		onDelayed: async (data) => {
 			await publishers[EventTypes.TASKSDELAYED].publish(data)

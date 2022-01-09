@@ -29,7 +29,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	const getStreamTokens = () => collection.collection.conn.db.collection('stream-tokens')
 
 	const res = await getStreamTokens().findOne({ _id: dbName })
-	const resumeToken = skipResume ? undefined : res?.resumeToken ?? undefined
+	const resumeToken = skipResume ? undefined : res?.resumeToken
 
 	const changeStream = collection
 		.watch([], { fullDocument: 'updateLookup', startAfter: resumeToken })

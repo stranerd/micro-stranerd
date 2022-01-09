@@ -1,3 +1,3 @@
-export * from './base-entity'
-export * from './base-mapper'
-export * from './base-use-case'
+export * from './baseEntity'
+export * from './baseMapper'
+export * from './baseUseCase'

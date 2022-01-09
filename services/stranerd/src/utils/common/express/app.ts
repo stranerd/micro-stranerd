@@ -8,7 +8,6 @@ import slowDown from 'express-slow-down'
 import rateLimit from 'express-rate-limit'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
-import { isDev } from '../config'
 import path from 'path'
 import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
 import { StatusCodes } from './statusCodes'
@@ -39,7 +38,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	app.disable('x-powered-by')
 	const server = http.createServer(app)
 	const socket = new io.Server(server, { cors: { origin: '*' } })
-	if (isDev) app.use(morgan('dev'))
+	app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(cors({ origin: '*' }))
 	app.use(express.urlencoded({ extended: false }))
