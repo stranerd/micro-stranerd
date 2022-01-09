@@ -12,7 +12,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "./docker/traefik/certs/:/ssl-certs/"
+      - "./docker/traefik/acme.json:/etc/traefik/acme.json"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   auth:

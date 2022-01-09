@@ -3,11 +3,14 @@ COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))
 
+make-acme:
+	touch ./docker/traefik/acme.json && chmod 600 ./docker/traefik/acme.json
+
 dev-start:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
+	make make-acme && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
 
 dev-start-detach:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
+	make make-acme && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
 
 dev-stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans;
@@ -19,10 +22,10 @@ prod-build:
 	docker-compose -f docker-compose.yml build;
 
 prod-start:
-	docker-compose -f docker-compose.yml up --remove-orphans;
+	make make-acme && docker-compose -f docker-compose.yml up --remove-orphans;
 
 prod-start-detach:
-	docker-compose -f docker-compose.yml up -d --remove-orphans;
+	make make-acme && docker-compose -f docker-compose.yml up -d --remove-orphans;
 
 prod-stop:
 	docker-compose -f docker-compose.yml down --remove-orphans;

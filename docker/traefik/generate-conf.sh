@@ -4,6 +4,8 @@ CONF_PATH=/etc/traefik/traefik.yml
 
 CERT_TYPE=production
 
+CERT_PATH=/etc/traefik/acme.json
+
 if [ "$USE_SSL" = 1 ]; then
 cat > $CONF_PATH <<- EOF
 global:
@@ -29,21 +31,21 @@ http:
     to-auth:
       tls:
         certresolver: $CERT_TYPE
-      rule: "PathPrefix(\`/auth/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
       middlewares:
         - stripRoutePrefix
       service: auth
     to-stranerd:
       tls:
         certresolver: $CERT_TYPE
-      rule: "PathPrefix(\`/stranerd/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
       middlewares:
         - stripRoutePrefix
       service: stranerd
     to-utils:
       tls:
         certresolver: $CERT_TYPE
-      rule: "PathPrefix(\`/utils/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
       middlewares:
         - stripRoutePrefix
       service: utils
@@ -75,7 +77,7 @@ certificatesResolvers:
   staging:
     acme:
       email: kevin@stranerd.com
-      storage: /etc/traefik/certs/acme.json
+      storage: $CERT_PATH
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       httpChallenge:
         entryPoint: web
@@ -83,7 +85,7 @@ certificatesResolvers:
   production:
     acme:
       email: kevin@stranerd.com
-      storage: /etc/traefik/certs/acme.json
+      storage: $CERT_PATH
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       httpChallenge:
         entryPoint: web
@@ -108,17 +110,17 @@ http:
           - "/utils"
   routers:
     to-auth:
-      rule: "PathPrefix(\`/auth/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
       middlewares:
         - stripRoutePrefix
       service: auth
     to-stranerd:
-      rule: "PathPrefix(\`/stranerd/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
       middlewares:
         - stripRoutePrefix
       service: stranerd
     to-utils:
-      rule: "PathPrefix(\`/utils/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
       middlewares:
         - stripRoutePrefix
       service: utils
