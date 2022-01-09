@@ -55,7 +55,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	}))
 	app.use(
 		fileUpload({
-			limits: { fileSize: 200 * 1024 * 1024 },
+			limits: { fileSize: 500 * 1024 * 1024 },
 			useTempFiles: false
 		})
 	)
