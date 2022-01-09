@@ -2,7 +2,7 @@
 
 CONF_PATH=/etc/traefik/traefik.yml
 
-CERT_TYPE=staging
+CERT_TYPE=production
 
 if [ "$USE_SSL" = 1 ]; then
 cat > $CONF_PATH <<- EOF

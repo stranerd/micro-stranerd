@@ -11,7 +11,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "90:8080"
     volumes:
       - "./docker/traefik/certs/:/ssl-certs/"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"

@@ -95,3 +95,5 @@ services:
 
   traefik:
     restart: unless-stopped
+    ports:
+      - "90:8080"
