@@ -2,4 +2,5 @@ env.json
 .env
 .idea/
 
+docker/public
 services/*/src/credentials.json

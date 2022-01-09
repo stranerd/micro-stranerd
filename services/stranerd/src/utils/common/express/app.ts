@@ -41,9 +41,9 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	const socket = new io.Server(server, { cors: { origin: '*' } })
 	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
+	app.use(cors({ origin: '*' }))
 	app.use(express.urlencoded({ extended: false }))
 	app.use(express.static(path.join(process.cwd(), 'public')))
-	app.use(cors({ origin: '*' }))
 	app.use(rateLimit({
 		windowMs: 30 * 60 * 1000,
 		max: 1000,
@@ -56,7 +56,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	}))
 	app.use(
 		fileUpload({
-			limits: { fileSize: 100 * 1024 * 1024 },
+			limits: { fileSize: 200 * 1024 * 1024 },
 			useTempFiles: false
 		})
 	)
