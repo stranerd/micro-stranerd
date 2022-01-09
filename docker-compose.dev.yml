@@ -95,3 +95,6 @@ services:
 
   nginx:
     restart: unless-stopped
+
+  nginxtwo:
+    restart: unless-stopped

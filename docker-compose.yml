@@ -36,16 +36,11 @@ services:
     restart: always
 
   certbot:
-    build:
-      context: ./docker/certbot
-      args:
-        BASE_DOMAIN: ${BASE_DOMAIN}
-        USE_SSL: ${USE_SSL}
-        BUILD_SSL: ${BUILD_SSL}
+    image: certbot/certbot:latest
     volumes:
       - './docker/certbot/conf/:/etc/letsencrypt/:rw'
       - './docker/certbot/www/:/var/www/certbot/:rw'
-    restart: unless-stopped
+    command: 'certonly --webroot --webroot-path=/var/www/certbot/ --email kevin@stranerd.com --agree-tos --no-eff-email -d $BASE_DOMAIN'
 
   auth:
     build:
