@@ -4,7 +4,8 @@ CONF_PATH=/etc/traefik/traefik.yml
 
 CERT_TYPE=production
 
-CERT_PATH=/etc/traefik/acme.json
+CERT_PATH_STAGING=/etc/traefik/acmeStaging.json
+CERT_PATH_PRODUCTION=/etc/traefik/acmeProduction.json
 
 if [ "$USE_SSL" = 1 ]; then
 cat > $CONF_PATH <<- EOF
@@ -19,6 +20,15 @@ entryPoints:
   websecure:
     address: :443
 
+accessLog:
+  filePath: /etc/traefik/accessLog.json
+  format: json
+
+log:
+  level: DEBUG
+  filePath: /etc/traefik/log.json
+  format: json
+
 http:
   middlewares:
     stripRoutePrefix:
@@ -28,21 +38,21 @@ http:
           - "/stranerd"
           - "/utils"
   routers:
-    to-auth:
+    auth:
       tls:
         certresolver: $CERT_TYPE
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
       middlewares:
         - stripRoutePrefix
       service: auth
-    to-stranerd:
+    stranerd:
       tls:
         certresolver: $CERT_TYPE
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
       middlewares:
         - stripRoutePrefix
       service: stranerd
-    to-utils:
+    utils:
       tls:
         certresolver: $CERT_TYPE
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
@@ -77,7 +87,7 @@ certificatesResolvers:
   staging:
     acme:
       email: kevin@stranerd.com
-      storage: $CERT_PATH
+      storage: $CERT_PATH_STAGING
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       httpChallenge:
         entryPoint: web
@@ -85,7 +95,7 @@ certificatesResolvers:
   production:
     acme:
       email: kevin@stranerd.com
-      storage: $CERT_PATH
+      storage: $CERT_PATH_PRODUCTION
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
       httpChallenge:
         entryPoint: web
@@ -100,6 +110,15 @@ entryPoints:
   web:
     address: :80
 
+accessLog:
+  filePath: /etc/traefik/accessLog.json
+  format: json
+
+log:
+  level: DEBUG
+  filePath: /etc/traefik/log.json
+  format: json
+
 http:
   middlewares:
     stripRoutePrefix:
@@ -109,17 +128,17 @@ http:
           - "/stranerd"
           - "/utils"
   routers:
-    to-auth:
+    auth:
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
       middlewares:
         - stripRoutePrefix
       service: auth
-    to-stranerd:
+    stranerd:
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
       middlewares:
         - stripRoutePrefix
       service: stranerd
-    to-utils:
+    utils:
       rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
       middlewares:
         - stripRoutePrefix

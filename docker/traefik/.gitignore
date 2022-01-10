@@ -1,2 +1,2 @@
 traefik.yml
-acme.json
+*.json
