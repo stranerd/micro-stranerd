@@ -12,35 +12,35 @@ export class SearchController {
 					value: searchTerm,
 					fields: ['body', 'tags']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetAnswers.execute({
 				search: {
 					value: searchTerm,
 					fields: ['title', 'body']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetUsers.execute({
 				search: {
 					value: searchTerm,
 					fields: ['bio.firstName', 'bio.lastName']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetVideos.execute({
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description', 'tags']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetNotes.execute({
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description', 'tags']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetSets.execute({
 				where: [{ field: 'isRoot', value: false }, { field: 'isPublic', value: true }],
@@ -48,7 +48,7 @@ export class SearchController {
 					value: searchTerm,
 					fields: ['name', 'tags']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetFlashCards.execute({
 				where: [{ field: 'isPublic', value: true }],
@@ -56,14 +56,14 @@ export class SearchController {
 					value: searchTerm,
 					fields: ['title', 'set', 'tags']
 				},
-				limit: 10
+				limit: 15
 			}),
 			GetTestPreps.execute({
 				search: {
 					value: searchTerm,
 					fields: ['name']
 				},
-				limit: 10
+				limit: 15
 			})
 		])
 		return { questions, answers, users, videos, notes, sets, flashCards, testPreps }
