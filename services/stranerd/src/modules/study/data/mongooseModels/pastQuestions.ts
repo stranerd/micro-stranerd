@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 		required: true
 	},
 	questionMedia: {
-		type: [mongoose.Schema.Types.ObjectId] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
 		required: false,
 		default: []
 	},
