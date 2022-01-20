@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks, Emails, EventTypes, readEmailFromPug } from '@utils/commons'
 import { publishers } from '@utils/events'
 import { UserEntity, UserFromModel } from '@modules/index'
 import { subscribeToMailingList } from '@utils/mailing'
@@ -21,6 +21,16 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (after.referrer) await publishers[EventTypes.AUTHNEWREFERRAL].publish({
 			referrer: after.referrer,
 			referred: after.id
+		})
+
+		const emailContent = await readEmailFromPug('emails/new-user.pug', {})
+
+		await publishers[EventTypes.SENDMAIL].publish({
+			to: after.email,
+			subject: 'Welcome To Stranerd',
+			from: Emails.NO_REPLY,
+			content: emailContent,
+			attachments: {}
 		})
 	},
 	updated: async ({ before, after, changes }) => {
