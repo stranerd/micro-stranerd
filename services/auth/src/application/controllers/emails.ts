@@ -29,9 +29,10 @@ export class EmailsController {
 		const existingUser = res.results[0]
 
 		const isUniqueInDb = (_: string) => {
+			if (!existingUser) return Validation.isValid()
 			if (existingUser.authTypes.includes(AuthTypes.email)) return Validation.isInvalid('this email already exists with a password attached')
 			if (existingUser.authTypes.includes(AuthTypes.google)) return Validation.isInvalid('this email is associated with a google account. Try signing in with google')
-			return existingUser ? Validation.isInvalid('email already in use') : Validation.isValid()
+			return Validation.isInvalid('email already in use')
 		}
 
 		const validateData = validate(userCredential, {

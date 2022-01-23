@@ -11,6 +11,7 @@ import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
 import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
+import { isDev } from '../config'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -38,7 +39,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	app.disable('x-powered-by')
 	const server = http.createServer(app)
 	const socket = new io.Server(server, { cors: { origin: '*' } })
-	app.use(morgan('dev'))
+	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(cors({ origin: '*' }))
 	app.use(express.urlencoded({ extended: false }))

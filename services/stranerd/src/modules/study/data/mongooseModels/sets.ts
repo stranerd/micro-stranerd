@@ -11,7 +11,8 @@ const Schema = new mongoose.Schema<SetFromModel>({
 	},
 	name: {
 		type: String,
-		required: true
+		required: false,
+		default: ''
 	},
 	isRoot: {
 		type: Boolean,

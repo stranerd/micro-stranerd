@@ -15,18 +15,18 @@ export class ConsoleLogger extends Logger {
 	log = console.log
 
 	async error (...args: any[]) {
-		this.log(chalk.red(...args))
+		this.log('LOG:ERROR:', chalk.red(...args))
 	}
 
 	async success (...args: any[]) {
-		this.log(chalk.green(...args))
+		this.log('LOG:SUCCESS:', chalk.green(...args))
 	}
 
 	async info (...args: any[]) {
-		this.log(chalk.blue(...args))
+		this.log('LOG:INFO:', chalk.blue(...args))
 	}
 
 	async warn (...args: any[]) {
-		this.log(chalk.yellow(...args))
+		this.log('LOG:WARN:', chalk.yellow(...args))
 	}
 }

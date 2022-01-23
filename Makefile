@@ -7,10 +7,10 @@ make-acme:
 	mkdir -p /etc/traefik && touch /etc/traefik/acmeStaging.json /etc/traefik/acmeProduction.json /etc/traefik/accessLog.json /etc/traefik/log.json && chmod 600 /etc/traefik/acme*.json
 
 dev-start:
-	make make-acme && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
 
 dev-start-detach:
-	make make-acme && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
 
 dev-stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans;
@@ -22,10 +22,10 @@ prod-build:
 	docker-compose -f docker-compose.yml build;
 
 prod-start:
-	make make-acme && docker-compose -f docker-compose.yml up --remove-orphans;
+	docker-compose -f docker-compose.yml up --remove-orphans;
 
 prod-start-detach:
-	make make-acme && docker-compose -f docker-compose.yml up -d --remove-orphans;
+	docker-compose -f docker-compose.yml up -d --remove-orphans;
 
 prod-stop:
 	docker-compose -f docker-compose.yml down --remove-orphans;

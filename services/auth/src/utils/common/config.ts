@@ -12,6 +12,9 @@ export const getEnvOrFail = (key: string) => {
 	return ''
 }
 
+const environment = getEnvOrFail('ENVIRONMENT')
+export const isDev = environment === 'local'
+
 export const accessTokenKey = getEnvOrFail('ACCESS_TOKEN_KEY')
 export const refreshTokenKey = getEnvOrFail('REFRESH_TOKEN_KEY')
 
