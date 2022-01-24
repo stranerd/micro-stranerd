@@ -8,4 +8,5 @@ export interface ICourseRepository {
 	get: (query: QueryParams) => Promise<QueryResults<CourseEntity>>
 	find: (id: string) => Promise<CourseEntity | null>
 	delete: (id: string) => Promise<boolean>
+	deleteInstitutionCourses: (institutionId: string) => Promise<boolean>
 }

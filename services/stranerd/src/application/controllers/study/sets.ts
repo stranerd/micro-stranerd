@@ -9,6 +9,10 @@ export class SetController {
 
 	static async GetSets (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'isPublic', value: true }, ...(req.authUser ? [{
+			field: 'userId',
+			value: req.authUser.id
+		}] : [])]
 		return await GetSets.execute(query)
 	}
 
