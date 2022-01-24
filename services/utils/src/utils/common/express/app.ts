@@ -12,6 +12,7 @@ import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
 import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
 import { isDev } from '../config'
+import { parseAuthUser } from './middlewares/parseAuthUser'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -64,6 +65,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
+		controllers = [parseAuthUser, ...controllers]
 		if (path) app[method]?.(formatPath(path), ...controllers)
 		else app.use(...controllers)
 	})
