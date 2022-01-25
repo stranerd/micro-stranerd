@@ -8,12 +8,12 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		await getSocketEmitter().emitOpenCreated('flashCards', after)
 		await getSocketEmitter().emitOpenCreated(`flashCards/${after.id}`, after)
 
-		const rootSet = await GetSets.execute({
+		const rootSet = (await GetSets.execute({
 			where: [
 				{ field: 'isRoot', value: true },
 				{ field: 'userId', value: after.userId }
 			]
-		})
+		})).results[0]
 
 		if (rootSet) await UpdateSetProp.execute({
 			id: rootSet.id,
