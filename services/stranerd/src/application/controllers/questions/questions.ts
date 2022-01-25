@@ -101,7 +101,7 @@ export class QuestionController {
 			field: 'answerId',
 			messages: ['question is already answered']
 		}])
-		if (question.bestAnswers.find((a) => a.id === answerId)) throw new ValidationError([{
+		if (question.bestAnswers.find((a) => a === answerId)) throw new ValidationError([{
 			field: 'answerId',
 			messages: ['answer is already marked as a best answer']
 		}])

@@ -1,7 +1,6 @@
 import {
 	AuthenticateUser,
 	FindUserByEmail,
-	GetUsers,
 	RegisterUser,
 	SendVerificationEmail,
 	UpdateUserDetails,
@@ -22,16 +21,12 @@ export class EmailsController {
 			description: req.body.description
 		}
 
-		const res = await GetUsers.execute({
-			where: [{ field: 'email', value: userCredential.email.toLowerCase() }],
-			limit: 1
-		})
-		const existingUser = res.results[0]
+		const user = await FindUserByEmail.execute(userCredential.email)
 
 		const isUniqueInDb = (_: string) => {
-			if (!existingUser) return Validation.isValid()
-			if (existingUser.authTypes.includes(AuthTypes.email)) return Validation.isInvalid('this email already exists with a password attached')
-			if (existingUser.authTypes.includes(AuthTypes.google)) return Validation.isInvalid('this email is associated with a google account. Try signing in with google')
+			if (!user) return Validation.isValid()
+			if (user.authTypes.includes(AuthTypes.email)) return Validation.isInvalid('this email already exists with a password attached')
+			if (user.authTypes.includes(AuthTypes.google)) return Validation.isInvalid('this email is associated with a google account. Try signing in with google')
 			return Validation.isInvalid('email already in use')
 		}
 
@@ -51,13 +46,11 @@ export class EmailsController {
 			referrer: { required: false, rules: [Validation.isString] }
 		})
 
-		const userData = await FindUserByEmail.execute(validateData.email)
-
-		const user = userData
-			? await UpdateUserDetails.execute({ userId: userData.id, data: validateData })
+		const updatedUser = user
+			? await UpdateUserDetails.execute({ userId: user.id, data: validateData })
 			: await RegisterUser.execute(validateData)
 
-		return await generateAuthOutput(user)
+		return await generateAuthOutput(updatedUser)
 	}
 
 	static async signin (req: Request) {

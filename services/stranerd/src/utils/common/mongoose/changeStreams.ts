@@ -93,6 +93,8 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 				return startChangeStream(collection, callbacks, mapper, true)
 			}
 		})
+
+	await Logger.info(`${dbName} changestream started`)
 }
 
 export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (
