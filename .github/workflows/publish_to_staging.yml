@@ -1,4 +1,4 @@
-name: Publish to GCloud App Engine
+name: Publish to Digital Ocean
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       staging
 
 jobs:
-  publish-gae:
+  publish-do:
     environment: staging
     runs-on: staging
     steps:

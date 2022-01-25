@@ -1,4 +1,4 @@
-name: Publish to GCloud App Engine
+name: Publish to Digital OCean
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       develop
 
 jobs:
-  publish-gae:
+  publish-do:
     environment: develop
     runs-on: development
     steps:
