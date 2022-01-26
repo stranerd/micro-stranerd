@@ -33,7 +33,15 @@ export class TestPrepRepository implements ITestPrepRepository {
 	}
 
 	async add (data: TestPrepToModel) {
-		const testPrep = await new TestPrep(data).save()
+		const testPrep = await TestPrep.findOneAndUpdate({
+			questions: data.questions,
+			time: data.time,
+			'data.type': data.data.type,
+			'data.institutionId': data.data.institutionId,
+			'data.courseId': data.data.courseId,
+			'data.year': data.data.year,
+			'data.questionType': data.data.questionType
+		}, { $set: data }) ?? await new TestPrep(data).save()
 		return this.mapper.mapFrom(testPrep)!
 	}
 

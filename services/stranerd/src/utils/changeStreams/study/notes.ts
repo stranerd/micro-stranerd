@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { NoteEntity, NoteFromModel, RemoveSetProp } from '@modules/study'
+import { GetSets, NoteEntity, NoteFromModel, RemoveSetProp, UpdateSetProp } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
@@ -7,6 +7,21 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('notes', after)
 		await getSocketEmitter().emitOpenCreated(`notes/${after.id}`, after)
+
+		const rootSet = (await GetSets.execute({
+			where: [
+				{ field: 'isRoot', value: true },
+				{ field: 'userId', value: after.userId }
+			]
+		})).results[0]
+
+		if (rootSet) await UpdateSetProp.execute({
+			id: rootSet.id,
+			prop: 'notes',
+			values: [after.id],
+			userId: after.userId,
+			add: true
+		})
 	},
 	updated: async ({ after, before, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('notes', after)

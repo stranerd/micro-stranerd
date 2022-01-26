@@ -32,7 +32,6 @@ export const videosRoutes: Route[] = [
 		method: 'put',
 		controllers: [
 			requireAuthUser,
-			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -46,7 +45,6 @@ export const videosRoutes: Route[] = [
 		method: 'post',
 		controllers: [
 			requireAuthUser,
-			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
