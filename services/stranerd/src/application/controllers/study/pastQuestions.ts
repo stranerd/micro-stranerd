@@ -77,7 +77,7 @@ export class PastQuestionController {
 
 			correctIndex: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
 			},
 			options: {
 				required: false,
@@ -87,7 +87,7 @@ export class PastQuestionController {
 				required: false,
 				rules: [
 					Validation.isRequiredIfX(isObjective),
-					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
+					Validation.hasLessThanX((req.body.options?.length ?? 0) + 1), Validation.hasMoreThanX((req.body.options?.length ?? 0) - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
@@ -174,7 +174,7 @@ export class PastQuestionController {
 
 			correctIndex: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options.length ?? 0)]
+				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
 			},
 			options: {
 				required: false,
@@ -184,7 +184,7 @@ export class PastQuestionController {
 				required: false,
 				rules: [
 					Validation.isRequiredIfX(isObjective),
-					Validation.hasLessThanX(req.body.options.length + 1), Validation.hasMoreThanX(req.body.options.length - 1),
+					Validation.hasLessThanX((req.body.options?.length ?? 0) + 1), Validation.hasMoreThanX((req.body.options?.length ?? 0) - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
