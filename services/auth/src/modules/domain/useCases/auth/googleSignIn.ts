@@ -4,6 +4,7 @@ import { UserEntity } from '../../entities/users'
 
 type Input = {
 	idToken: string
+	clientId: string
 	referrer: string | null
 }
 
@@ -15,6 +16,6 @@ export class GoogleSignInUseCase implements BaseUseCase<Input, UserEntity> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.googleSignIn(input.idToken, input.referrer)
+		return await this.repository.googleSignIn(input.idToken, input.clientId, input.referrer)
 	}
 }

@@ -3,7 +3,6 @@ import { Credential, PasswordResetInput } from '../../domain/types'
 import { publishers } from '@utils/events'
 import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/users'
-import { googleClientId } from '@utils/environment'
 import { UserFromModel, UserToModel } from '../models/users'
 import { hash, hashCompare } from '@utils/hash'
 import {
@@ -129,12 +128,12 @@ export class AuthRepository implements IAuthRepository {
 		return this.mapper.mapFrom(user)!
 	}
 
-	async googleSignIn (tokenId: string, referrer: string | null) {
-		const client = new OAuth2Client(googleClientId)
+	async googleSignIn (tokenId: string, clientId: string, referrer: string | null) {
+		const client = new OAuth2Client(clientId)
 
 		const ticket = await client.verifyIdToken({
 			idToken: tokenId,
-			audience: googleClientId
+			audience: clientId
 		}).catch(() => null)
 		if (!ticket) throw new BadRequestError('Invalid token')
 
