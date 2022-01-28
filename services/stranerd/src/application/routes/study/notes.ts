@@ -1,6 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { NoteController } from '../../controllers/study/notes'
-import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const notesRoutes: Route[] = [
 	{
@@ -58,7 +57,6 @@ export const notesRoutes: Route[] = [
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
-			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
