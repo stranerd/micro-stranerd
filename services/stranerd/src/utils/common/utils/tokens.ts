@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { accessTokenKey, refreshTokenKey } from '../config'
-import { AccessTokenExpired, CustomError, NotAuthenticatedError, RefreshTokenMisusedError } from '../errors'
+import { AccessTokenExpired, CustomError, NotAuthenticatedError } from '../errors'
 import { AuthUser, RefreshUser } from './authUser'
 import { getCacheInstance } from '../cache/'
 import { StatusCodes } from '../express'
@@ -27,7 +27,7 @@ export const verifyAccessToken = async (token: string) => {
 		const user = jwt.verify(token, accessTokenKey) as AuthUser
 		if (!user) throw new NotAuthenticatedError()
 		const cachedToken = await getCachedAccessToken(user.id)
-		// Cached access token was deleted, eg by user roles being modified, so token needs to be treated as expired
+		// Cached access token was deleted, e.g. by user roles being modified, so token needs to be treated as expired
 		if (token && token !== cachedToken) throw new AccessTokenExpired()
 		return user
 	} catch (err) {
@@ -70,16 +70,17 @@ export const exchangeOldForNewTokens = async (
 	if (authUser) return { accessToken, refreshToken }
 
 	const refreshUser = await verifyRefreshToken(refreshToken)
-	const cachedRefreshToken = await getCachedRefreshToken(refreshUser.id)
+	// const cachedRefreshToken = await getCachedRefreshToken(refreshUser.id)
 
 	// If no cached value, means someone used your old token for a second time, so current one got deleted from cache
-	if (!cachedRefreshToken) throw new NotAuthenticatedError()
+	// if (!cachedRefreshToken) throw new NotAuthenticatedError()
 
 	// If cached value is not equal, means someone is trying to use an old token for a second time
-	if (refreshToken !== cachedRefreshToken) {
-		await deleteCachedRefreshToken(refreshUser.id)
-		throw new RefreshTokenMisusedError()
-	}
+	// if (refreshToken !== cachedRefreshToken) {
+	// await deleteCachedAccessToken(refreshUser.id)
+	// await deleteCachedRefreshToken(refreshUser.id)
+	// throw new RefreshTokenMisusedError()
+	// }
 
 	// Use refresh id to call cb passed in to get the user auth details
 	authUser = await getAuthUser(refreshUser.id)
