@@ -70,10 +70,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/validate@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.6.0.tgz#68bb14a78af9eb562d837f0bd5f0aaf4d063cc8f"
-  integrity sha512-GkiCOEK/pEmpWlB06ZrVLKcTc+s6S9QF5avh9unjRf62J+Rnv9z5y/fT2W1jJn1vhizhVR2kdRuxaRhvd/RpqA==
+"@stranerd/validate@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.7.0.tgz#7dbb944295413e447208196731832c4ba8acc0dc"
+  integrity sha512-InXWl7OioSQ1YOSdMrckoBHcJZtSO6pyKkd1LLB/DsabXZryRzWhTlkyPMgZ8RxtvcJAyZGJ7BOdkVaUHTuY8A==
 
 "@types/amqplib@^0.8.2":
   version "0.8.2"
