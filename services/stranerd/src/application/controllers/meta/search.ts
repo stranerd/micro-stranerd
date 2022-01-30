@@ -29,6 +29,7 @@ export class SearchController {
 				limit: 15
 			}),
 			GetVideos.execute({
+				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description', 'tags']
@@ -36,6 +37,7 @@ export class SearchController {
 				limit: 15
 			}),
 			GetNotes.execute({
+				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description', 'tags']

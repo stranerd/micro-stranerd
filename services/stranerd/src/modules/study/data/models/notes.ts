@@ -8,6 +8,7 @@ export interface NoteFromModel extends NoteToModel {
 }
 
 export interface NoteToModel {
+	isPublic: boolean
 	isHosted: boolean
 	preview: MediaOutput
 	link: string | null

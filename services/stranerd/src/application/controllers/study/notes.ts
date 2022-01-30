@@ -9,6 +9,10 @@ export class NoteController {
 
 	static async GetNote (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'isPublic', value: true }, ...(req.authUser ? [{
+			field: 'userId',
+			value: req.authUser.id
+		}] : [])]
 		return await GetNotes.execute(query)
 	}
 
@@ -16,6 +20,7 @@ export class NoteController {
 		const data = validate({
 			title: req.body.title,
 			description: req.body.description,
+			isPublic: req.body.isPublic,
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
@@ -24,6 +29,7 @@ export class NoteController {
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			isPublic: { required: true, rules: [Validation.isBoolean] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
@@ -46,6 +52,7 @@ export class NoteController {
 		const data = validate({
 			title: req.body.title,
 			description: req.body.description,
+			isPublic: req.body.isPublic,
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
@@ -54,6 +61,7 @@ export class NoteController {
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			isPublic: { required: true, rules: [Validation.isBoolean] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]

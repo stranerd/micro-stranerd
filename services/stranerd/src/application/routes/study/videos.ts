@@ -1,6 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { VideoController } from '../../controllers/study/videos'
-import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const videosRoutes: Route[] = [
 	{
@@ -58,7 +57,6 @@ export const videosRoutes: Route[] = [
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
-			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

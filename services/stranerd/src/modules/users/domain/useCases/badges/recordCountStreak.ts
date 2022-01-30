@@ -12,6 +12,8 @@ export class RecordCountStreakUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
+		return
+		// eslint-disable-next-line no-unreachable
 		return await this.repository.recordCountStreak(input.userId, input.activity, input.add)
 	}
 }

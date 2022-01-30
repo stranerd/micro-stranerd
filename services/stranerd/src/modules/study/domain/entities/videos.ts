@@ -8,6 +8,7 @@ export class VideoEntity extends BaseEntity {
 	public readonly tags: string[]
 	public readonly userId: string
 	public readonly userBio: UserBio
+	public readonly isPublic: boolean
 	public readonly isHosted: boolean
 	public readonly link: string | null
 	public readonly media: MediaOutput | null
@@ -23,6 +24,7 @@ export class VideoEntity extends BaseEntity {
 		             userId,
 		             userBio,
 		             isHosted,
+		             isPublic,
 		             link,
 		             media,
 		             preview,
@@ -36,6 +38,7 @@ export class VideoEntity extends BaseEntity {
 		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
+		this.isPublic = isPublic
 		this.isHosted = isHosted
 		this.link = link
 		this.media = media
@@ -47,6 +50,7 @@ export class VideoEntity extends BaseEntity {
 
 type VideoConstructorArgs = {
 	id: string,
+	isPublic: boolean
 	isHosted: boolean
 	preview: MediaOutput
 	link: string | null

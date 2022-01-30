@@ -12,6 +12,8 @@ export class RecordRankUseCase implements BaseUseCase<Input, void> {
 	}
 
 	async execute (input: Input) {
+		return
+		// eslint-disable-next-line no-unreachable
 		return await this.repository.recordRank(input.userId, input.rank, input.add)
 	}
 }
