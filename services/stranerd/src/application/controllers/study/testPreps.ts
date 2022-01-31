@@ -49,7 +49,7 @@ export class TestPrepController {
 			},
 			year: {
 				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isString, Validation.isLongerThanX(0)]
+				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isNumber, Validation.isMoreThanX(0)]
 			},
 			institutionId: {
 				required: true,
@@ -95,7 +95,7 @@ export class TestPrepController {
 			},
 			year: {
 				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isString, Validation.isLongerThanX(0)]
+				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isNumber, Validation.isMoreThanX(0)]
 			},
 			institutionId: {
 				required: true,
