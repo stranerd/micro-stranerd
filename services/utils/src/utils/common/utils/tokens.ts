@@ -13,12 +13,12 @@ const getRefreshTokenKey = (userId: string) => `${userId}-refresh-token`
 
 export const makeAccessToken = async (payload: AuthUser) => {
 	const token = jwt.sign(payload, accessTokenKey, { expiresIn: ACCESS_TOKEN_TTL })
-	await getCacheInstance.set(getAccessTokenKey(payload.id), token, ACCESS_TOKEN_TTL)
+	// await getCacheInstance.set(getAccessTokenKey(payload.id), token, ACCESS_TOKEN_TTL)
 	return token
 }
 export const makeRefreshToken = async (payload: RefreshUser) => {
 	const token = jwt.sign(payload, refreshTokenKey, { expiresIn: REFRESH_TOKEN_TTL })
-	await getCacheInstance.set(getRefreshTokenKey(payload.id), token, REFRESH_TOKEN_TTL)
+	// await getCacheInstance.set(getRefreshTokenKey(payload.id), token, REFRESH_TOKEN_TTL)
 	return token
 }
 
@@ -26,9 +26,9 @@ export const verifyAccessToken = async (token: string) => {
 	try {
 		const user = jwt.verify(token, accessTokenKey) as AuthUser
 		if (!user) throw new NotAuthenticatedError()
-		const cachedToken = await getCachedAccessToken(user.id)
+		// const cachedToken = await getCachedAccessToken(user.id)
 		// Cached access token was deleted, e.g. by user roles being modified, so token needs to be treated as expired
-		if (token && token !== cachedToken) throw new AccessTokenExpired()
+		// if (token && token !== cachedToken) throw new AccessTokenExpired()
 		return user
 	} catch (err) {
 		if (err instanceof AccessTokenExpired) throw err

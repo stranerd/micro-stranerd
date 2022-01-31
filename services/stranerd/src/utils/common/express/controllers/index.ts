@@ -58,20 +58,17 @@ const extractRequest = (req: Request) => {
 			isTruncated: f.truncated,
 			data: f.data
 		}))
-		else {
-			fileArray.push({
-				name: file.name,
-				type: file.mimetype,
-				size: file.size,
-				isTruncated: file.truncated,
-				data: file.data
-			})
-		}
+		else fileArray.push({
+			name: file.name,
+			type: file.mimetype,
+			size: file.size,
+			isTruncated: file.truncated,
+			data: file.data
+		})
 	}
 
 	// @ts-ignore
-	const data = req.savedReq ?? {}
-	const request = new CustomRequest({
+	const request = req.savedReq ?? new CustomRequest({
 		body: req.body ?? {},
 		params: req.params ?? {},
 		query: req.query ?? {},
@@ -79,7 +76,7 @@ const extractRequest = (req: Request) => {
 		path: req.path,
 		headers,
 		files: fileArray,
-		data
+		data: {}
 	})
 	// @ts-ignore
 	req.savedReq = request
