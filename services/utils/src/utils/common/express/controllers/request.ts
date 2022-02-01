@@ -1,5 +1,6 @@
 import { AuthUser, RefreshUser } from '../../utils/authUser'
 import { StorageFile } from '../../storage'
+import { CustomError } from '../../errors'
 
 type HeaderKeys = 'AccessToken' | 'RefreshToken' | 'Referer' | 'ContentType' | 'UserAgent'
 
@@ -13,6 +14,7 @@ export class Request {
 	readonly files: StorageFile[]
 	authUser: null | AuthUser = null
 	refreshUser: null | RefreshUser = null
+	pendingError: null | CustomError = null
 
 	constructor ({
 		             body, params, query,
