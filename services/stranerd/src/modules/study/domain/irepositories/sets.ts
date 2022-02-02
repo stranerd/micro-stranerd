@@ -12,4 +12,5 @@ export interface ISetRepository {
 	updateSetsUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
 	updateSetProp: (id: string, userId: string, prop: keyof SetFromModel['saved'], add: boolean, values: string[]) => Promise<boolean>
 	removeSetProp: (prop: keyof SetFromModel['saved'], value: string) => Promise<boolean>
+	deleteSetChildren: (id: string) => Promise<boolean>
 }

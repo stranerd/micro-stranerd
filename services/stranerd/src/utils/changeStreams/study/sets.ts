@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { SetEntity, SetFromModel } from '@modules/study'
+import { DeleteSetChildren, SetEntity, SetFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
@@ -23,6 +23,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitMineDeleted('sets', before, before.userId)
 		await getSocketEmitter().emitMineDeleted(`sets/${before.id}`, before, before.userId)
+		await DeleteSetChildren.execute(before.id)
 
 		if (!before.isRoot) {
 			await UpdateUserNerdScore.execute({

@@ -83,7 +83,7 @@ export enum ScoreRewards {
 	CompleteSession = 1,
 
 	CompleteTest = 1,
-	NewSet = 1,
+	NewSet = 0.05,
 	NewFlashCard = 1,
 	NewNote = 1,
 	NewVideo = 1,

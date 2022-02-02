@@ -1,12 +1,12 @@
 import { Request } from '@utils/commons'
 import { GetAnswers, GetQuestions } from '@modules/questions'
 import { GetUsers } from '@modules/users'
-import { GetFlashCards, GetNotes, GetSets, GetTestPreps, GetVideos } from '@modules/study'
+import { GetFlashCards, GetNotes, GetPlaylists, GetSets, GetTestPreps, GetVideos } from '@modules/study'
 
 export class SearchController {
 	static async Search (req: Request) {
 		const searchTerm = req.query.search ?? ''
-		const [questions, answers, users, videos, notes, sets, flashCards, testPreps] = await Promise.all([
+		const [questions, answers, users, videos, notes, sets, flashCards, playlists, testPreps] = await Promise.all([
 			GetQuestions.execute({
 				search: {
 					value: searchTerm,
@@ -60,6 +60,14 @@ export class SearchController {
 				},
 				limit: 15
 			}),
+			GetPlaylists.execute({
+				where: [{ field: 'isPublic', value: true }],
+				search: {
+					value: searchTerm,
+					fields: ['title', 'description', 'tags']
+				},
+				limit: 15
+			}),
 			GetTestPreps.execute({
 				search: {
 					value: searchTerm,
@@ -68,6 +76,6 @@ export class SearchController {
 				limit: 15
 			})
 		])
-		return { questions, answers, users, videos, notes, sets, flashCards, testPreps }
+		return { questions, answers, users, videos, notes, sets, flashCards, playlists, testPreps }
 	}
 }

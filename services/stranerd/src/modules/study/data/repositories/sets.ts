@@ -69,4 +69,9 @@ export class SetRepository implements ISetRepository {
 		})
 		return sets.acknowledged
 	}
+
+	async deleteSetChildren (id: string) {
+		const sets = await Set.deleteMany({ parent: id })
+		return sets.acknowledged
+	}
 }
