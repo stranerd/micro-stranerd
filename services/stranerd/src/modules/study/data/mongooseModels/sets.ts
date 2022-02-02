@@ -51,6 +51,11 @@ const Schema = new mongoose.Schema<SetFromModel>({
 			default: []
 		}
 	},
+	parent: {
+		type: String,
+		required: false,
+		default: ''
+	},
 	userId: {
 		type: String,
 		required: true

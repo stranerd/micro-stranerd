@@ -13,6 +13,7 @@ export class SetEntity extends BaseEntity {
 		flashCards: string[]
 		testPreps: string[]
 	}
+	public readonly parent: string | null
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly createdAt: number
@@ -25,6 +26,7 @@ export class SetEntity extends BaseEntity {
 		             isPublic,
 		             saved,
 		             tags,
+		             parent,
 		             userId,
 		             userBio,
 		             createdAt,
@@ -37,6 +39,7 @@ export class SetEntity extends BaseEntity {
 		this.isPublic = isPublic
 		this.saved = saved
 		this.tags = tags
+		this.parent = parent
 		this.userId = userId
 		this.userBio = userBio
 		this.createdAt = createdAt
@@ -56,6 +59,7 @@ type SetConstructorArgs = {
 		flashCards: string[]
 		testPreps: string[]
 	}
+	parent: string | null
 	userId: string
 	userBio: UserBio
 	createdAt: number

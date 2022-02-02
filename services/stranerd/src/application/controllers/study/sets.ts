@@ -24,10 +24,12 @@ export class SetController {
 		const data = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
+			parent: req.body.parent,
 			tags: req.body.tags
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
+			parent: { required: false, rules: [Validation.isString] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
@@ -41,10 +43,12 @@ export class SetController {
 		const data = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
+			parent: req.body.parent,
 			tags: req.body.tags
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
+			parent: { required: false, rules: [Validation.isString] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]

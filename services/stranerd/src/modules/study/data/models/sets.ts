@@ -19,4 +19,5 @@ export interface SetToModel {
 	userId: string
 	userBio: UserBio
 	tags: string[]
+	parent: string | null
 }
