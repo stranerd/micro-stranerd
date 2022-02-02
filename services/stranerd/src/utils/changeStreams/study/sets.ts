@@ -17,8 +17,8 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		}
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitMineUpdated('sets', after, after.userId)
-		await getSocketEmitter().emitMineUpdated(`sets/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitOpenUpdated('sets', after)
+		await getSocketEmitter().emitOpenUpdated(`sets/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitMineDeleted('sets', before, before.userId)
