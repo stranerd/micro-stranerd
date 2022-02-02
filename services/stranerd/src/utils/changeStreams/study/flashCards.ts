@@ -22,12 +22,11 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		await getSocketEmitter().emitOpenDeleted('flashCards', before)
 		await getSocketEmitter().emitOpenDeleted(`flashCards/${before.id}`, before)
 
+		await RemoveSetProp.execute({ prop: 'flashCards', value: before.id })
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewFlashCard
 		})
-
-		await RemoveSetProp.execute({ prop: 'flashCards', value: before.id })
-		await IncrementUserMetaCount.execute({ id: before.userId, value: 1, property: UserMeta.flashCards })
+		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.flashCards })
 	}
 }

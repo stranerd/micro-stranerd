@@ -26,12 +26,12 @@ const Ranks: Record<RankTypes, Rank> = {
 	[RankTypes.Scholar]: {
 		id: RankTypes.Scholar,
 		level: 3,
-		score: 450
+		score: 600
 	},
 	[RankTypes.Wizard]: {
 		id: RankTypes.Wizard,
 		level: 4,
-		score: 700
+		score: 1500
 	},
 	[RankTypes.Einstein]: {
 		id: RankTypes.Einstein,
