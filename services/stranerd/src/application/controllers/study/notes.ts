@@ -1,6 +1,7 @@
 import { AddNote, DeleteNote, FindNote, GetNotes, UpdateNote } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class NoteController {
 	static async FindNote (req: Request) {
@@ -76,11 +77,20 @@ export class NoteController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) return await AddNote.execute({
-			...data,
-			userBio: user.bio,
-			userId: authUserId
-		})
+		if (user) {
+			const note = await AddNote.execute({
+				...data,
+				userBio: user.bio,
+				userId: authUserId
+			})
+			await saveNewItemToSet({
+				setId: req.query.setId?.toString() ?? null,
+				itemId: note.id,
+				userId: note.userId,
+				type: 'notes'
+			})
+			return note
+		}
 		throw new NotFoundError()
 	}
 

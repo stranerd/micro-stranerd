@@ -1,10 +1,8 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import {
 	DeletePropertyComments,
-	GetSets,
 	RemoveSetProp,
 	RemoveVideoFromPlaylist,
-	UpdateSetProp,
 	VideoEntity,
 	VideoFromModel
 } from '@modules/study'
@@ -15,21 +13,6 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('videos', after)
 		await getSocketEmitter().emitOpenCreated(`videos/${after.id}`, after)
-
-		const rootSet = (await GetSets.execute({
-			where: [
-				{ field: 'isRoot', value: true },
-				{ field: 'userId', value: after.userId }
-			]
-		})).results[0]
-
-		if (rootSet) await UpdateSetProp.execute({
-			id: rootSet.id,
-			prop: 'videos',
-			values: [after.id],
-			userId: after.userId,
-			add: true
-		})
 	},
 	updated: async ({ before, changes, after }) => {
 		await getSocketEmitter().emitOpenUpdated('videos', after)

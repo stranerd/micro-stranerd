@@ -1,6 +1,7 @@
 import { AddPlaylist, DeletePlaylist, FindPlaylist, GetPlaylists, UpdatePlaylist } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class PlaylistController {
 	static async FindPlaylist (req: Request) {
@@ -70,11 +71,20 @@ export class PlaylistController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) return await AddPlaylist.execute({
-			...data,
-			userBio: user.bio,
-			userId: authUserId
-		})
+		if (user) {
+			const playlist = await AddPlaylist.execute({
+				...data,
+				userBio: user.bio,
+				userId: authUserId
+			})
+			await saveNewItemToSet({
+				setId: req.query.setId?.toString() ?? null,
+				itemId: playlist.id,
+				userId: playlist.userId,
+				type: 'playlists'
+			})
+			return playlist
+		}
 		throw new NotFoundError()
 	}
 

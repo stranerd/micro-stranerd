@@ -69,15 +69,18 @@ export interface UserSession {
 }
 
 export enum ScoreRewards {
-	BestAnswer = 3,
+	BestAnswer = 2,
 	NewAnswer = 1,
 	NewQuestion = 0.5,
-	UpvoteAnswer = 0.5,
-	NewComment = 0.5,
+	UpvoteAnswer = 0.05,
+	NewComment = 0.1,
 
 	CompleteSession = 1,
 
-	CompleteTest = 2,
-	NewFlashCard = 3,
-	NewSet = 3
+	CompleteTest = 1,
+	NewSet = 1,
+	NewFlashCard = 1,
+	NewNote = 1,
+	NewVideo = 1,
+	NewPlaylist = 1
 }
