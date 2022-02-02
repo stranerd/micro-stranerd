@@ -1,10 +1,4 @@
-import {
-	AddInstitution,
-	DeleteInstitution,
-	FindInstitution,
-	GetInstitutions,
-	UpdateInstitution
-} from '@modules/study'
+import { AddInstitution, DeleteInstitution, FindInstitution, GetInstitutions, UpdateInstitution } from '@modules/study'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class InstitutionController {
@@ -42,7 +36,9 @@ export class InstitutionController {
 			isGateway: { required: true, rules: [Validation.isBoolean] }
 		})
 
-		return await UpdateInstitution.execute({ id: req.params.id, data })
+		const updatedInstitution = await UpdateInstitution.execute({ id: req.params.id, data })
+		if (updatedInstitution) return updatedInstitution
+		throw new NotFoundError()
 	}
 
 	static async DeleteInstitution (req: Request) {

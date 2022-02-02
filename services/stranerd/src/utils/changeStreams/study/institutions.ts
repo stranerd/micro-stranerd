@@ -14,7 +14,7 @@ export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<Institution
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('institutions', before)
 		await getSocketEmitter().emitOpenDeleted(`institutions/${before.id}`, before)
-	
+
 		await DeleteInstitutionCourses.execute(before.id)
 	}
 }

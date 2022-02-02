@@ -55,7 +55,9 @@ export class SetController {
 			}
 		})
 
-		return await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
+		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
+		if (updatedSet) return updatedSet
+		throw new NotAuthorizedError()
 	}
 
 	static async SaveProp (req: Request) {

@@ -6,7 +6,7 @@ import {
 	PastQuestionType,
 	UpdatePastQuestion
 } from '@modules/study'
-import { NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {
@@ -112,7 +112,7 @@ export class PastQuestionController {
 		const updatedPastQuestion = await UpdatePastQuestion.execute({ id: req.params.id, data })
 
 		if (updatedPastQuestion) return updatedPastQuestion
-		throw new NotAuthorizedError()
+		throw new NotFoundError()
 	}
 
 	static async CreatePastQuestion (req: Request) {

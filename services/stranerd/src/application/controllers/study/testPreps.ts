@@ -108,7 +108,9 @@ export class TestPrepController {
 			data: isPastQuestionsType ? { type, questionType, courseId, year, institutionId } : ({} as any)
 		}
 
-		return await UpdateTestPrep.execute({ id: req.params.id, data })
+		const updatedTestPrep = await UpdateTestPrep.execute({ id: req.params.id, data })
+		if (updatedTestPrep) return updatedTestPrep
+		throw new NotFoundError()
 	}
 
 	static async DeleteTestPrep (req: Request) {

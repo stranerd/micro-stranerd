@@ -32,7 +32,9 @@ export class CourseController {
 			institutionId: { required: true, rules: [Validation.isString] }
 		})
 
-		return await UpdateCourse.execute({ id: req.params.id, data })
+		const updatedCourse = await UpdateCourse.execute({ id: req.params.id, data })
+		if (updatedCourse) return updatedCourse
+		throw new NotFoundError()
 	}
 
 	static async DeleteCourse (req: Request) {
