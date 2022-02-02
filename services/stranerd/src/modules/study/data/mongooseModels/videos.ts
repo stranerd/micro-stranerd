@@ -53,7 +53,8 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 	},
 	preview: {
 		type: mongoose.Schema.Types.Mixed,
-		default: {} as any
+		default: null as any,
+		required: false
 	},
 	createdAt: {
 		type: Number,

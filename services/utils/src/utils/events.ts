@@ -21,7 +21,7 @@ export const subscribers = {
 		}
 	}),
 	[EventTypes.DELETEFILE]: eventBus.createSubscriber(EventTypes.DELETEFILE, async (data) => {
-		await DeleteFile.call(data?.path ?? '')
+		if (data?.path) await DeleteFile.call(data.path)
 	})
 }
 

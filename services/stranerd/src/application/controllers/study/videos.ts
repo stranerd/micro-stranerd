@@ -37,7 +37,7 @@ export class VideoController {
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
-			preview: { required: true, rules: [Validation.isImage] }
+			preview: { required: false, rules: [Validation.isImage] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -69,7 +69,7 @@ export class VideoController {
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
-			preview: { required: true, rules: [Validation.isImage] }
+			preview: { required: false, rules: [Validation.isImage] }
 		})
 
 		const authUserId = req.authUser!.id
