@@ -14,11 +14,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: ''
 	},
-	isRoot: {
-		type: Boolean,
-		required: false,
-		default: false
-	},
 	isPublic: {
 		type: Boolean,
 		required: false,
@@ -57,9 +52,9 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		}
 	},
 	parent: {
-		type: String,
+		type: mongoose.Schema.Types.Mixed,
 		required: false,
-		default: ''
+		default: null
 	},
 	userId: {
 		type: String,

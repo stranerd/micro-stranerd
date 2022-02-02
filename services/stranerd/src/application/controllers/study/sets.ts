@@ -36,7 +36,7 @@ export class SetController {
 			}
 		})
 
-		return await AddSet.execute({ ...data, isRoot: false, userId: user.id, userBio: user.bio })
+		return await AddSet.execute({ ...data, userId: user.id, userBio: user.bio })
 	}
 
 	static async UpdateSet (req: Request) {

@@ -6,7 +6,7 @@ export const saveNewItemToSet = async ({
 	if (!setId) {
 		const rootSet = (await GetSets.execute({
 			where: [
-				{ field: 'isRoot', value: true },
+				{ field: 'parent', value: null },
 				{ field: 'userId', value: userId }
 			]
 		})).results[0]

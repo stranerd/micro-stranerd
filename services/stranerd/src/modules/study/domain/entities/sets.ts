@@ -4,7 +4,6 @@ import { UserBio } from '../types'
 export class SetEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
-	public readonly isRoot: boolean
 	public readonly isPublic: boolean
 	public readonly tags: string[]
 	public readonly saved: {
@@ -22,7 +21,6 @@ export class SetEntity extends BaseEntity {
 	constructor ({
 		             id,
 		             name,
-		             isRoot,
 		             isPublic,
 		             saved,
 		             tags,
@@ -35,7 +33,6 @@ export class SetEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.name = name
-		this.isRoot = isRoot
 		this.isPublic = isPublic
 		this.saved = saved
 		this.tags = tags
@@ -50,7 +47,6 @@ export class SetEntity extends BaseEntity {
 type SetConstructorArgs = {
 	id: string
 	name: string
-	isRoot: boolean
 	isPublic: boolean
 	tags: string[]
 	saved: {

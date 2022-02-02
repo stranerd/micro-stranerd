@@ -15,7 +15,6 @@ export interface SetFromModel extends SetToModel {
 
 export interface SetToModel {
 	name: string
-	isRoot: boolean
 	isPublic: boolean
 	userId: string
 	userBio: UserBio

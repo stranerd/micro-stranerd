@@ -8,7 +8,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await getSocketEmitter().emitMineCreated('sets', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`sets/${after.id}`, after, after.userId)
 
-		if (!after.isRoot) {
+		if (after.parent) {
 			await UpdateUserNerdScore.execute({
 				userId: after.userId,
 				amount: ScoreRewards.NewSet
@@ -25,7 +25,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await getSocketEmitter().emitMineDeleted(`sets/${before.id}`, before, before.userId)
 		await DeleteSetChildren.execute(before.id)
 
-		if (!before.isRoot) {
+		if (before.parent) {
 			await UpdateUserNerdScore.execute({
 				userId: before.userId,
 				amount: -ScoreRewards.NewSet

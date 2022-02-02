@@ -20,9 +20,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
 
 		await AddSet.execute({
-			name: '', isRoot: true, isPublic: false,
-			userId: after.id, userBio: after.bio, tags: [],
-			parent: null
+			name: '', parent: null, isPublic: false,
+			userId: after.id, userBio: after.bio, tags: []
 		})
 	},
 	updated: async ({ before, after, changes }) => {

@@ -45,7 +45,7 @@ export class SearchController {
 				limit: 15
 			}),
 			GetSets.execute({
-				where: [{ field: 'isRoot', value: false }, { field: 'isPublic', value: true }],
+				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['name', 'tags']
