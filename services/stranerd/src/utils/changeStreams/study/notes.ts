@@ -34,9 +34,9 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitOpenDeleted('notes', before)
 		await getSocketEmitter().emitOpenDeleted(`notes/${before.id}`, before)
 
+		await RemoveSetProp.execute({ prop: 'notes', value: before.id })
+
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 		await publishers[EventTypes.DELETEFILE].publish(before.preview)
-
-		await RemoveSetProp.execute({ prop: 'notes', value: before.id })
 	}
 }

@@ -5,12 +5,12 @@ import { routes } from '@application/routes'
 import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 
 const app = getNewServerInstance(routes, {
-	mine: ['notifications', 'referrals', 'chats', 'chatMetas', 'sessions', 'sets', 'tests'],
+	mine: ['notifications', 'referrals', 'chats', 'chatMetas', 'sessions', 'tests'],
 	admin: ['reports', 'pastQuestions', 'testPreps'],
 	open: [
 		'users', 'reviews', 'badges',
 		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects',
-		'courses', 'notes', 'institutions', 'studyComments', 'videos', 'flashCards'
+		'courses', 'notes', 'institutions', 'studyComments', 'videos', 'flashCards', 'playlists', 'sets'
 	]
 }, {
 	onConnect: async (userId, socketId) => {

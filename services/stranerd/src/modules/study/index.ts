@@ -8,6 +8,7 @@ import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
 import { PastQuestionRepository } from './data/repositories/pastQuestions'
 import { TestRepository } from './data/repositories/tests'
+import { PlaylistRepository } from './data/repositories/playlists'
 import { GetTestPrepsUseCase } from './domain/useCases/testPreps/getTestPreps'
 import { FindTestPrepUseCase } from './domain/useCases/testPreps/findTestPrep'
 import { AddTestPrepUseCase } from './domain/useCases/testPreps/addTestPrep'
@@ -67,6 +68,13 @@ import { UpdateTestUseCase } from './domain/useCases/tests/updateTest'
 import { DeleteTestUseCase } from './domain/useCases/tests/deleteTest'
 import { UpdateTestAnswerUseCase } from './domain/useCases/tests/updateTestAnswer'
 import { UpdateTestTaskIdsUseCase } from './domain/useCases/tests/updateTestTaskIds'
+import { GetPlaylistsUseCase } from './domain/useCases/playlists/getPlaylists'
+import { FindPlaylistUseCase } from './domain/useCases/playlists/findPlaylist'
+import { AddPlaylistUseCase } from './domain/useCases/playlists/addPlaylist'
+import { UpdatePlaylistUseCase } from './domain/useCases/playlists/updatePlaylist'
+import { DeletePlaylistUseCase } from './domain/useCases/playlists/deletePlaylist'
+import { UpdatePlaylistsUserBioUseCase } from './domain/useCases/playlists/updatePlaylistsUserBio'
+import { RemoveVideoFromPlaylistUseCase } from './domain/useCases/playlists/removeVideoFromPlaylists'
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
@@ -78,6 +86,7 @@ const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
 const pastQuestionRepository = PastQuestionRepository.getInstance()
 const testRepository = TestRepository.getInstance()
+const playlistRepository = PlaylistRepository.getInstance()
 
 export const GetTestPreps = new GetTestPrepsUseCase(testPrepRepository)
 export const FindTestPrep = new FindTestPrepUseCase(testPrepRepository)
@@ -148,6 +157,14 @@ export const DeleteTest = new DeleteTestUseCase(testRepository)
 export const UpdateTestAnswer = new UpdateTestAnswerUseCase(testRepository)
 export const UpdateTestTaskIds = new UpdateTestTaskIdsUseCase(testRepository)
 
+export const GetPlaylists = new GetPlaylistsUseCase(playlistRepository)
+export const FindPlaylist = new FindPlaylistUseCase(playlistRepository)
+export const AddPlaylist = new AddPlaylistUseCase(playlistRepository)
+export const UpdatePlaylist = new UpdatePlaylistUseCase(playlistRepository)
+export const DeletePlaylist = new DeletePlaylistUseCase(playlistRepository)
+export const UpdatePlaylistsUserBio = new UpdatePlaylistsUserBioUseCase(playlistRepository)
+export const RemoveVideoFromPlaylist = new RemoveVideoFromPlaylistUseCase(playlistRepository)
+
 export { PrepType, PrepData } from './domain/types'
 export { PastQuestionData, PastQuestionType } from './domain/types'
 export { TestData, TestType } from './domain/types'
@@ -163,6 +180,7 @@ export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
 export { PastQuestionFromModel } from './data/models/pastQuestions'
 export { TestFromModel } from './data/models/tests'
+export { PlaylistFromModel } from './data/models/playlists'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
 export { CommentEntity } from './domain/entities/comments'
@@ -174,3 +192,4 @@ export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'
 export { PastQuestionEntity } from './domain/entities/pastQuestions'
 export { TestEntity } from './domain/entities/tests'
+export { PlaylistEntity } from './domain/entities/playlists'

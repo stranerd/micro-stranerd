@@ -45,11 +45,11 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 			}
 			// change answer vote
 			else await Answer.findOneAndUpdate({
-					_id: data.answerId,
-					'votes.userId': data.userId
-				}, {
-					$set: { 'votes.$.vote': data.vote }
-				}, { session })
+				_id: data.answerId,
+				'votes.userId': data.userId
+			}, {
+				$set: { 'votes.$.vote': data.vote }
+			}, { session })
 
 			upvote.vote = data.vote
 			await upvote.save({ session })

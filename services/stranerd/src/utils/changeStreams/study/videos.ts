@@ -3,6 +3,7 @@ import {
 	DeletePropertyComments,
 	GetSets,
 	RemoveSetProp,
+	RemoveVideoFromPlaylist,
 	UpdateSetProp,
 	VideoEntity,
 	VideoFromModel
@@ -41,11 +42,12 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await getSocketEmitter().emitOpenDeleted('videos', before)
 		await getSocketEmitter().emitOpenDeleted(`videos/${before.id}`, before)
 
+		await RemoveSetProp.execute({ prop: 'videos', value: before.id })
+		await RemoveVideoFromPlaylist.execute(before.id)
+
 		await DeletePropertyComments.execute({ property: 'videoId', propertyId: before.id })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 		await publishers[EventTypes.DELETEFILE].publish(before.preview)
-
-		await RemoveSetProp.execute({ prop: 'videos', value: before.id })
 	}
 }
