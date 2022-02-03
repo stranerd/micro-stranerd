@@ -5,9 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 	mapFrom (model: SetFromModel | null) {
 		if (!model) return null
-		const { _id, name, isPublic, tags, saved, parent, userId, userBio, createdAt, updatedAt } = model
+		const { _id, name, isPublic, children, tags, saved, parent, userId, userBio, createdAt, updatedAt } = model
 		return new SetEntity({
-			id: _id.toString(), name, isPublic, tags, saved, parent, userId, userBio, createdAt, updatedAt
+			id: _id.toString(), name, isPublic, children, tags, saved, parent, userId, userBio, createdAt, updatedAt
 		})
 	}
 

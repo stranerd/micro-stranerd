@@ -23,6 +23,7 @@ import { UpdateSetsUserBioUseCase } from './domain/useCases/sets/updateSetsUserB
 import { UpdateSetPropUseCase } from './domain/useCases/sets/updateSetProp'
 import { RemoveSetPropUseCase } from './domain/useCases/sets/removeSetProp'
 import { DeleteSetChildrenUseCase } from './domain/useCases/sets/deleteSetChildren'
+import { UpdateSetChildrenUseCase } from './domain/useCases/sets/updateSetChildren'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -76,7 +77,6 @@ import { UpdatePlaylistUseCase } from './domain/useCases/playlists/updatePlaylis
 import { DeletePlaylistUseCase } from './domain/useCases/playlists/deletePlaylist'
 import { UpdatePlaylistsUserBioUseCase } from './domain/useCases/playlists/updatePlaylistsUserBio'
 import { RemoveVideoFromPlaylistUseCase } from './domain/useCases/playlists/removeVideoFromPlaylists'
-import { DeleteSetChildrenUseCase } from '@modules/study/domain/useCases/sets/deleteSetChildren'
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
@@ -105,6 +105,7 @@ export const UpdateSetsUserBio = new UpdateSetsUserBioUseCase(setRepository)
 export const UpdateSetProp = new UpdateSetPropUseCase(setRepository)
 export const RemoveSetProp = new RemoveSetPropUseCase(setRepository)
 export const DeleteSetChildren = new DeleteSetChildrenUseCase(setRepository)
+export const UpdateSetChildren = new UpdateSetChildrenUseCase(setRepository)
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)

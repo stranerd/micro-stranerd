@@ -24,6 +24,11 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: true,
 		set: (tags: string[]) => Array.from(new Set(tags))
 	},
+	children: {
+		type: [String],
+		required: false,
+		default: []
+	},
 	saved: {
 		notes: {
 			type: [String],

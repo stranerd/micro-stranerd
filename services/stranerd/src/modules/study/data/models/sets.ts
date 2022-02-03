@@ -9,6 +9,7 @@ export interface SetFromModel extends SetToModel {
 		testPreps: string[]
 		playlists: string[]
 	}
+	children: string[]
 	createdAt: number
 	updatedAt: number
 }

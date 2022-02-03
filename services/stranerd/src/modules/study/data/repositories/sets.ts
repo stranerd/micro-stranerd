@@ -63,6 +63,15 @@ export class SetRepository implements ISetRepository {
 		return !!set
 	}
 
+	async updateSetChildren (id: string, add: boolean, values: string[]) {
+		const set = await Set.findOneAndUpdate({ _id: id }, {
+			[add ? '$addToSet' : '$pull']: {
+				children: { [add ? '$each' : '$in']: values }
+			}
+		})
+		return !!set
+	}
+
 	async removeSetProp (prop: keyof SetFromModel['saved'], value: string) {
 		const sets = await Set.updateMany({ [`saved.${prop}`]: value }, {
 			$pull: { [`saved.${prop}`]: value }
