@@ -7,7 +7,6 @@ export class AnswerEntity extends BaseEntity {
 	public readonly body: string
 	public readonly best: boolean
 	public readonly questionId: string
-	public readonly tags: string[]
 	public readonly attachments: MediaOutput[]
 	public readonly userId: string
 	public readonly userBio: UserBio
@@ -18,7 +17,7 @@ export class AnswerEntity extends BaseEntity {
 
 	constructor ({
 		             id, title, body, questionId,
-		             createdAt, userId, userBio, tags, attachments,
+		             createdAt, userId, userBio, attachments,
 		             best, votes, commentsCount, updatedAt
 	             }: AnswerConstructorArgs) {
 		super()
@@ -27,7 +26,6 @@ export class AnswerEntity extends BaseEntity {
 		this.body = body
 		this.questionId = questionId
 		this.userId = userId
-		this.tags = tags
 		this.attachments = attachments
 		this.userBio = userBio
 		this.best = best ?? false
@@ -48,7 +46,6 @@ type AnswerConstructorArgs = {
 	title: string
 	body: string
 	questionId: string
-	tags: string[]
 	attachments: MediaOutput[]
 	createdAt: number
 	updatedAt: number

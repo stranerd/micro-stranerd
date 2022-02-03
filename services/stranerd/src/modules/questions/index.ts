@@ -24,7 +24,6 @@ import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestio
 import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
 import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/updateAnswersCommentsCount'
 import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
-import { UpdateQuestionAnswersTagsUseCase } from './domain/useCases/answers/updateQuestionAnswersTags'
 import { UpdateBestAnswerUseCase } from './domain/useCases/questions/updateBestAnswer'
 import { UpdateQuestionsAnswersUseCase } from './domain/useCases/questions/updateQuestionsAnswers'
 import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updateQuestionsUserBio'
@@ -60,7 +59,6 @@ export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
 export const DeleteQuestionAnswers = new DeleteQuestionAnswersUseCase(answerRepository)
 export const UpdateAnswersCommentsCount = new UpdateAnswersCommentsCountUseCase(answerRepository)
 export const UpdateAnswersUserBio = new UpdateAnswersUserBioUseCase(answerRepository)
-export const UpdateQuestionAnswersTags = new UpdateQuestionAnswersTagsUseCase(answerRepository)
 
 export const GetQuestions = new GetQuestionsUseCase(questionRepository)
 export const FindQuestion = new FindQuestionUseCase(questionRepository)

@@ -29,8 +29,6 @@ export interface IUserRepository {
 
 	updateUserRatings (userId: string, ratings: number, add: boolean): Promise<boolean>
 
-	updateUserTags (userId: string, tags: string[], add: boolean): Promise<boolean>
-
 	updateUserStatus (userId: string, socketId: string, add: boolean): Promise<boolean>
 
 	resetAllUsersStatus (): Promise<boolean>

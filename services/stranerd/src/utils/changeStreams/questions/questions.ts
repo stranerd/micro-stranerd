@@ -1,5 +1,5 @@
 import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel, UpdateQuestionAnswersTags } from '@modules/questions'
+import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import {
 	CountStreakBadges,
 	GetUsers,
@@ -50,8 +50,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('questions', after)
 		await getSocketEmitter().emitOpenUpdated(`questions/${after.id}`, after)
-
-		if (changes.tags) await UpdateQuestionAnswersTags.execute({ questionId: after.id, tags: after.tags })
 
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))

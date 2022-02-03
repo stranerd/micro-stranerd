@@ -139,12 +139,6 @@ export class UserRepository implements IUserRepository {
 		return !!user
 	}
 
-	async updateUserTags (userId: string, tags: string[], add: boolean) {
-		const updateData = Object.fromEntries(tags.map((tag) => [`tutor.tags.${tag}`, add ? 1 : -1]))
-		const user = await User.findByIdAndUpdate(userId, { $inc: updateData })
-		return !!user
-	}
-
 	async updateUserStatus (userId: string, socketId: string, add: boolean) {
 		const user = await User.findByIdAndUpdate(userId, {
 			$set: { 'status.lastUpdatedAt': Date.now() },

@@ -19,7 +19,6 @@ import { UpdateMyReviewsBioUseCase } from './domain/useCases/reviews/updateMyRev
 import { GetUsersUseCase } from './domain/useCases/users/getUsers'
 import { UpdateUserNerdScoreUseCase } from './domain/useCases/users/updateUserNerdScore'
 import { UpdateUserRatingsUseCase } from './domain/useCases/users/updateUserRatings'
-import { UpdateUserTagsUseCase } from './domain/useCases/users/updateUserTags'
 import { UpdateUserStatusUseCase } from './domain/useCases/users/updateUserStatus'
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { UpdateUserQueuedSessionsUseCase } from './domain/useCases/users/updateUserQueuedSessions'
@@ -57,7 +56,6 @@ export const IncrementUsersSessionsCount = new IncrementUsersSessionsCountUseCas
 export const IncrementUserMetaCount = new IncrementUserMetaCountUseCase(userRepository)
 export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
-export const UpdateUserTags = new UpdateUserTagsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
 export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)

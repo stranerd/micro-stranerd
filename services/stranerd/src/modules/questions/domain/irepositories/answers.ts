@@ -11,6 +11,5 @@ export interface IAnswerRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateCommentsCount: (id: string, increment: boolean) => Promise<boolean>
 	updateAnswersUserBio: (userId: string, userBio: UserBio) => Promise<boolean>
-	updateQuestionAnswersTags: (questionId: string, tags: string[]) => Promise<boolean>
 	deleteQuestionAnswers: (questionId: string) => Promise<boolean>
 }

@@ -59,11 +59,6 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answers.acknowledged
 	}
 
-	async updateQuestionAnswersTags (questionId: string, tags: string[]) {
-		const answers = await Answer.updateMany({ questionId }, { $set: { tags } })
-		return !!answers.acknowledged
-	}
-
 	async deleteQuestionAnswers (questionId: string) {
 		const answers = await Answer.deleteMany({ questionId })
 		return !!answers.acknowledged

@@ -76,11 +76,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			type: [String],
 			required: false,
 			default: []
-		},
-		tags: {
-			type: mongoose.Schema.Types.Mixed,
-			required: false,
-			default: {}
 		}
 	},
 	dates: {

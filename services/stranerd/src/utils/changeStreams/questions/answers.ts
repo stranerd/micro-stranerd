@@ -14,7 +14,6 @@ import {
 	RecordCountStreak,
 	ScoreRewards,
 	UpdateUserNerdScore,
-	UpdateUserTags,
 	UserMeta
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -36,11 +35,6 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
 			amount: ScoreRewards.NewAnswer
-		})
-		await UpdateUserTags.execute({
-			userId: after.userId,
-			tags: after.tags,
-			add: true
 		})
 
 		const question = await FindQuestion.execute(after.questionId)
@@ -90,21 +84,6 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			})
 		}
 
-		if (changes.tags) {
-			const oldTags = before.tags.filter((t) => !after.tags.includes(t))
-			const newTags = after.tags.filter((t) => !before.tags.includes(t))
-			await UpdateUserTags.execute({
-				userId: before.userId,
-				tags: oldTags,
-				add: false
-			})
-			await UpdateUserTags.execute({
-				userId: after.userId,
-				tags: newTags,
-				add: true
-			})
-		}
-
 		if (!after.best && changes.votes && after.totalVotes >= 20) {
 			const question = await FindQuestion.execute(after.questionId)
 			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
@@ -130,11 +109,6 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewAnswer
-		})
-		await UpdateUserTags.execute({
-			userId: before.userId,
-			tags: before.tags,
-			add: false
 		})
 
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answers })
