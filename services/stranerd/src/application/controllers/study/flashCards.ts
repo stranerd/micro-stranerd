@@ -80,7 +80,7 @@ export class FlashCardController {
 				userId: authUserId
 			})
 			await saveNewItemToSet({
-				setId: req.query.setId?.toString() ?? null,
+				setId: req.body.setId?.toString() ?? null,
 				itemId: flashCard.id,
 				userId: flashCard.userId,
 				type: 'flashCards'

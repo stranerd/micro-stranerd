@@ -5,8 +5,8 @@ import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } f
 
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitMineCreated('sets', after, after.userId)
-		await getSocketEmitter().emitMineCreated(`sets/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitOpenCreated('sets', after)
+		await getSocketEmitter().emitOpenCreated(`sets/${after.id}`, after)
 
 		if (after.parent) {
 			await UpdateSetChildren.execute({ id: after.parent, add: true, values: [after.id] })
@@ -27,8 +27,8 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitMineDeleted('sets', before, before.userId)
-		await getSocketEmitter().emitMineDeleted(`sets/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitOpenCreated('sets', before)
+		await getSocketEmitter().emitOpenCreated(`sets/${before.id}`, before)
 		await DeleteSetChildren.execute(before.id)
 
 		if (before.parent) {

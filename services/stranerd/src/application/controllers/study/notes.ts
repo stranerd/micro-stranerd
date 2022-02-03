@@ -84,7 +84,7 @@ export class NoteController {
 				userId: authUserId
 			})
 			await saveNewItemToSet({
-				setId: req.query.setId?.toString() ?? null,
+				setId: req.body.setId?.toString() ?? null,
 				itemId: note.id,
 				userId: note.userId,
 				type: 'notes'

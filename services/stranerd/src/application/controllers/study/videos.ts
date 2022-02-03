@@ -84,7 +84,7 @@ export class VideoController {
 				userId: authUserId
 			})
 			await saveNewItemToSet({
-				setId: req.query.setId?.toString() ?? null,
+				setId: req.body.setId?.toString() ?? null,
 				itemId: video.id,
 				userId: video.userId,
 				type: 'videos'
