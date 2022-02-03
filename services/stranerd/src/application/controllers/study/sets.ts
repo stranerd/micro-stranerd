@@ -32,7 +32,7 @@ export class SetController {
 			parent: { required: false, rules: [Validation.isString] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
 
@@ -51,7 +51,7 @@ export class SetController {
 			parent: { required: false, rules: [Validation.isString] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
 

@@ -15,7 +15,8 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 	},
 	description: {
 		type: String,
-		required: true
+		required: false,
+		default: ''
 	},
 	tags: {
 		type: [String],

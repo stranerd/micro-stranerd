@@ -29,11 +29,11 @@ export class NoteController {
 			preview: req.body.preview
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
@@ -61,11 +61,11 @@ export class NoteController {
 			preview: req.body.preview
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },

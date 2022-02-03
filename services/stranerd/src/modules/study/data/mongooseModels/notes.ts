@@ -15,7 +15,8 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 	},
 	description: {
 		type: String,
-		required: true
+		required: false,
+		default: ''
 	},
 	tags: {
 		type: [String],

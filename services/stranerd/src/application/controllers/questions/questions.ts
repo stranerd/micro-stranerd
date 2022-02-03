@@ -38,7 +38,7 @@ export class QuestionController {
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			attachments: {
 				required: true,
@@ -70,7 +70,7 @@ export class QuestionController {
 			subjectId: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0), Validation.hasLessThanX(4)]
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			attachments: {
 				required: true,
