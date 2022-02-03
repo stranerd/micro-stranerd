@@ -1,11 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import {
-	DeletePropertyComments,
-	RemoveSetProp,
-	RemoveVideoFromPlaylist,
-	VideoEntity,
-	VideoFromModel
-} from '@modules/study'
+import { DeletePropertyComments, RemoveSetProp, VideoEntity, VideoFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
@@ -33,7 +27,6 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await getSocketEmitter().emitOpenDeleted(`videos/${before.id}`, before)
 
 		await RemoveSetProp.execute({ prop: 'videos', value: before.id })
-		await RemoveVideoFromPlaylist.execute(before.id)
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,
 			amount: -ScoreRewards.NewVideo

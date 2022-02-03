@@ -49,11 +49,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 			type: [String],
 			required: false,
 			default: []
-		},
-		playlists: {
-			type: [String],
-			required: false,
-			default: []
 		}
 	},
 	parent: {

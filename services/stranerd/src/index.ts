@@ -10,7 +10,7 @@ const app = getNewServerInstance(routes, {
 	open: [
 		'users', 'reviews', 'badges',
 		'answerComments', 'answers', 'answerUpvotes', 'questions', 'subjects',
-		'courses', 'notes', 'institutions', 'studyComments', 'videos', 'flashCards', 'playlists', 'sets'
+		'courses', 'notes', 'institutions', 'studyComments', 'videos', 'flashCards', 'sets'
 	]
 }, {
 	onConnect: async (userId, socketId) => {
