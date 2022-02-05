@@ -1,6 +1,7 @@
 import { AddSet, DeleteSet, FindSet, GetSets, UpdateSet, UpdateSetProp } from '@modules/study'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindUser } from '@modules/users'
+import { getRootSet } from '@utils/modules/study/sets'
 
 export class SetController {
 	static async FindSet (req: Request) {
@@ -35,6 +36,11 @@ export class SetController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
+
+		if (data.parent === null) {
+			const rootSet = await getRootSet(user.id)
+			data.parent = rootSet?.id ?? null
+		}
 
 		return await AddSet.execute({ ...data, userId: user.id, userBio: user.bio })
 	}
