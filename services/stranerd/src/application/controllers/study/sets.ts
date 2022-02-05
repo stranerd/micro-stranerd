@@ -1,4 +1,4 @@
-import { AddSet, DeleteSet, FindSet, GetSets, UpdateSet, UpdateSetProp } from '@modules/study'
+import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, UpdateSet, UpdateSetProp } from '@modules/study'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindUser } from '@modules/users'
 import { getRootSet } from '@utils/modules/study/sets'
@@ -73,7 +73,7 @@ export class SetController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(['notes', 'videos', 'flashCards', 'testPreps'], (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetSaved), (cur, val) => cur === val)]
 			},
 			propIds: {
 				required: true,
@@ -100,7 +100,7 @@ export class SetController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(['notes', 'videos', 'flashCards', 'testPreps'], (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetSaved), (cur, val) => cur === val)]
 			},
 			propIds: {
 				required: true,

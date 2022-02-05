@@ -1,8 +1,8 @@
-import { SetFromModel } from '../../../data/models/sets'
 import { ISetRepository } from '../../irepositories/sets'
 import { BaseUseCase } from '@utils/commons'
+import { SetSaved } from '../../types'
 
-type Input = { id: string, userId: string, prop: keyof SetFromModel['saved'], add: boolean, values: string[] }
+type Input = { id: string, userId: string, prop: SetSaved, add: boolean, values: string[] }
 
 export class UpdateSetPropUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISetRepository

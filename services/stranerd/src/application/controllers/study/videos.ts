@@ -1,4 +1,4 @@
-import { AddVideo, DeleteVideo, FindVideo, GetVideos, UpdateVideo } from '@modules/study'
+import { AddVideo, DeleteVideo, FindVideo, GetVideos, SetSaved, UpdateVideo } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { saveNewItemToSet } from '@utils/modules/study/sets'
@@ -87,7 +87,7 @@ export class VideoController {
 				setId: req.body.setId?.toString() ?? null,
 				itemId: video.id,
 				userId: video.userId,
-				type: 'videos'
+				type: SetSaved.videos
 			})
 			return video
 		}

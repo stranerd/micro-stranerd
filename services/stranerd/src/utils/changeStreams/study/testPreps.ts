@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { TestPrepEntity, TestPrepFromModel } from '@modules/study'
+import { RemoveSetProp, SetSaved, TestPrepEntity, TestPrepFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 
 export const TestPrepChangeStreamCallbacks: ChangeStreamCallbacks<TestPrepFromModel, TestPrepEntity> = {
@@ -14,5 +14,7 @@ export const TestPrepChangeStreamCallbacks: ChangeStreamCallbacks<TestPrepFromMo
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('testPreps', before)
 		await getSocketEmitter().emitOpenDeleted(`testPreps/${before.id}`, before)
+
+		await RemoveSetProp.execute({ prop: SetSaved.testPreps, value: before.id })
 	}
 }

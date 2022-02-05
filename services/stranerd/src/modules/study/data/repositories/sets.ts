@@ -3,7 +3,7 @@ import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { SetSaved, UserBio } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {
 	private static instance: SetRepository
@@ -52,7 +52,7 @@ export class SetRepository implements ISetRepository {
 		return !!set
 	}
 
-	async updateSetProp (id: string, userId: string, prop: keyof SetFromModel['saved'], add: boolean, values: string[]) {
+	async updateSetProp (id: string, userId: string, prop: SetSaved, add: boolean, values: string[]) {
 		const set = await Set.findOneAndUpdate({ _id: id, userId }, {
 			[add ? '$addToSet' : '$pull']: {
 				[`saved.${prop}`]: {
@@ -72,7 +72,7 @@ export class SetRepository implements ISetRepository {
 		return !!set
 	}
 
-	async removeSetProp (prop: keyof SetFromModel['saved'], value: string) {
+	async removeSetProp (prop: SetSaved, value: string) {
 		const sets = await Set.updateMany({ [`saved.${prop}`]: value }, {
 			$pull: { [`saved.${prop}`]: value }
 		})

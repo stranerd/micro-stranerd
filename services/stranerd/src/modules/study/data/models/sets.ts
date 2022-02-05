@@ -1,13 +1,9 @@
 import { UserBio } from '../../domain/types'
+import { SetSaved } from '@modules/study/domain/types/sets'
 
 export interface SetFromModel extends SetToModel {
 	_id: string
-	saved: {
-		notes: string[]
-		videos: string[]
-		flashCards: string[]
-		testPreps: string[]
-	}
+	saved: Record<SetSaved, string[]>
 	children: string[]
 	createdAt: number
 	updatedAt: number

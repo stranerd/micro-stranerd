@@ -156,6 +156,7 @@ export { PrepType, PrepData } from './domain/types'
 export { PastQuestionData, PastQuestionType } from './domain/types'
 export { TestData, TestType } from './domain/types'
 export { CommentData, CommentType } from './domain/types'
+export { SetSaved } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
 export { CourseFromModel } from './data/models/courses'

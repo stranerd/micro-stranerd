@@ -1,4 +1,4 @@
-import { AddNote, DeleteNote, FindNote, GetNotes, UpdateNote } from '@modules/study'
+import { AddNote, DeleteNote, FindNote, GetNotes, SetSaved, UpdateNote } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { saveNewItemToSet } from '@utils/modules/study/sets'
@@ -87,7 +87,7 @@ export class NoteController {
 				setId: req.body.setId?.toString() ?? null,
 				itemId: note.id,
 				userId: note.userId,
-				type: 'notes'
+				type: SetSaved.notes
 			})
 			return note
 		}

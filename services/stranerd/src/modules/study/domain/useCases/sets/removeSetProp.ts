@@ -1,8 +1,8 @@
-import { SetFromModel } from '../../../data/models/sets'
 import { ISetRepository } from '../../irepositories/sets'
 import { BaseUseCase } from '@utils/commons'
+import { SetSaved } from '../../types'
 
-type Input = { prop: keyof SetFromModel['saved'], value: string }
+type Input = { prop: SetSaved, value: string }
 
 export class RemoveSetPropUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISetRepository

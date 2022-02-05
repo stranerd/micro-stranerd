@@ -1,4 +1,4 @@
-import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, UpdateFlashCard } from '@modules/study'
+import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, SetSaved, UpdateFlashCard } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { saveNewItemToSet } from '@utils/modules/study/sets'
@@ -83,7 +83,7 @@ export class FlashCardController {
 				setId: req.body.setId?.toString() ?? null,
 				itemId: flashCard.id,
 				userId: flashCard.userId,
-				type: 'flashCards'
+				type: SetSaved.flashCards
 			})
 			return flashCard
 		}

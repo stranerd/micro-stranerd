@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/commons'
 import { UserBio } from '../types'
+import { SetSaved } from '@modules/study/domain/types/sets'
 
 export class SetEntity extends BaseEntity {
 	public readonly id: string
@@ -7,12 +8,7 @@ export class SetEntity extends BaseEntity {
 	public readonly isPublic: boolean
 	public readonly tags: string[]
 	public readonly children: string[]
-	public readonly saved: {
-		notes: string[]
-		videos: string[]
-		flashCards: string[]
-		testPreps: string[]
-	}
+	public readonly saved: Record<SetSaved, string[]>
 	public readonly parent: string | null
 	public readonly userId: string
 	public readonly userBio: UserBio
@@ -53,12 +49,7 @@ type SetConstructorArgs = {
 	isPublic: boolean
 	tags: string[]
 	children: string[]
-	saved: {
-		notes: string[]
-		videos: string[]
-		flashCards: string[]
-		testPreps: string[]
-	}
+	saved: Record<SetSaved, string[]>
 	parent: string | null
 	userId: string
 	userBio: UserBio

@@ -66,7 +66,7 @@ export class TestController {
 		if (results.length < prep.questions) throw new ValidationError([{
 			field: '', messages: ['Not enough questions to take this test.']
 		}])
-		const questions = getRandomN(results, prep.questions).map((q) => q.id)
+		const questions = getRandomN(results, isUnTimed ? results.length : prep.questions).map((q) => q.id)
 
 		const data = {
 			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,

@@ -3,6 +3,7 @@ import { SetFromModel } from '../models/sets'
 import { SetChangeStreamCallbacks } from '@utils/changeStreams/study/sets'
 import { SetEntity } from '../../domain/entities/sets'
 import { SetMapper } from '../mappers/sets'
+import { SetSaved } from '../../domain/types'
 
 const Schema = new mongoose.Schema<SetFromModel>({
 	_id: {
@@ -29,28 +30,13 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: []
 	},
-	saved: {
-		notes: {
+	saved: Object.fromEntries(
+		Object.keys(SetSaved).map((key) => [key, {
 			type: [String],
 			required: false,
 			default: []
-		},
-		videos: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		flashCards: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		testPreps: {
-			type: [String],
-			required: false,
-			default: []
-		}
-	},
+		}])
+	),
 	parent: {
 		type: mongoose.Schema.Types.Mixed,
 		required: false,
