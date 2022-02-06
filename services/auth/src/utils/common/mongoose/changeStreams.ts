@@ -51,7 +51,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 				})
 				if (value) await callbacks.created?.({
 					before: null,
-					after: mapper(after)!
+					after: mapper(new collection(after))!
 				})
 			}
 
@@ -60,7 +60,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 				const _id = data.documentKey!._id
 				const { value: before } = await getClone().findOneAndDelete({ _id })
 				if (before) await callbacks.deleted?.({
-					before: mapper(before as Model)!,
+					before: mapper(new collection(before))!,
 					after: null
 				})
 			}
@@ -78,8 +78,8 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 					.concat(Object.keys(updatedFields))
 				const changes = getObjectsFromKeys(changed)
 				if (before) await callbacks.updated?.({
-					before: mapper(before as Model)!,
-					after: mapper(after)!,
+					before: mapper(new collection(before))!,
+					after: mapper(new collection(after))!,
 					changes
 				})
 			}
