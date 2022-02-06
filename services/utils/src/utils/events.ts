@@ -3,6 +3,7 @@ import { DeleteFile } from '@modules/storage'
 import { GetAndDeleteAllErrors } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { DeleteUserTokens } from '@modules/push'
+import { sendNotification } from '@utils/modules/push'
 
 export const subscribers = {
 	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
@@ -10,6 +11,9 @@ export const subscribers = {
 	}),
 	[EventTypes.AUTHUSERSIGNOUT]: eventBus.createSubscriber(EventTypes.AUTHUSERSIGNOUT, async (data) => {
 		await DeleteUserTokens.execute(data.id)
+	}),
+	[EventTypes.PUSHNOTIFICATION]: eventBus.createSubscriber(EventTypes.PUSHNOTIFICATION, async (data) => {
+		await sendNotification(data)
 	}),
 	[EventTypes.SENDMAIL]: eventBus.createSubscriber(EventTypes.SENDMAIL, async (data) => {
 		await sendMailAndCatchError(data)

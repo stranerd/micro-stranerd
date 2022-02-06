@@ -2,6 +2,7 @@ import { Email } from '../emails'
 import { MediaOutput } from '../storage'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted, AuthUserSignout } from './types/auth'
 import { CronTypes, DelayedEvent } from '../bull/types'
+import { PushNotification } from './types/push'
 
 export enum EventTypes {
 	SENDMAIL = 'SENDMAIL',
@@ -13,7 +14,8 @@ export enum EventTypes {
 	AUTHUSERDELETED = 'AUTHUSERDELETED',
 	AUTHUSERSIGNOUT = 'AUTHUSERSIGNOUT',
 	TASKSCRON = 'TASKSCRON',
-	TASKSDELAYED = 'TASKSDELAYED'
+	TASKSDELAYED = 'TASKSDELAYED',
+	PUSHNOTIFICATION = 'PUSHNOTIFICATION'
 }
 
 interface Event<Data> {
@@ -61,5 +63,9 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	TASKSDELAYED: {
 		topic: typeof EventTypes.TASKSDELAYED,
 		data: DelayedEvent
+	},
+	PUSHNOTIFICATION: {
+		topic: typeof EventTypes.PUSHNOTIFICATION,
+		data: PushNotification
 	}
 }

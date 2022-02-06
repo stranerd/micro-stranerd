@@ -34,20 +34,3 @@ export const sendNotification = async (userId: string, data: NotificationData, t
 		}
 	} else await CreateNotification.execute({ ...data, userId })
 }
-
-/* const getNotificationLink = (notification: NotificationData): string => {
- if (notification.action === 'questions') return `/questions/${notification.data.questionId}`
- else if (notification.action === 'answers') return `/questions/${notification.data.questionId}#${notification.data.answerId}`
- else if (notification.action === 'questionComments') return `/questions/${notification.data.questionId}`
- else if (notification.action === 'answerComments') return `/questions/${notification.data.questionId}#${notification.data.answerId}`
- else if (notification.action === 'sessions') return `/sessions/${notification.data.userId}`
- else if (notification.action === 'users') return `/users/${notification.data.userId}`
- else if (notification.action === 'account') {
- if (notification.data.wallet) return '/account/e-wallet'
- else return '/account/'
- } else if (notification.action === 'roles') {
- if (notification.data.admin) return '/admin/users/admins'
- if (notification.data.tutor) return '/admin/users/tutors'
- }
- return '/dashboard'
- } */

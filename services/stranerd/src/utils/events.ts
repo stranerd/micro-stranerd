@@ -72,5 +72,6 @@ export const subscribers = {
 
 export const publishers = {
 	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL),
-	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE)
+	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
+	[EventTypes.PUSHNOTIFICATION]: eventBus.createPublisher(EventTypes.PUSHNOTIFICATION)
 }
