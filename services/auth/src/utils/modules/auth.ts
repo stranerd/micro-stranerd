@@ -2,15 +2,18 @@ import {
 	BadRequestError,
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
+	EventTypes,
 	exchangeOldForNewTokens,
 	makeAccessToken,
 	makeRefreshToken
 } from '@utils/commons'
 import { AuthOutput, FindUser, UserEntity } from '@modules/index'
+import { publishers } from '@utils/events'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
 	await deleteCachedAccessToken(userId)
 	await deleteCachedRefreshToken(userId)
+	await publishers[EventTypes.AUTHUSERSIGNOUT].publish({ id: userId })
 	return true
 }
 

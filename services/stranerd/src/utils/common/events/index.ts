@@ -1,2 +1,5 @@
+import { EventBus } from './events'
+
 export * from './eventTypes'
-export * from './events'
+
+export const eventBus = new EventBus()

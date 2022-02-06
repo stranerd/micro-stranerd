@@ -1,11 +1,16 @@
-import { CronTypes, Email, EventBus, EventTypes, retryAllFailedJobs } from '@utils/commons'
+import { CronTypes, Email, eventBus, EventTypes, retryAllFailedJobs } from '@utils/commons'
 import { DeleteFile } from '@modules/storage'
 import { GetAndDeleteAllErrors } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
-
-const eventBus = new EventBus()
+import { DeleteUserTokens } from '@modules/push'
 
 export const subscribers = {
+	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
+		await DeleteUserTokens.execute(data.id)
+	}),
+	[EventTypes.AUTHUSERSIGNOUT]: eventBus.createSubscriber(EventTypes.AUTHUSERSIGNOUT, async (data) => {
+		await DeleteUserTokens.execute(data.id)
+	}),
 	[EventTypes.SENDMAIL]: eventBus.createSubscriber(EventTypes.SENDMAIL, async (data) => {
 		await sendMailAndCatchError(data)
 	}),

@@ -1,7 +1,5 @@
-import { CronTypes, EventBus, EventTypes } from '@utils/commons'
+import { CronTypes, eventBus, EventTypes } from '@utils/commons'
 import { deleteUnverifiedUsers } from '@utils/modules/emails'
-
-const eventBus = new EventBus()
 
 export const subscribers = {
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
@@ -12,6 +10,7 @@ export const subscribers = {
 export const publishers = {
 	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL),
 	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
+	[EventTypes.AUTHUSERSIGNOUT]: eventBus.createPublisher(EventTypes.AUTHUSERSIGNOUT),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createPublisher(EventTypes.AUTHUSERCREATED),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createPublisher(EventTypes.AUTHUSERUPDATED),
 	[EventTypes.AUTHROLESUPDATED]: eventBus.createPublisher(EventTypes.AUTHROLESUPDATED),

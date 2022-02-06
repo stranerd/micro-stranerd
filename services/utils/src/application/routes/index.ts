@@ -1,9 +1,11 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
 import { appId } from '@utils/environment'
-import fileRoutes from './files'
+import storageRoutes from './storage'
+import pushRoutes from './push'
 
 export const routes: Route[] = [
-	...fileRoutes,
+	...storageRoutes,
+	...pushRoutes,
 	{
 		path: '/',
 		method: 'get',
