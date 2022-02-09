@@ -9,9 +9,6 @@ export const subscribers = {
 	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
 		await DeleteUserTokens.execute(data.id)
 	}),
-	[EventTypes.AUTHUSERSIGNOUT]: eventBus.createSubscriber(EventTypes.AUTHUSERSIGNOUT, async (data) => {
-		await DeleteUserTokens.execute(data.id)
-	}),
 	[EventTypes.PUSHNOTIFICATION]: eventBus.createSubscriber(EventTypes.PUSHNOTIFICATION, async (data) => {
 		await sendNotification(data)
 	}),

@@ -10,7 +10,6 @@ export const subscribers = {
 export const publishers = {
 	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL),
 	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
-	[EventTypes.AUTHUSERSIGNOUT]: eventBus.createPublisher(EventTypes.AUTHUSERSIGNOUT),
 	[EventTypes.AUTHUSERCREATED]: eventBus.createPublisher(EventTypes.AUTHUSERCREATED),
 	[EventTypes.AUTHUSERUPDATED]: eventBus.createPublisher(EventTypes.AUTHUSERUPDATED),
 	[EventTypes.AUTHROLESUPDATED]: eventBus.createPublisher(EventTypes.AUTHROLESUPDATED),

@@ -15,7 +15,7 @@ services:
       - "/etc/traefik/acmeStaging.json:/etc/traefik/acmeStaging.json"
       - "/etc/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
       - "/etc/traefik/log.json:/etc/traefik/log.json"
-      - "./etc/traefik/accessLog.json:/etc/traefik/accessLog.json"
+      - "/etc/traefik/accessLog.json:/etc/traefik/accessLog.json"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   auth:

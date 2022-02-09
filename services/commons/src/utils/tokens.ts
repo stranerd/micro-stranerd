@@ -79,7 +79,6 @@ export const exchangeOldForNewTokens = async (
 	// if (refreshToken !== cachedRefreshToken) {
 	// await deleteCachedAccessToken(refreshUser.id)
 	// await deleteCachedRefreshToken(refreshUser.id)
-	// await eventBus.createPublisher(EventTypes.AUTHUSERSIGNOUT).publish({ id: refreshUser.id })
 	// throw new RefreshTokenMisusedError()
 	// }
 

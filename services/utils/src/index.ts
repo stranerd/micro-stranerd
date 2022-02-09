@@ -8,6 +8,7 @@ import {
 import { appId, port } from '@utils/environment'
 import { publishers, subscribers } from '@utils/events'
 import { routes } from '@application/routes'
+import { initializeApp } from 'firebase-admin/app'
 
 const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
 	onConnect: async () => {
@@ -18,6 +19,7 @@ const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
 export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {
+	initializeApp()
 	await setupMongooseConnection()
 	await Promise.all(
 		Object.values(subscribers)

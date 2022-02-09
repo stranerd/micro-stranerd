@@ -48,6 +48,7 @@ const extractRequest = (req: Request) => {
 		Referer: req.get('referer') ?? null,
 		UserAgent: req.get('User-Agent') ?? null
 	}
+	// @ts-ignore
 	const file = req.files?.file
 	const fileArray: StorageFile[] = []
 	if (file) {

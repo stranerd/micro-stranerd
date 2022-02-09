@@ -17,6 +17,10 @@ export class TokenRepository implements ITokenRepository {
 	}
 
 	async updateTokens (userId: string, app: AuthApps, tokens: string[], add: boolean) {
+		if (add) await Token.updateMany(
+			{ app, tokens: { $in: tokens }, userId: { $ne: userId } },
+			{ $pull: { tokens: { $in: tokens } } }
+		)
 		const token = await Token.findOneAndUpdate({ userId, app }, {
 			$set: { userId, app },
 			[add ? '$addToSet' : '$pull']: { 'token': { [add ? '$each' : '$in']: tokens } }

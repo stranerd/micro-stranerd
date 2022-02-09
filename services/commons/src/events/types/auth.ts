@@ -23,7 +23,3 @@ export type AuthUserDeleted = {
 	id: string,
 	timestamp: number
 }
-
-export type AuthUserSignout = {
-	id: string
-}
