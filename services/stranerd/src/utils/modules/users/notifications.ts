@@ -16,21 +16,22 @@ type NotificationData =
 	Omit<NotificationToModel, 'userId'>
 	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData)
 
-export const sendNotification = async (userId: string, data: NotificationData, title?: string) => {
-	if (title) {
+export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
+	await CreateNotification.execute({ ...data, userId })
+	if (asEmail) {
 		const user = await FindUser.execute(userId)
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
-				notification: { ...data, title },
-				meta: { link: clientDomain /* + getNotificationLink(data) */ }
+				notification: data,
+				meta: { link: clientDomain }
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
 				from: Emails.NO_REPLY,
 				to: user.bio.email,
-				subject: title,
+				subject: data.title,
 				content,
 				attachments: { logoWhite: true }
 			})
 		}
-	} else await CreateNotification.execute({ ...data, userId })
+	}
 }

@@ -11,5 +11,7 @@ type NotificationData = {
 export type PushNotification = {
 	userId: string,
 	app: AuthApps
+	title: string
+	body: string
 	data: NotificationData
 }

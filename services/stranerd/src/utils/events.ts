@@ -41,11 +41,13 @@ export const subscribers = {
 			const { sessionId, studentId, tutorId, timeInSec } = data.data
 			await Promise.all([
 				await sendNotification(tutorId, {
+					title: 'Session Timer',
 					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
 					action: 'sessions',
 					data: { userId: studentId, sessionId }
 				}),
 				await sendNotification(studentId, {
+					title: 'Session Timer',
 					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
 					action: 'sessions',
 					data: { userId: tutorId, sessionId }

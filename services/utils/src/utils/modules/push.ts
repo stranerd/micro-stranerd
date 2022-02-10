@@ -8,13 +8,17 @@ const chunkArray = <T> (arr: T[], size: number) => new Array(Math.ceil(arr.lengt
 	.filter((chunk) => chunk.length > 0)
 
 export const sendNotification = async (notification: PushNotification) => {
-	const { userId, app, data } = notification
+	const { userId, app, data, title, body } = notification
 	const userTokens = await FindUserTokens.execute({ userId, app })
 	const chunks = chunkArray(userTokens.tokens, 500)
 	const invalidTokens = [] as string[]
 
 	await Promise.all(chunks.map(async (tokens) => {
-		const res = await messaging().sendMulticast({ tokens, data: { value: JSON.stringify(data) } })
+		const res = await messaging().sendMulticast({
+			tokens,
+			notification: { title, body },
+			data: { value: JSON.stringify(data) }
+		})
 		res.responses.forEach((resp, index) => {
 			if (resp.success) return
 			const err = resp.error!

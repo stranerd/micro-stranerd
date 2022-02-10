@@ -40,15 +40,11 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		const question = await FindQuestion.execute(after.questionId)
 		if (question) {
 			await sendNotification(question.userId, {
+				title: 'New Answer',
 				body: 'Your question has been answered. Go have a look',
 				action: 'answers',
 				data: { questionId: after.questionId, answerId: after.id }
-			})
-			await sendNotification(question.userId, {
-				body: 'You asked a question and we\'ve answered! Go view all answers to your question',
-				action: 'answers',
-				data: { questionId: after.questionId, answerId: after.id }
-			}, 'New Answer')
+			}, true)
 		}
 
 		await RecordCountStreak.execute({

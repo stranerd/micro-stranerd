@@ -38,10 +38,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		})
 
 		await sendNotification(after.tutorId, {
+			title: 'New Session Request',
 			body: `${after.studentBio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
 			action: 'sessions',
 			data: { userId: after.studentId, sessionId: after.id }
-		}, 'New Session Request')
+		}, true)
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitMineUpdated('sessions', after, after.studentId)

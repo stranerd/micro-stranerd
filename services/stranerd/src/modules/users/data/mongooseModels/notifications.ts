@@ -9,6 +9,11 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
+	title: {
+		type: String,
+		required: false,
+		default: ''
+	},
 	body: {
 		type: String,
 		required: true

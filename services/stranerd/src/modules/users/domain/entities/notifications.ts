@@ -2,6 +2,7 @@ import { BaseEntity } from '@utils/commons'
 
 export class NotificationEntity extends BaseEntity {
 	public readonly id: string
+	public readonly title: string
 	public readonly body: string
 	public readonly action: string
 	public readonly data: Record<string, any>
@@ -10,9 +11,10 @@ export class NotificationEntity extends BaseEntity {
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, body, action, data, userId, createdAt, seen, updatedAt }: NotificationConstructorArgs) {
+	constructor ({ id, title, body, action, data, userId, createdAt, seen, updatedAt }: NotificationConstructorArgs) {
 		super()
 		this.id = id
+		this.title = title
 		this.body = body
 		this.action = action
 		this.data = data ?? {}
@@ -24,6 +26,6 @@ export class NotificationEntity extends BaseEntity {
 }
 
 type NotificationConstructorArgs = {
-	id: string, body: string, action: string, userId: string, data: Record<string, any>
+	id: string, title: string, body: string, action: string, userId: string, data: Record<string, any>
 	createdAt: number, seen: boolean, updatedAt: number
 }

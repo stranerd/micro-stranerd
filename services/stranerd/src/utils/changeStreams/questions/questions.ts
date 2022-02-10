@@ -40,10 +40,11 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await Promise.all([
 			tutors.results.map((t) => t.id).map(async (id) => {
 				await sendNotification(id, {
+					title: 'New Question',
 					body: 'A new question was just asked that you might be interested in. Go check it out',
 					action: 'questions',
 					data: { questionId: after.id }
-				}, 'New Question')
+				})
 			})
 		])
 	},

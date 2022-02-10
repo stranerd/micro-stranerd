@@ -8,15 +8,12 @@ export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromMo
 		await getSocketEmitter().emitMineCreated('referrals', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`referrals/${after.id}`, after, after.userId)
 		const user = await FindUser.execute(after.referred)
-		if (user) await sendNotification(
-			after.userId,
-			{
-				body: `A new user with the email: ${user.bio.email} just signed up with your referral link. Checkout his/her profile`,
-				action: 'users',
-				data: { userId: user.id }
-			},
-			'New Referral Signup'
-		)
+		if (user) await sendNotification(after.userId, {
+			title: 'New Referral Signup',
+			body: `${user.bio.email} just signed up with your referral link. Checkout his/her profile`,
+			action: 'users',
+			data: { userId: user.id }
+		})
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitMineUpdated('referrals', after, after.userId)

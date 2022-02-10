@@ -10,6 +10,7 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 
 		await publishers[EventTypes.PUSHNOTIFICATION].publish({
 			userId: after.userId, app: AuthApps.Stranerd,
+			title: after.title, body: after.body,
 			data: {
 				type: 'notifications',
 				data: { action: after.action, data: after.data }
