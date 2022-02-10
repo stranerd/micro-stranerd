@@ -3,7 +3,6 @@ import { RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modu
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
 import {
-	AddSet,
 	UpdateCommentsUserBio,
 	UpdateFlashCardsUserBio,
 	UpdateNotesUserBio,
@@ -12,16 +11,14 @@ import {
 } from '@modules/study'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
+import { createRootSet } from '@utils/modules/study/sets'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('users', after)
 		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
 
-		await AddSet.execute({
-			name: '', parent: null, isPublic: false,
-			userId: after.id, userBio: after.bio, tags: []
-		})
+		await createRootSet(after)
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users', after)
