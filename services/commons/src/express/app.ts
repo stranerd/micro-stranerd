@@ -13,6 +13,7 @@ import path from 'path'
 import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
 import { isDev } from '../config'
 import { parseAuthUser } from './middlewares/parseAuthUser'
+import { getCacheInstance } from '../cache'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -71,6 +72,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 	})
 
 	const start = async (port: number) => {
+		await getCacheInstance.connect()
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
 				server.listen(port, () => resolve(true))

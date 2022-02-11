@@ -1,60 +1,42 @@
-import Redis from 'redis'
+import { createClient } from 'redis'
 import { Cache } from '../cache'
 import { redisURI } from '../../config'
 import { Logger } from '../../logger'
 
 export class RedisCache extends Cache {
-	client: Redis.RedisClient
+	client: ReturnType<typeof createClient>
 
 	constructor () {
 		super()
-		this.client = Redis.createClient(redisURI)
+		this.client = createClient({ url: redisURI })
 		this.client.on('error', async function (error) {
 			await Logger.error('Redis failed with error:', error)
 			process.exit(1)
 		})
-		process.on('exit', () => this.client.end())
+		process.on('exit', async () => await this.client.quit())
+	}
+
+	async connect () {
+		await this.client.connect()
 	}
 
 	async delete (key: string) {
-		return new Promise((res: (_: void) => void, rej) => {
-			this.client.del(key, (err) => {
-				if (err) rej(err)
-				res()
-			})
-		})
+		await this.client.del(key)
 	}
 
 	async get (key: string) {
-		return new Promise((res: (_: string | null) => void) => {
-			this.client.get(key, (err, val) => {
-				if (err) res(null)
-				res(val)
-			})
-		})
+		return await this.client.get(key)
 	}
 
 	async set (key: string, data: string, ttlInSecs: number) {
-		return new Promise((res: (_: void) => void, rej) => {
-			ttlInSecs > 0 ? this.client.setex(key, ttlInSecs, data, (err) => {
-				if (err) rej(err)
-				res()
-			}) : this.client.set(key, data, (err) => {
-				if (err) rej(err)
-				res()
-			})
-		})
+		if (ttlInSecs > 0) await this.client.setEx(key, ttlInSecs, data)
+		else this.client.set(key, data)
 	}
 
 	async setInTransaction (key: string, data: string, ttlInSecs: number) {
-		return new Promise((res: (_: [string, string]) => void, rej) => {
-			this.client.multi([])
-				.get(key)
-				.setex(key, ttlInSecs, data)
-				.exec((err, result) => {
-					if (err) rej(err)
-					res(result as [string, string])
-				})
-		})
+		return await this.client.multi()
+			.get(key)
+			.setEx(key, ttlInSecs, data)
+			.exec() as [string, string]
 	}
 }
