@@ -34,6 +34,6 @@ const Schema = new mongoose.Schema<TokenFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now } })
 
-export const Token = mongoose.model<TokenFromModel>('UtilsEmailToken', Schema)
+export const Token = mongoose.model<TokenFromModel>('UtilsToken', Schema)
 
 generateChangeStreams<TokenFromModel, TokenEntity>(Token, TokenChangeStreamCallbacks, new TokenMapper().mapFrom).then()

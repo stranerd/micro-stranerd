@@ -3,6 +3,7 @@ import { AuthApps } from '../../utils/authUser'
 type NotificationData = {
 	type: 'notifications'
 	data: {
+		id: string
 		action: string
 		data: Record<string, any>
 	}

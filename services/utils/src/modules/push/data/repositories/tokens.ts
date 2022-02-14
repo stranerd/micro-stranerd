@@ -23,7 +23,7 @@ export class TokenRepository implements ITokenRepository {
 		)
 		const token = await Token.findOneAndUpdate({ userId, app }, {
 			$set: { userId, app },
-			[add ? '$addToSet' : '$pull']: { 'token': { [add ? '$each' : '$in']: tokens } }
+			[add ? '$addToSet' : '$pull']: { 'tokens': { [add ? '$each' : '$in']: tokens } }
 		}, { upsert: true })
 		return this.mapper.mapFrom(token)!
 	}
