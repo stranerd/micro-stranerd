@@ -14,15 +14,14 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 		await getSocketEmitter().emitOpenUpdated(`pastQuestions/${after.id}`, after)
 
 		let oldMedia = [...before.questionMedia]
-		if (before.data.type === PastQuestionType.theory) oldMedia = oldMedia.concat(before.data.answerMedia)
-		if (before.data.type === PastQuestionType.practical) oldMedia = oldMedia.concat(before.data.answerMedia)
-		else if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
+		if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
+		else oldMedia = oldMedia.concat(before.data.answerMedia)
 
 		let newMedia = [...after.questionMedia]
-		if (after.data.type === PastQuestionType.theory) newMedia = oldMedia.concat(after.data.answerMedia)
-		else if (after.data.type === PastQuestionType.objective) newMedia = oldMedia.concat(after.data.explanationMedia, after.data.optionsMedia.flat(1))
+		if (after.data.type === PastQuestionType.objective) newMedia = oldMedia.concat(after.data.explanationMedia, after.data.optionsMedia.flat(1))
+		else newMedia = oldMedia.concat(after.data.answerMedia)
 
-		const removed = oldMedia.filter((t) => !newMedia?.find((a) => a.path === t.path)) ?? []
+		const removed = oldMedia.filter((t) => t && !newMedia?.find((a) => a?.path === t.path))
 
 		await Promise.all(removed.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
 	},
@@ -31,10 +30,10 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 		await getSocketEmitter().emitOpenDeleted(`pastQuestions/${before.id}`, before)
 
 		let oldMedia = [...before.questionMedia]
-		if (before.data.type === PastQuestionType.theory) oldMedia = oldMedia.concat(before.data.answerMedia)
-		if (before.data.type === PastQuestionType.practical) oldMedia = oldMedia.concat(before.data.answerMedia)
-		else if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
+		if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
+		else oldMedia = oldMedia.concat(before.data.answerMedia)
 
-		await Promise.all(oldMedia.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
+		await Promise.all(oldMedia.filter((t) => t)
+			.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
 	}
 }

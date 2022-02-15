@@ -20,8 +20,6 @@ export class PastQuestionController {
 
 	static async UpdatePastQuestion (req: Request) {
 		const isObjective = req.body.data?.type === PastQuestionType.objective
-		const isTheory = req.body.data?.type === PastQuestionType.theory
-		const isPractical = req.body.data?.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -44,8 +42,8 @@ export class PastQuestionController {
 			question: req.body.question,
 			questionMedia: req.body.questionMedia,
 
-			type: req.body.data?.type,
 			answer: req.body.data?.answer,
+			type: req.body.data?.type,
 			answerMedia: req.body.data?.answerMedia,
 			correctIndex: req.body.data?.correctIndex,
 			options: req.body.data?.options,
@@ -68,11 +66,11 @@ export class PastQuestionController {
 
 			answer: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isString]
+				rules: [Validation.isRequiredIfX(!isObjective), Validation.isString]
 			},
 			answerMedia: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				rules: [Validation.isRequiredIfX(!isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
@@ -102,11 +100,7 @@ export class PastQuestionController {
 			institutionId, courseId, year, question, questionMedia,
 			data: isObjective ? {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
-			} : isTheory ? {
-				type, answer, answerMedia
-			} : isPractical ? {
-				type, answer, answerMedia
-			} : {} as any
+			} : { type, answer, answerMedia }
 		}
 
 		const updatedPastQuestion = await UpdatePastQuestion.execute({ id: req.params.id, data })
@@ -117,8 +111,6 @@ export class PastQuestionController {
 
 	static async CreatePastQuestion (req: Request) {
 		const isObjective = req.body.data?.type === PastQuestionType.objective
-		const isTheory = req.body.data?.type === PastQuestionType.theory
-		const isPractical = req.body.data?.type === PastQuestionType.practical
 
 		const {
 			institutionId,
@@ -165,11 +157,11 @@ export class PastQuestionController {
 
 			answer: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isString]
+				rules: [Validation.isRequiredIfX(!isObjective), Validation.isString]
 			},
 			answerMedia: {
 				required: false,
-				rules: [Validation.isRequiredIfX(isTheory || isPractical), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				rules: [Validation.isRequiredIfX(!isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
@@ -199,11 +191,7 @@ export class PastQuestionController {
 			institutionId, courseId, year, question, questionMedia,
 			data: isObjective ? {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
-			} : isTheory ? {
-				type, answer, answerMedia
-			} : isPractical ? {
-				type, answer, answerMedia
-			} : {} as any
+			} : { type, answer, answerMedia }
 		}
 
 		return await AddPastQuestion.execute(data)

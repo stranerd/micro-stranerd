@@ -3,6 +3,7 @@ import { MediaOutput } from '@utils/common'
 export enum PastQuestionType {
 	objective = 'objective',
 	theory = 'theory',
+	german = 'german',
 	practical = 'practical'
 }
 
@@ -21,10 +22,16 @@ type TheoryType = {
 	answerMedia: MediaOutput[]
 }
 
+type GermanType = {
+	type: PastQuestionType.german
+	answer: string
+	answerMedia: MediaOutput[]
+}
+
 type PracticalType = {
 	type: PastQuestionType.practical
 	answer: string
 	answerMedia: MediaOutput[]
 }
 
-export type PastQuestionData = ObjType | TheoryType | PracticalType
+export type PastQuestionData = ObjType | TheoryType | PracticalType | GermanType
