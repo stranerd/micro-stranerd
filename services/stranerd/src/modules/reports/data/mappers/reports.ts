@@ -10,6 +10,7 @@ export class ReportMapper extends BaseMapper<ReportFromModel, ReportToModel, Rep
 			reporterId: param.reporterId,
 			reportedId: param.reportedId,
 			reporterBio: param.reporterBio,
+			reporterRoles: param.reporterRoles,
 			message: param.message,
 			createdAt: param.createdAt,
 			updatedAt: param.updatedAt
@@ -22,6 +23,7 @@ export class ReportMapper extends BaseMapper<ReportFromModel, ReportToModel, Rep
 			reporterId: param.reporterId,
 			reportedId: param.reportedId,
 			reporterBio: param.reporterBio,
+			reporterRoles: param.reporterRoles,
 			message: param.message
 		}
 	}

@@ -1,7 +1,7 @@
-import { UserBio } from '@modules/users'
+import { UserBio, UserRoles } from '@modules/users'
 import { MediaOutput } from '@utils/common'
 
-export { UserBio }
+export { UserBio, UserRoles }
 
 export enum ReportType {
 	users = 'users',
@@ -11,7 +11,8 @@ export enum ReportType {
 }
 
 type UserReportType = {
-	bio: UserBio
+	userRoles: UserRoles
+	userBio: UserBio
 	userId: string
 }
 

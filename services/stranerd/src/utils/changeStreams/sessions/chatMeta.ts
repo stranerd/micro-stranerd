@@ -7,11 +7,12 @@ export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromMo
 	created: async ({ after }) => {
 		await getSocketEmitter().emitMineCreated('chatMetas', after, after.userId)
 		await getSocketEmitter().emitMineCreated(`chatMetas/${after.id}`, after, after.userId)
-		if (!after.userBio && after.userId) {
+		if ((!after.userBio || !after.userRoles) && after.userId) {
 			const user = await FindUser.execute(after.userId)
 			if (user) await UpdateChatMetaBio.execute({
 				id: after.id,
-				userBio: user.bio
+				userBio: user.bio,
+				userRoles: user.roles
 			})
 		}
 	},

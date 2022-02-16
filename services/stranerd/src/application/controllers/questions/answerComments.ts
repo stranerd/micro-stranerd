@@ -29,6 +29,7 @@ export class AnswerCommentController {
 			return await AddAnswerComment.execute({
 				...data,
 				userBio: user.bio,
+				userRoles: user.roles,
 				userId: req.authUser!.id
 			})
 		}

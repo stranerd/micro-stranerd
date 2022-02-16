@@ -3,7 +3,7 @@ import { AnswerCommentMapper } from '../mappers/answerComments'
 import { AnswerCommentFromModel, AnswerCommentToModel } from '../models/answerComments'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { AnswerComment } from '../mongooseModels/answerComments'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class AnswerCommentRepository implements IAnswerCommentRepository {
 	private static instance: AnswerCommentRepository
@@ -42,8 +42,8 @@ export class AnswerCommentRepository implements IAnswerCommentRepository {
 		return !!comments.acknowledged
 	}
 
-	async updateAnswerCommentsUserBio (userId: string, userBio: UserBio) {
-		const comments = await AnswerComment.updateMany({ userId }, { $set: { userBio } })
+	async updateAnswerCommentsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const comments = await AnswerComment.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return !!comments.acknowledged
 	}
 }

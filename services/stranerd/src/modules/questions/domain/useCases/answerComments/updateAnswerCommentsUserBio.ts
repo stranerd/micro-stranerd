@@ -1,8 +1,8 @@
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types'
+import { UserBio, UserRoles } from '../../types'
 import { IAnswerCommentRepository } from '../../irepositories/answerComments'
 
-type Input = { userId: string, userBio: UserBio }
+type Input = { userId: string, userBio: UserBio, userRoles: UserRoles }
 
 export class UpdateAnswerCommentsUserBioUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IAnswerCommentRepository
@@ -13,6 +13,6 @@ export class UpdateAnswerCommentsUserBioUseCase extends BaseUseCase<Input, boole
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateAnswerCommentsUserBio(input.userId, input.userBio)
+		return await this.repository.updateAnswerCommentsUserBio(input.userId, input.userBio, input.userRoles)
 	}
 }

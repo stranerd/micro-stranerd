@@ -3,7 +3,7 @@ import { ReviewMapper } from '../mappers/reviews'
 import { Review } from '../mongooseModels/reviews'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { ReviewFromModel, ReviewToModel } from '../models/reviews'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class ReviewRepository implements IReviewRepository {
 	private static instance: ReviewRepository
@@ -32,8 +32,8 @@ export class ReviewRepository implements IReviewRepository {
 		return this.mapper.mapFrom(review)!
 	}
 
-	async updateMyReviewsBio (userId: string, userBio: UserBio) {
-		const res = await Review.updateMany({ userId }, { userBio })
+	async updateReviewsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const res = await Review.updateMany({ userId }, { userBio, userRoles })
 		return !!res.acknowledged
 	}
 }

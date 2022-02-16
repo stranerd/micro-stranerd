@@ -1,6 +1,6 @@
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
 import { ReportEntity } from '../entities/reports'
-import { IReportRepository } from '../i-repositories/reports'
+import { IReportRepository } from '../irepositories/reports'
 
 export class GetReportsUseCase extends BaseUseCase<QueryParams, QueryResults<ReportEntity>> {
 	private repository: IReportRepository

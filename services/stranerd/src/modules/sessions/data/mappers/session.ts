@@ -7,14 +7,14 @@ export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, 
 		if (!model) return null
 		const {
 			_id, duration, price, message,
-			studentId, tutorId, studentBio, tutorBio,
+			studentId, tutorId, studentBio, tutorBio, studentRoles, tutorRoles,
 			accepted, done, cancelled,
 			createdAt, startedAt, endedAt, updatedAt, taskIds,
 			isScheduled, scheduledAt
 		} = model
 		return new SessionEntity({
 			id: _id.toString(), message, studentId, tutorId, studentBio, tutorBio,
-			duration, price, accepted: accepted, done, cancelled,
+			duration, price, accepted: accepted, done, cancelled, studentRoles, tutorRoles,
 			createdAt, updatedAt, startedAt, endedAt, taskIds,
 			isScheduled, scheduledAt
 		})
@@ -25,8 +25,10 @@ export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, 
 			message: entity.message,
 			studentId: entity.studentId,
 			studentBio: entity.studentBio,
+			studentRoles: entity.studentRoles,
 			tutorId: entity.tutorId,
 			tutorBio: entity.tutorBio,
+			tutorRoles: entity.tutorRoles,
 			duration: entity.duration,
 			price: entity.price,
 			isScheduled: entity.isScheduled,

@@ -1,4 +1,4 @@
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 import { ChatFromModel } from './chat'
 
 export interface ChatMetaFromModel extends ChatMetaToModel {
@@ -12,5 +12,6 @@ export interface ChatMetaToModel {
 	last: ChatFromModel,
 	ownerId: string,
 	userId: string,
-	userBio: UserBio
+	userBio: UserBio,
+	userRoles: UserRoles
 }

@@ -1,4 +1,4 @@
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export interface AnswerCommentFromModel extends AnswerCommentToModel {
 	_id: string
@@ -11,4 +11,5 @@ export interface AnswerCommentToModel {
 	userId: string
 	answerId: string
 	userBio: UserBio
+	userRoles: UserRoles
 }

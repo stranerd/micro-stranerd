@@ -59,6 +59,7 @@ export class AnswerController {
 			return await AddAnswer.execute({
 				...data,
 				userBio: user.bio,
+				userRoles: user.roles,
 				userId: req.authUser!.id
 			})
 		}

@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { RecordRank, UpdateMyReviewsBio, UserEntity, UserFromModel } from '@modules/users'
+import { RecordRank, UpdateReviewsUserBio, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
-import { UpdateChatMetaUserBios, UpdateMySessionsBio } from '@modules/sessions'
+import { UpdateChatMetasUserBio, UpdateSessionsUserBio } from '@modules/sessions'
 import {
 	UpdateCommentsUserBio,
 	UpdateFlashCardsUserBio,
@@ -9,6 +9,7 @@ import {
 	UpdateSetsUserBio,
 	UpdateVideosUserBio
 } from '@modules/study'
+import { UpdateReportsUserBio } from '@modules/reports'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { createRootSet } from '@utils/modules/study/sets'
@@ -23,12 +24,16 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users', after)
 		await getSocketEmitter().emitOpenUpdated(`users/${after.id}`, after)
-		const updatedBio = !!changes.bio
-		if (updatedBio) await Promise.all([
+		const updatedBioOrRoles = !!changes.bio || !!changes.roles
+		if (updatedBioOrRoles) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
-			UpdateChatMetaUserBios, UpdateMySessionsBio, UpdateMyReviewsBio,
+			UpdateChatMetasUserBio, UpdateSessionsUserBio, UpdateReviewsUserBio, UpdateReportsUserBio,
 			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio
-		].map(async (useCase) => await useCase.execute({ userId: after.id, userBio: after.bio })))
+		].map(async (useCase) => await useCase.execute({
+			userId: after.id,
+			userBio: after.bio,
+			userRoles: after.roles
+		})))
 
 		const updatedScore = !!changes.account?.score
 		if (updatedScore && after.rank.id !== before.rank.id) {

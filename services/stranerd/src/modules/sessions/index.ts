@@ -3,7 +3,7 @@ import { SessionRepository } from './data/repositories/session'
 import { ChatMetaRepository } from './data/repositories/chatMeta'
 import { GetChatsMetaUseCase } from './domain/usecases/chatMeta/getChatsMeta'
 import { UpdateBioUseCase } from './domain/usecases/chatMeta/updateBio'
-import { UpdateUserBiosUseCase } from './domain/usecases/chatMeta/updateUserBios'
+import { UpdateChatMetasUserBioUseCase } from './domain/usecases/chatMeta/updateChatMetasUserBio'
 import { FindChatMetaUseCase } from './domain/usecases/chatMeta/findChatMeta'
 import { GetChatsUseCase } from './domain/usecases/chats/getChats'
 import { FindChatUseCase } from './domain/usecases/chats/findChat'
@@ -15,7 +15,7 @@ import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
 import { AcceptSessionUseCase } from './domain/usecases/sessions/acceptSession'
 import { CancelSessionUseCase } from './domain/usecases/sessions/cancelSession'
 import { EndSessionUseCase } from './domain/usecases/sessions/endSession'
-import { UpdateMySessionsBioUseCase } from './domain/usecases/sessions/updateMySessionsBio'
+import { UpdateSessionsUserBioUseCase } from './domain/usecases/sessions/updateSessionsUserBio'
 import { UpdateTaskIdsAndTimesUseCase } from './domain/usecases/sessions/updateTaskIdsAndTimes'
 import { MarkSessionDoneUseCase } from './domain/usecases/sessions/markSessionDone'
 
@@ -34,14 +34,14 @@ export const AddSession = new AddSessionUseCase(sessionRepository)
 export const AcceptSession = new AcceptSessionUseCase(sessionRepository)
 export const CancelSession = new CancelSessionUseCase(sessionRepository)
 export const EndSession = new EndSessionUseCase(sessionRepository)
-export const UpdateMySessionsBio = new UpdateMySessionsBioUseCase(sessionRepository)
+export const UpdateSessionsUserBio = new UpdateSessionsUserBioUseCase(sessionRepository)
 export const UpdateTaskIdsAndTimes = new UpdateTaskIdsAndTimesUseCase(sessionRepository)
 export const MarkSessionDone = new MarkSessionDoneUseCase(sessionRepository)
 
 export const FindChatMeta = new FindChatMetaUseCase(chatMetaRepository)
 export const GetChatsMeta = new GetChatsMetaUseCase(chatMetaRepository)
 export const UpdateChatMetaBio = new UpdateBioUseCase(chatMetaRepository)
-export const UpdateChatMetaUserBios = new UpdateUserBiosUseCase(chatMetaRepository)
+export const UpdateChatMetasUserBio = new UpdateChatMetasUserBioUseCase(chatMetaRepository)
 
 export { SessionFromModel } from './data/models/session'
 export { ChatFromModel } from './data/models/chat'

@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types'
+import { UserBio, UserRoles } from '../types'
 
 export class ReviewEntity extends BaseEntity {
 	public readonly id: string
@@ -8,10 +8,21 @@ export class ReviewEntity extends BaseEntity {
 	public readonly tutorId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
+	public readonly userRoles: UserRoles
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, review, rating, tutorId, createdAt, updatedAt, userId, userBio }: ReviewConstructorArgs) {
+	constructor ({
+		             id,
+		             review,
+		             rating,
+		             tutorId,
+		             createdAt,
+		             updatedAt,
+		             userId,
+		             userBio,
+		             userRoles
+	             }: ReviewConstructorArgs) {
 		super()
 		this.id = id
 		this.review = review
@@ -19,6 +30,7 @@ export class ReviewEntity extends BaseEntity {
 		this.tutorId = tutorId
 		this.userId = userId
 		this.userBio = userBio
+		this.userRoles = userRoles
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -26,6 +38,6 @@ export class ReviewEntity extends BaseEntity {
 
 type ReviewConstructorArgs = {
 	id: string, review: string, rating: number
-	tutorId: string, userId: string, userBio: UserBio
+	tutorId: string, userId: string, userBio: UserBio, userRoles: UserRoles
 	createdAt: number, updatedAt: number,
 }

@@ -56,8 +56,10 @@ export class SessionController {
 			...data,
 			price: requestedSession.price,
 			tutorBio: tutorUser.bio,
+			tutorRoles: tutorUser.roles,
 			studentId: studentUser.id,
-			studentBio: studentUser.bio
+			studentBio: studentUser.bio,
+			studentRoles: studentUser.roles
 		})
 	}
 

@@ -29,6 +29,7 @@ export class ReviewsController {
 		return await CreateReview.execute({
 			...data,
 			userBio: user!.bio,
+			userRoles: user!.roles,
 			userId: req.authUser!.id
 		})
 	}

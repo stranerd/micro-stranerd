@@ -1,5 +1,5 @@
 import { MediaOutput } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export interface AnswerFromModel extends AnswerToModel {
 	_id: string
@@ -17,4 +17,5 @@ export interface AnswerToModel {
 	questionId: string
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 }

@@ -81,6 +81,7 @@ export class QuestionController {
 		return await AddQuestion.execute({
 			...data,
 			userBio: user.bio,
+			userRoles: user.roles,
 			userId: authUserId
 		})
 	}

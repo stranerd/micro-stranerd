@@ -3,7 +3,7 @@ import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { TaskID, UserBio } from '../../domain/types'
+import { TaskID, UserBio, UserRoles } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
@@ -62,10 +62,10 @@ export class SessionRepository implements ISessionRepository {
 		return result.acknowledged
 	}
 
-	async updateMySessionsBio (userId: string, userBio: UserBio) {
+	async updateSessionsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
 		const result = await Promise.all([
-			Session.updateMany({ studentId: userId }, { $set: { studentBio: userBio } }),
-			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio } })
+			Session.updateMany({ studentId: userId }, { $set: { studentBio: userBio, studentRoles: userRoles } }),
+			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio, tutorRoles: userRoles } })
 		])
 		return result[0].acknowledged && result[1].acknowledged
 	}

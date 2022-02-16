@@ -1,8 +1,9 @@
-import { IReportRepository } from '../../domain/i-repositories/reports'
+import { IReportRepository } from '../../domain/irepositories/reports'
 import { ReportMapper } from '../mappers/reports'
 import { Report } from '../mongooseModels/reports'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 import { parseQueryParams, QueryParams } from '@utils/commons'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class ReportRepository implements IReportRepository {
 	private static instance: ReportRepository
@@ -34,5 +35,10 @@ export class ReportRepository implements IReportRepository {
 	async delete (id: string) {
 		const report = await Report.findByIdAndDelete(id)
 		return !!report
+	}
+
+	async updateReportsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const res = await Report.updateMany({ reporterId: userId }, { reporterBio: userBio, reporterRoles: userRoles })
+		return !!res.acknowledged
 	}
 }

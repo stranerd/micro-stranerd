@@ -21,12 +21,20 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentBio'],
 		required: true
 	},
+	studentRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentRoles'],
+		required: true
+	},
 	tutorId: {
 		type: String,
 		required: true
 	},
 	tutorBio: {
 		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorBio'],
+		required: true
+	},
+	tutorRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorRoles'],
 		required: true
 	},
 	duration: {

@@ -1,5 +1,5 @@
 import { BaseEntity, MediaOutput } from '@utils/commons'
-import { UserBio } from '../types'
+import { UserBio, UserRoles } from '../types'
 
 export const BEST_ANSWERS_COUNT = 2
 
@@ -11,6 +11,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly subjectId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
+	public readonly userRoles: UserRoles
 	public readonly bestAnswers: string[]
 	public readonly answers: { id: string, userId: string }[]
 	public readonly commentsCount: number
@@ -19,7 +20,7 @@ export class QuestionEntity extends BaseEntity {
 
 	constructor ({
 		             id, body, subjectId, attachments,
-		             bestAnswers, createdAt, userId, userBio,
+		             bestAnswers, createdAt, userId, userBio, userRoles,
 		             answers, commentsCount, tags, updatedAt
 	             }: QuestionConstructorArgs) {
 		super()
@@ -30,6 +31,7 @@ export class QuestionEntity extends BaseEntity {
 		this.subjectId = subjectId
 		this.userId = userId
 		this.userBio = userBio
+		this.userRoles = userRoles
 		this.bestAnswers = bestAnswers
 		this.answers = answers
 		this.commentsCount = commentsCount ?? 0
@@ -50,6 +52,7 @@ type QuestionConstructorArgs = {
 	subjectId: string
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	bestAnswers: string[]
 	answers: { id: string, userId: string }[]
 	commentsCount: number

@@ -3,7 +3,7 @@ import { AnswerMapper } from '../mappers/answers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels/answers'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository
@@ -54,8 +54,8 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answer
 	}
 
-	async updateAnswersUserBio (userId: string, userBio: UserBio) {
-		const answers = await Answer.updateMany({ userId }, { $set: { userBio } })
+	async updateAnswersUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const answers = await Answer.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return !!answers.acknowledged
 	}
 

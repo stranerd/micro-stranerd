@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		required: false,
 		default: null as unknown as ChatMetaFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['userRoles'],
+		required: false,
+		default: null as unknown as ChatMetaFromModel['userRoles']
+	},
 	createdAt: {
 		type: Number,
 		required: false,

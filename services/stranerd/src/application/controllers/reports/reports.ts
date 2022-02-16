@@ -42,7 +42,7 @@ export class ReportController {
 			if (!user) throw new NotFoundError()
 			reportedData = {
 				type: ReportType.users,
-				reported: { userId: user.id, bio: user.bio }
+				reported: { userId: user.id, userBio: user.bio, userRoles: user.roles }
 			}
 		}
 
@@ -86,7 +86,8 @@ export class ReportController {
 		return await CreateReport.execute({
 			message, reportedId, data: reportedData,
 			reporterId: reporter.id,
-			reporterBio: reporter.bio
+			reporterBio: reporter.bio,
+			reporterRoles: reporter.roles
 		})
 	}
 }

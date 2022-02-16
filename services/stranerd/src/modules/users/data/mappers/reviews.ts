@@ -11,6 +11,7 @@ export class ReviewMapper extends BaseMapper<ReviewFromModel, ReviewToModel, Rev
 			tutorId: param.tutorId,
 			userId: param.userId,
 			userBio: param.userBio,
+			userRoles: param.userRoles,
 			createdAt: param.createdAt,
 			updatedAt: param.updatedAt
 		})
@@ -22,7 +23,8 @@ export class ReviewMapper extends BaseMapper<ReviewFromModel, ReviewToModel, Rev
 			rating: param.rating,
 			tutorId: param.tutorId,
 			userId: param.userId,
-			userBio: param.userBio
+			userBio: param.userBio,
+			userRoles: param.userRoles
 		}
 	}
 }

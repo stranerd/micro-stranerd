@@ -1,5 +1,5 @@
 import { BaseUseCase } from '@utils/commons'
-import { IReportRepository } from '../i-repositories/reports'
+import { IReportRepository } from '../irepositories/reports'
 
 export class DeleteReportUseCase implements BaseUseCase<string, boolean> {
 	repository: IReportRepository

@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { ReportEntity } from '../entities/reports'
-import { IReportRepository } from '../i-repositories/reports'
+import { IReportRepository } from '../irepositories/reports'
 
 export class FindReportUseCase implements BaseUseCase<string, ReportEntity | null> {
 	repository: IReportRepository

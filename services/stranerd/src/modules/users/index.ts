@@ -15,7 +15,7 @@ import { ReviewRepository } from './data/repositories/reviews'
 import { GetReviewsUseCase } from './domain/useCases/reviews/getReviews'
 import { FindReviewUseCase } from './domain/useCases/reviews/findReview'
 import { CreateReviewUseCase } from './domain/useCases/reviews/createReview'
-import { UpdateMyReviewsBioUseCase } from './domain/useCases/reviews/updateMyReviewsBio'
+import { UpdateReviewsUserBioUseCase } from './domain/useCases/reviews/updateReviewsUserBio'
 import { GetUsersUseCase } from './domain/useCases/users/getUsers'
 import { UpdateUserNerdScoreUseCase } from './domain/useCases/users/updateUserNerdScore'
 import { UpdateUserRatingsUseCase } from './domain/useCases/users/updateUserRatings'
@@ -75,7 +75,7 @@ export const DeleteOldSeenNotifications = new DeleteOldSeenNotificationsUseCase(
 export const GetReviews = new GetReviewsUseCase(reviewRepository)
 export const FindReview = new FindReviewUseCase(reviewRepository)
 export const CreateReview = new CreateReviewUseCase(reviewRepository)
-export const UpdateMyReviewsBio = new UpdateMyReviewsBioUseCase(reviewRepository)
+export const UpdateReviewsUserBio = new UpdateReviewsUserBioUseCase(reviewRepository)
 
 export const GetReferrals = new GetReferralsUseCase(referralRepository)
 export const FindReferral = new FindReferralUseCase(referralRepository)
@@ -93,5 +93,5 @@ export { ReviewEntity } from './domain/entities/reviews'
 export { UserEntity } from './domain/entities/users'
 export { RankTypes } from './domain/entities/ranks'
 export {
-	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta
+	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta, UserRoles
 } from './domain/types'

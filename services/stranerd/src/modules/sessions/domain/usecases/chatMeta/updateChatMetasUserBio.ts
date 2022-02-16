@@ -2,9 +2,9 @@ import { BaseUseCase } from '@utils/commons'
 import { IChatMetaRepository } from '../../irepositories/chatMeta'
 import { UserBio, UserRoles } from '../../types'
 
-type Input = { id: string, userBio: UserBio, userRoles: UserRoles }
+type Input = { userId: string, userBio: UserBio, userRoles: UserRoles }
 
-export class UpdateBioUseCase extends BaseUseCase<Input, boolean> {
+export class UpdateChatMetasUserBioUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IChatMetaRepository
 
 	constructor (repository: IChatMetaRepository) {
@@ -13,6 +13,6 @@ export class UpdateBioUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateBio(input.id, input.userBio, input.userRoles)
+		return await this.repository.updateUserBios(input.userId, input.userBio, input.userRoles)
 	}
 }

@@ -1,4 +1,4 @@
-import { ReportData, UserBio } from '../../domain/types'
+import { ReportData, UserBio, UserRoles } from '../../domain/types'
 
 export interface ReportFromModel extends ReportToModel {
 	_id: string
@@ -10,6 +10,7 @@ export interface ReportToModel {
 	data: ReportData
 	reporterId: string
 	reporterBio: UserBio
+	reporterRoles: UserRoles
 	reportedId: string
 	message: string
 }

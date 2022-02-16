@@ -31,6 +31,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: {} as unknown as AnswerFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['userRoles'],
+		required: false,
+		default: {} as unknown as AnswerFromModel['userRoles']
+	},
 	attachments: {
 		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
 		required: false,
