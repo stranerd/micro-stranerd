@@ -133,12 +133,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@stranerd/api-commons@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-1.5.0.tgz#ae7af6dca89f6613531abdafd4f51eba9fc1f2f9"
-  integrity sha512-PKfDzsrqYJF94Vf//zWtNmlsTNOvUrYBmCbIKY0pc5G/W9naRe8Hl7Q/WtMvzNF1JB2usd+8GkN4vwm1mVlniA==
+"@stranerd/api-commons@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-1.5.1.tgz#12de28c7155f662c671ee0044d4ca4ca00f57695"
+  integrity sha512-AfRX8kPq5IkMh5VG8J+AuRPoKDiCFGhgQAwwfDC+F2KSxyT06CxAhKXB3GI+bhrl8teTsBo7McXMUtXO+QcsEQ==
   dependencies:
-    "@stranerd/validate" "^1.7.0"
+    "@stranerd/validate" "^2.0.0"
     amqplib "^0.8.0"
     bull "^4.5.4"
     chalk "^5.0.0"
@@ -155,10 +155,10 @@
     redis "^4.0.3"
     socket.io "4.3.2"
 
-"@stranerd/validate@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-1.7.0.tgz#7dbb944295413e447208196731832c4ba8acc0dc"
-  integrity sha512-InXWl7OioSQ1YOSdMrckoBHcJZtSO6pyKkd1LLB/DsabXZryRzWhTlkyPMgZ8RxtvcJAyZGJ7BOdkVaUHTuY8A==
+"@stranerd/validate@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@stranerd/validate/-/validate-2.0.0.tgz#7318d6356234f248085e997b5fc483f4d6014021"
+  integrity sha512-EfmJTKZxhaz6HNXFWOV94Fd/AtV/A1mAvq5WBTTh5/pJg2OauF4RzMRDs3uwR7t+IGtpO1JFHifU6qfZgGmXvg==
 
 "@types/bcrypt@^5.0.0":
   version "5.0.0"
