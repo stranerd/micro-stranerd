@@ -3,7 +3,7 @@ import { CommentMapper } from '../mappers/comments'
 import { CommentFromModel, CommentToModel } from '../models/comments'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { Comment } from '../mongooseModels/comments'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class CommentRepository implements ICommentRepository {
 	private static instance: CommentRepository
@@ -42,8 +42,8 @@ export class CommentRepository implements ICommentRepository {
 		return !!comments.acknowledged
 	}
 
-	async updateCommentsUserBio (userId: string, userBio: UserBio) {
-		const comments = await Comment.updateMany({ userId }, { $set: { userBio } })
+	async updateCommentsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const comments = await Comment.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return !!comments.acknowledged
 	}
 }

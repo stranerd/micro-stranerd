@@ -4,7 +4,7 @@ import { FindUser, UserEntity } from '@modules/users'
 export const createRootSet = async (user: UserEntity) => {
 	return await AddSet.execute({
 		name: '', parent: null, isPublic: false,
-		userId: user!.id, userBio: user!.bio, tags: []
+		userId: user.id, userBio: user.bio, userRoles: user.roles, tags: []
 	})
 }
 

@@ -3,7 +3,7 @@ import { FlashCardMapper } from '../mappers/flashCards'
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCard } from '../mongooseModels/flashCards'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class FlashCardRepository implements IFlashCardRepository {
 	private static instance: FlashCardRepository
@@ -42,8 +42,8 @@ export class FlashCardRepository implements IFlashCardRepository {
 		return this.mapper.mapFrom(flashCard)
 	}
 
-	async updateFlashCardsUserBio (userId: string, userBio: UserBio) {
-		const flashCards = await FlashCard.updateMany({ userId }, { $set: { userBio } })
+	async updateFlashCardsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const flashCards = await FlashCard.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return flashCards.acknowledged
 	}
 

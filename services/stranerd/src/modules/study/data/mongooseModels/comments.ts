@@ -22,6 +22,11 @@ const Schema = new mongoose.Schema<CommentFromModel>({
 		required: false,
 		default: {} as unknown as CommentFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as CommentFromModel['userRoles'],
+		required: false,
+		default: {} as unknown as CommentFromModel['userRoles']
+	},
 	data: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true,

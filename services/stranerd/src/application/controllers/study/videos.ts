@@ -81,6 +81,7 @@ export class VideoController {
 			const video = await AddVideo.execute({
 				...data,
 				userBio: user.bio,
+				userRoles: user.roles,
 				userId: authUserId
 			})
 			await saveNewItemToSet({

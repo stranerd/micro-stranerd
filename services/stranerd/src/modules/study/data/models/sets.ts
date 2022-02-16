@@ -1,4 +1,4 @@
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 import { SetSaved } from '@modules/study/domain/types/sets'
 
 export interface SetFromModel extends SetToModel {
@@ -14,6 +14,7 @@ export interface SetToModel {
 	isPublic: boolean
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	tags: string[]
 	parent: string | null
 }

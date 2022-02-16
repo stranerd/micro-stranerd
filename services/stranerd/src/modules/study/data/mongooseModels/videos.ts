@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: {} as unknown as VideoFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as VideoFromModel['userRoles'],
+		required: false,
+		default: {} as unknown as VideoFromModel['userRoles']
+	},
 	isPublic: {
 		type: Boolean,
 		required: false,

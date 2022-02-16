@@ -1,4 +1,4 @@
-import { CommentData, UserBio } from '../../domain/types'
+import { CommentData, UserBio, UserRoles } from '../../domain/types'
 
 export interface CommentFromModel extends CommentToModel {
 	_id: string
@@ -11,4 +11,5 @@ export interface CommentToModel {
 	data: CommentData
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 }

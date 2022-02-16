@@ -1,5 +1,5 @@
 import { BaseEntity, MediaOutput } from '@utils/commons'
-import { UserBio } from '../types'
+import { UserBio, UserRoles } from '../types'
 
 export class NoteEntity extends BaseEntity {
 	public readonly id: string
@@ -8,6 +8,7 @@ export class NoteEntity extends BaseEntity {
 	public readonly tags: string[]
 	public readonly userId: string
 	public readonly userBio: UserBio
+	public readonly userRoles: UserRoles
 	public readonly isHosted: boolean
 	public readonly isPublic: boolean
 	public readonly link: string | null
@@ -23,6 +24,7 @@ export class NoteEntity extends BaseEntity {
 		             tags,
 		             userId,
 		             userBio,
+		             userRoles,
 		             isHosted,
 		             isPublic,
 		             link,
@@ -38,6 +40,7 @@ export class NoteEntity extends BaseEntity {
 		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
+		this.userRoles = userRoles
 		this.isPublic = isPublic
 		this.isHosted = isHosted
 		this.link = link
@@ -57,6 +60,7 @@ type NoteConstructorArgs = {
 	preview: MediaOutput
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	title: string
 	description: string
 	tags: string[]

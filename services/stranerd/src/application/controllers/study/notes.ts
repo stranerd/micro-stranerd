@@ -81,6 +81,7 @@ export class NoteController {
 			const note = await AddNote.execute({
 				...data,
 				userBio: user.bio,
+				userRoles: user.roles,
 				userId: authUserId
 			})
 			await saveNewItemToSet({

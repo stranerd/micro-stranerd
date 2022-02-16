@@ -33,7 +33,7 @@ export class CommentController {
 		const user = await FindUser.execute(authUserId)
 
 		if (user) return await AddComment.execute({
-			body, userId: user.id, userBio: user.bio,
+			body, userId: user.id, userBio: user.bio, userRoles: user.roles,
 			data: isVideoType ? { type, videoId } : ({} as any)
 		})
 

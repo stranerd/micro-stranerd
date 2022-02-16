@@ -3,7 +3,7 @@ import { VideoMapper } from '../mappers/videos'
 import { VideoFromModel, VideoToModel } from '../models/videos'
 import { Video } from '../mongooseModels/videos'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class VideoRepository implements IVideoRepository {
 	private static instance: VideoRepository
@@ -42,8 +42,8 @@ export class VideoRepository implements IVideoRepository {
 		return this.mapper.mapFrom(video)
 	}
 
-	async updateVideosUserBio (userId: string, userBio: UserBio) {
-		const videos = await Video.updateMany({ userId }, { $set: { userBio } })
+	async updateVideosUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const videos = await Video.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return videos.acknowledged
 	}
 

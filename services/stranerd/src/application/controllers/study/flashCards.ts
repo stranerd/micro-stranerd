@@ -77,6 +77,7 @@ export class FlashCardController {
 			const flashCard = await AddFlashCard.execute({
 				...data,
 				userBio: user.bio,
+				userRoles: user.roles,
 				userId: authUserId
 			})
 			await saveNewItemToSet({

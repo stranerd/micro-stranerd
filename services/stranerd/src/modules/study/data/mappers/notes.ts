@@ -6,11 +6,11 @@ export class NoteMapper extends BaseMapper<NoteFromModel, NoteToModel, NoteEntit
 	mapFrom (model: NoteFromModel | null) {
 		if (!model) return null
 		const {
-			_id, title, description, tags, userId, userBio, isHosted, link, media,
+			_id, title, description, tags, userId, userBio, userRoles, isHosted, link, media,
 			createdAt, updatedAt, preview, isPublic
 		} = model
 		return new NoteEntity({
-			id: _id.toString(), title, description, tags, userId, userBio,
+			id: _id.toString(), title, description, tags, userId, userBio, userRoles,
 			isHosted, link, media, createdAt, updatedAt, preview, isPublic
 		})
 	}
@@ -22,6 +22,7 @@ export class NoteMapper extends BaseMapper<NoteFromModel, NoteToModel, NoteEntit
 			tags: entity.tags,
 			userId: entity.userId,
 			userBio: entity.userBio,
+			userRoles: entity.userRoles,
 			isHosted: entity.isHosted,
 			isPublic: entity.isPublic,
 			link: entity.link,

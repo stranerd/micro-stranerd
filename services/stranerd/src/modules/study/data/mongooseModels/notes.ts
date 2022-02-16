@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: {} as unknown as NoteFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as NoteFromModel['userRoles'],
+		required: false,
+		default: {} as unknown as NoteFromModel['userRoles']
+	},
 	isPublic: {
 		type: Boolean,
 		required: false,

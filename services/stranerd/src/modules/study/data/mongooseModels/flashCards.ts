@@ -36,6 +36,11 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		required: false,
 		default: {} as unknown as FlashCardFromModel['userBio']
 	},
+	userRoles: {
+		type: mongoose.Schema.Types.Mixed as unknown as FlashCardFromModel['userRoles'],
+		required: false,
+		default: {} as unknown as FlashCardFromModel['userRoles']
+	},
 	createdAt: {
 		type: Number,
 		required: false,

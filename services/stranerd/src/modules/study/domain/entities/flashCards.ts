@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio } from '../types'
+import { UserBio, UserRoles } from '../types'
 
 export class FlashCardEntity extends BaseEntity {
 	public readonly id: string
@@ -9,6 +9,7 @@ export class FlashCardEntity extends BaseEntity {
 	public readonly tags: string[]
 	public readonly userId: string
 	public readonly userBio: UserBio
+	public readonly userRoles: UserRoles
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -20,6 +21,7 @@ export class FlashCardEntity extends BaseEntity {
 		             tags,
 		             userId,
 		             userBio,
+		             userRoles,
 		             createdAt,
 		             updatedAt
 	             }: FlashCardConstructorArgs) {
@@ -31,6 +33,7 @@ export class FlashCardEntity extends BaseEntity {
 		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
+		this.userRoles = userRoles
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -43,6 +46,7 @@ type FlashCardConstructorArgs = {
 	set: { question: string, answer: string }[]
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	tags: string[]
 	createdAt: number
 	updatedAt: number

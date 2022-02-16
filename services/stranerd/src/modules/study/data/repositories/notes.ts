@@ -3,7 +3,7 @@ import { NoteMapper } from '../mappers/notes'
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { Note } from '../mongooseModels/notes'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export class NoteRepository implements INoteRepository {
 	private static instance: NoteRepository
@@ -42,8 +42,8 @@ export class NoteRepository implements INoteRepository {
 		return this.mapper.mapFrom(note)
 	}
 
-	async updateNotesUserBio (userId: string, userBio: UserBio) {
-		const notes = await Note.updateMany({ userId }, { $set: { userBio } })
+	async updateNotesUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const notes = await Note.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return notes.acknowledged
 	}
 

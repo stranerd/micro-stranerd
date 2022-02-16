@@ -1,8 +1,8 @@
 import { INoteRepository } from '../../irepositories/notes'
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types'
+import { UserBio, UserRoles } from '../../types'
 
-type Input = { userId: string, userBio: UserBio }
+type Input = { userId: string, userBio: UserBio, userRoles: UserRoles }
 
 export class UpdateNotesUserBioUseCase extends BaseUseCase<Input, boolean> {
 	private repository: INoteRepository
@@ -13,6 +13,6 @@ export class UpdateNotesUserBioUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateNotesUserBio(input.userId, input.userBio)
+		return await this.repository.updateNotesUserBio(input.userId, input.userBio, input.userRoles)
 	}
 }

@@ -1,4 +1,4 @@
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export interface FlashCardFromModel extends FlashCardToModel {
 	_id: string
@@ -11,6 +11,7 @@ export interface FlashCardToModel {
 	isPublic: boolean
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	set: {
 		question: string,
 		answer: string

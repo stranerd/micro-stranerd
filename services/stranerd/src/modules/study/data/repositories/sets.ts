@@ -3,7 +3,7 @@ import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { SetSaved, UserBio } from '../../domain/types'
+import { SetSaved, UserBio, UserRoles } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {
 	private static instance: SetRepository
@@ -42,8 +42,8 @@ export class SetRepository implements ISetRepository {
 		return this.mapper.mapFrom(set)
 	}
 
-	async updateSetsUserBio (userId: string, userBio: UserBio) {
-		const sets = await Set.updateMany({ userId }, { $set: { userBio } })
+	async updateSetsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const sets = await Set.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return sets.acknowledged
 	}
 

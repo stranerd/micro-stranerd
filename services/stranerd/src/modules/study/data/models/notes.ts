@@ -1,5 +1,5 @@
 import { MediaOutput } from '@utils/commons'
-import { UserBio } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 
 export interface NoteFromModel extends NoteToModel {
 	_id: string
@@ -15,6 +15,7 @@ export interface NoteToModel {
 	media: MediaOutput | null
 	userId: string
 	userBio: UserBio
+	userRoles: UserRoles
 	title: string
 	description: string
 	tags: string[]

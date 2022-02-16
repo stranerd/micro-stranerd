@@ -1,8 +1,8 @@
 import { IVideoRepository } from '../../irepositories/videos'
 import { BaseUseCase } from '@utils/commons'
-import { UserBio } from '../../types'
+import { UserBio, UserRoles } from '../../types'
 
-type Input = { userId: string, userBio: UserBio }
+type Input = { userId: string, userBio: UserBio, userRoles: UserRoles }
 
 export class UpdateVideosUserBioUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IVideoRepository
@@ -13,6 +13,6 @@ export class UpdateVideosUserBioUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateVideosUserBio(input.userId, input.userBio)
+		return await this.repository.updateVideosUserBio(input.userId, input.userBio, input.userRoles)
 	}
 }
