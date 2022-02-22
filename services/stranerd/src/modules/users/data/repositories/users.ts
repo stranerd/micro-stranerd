@@ -29,6 +29,7 @@ export class UserRepository implements IUserRepository {
 		user._id = userId
 		user.bio = data
 		user.dates.createdAt = timestamp
+		user.dates.deletedAt = null
 		await user.save()
 	}
 

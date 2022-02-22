@@ -129,17 +129,17 @@ http:
           - "/utils"
   routers:
     auth:
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
+      rule: "PathPrefix(\`/auth/\`)"
       middlewares:
         - stripRoutePrefix
       service: auth
     stranerd:
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
+      rule: "PathPrefix(\`/stranerd/\`)"
       middlewares:
         - stripRoutePrefix
       service: stranerd
     utils:
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
+      rule: "PathPrefix(\`/utils/\`)"
       middlewares:
         - stripRoutePrefix
       service: utils
