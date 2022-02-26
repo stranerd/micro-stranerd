@@ -14,13 +14,14 @@ import { UpdateAnnouncementsUserBio, UpdateClassesUserBio, UpdateDiscussionsUser
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { createRootSet } from '@utils/modules/study/sets'
+import { SetType } from '@modules/study/domain/types'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('users/users', after)
 		await getSocketEmitter().emitOpenCreated(`users/users/${after.id}`, after)
 
-		await createRootSet(after)
+		await createRootSet(after.id, after.bio, after.roles, { type: SetType.users })
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users/users', after)

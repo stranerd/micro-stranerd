@@ -56,6 +56,11 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: {} as unknown as SetFromModel['userRoles']
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['data'],
+		required: false,
+		default: {} as unknown as SetFromModel['data']
+	},
 	createdAt: {
 		type: Number,
 		required: false,

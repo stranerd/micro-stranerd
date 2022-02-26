@@ -1,7 +1,6 @@
-import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, SetSaved, UpdateFlashCard } from '@modules/study'
+import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, UpdateFlashCard } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class FlashCardController {
 	static async FindFlashCard (req: Request) {
@@ -73,21 +72,12 @@ export class FlashCardController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) {
-			const flashCard = await AddFlashCard.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: authUserId
-			})
-			await saveNewItemToSet({
-				setId: req.body.setId?.toString() ?? null,
-				itemId: flashCard.id,
-				userId: flashCard.userId,
-				type: SetSaved.flashCards
-			})
-			return flashCard
-		}
+		if (user) return await AddFlashCard.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: authUserId
+		})
 		throw new NotFoundError()
 	}
 

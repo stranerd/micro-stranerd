@@ -16,6 +16,7 @@ import {
 	Validation,
 	ValidationError
 } from '@utils/commons'
+import { QuestionType } from '@modules/questions/domain/types'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -28,11 +29,17 @@ export class QuestionController {
 	}
 
 	static async UpdateQuestion (req: Request) {
-		const data = validate({
+		const authUserId = req.authUser!.id
+		const isUsers = req.body.data?.type === QuestionType.users
+		const isClasses = req.body.data?.type === QuestionType.classes
+
+		const { body, subjectId, tags, attachments, type, classId } = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
 			tags: req.body.tags,
-			attachments: req.body.attachments
+			attachments: req.body.attachments,
+			type: req.body.data?.type,
+			classId: req.body.data?.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			subjectId: { required: true, rules: [Validation.isString] },
@@ -43,10 +50,18 @@ export class QuestionController {
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
-			}
+			},
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
+			},
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] },
 		})
 
-		const authUserId = req.authUser!.id
+		const data = {
+			body, subjectId, tags, attachments,
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+		}
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -57,14 +72,18 @@ export class QuestionController {
 	static async CreateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await FindUser.execute(authUserId)
+		const isUsers = req.body.data?.type === QuestionType.users
+		const isClasses = req.body.data?.type === QuestionType.classes
 
 		if (!user) throw new NotFoundError()
 
-		const data = validate({
+		const { body, subjectId, tags, attachments, type, classId } = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
 			tags: req.body.tags,
-			attachments: req.body.attachments
+			attachments: req.body.attachments,
+			type: req.body.data?.type,
+			classId: req.body.data?.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			subjectId: { required: true, rules: [Validation.isString] },
@@ -75,15 +94,23 @@ export class QuestionController {
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
-			}
+			},
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
+			},
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] },
 		})
 
-		return await AddQuestion.execute({
-			...data,
+		const data = {
+			body, subjectId, tags, attachments,
+			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,
-			userId: authUserId
-		})
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+		}
+
+		return await AddQuestion.execute(data)
 	}
 
 	static async MarkBestAnswer (req: Request) {

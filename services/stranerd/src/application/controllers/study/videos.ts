@@ -1,7 +1,6 @@
-import { AddVideo, DeleteVideo, FindVideo, GetVideos, SetSaved, UpdateVideo } from '@modules/study'
+import { AddVideo, DeleteVideo, FindVideo, GetVideos, UpdateVideo } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class VideoController {
 	static async FindVideo (req: Request) {
@@ -77,21 +76,12 @@ export class VideoController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) {
-			const video = await AddVideo.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: authUserId
-			})
-			await saveNewItemToSet({
-				setId: req.body.setId?.toString() ?? null,
-				itemId: video.id,
-				userId: video.userId,
-				type: SetSaved.videos
-			})
-			return video
-		}
+		if (user) return await AddVideo.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: authUserId
+		})
 		throw new NotFoundError()
 	}
 

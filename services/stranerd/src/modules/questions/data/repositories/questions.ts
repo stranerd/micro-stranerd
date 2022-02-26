@@ -5,7 +5,7 @@ import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio, UserRoles } from '../../domain/types'
-import { BEST_ANSWERS_COUNT } from '@modules/questions/domain/entities/questions'
+import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository

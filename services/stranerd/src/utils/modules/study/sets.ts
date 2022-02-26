@@ -1,14 +1,16 @@
-import { AddSet, GetSets, SetSaved, UpdateSetProp } from '@modules/study'
-import { FindUser, UserEntity } from '@modules/users'
+import { AddSet, GetSets } from '@modules/study'
+import { FindUser, UserBio, UserRoles } from '@modules/users'
+import { SetData, SetType } from '@modules/study/domain/types'
+import { FindClass } from '@modules/classes'
 
-export const createRootSet = async (user: UserEntity) => {
+export const createRootSet = async (userId: string, userBio: UserBio, userRoles: UserRoles, data: SetData) => {
 	return await AddSet.execute({
-		name: '', parent: null, isPublic: false,
-		userId: user.id, userBio: user.bio, userRoles: user.roles, tags: []
+		name: '', parent: null, isPublic: false, data,
+		userId, userBio, userRoles, tags: []
 	})
 }
 
-export const getRootSet = async (userId) => {
+export const getUserRootSet = async (userId: string) => {
 	let rootSet = (await GetSets.execute({
 		where: [
 			{ field: 'parent', value: null },
@@ -18,24 +20,24 @@ export const getRootSet = async (userId) => {
 	})).results[0]
 	if (!rootSet) {
 		const user = await FindUser.execute(userId)
-		rootSet = await createRootSet(user!)
+		rootSet = await createRootSet(user!.id, user!.bio, user!.roles, { type: SetType.users })
 	}
 	return rootSet
 }
 
-export const saveNewItemToSet = async ({
-	                                       itemId, userId, type, setId
-}: { itemId: string, userId: string, type: SetSaved, setId: string | null }) => {
-	if (!setId) {
-		const rootSet = await getRootSet(userId)
-		setId = rootSet.id
+export const getClassRootSet = async (classId: string) => {
+	let rootSet = (await GetSets.execute({
+		where: [
+			{ field: 'parent', value: null },
+			{ field: 'data.classId', value: classId }
+		],
+		sort: { field: 'createdAt', order: 1 }
+	})).results[0]
+	if (!rootSet) {
+		const classInstance = await FindClass.execute(classId)
+		rootSet = await createRootSet(classInstance!.userId, classInstance!.userBio, classInstance!.userRoles, {
+			type: SetType.classes, classId
+		})
 	}
-
-	if (setId) await UpdateSetProp.execute({
-		id: setId,
-		prop: type,
-		values: [itemId],
-		userId: userId,
-		add: true
-	})
+	return rootSet
 }

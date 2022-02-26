@@ -1,6 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
-import { SetSaved } from '@modules/study/domain/types/sets'
+import { SetData, SetSaved, UserBio, UserRoles } from '../types'
 
 export class SetEntity extends BaseEntity {
 	public readonly id: string
@@ -13,6 +12,7 @@ export class SetEntity extends BaseEntity {
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
+	public readonly data: SetData
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -27,6 +27,7 @@ export class SetEntity extends BaseEntity {
 		             userId,
 		             userBio,
 		             userRoles,
+		             data,
 		             createdAt,
 		             updatedAt
 	             }: SetConstructorArgs) {
@@ -41,6 +42,7 @@ export class SetEntity extends BaseEntity {
 		this.userId = userId
 		this.userBio = userBio
 		this.userRoles = userRoles
+		this.data = data
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -57,6 +59,7 @@ type SetConstructorArgs = {
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
+	data: SetData
 	createdAt: number
 	updatedAt: number
 }

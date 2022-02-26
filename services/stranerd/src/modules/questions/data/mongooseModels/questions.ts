@@ -36,6 +36,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: false,
 		default: {} as unknown as QuestionFromModel['userRoles']
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['data'],
+		required: false,
+		default: {} as unknown as QuestionFromModel['data']
+	},
 	bestAnswers: {
 		type: [String],
 		required: false,

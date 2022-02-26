@@ -1,7 +1,8 @@
 import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, UpdateSet, UpdateSetProp } from '@modules/study'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindUser } from '@modules/users'
-import { getRootSet } from '@utils/modules/study/sets'
+import { getClassRootSet, getUserRootSet } from '@utils/modules/study/sets'
+import { SetType } from '@modules/study/domain/types'
 
 export class SetController {
 	static async FindSet (req: Request) {
@@ -20,13 +21,18 @@ export class SetController {
 	static async CreateSet (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await FindUser.execute(authUserId)
+		const isUsers = req.body.data?.type === SetType.users
+		const isClasses = req.body.data?.type === SetType.classes
 		if (!user) throw new NotFoundError()
 
-		const data = validate({
+		// eslint-disable-next-line prefer-const
+		let { name, isPublic, parent, tags, type, classId } = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
-			tags: req.body.tags
+			tags: req.body.tags,
+			type: req.body.data?.type,
+			classId: req.body.data?.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
@@ -34,23 +40,38 @@ export class SetController {
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			}
+			},
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
+			},
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
 
-		if (data.parent === null) {
-			const rootSet = await getRootSet(user.id)
-			data.parent = rootSet?.id ?? null
+		if (parent === null) {
+			const rootSet = await (isClasses ? getClassRootSet(classId) : getUserRootSet(user.id))
+			parent = rootSet?.id ?? null
 		}
 
-		return await AddSet.execute({ ...data, userId: user.id, userBio: user.bio, userRoles: user.roles })
+		const data = {
+			name, isPublic, parent, tags,
+			userId: user.id, userBio: user.bio, userRoles: user.roles,
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+		}
+
+		return await AddSet.execute(data)
 	}
 
 	static async UpdateSet (req: Request) {
-		const data = validate({
+		const isUsers = req.body.data?.type === SetType.users
+		const isClasses = req.body.data?.type === SetType.classes
+		const { name, isPublic, parent, tags, type, classId } = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
-			tags: req.body.tags
+			tags: req.body.tags,
+			type: req.body.data?.type,
+			classId: req.body.data?.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
@@ -58,8 +79,18 @@ export class SetController {
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			}
+			},
+			type: {
+				required: true,
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
+			},
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
+
+		const data = {
+			name, isPublic, parent, tags,
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+		}
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet
