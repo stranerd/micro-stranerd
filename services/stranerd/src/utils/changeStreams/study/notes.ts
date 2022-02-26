@@ -6,8 +6,8 @@ import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } f
 
 export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, NoteEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('notes', after)
-		await getSocketEmitter().emitOpenCreated(`notes/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('study/notes', after)
+		await getSocketEmitter().emitOpenCreated(`study/notes/${after.id}`, after)
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -16,15 +16,15 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.notes })
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('notes', after)
-		await getSocketEmitter().emitOpenUpdated(`notes/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('study/notes', after)
+		await getSocketEmitter().emitOpenUpdated(`study/notes/${after.id}`, after)
 
 		if (changes.media && before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 		if (changes.preview) await publishers[EventTypes.DELETEFILE].publish(before.preview)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('notes', before)
-		await getSocketEmitter().emitOpenDeleted(`notes/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('study/notes', before)
+		await getSocketEmitter().emitOpenDeleted(`study/notes/${before.id}`, before)
 
 		await RemoveSetProp.execute({ prop: SetSaved.notes, value: before.id })
 

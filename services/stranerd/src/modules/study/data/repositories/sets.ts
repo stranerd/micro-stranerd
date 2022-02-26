@@ -38,7 +38,7 @@ export class SetRepository implements ISetRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<SetToModel>) {
-		const set = await Set.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const set = await Set.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(set)
 	}
 

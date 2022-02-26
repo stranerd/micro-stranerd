@@ -4,15 +4,15 @@ import { getSocketEmitter } from '@index'
 
 export const SubjectChangeStreamCallbacks: ChangeStreamCallbacks<SubjectFromModel, SubjectEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('subjects', after)
-		await getSocketEmitter().emitOpenCreated(`subjects/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('questions/subjects', after)
+		await getSocketEmitter().emitOpenCreated(`questions/subjects/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('subjects', after)
-		await getSocketEmitter().emitOpenUpdated(`subjects/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions/subjects', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/subjects/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('subjects', before)
-		await getSocketEmitter().emitOpenDeleted(`subjects/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions/subjects', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/subjects/${before.id}`, before)
 	}
 }

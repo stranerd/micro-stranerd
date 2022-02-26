@@ -38,7 +38,7 @@ export class FlashCardRepository implements IFlashCardRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<FlashCardToModel>) {
-		const flashCard = await FlashCard.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const flashCard = await FlashCard.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(flashCard)
 	}
 

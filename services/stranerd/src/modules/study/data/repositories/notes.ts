@@ -38,7 +38,7 @@ export class NoteRepository implements INoteRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<NoteToModel>) {
-		const note = await Note.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const note = await Note.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(note)
 	}
 

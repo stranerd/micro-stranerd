@@ -38,7 +38,7 @@ export class VideoRepository implements IVideoRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<VideoToModel>) {
-		const video = await Video.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const video = await Video.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(video)
 	}
 
