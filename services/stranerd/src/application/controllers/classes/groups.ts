@@ -17,19 +17,13 @@ export class GroupController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new NotFoundError()
 
-		const { name, classId } = validate({
-			name: req.body.name,
-			classId: req.body.data?.classId
+		const { name } = validate({
+			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			classId: { required: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] }
 		})
 
-		const classInst = await FindClass.execute(classId)
-		if (!classInst) throw new NotFoundError()
-		if (classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
-
-		const data = { name, classId }
+		const data = { name }
 
 		const updatedGroup = await UpdateGroup.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -44,7 +38,7 @@ export class GroupController {
 
 		const { name, classId } = validate({
 			name: req.body.name,
-			classId: req.body.data?.classId
+			classId: req.body.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }

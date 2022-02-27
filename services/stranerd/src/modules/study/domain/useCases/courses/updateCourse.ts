@@ -3,7 +3,7 @@ import { ICourseRepository } from '../../irepositories/courses'
 import { BaseUseCase } from '@utils/commons'
 import { CourseEntity } from '../../entities/courses'
 
-type Input = { id: string, data: CourseToModel }
+type Input = { id: string, data: Partial<CourseToModel> }
 
 export class UpdateCourseUseCase extends BaseUseCase<Input, CourseEntity | null> {
 	private repository: ICourseRepository

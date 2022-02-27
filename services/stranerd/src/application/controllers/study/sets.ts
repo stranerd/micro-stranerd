@@ -72,16 +72,11 @@ export class SetController {
 	}
 
 	static async UpdateSet (req: Request) {
-		const authUserId = req.authUser!.id
-		const isUsers = req.body.data?.type === SetType.users
-		const isClasses = req.body.data?.type === SetType.classes
-		const { name, isPublic, parent, tags, type, classId } = validate({
+		const { name, isPublic, parent, tags } = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
-			tags: req.body.tags,
-			type: req.body.data?.type,
-			classId: req.body.data?.classId
+			tags: req.body.tags
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
@@ -89,26 +84,10 @@ export class SetController {
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
-			},
-			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
+			}
 		})
 
-		let classInst = null as ClassEntity | null
-		if (classId) classInst = await FindClass.execute(classId)
-		if (isClasses && !classInst) throw new NotFoundError()
-		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
-
-		const data = {
-			name, isPublic, parent, tags,
-			data: isClasses ? {
-				type, classId, className: classInst!.name,
-				classAvatar: classInst!.avatar
-			} : isUsers ? { type } : ({} as any)
-		}
+		const data = { name, isPublic, parent, tags }
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet

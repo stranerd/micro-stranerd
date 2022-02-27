@@ -24,19 +24,13 @@ export class AnnouncementController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new NotFoundError()
 
-		const { body, classId } = validate({
-			body: req.body.body,
-			classId: req.body.data?.classId
+		const { body } = validate({
+			body: req.body.body
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			classId: { required: true, rules: [Validation.isString] }
+			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] }
 		})
 
-		const classInst = await FindClass.execute(classId)
-		if (!classInst) throw new NotFoundError()
-		if (classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
-
-		const data = { body, classId }
+		const data = { body }
 
 		const updatedAnnouncement = await UpdateAnnouncement.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -51,7 +45,7 @@ export class AnnouncementController {
 
 		const { body, classId } = validate({
 			body: req.body.body,
-			classId: req.body.data?.classId
+			classId: req.body.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }

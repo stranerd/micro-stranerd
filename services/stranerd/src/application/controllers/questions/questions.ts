@@ -31,16 +31,12 @@ export class QuestionController {
 
 	static async UpdateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
-		const isUsers = req.body.data?.type === QuestionType.users
-		const isClasses = req.body.data?.type === QuestionType.classes
 
-		const { body, subjectId, tags, attachments, type, classId } = validate({
+		const { body, subjectId, tags, attachments } = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
 			tags: req.body.tags,
-			attachments: req.body.attachments,
-			type: req.body.data?.type,
-			classId: req.body.data?.classId
+			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			subjectId: { required: true, rules: [Validation.isString] },
@@ -51,28 +47,10 @@ export class QuestionController {
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
-			},
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
-			},
-			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
+			}
 		})
 
-		let classInst = null as ClassEntity | null
-		if (classId) classInst = await FindClass.execute(classId)
-		if (isClasses && !classInst) throw new NotFoundError()
-		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
-
-		const data = {
-			body, subjectId, tags, attachments,
-			data: isClasses ? {
-				type,
-				classId,
-				className: classInst!.name,
-				classAvatar: classInst!.avatar
-			} : isUsers ? { type } : ({} as any)
-		}
+		const data = { body, subjectId, tags, attachments }
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
