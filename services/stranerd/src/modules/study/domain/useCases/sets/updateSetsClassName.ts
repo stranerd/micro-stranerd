@@ -1,7 +1,8 @@
 import { ISetRepository } from '../../irepositories/sets'
-import { BaseUseCase, MediaOutput } from '@utils/commons'
+import { BaseUseCase } from '@utils/commons'
+import { Media } from '../../types'
 
-type Input = { classId: string, className: string, classAvatar: MediaOutput }
+type Input = { classId: string, className: string, classAvatar: Media }
 
 export class UpdateSetsClassNameUseCase extends BaseUseCase<Input, boolean> {
 	private repository: ISetRepository

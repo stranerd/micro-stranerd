@@ -1,5 +1,4 @@
-import { MediaOutput } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { Media, UserBio, UserRoles } from '../../domain/types'
 
 export interface VideoFromModel extends VideoToModel {
 	_id: string
@@ -10,9 +9,9 @@ export interface VideoFromModel extends VideoToModel {
 export interface VideoToModel {
 	isPublic: boolean
 	isHosted: boolean
-	preview: MediaOutput
+	preview: Media
 	link: string | null
-	media: MediaOutput | null
+	media: Media | null
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

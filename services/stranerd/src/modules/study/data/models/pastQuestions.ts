@@ -1,5 +1,4 @@
-import { MediaOutput } from '@utils/commons'
-import { PastQuestionData } from '../../domain/types'
+import { Media, PastQuestionData } from '../../domain/types'
 
 export interface PastQuestionFromModel extends PastQuestionToModel {
 	_id: string
@@ -12,6 +11,6 @@ export interface PastQuestionToModel {
 	courseId: string
 	year: number
 	question: string
-	questionMedia: MediaOutput[]
+	questionMedia: Media[]
 	data: PastQuestionData
 }

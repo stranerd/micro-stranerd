@@ -1,5 +1,5 @@
-import { BaseEntity, MediaOutput } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { BaseEntity } from '@utils/commons'
+import { Media, UserBio, UserRoles } from '../types'
 
 export class AnswerEntity extends BaseEntity {
 	public readonly id: string
@@ -7,7 +7,7 @@ export class AnswerEntity extends BaseEntity {
 	public readonly body: string
 	public readonly best: boolean
 	public readonly questionId: string
-	public readonly attachments: MediaOutput[]
+	public readonly attachments: Media[]
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
@@ -48,7 +48,7 @@ type AnswerConstructorArgs = {
 	title: string
 	body: string
 	questionId: string
-	attachments: MediaOutput[]
+	attachments: Media[]
 	createdAt: number
 	updatedAt: number
 	userId: string

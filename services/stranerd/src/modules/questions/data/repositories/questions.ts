@@ -3,8 +3,8 @@ import { QuestionMapper } from '../mappers/questions'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
-import { MediaOutput, mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { Media, UserBio, UserRoles } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
@@ -77,7 +77,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return questions.acknowledged
 	}
 
-	async updateQuestionsClassName (classId: string, className: string, classAvatar: MediaOutput) {
+	async updateQuestionsClassName (classId: string, className: string, classAvatar: Media) {
 		const questions = await Question.updateMany({ 'data.classId': classId }, {
 			$set: { 'data.className': className, 'data.classAvatar': classAvatar }
 		})

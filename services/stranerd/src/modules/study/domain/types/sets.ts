@@ -1,4 +1,4 @@
-import { MediaOutput } from '@utils/commons'
+import { Media } from './index'
 
 export enum SetSaved {
 	flashCards = 'flashCards',
@@ -21,7 +21,7 @@ type ClassType = {
 	type: SetType.classes
 	classId: string
 	className: string
-	classAvatar: MediaOutput
+	classAvatar: Media
 }
 
 export type SetData = UserType | ClassType

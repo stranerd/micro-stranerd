@@ -1,5 +1,5 @@
-import { BaseEntity, MediaOutput } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { BaseEntity } from '@utils/commons'
+import { Media, UserBio, UserRoles } from '../types'
 
 export class VideoEntity extends BaseEntity {
 	public readonly id: string
@@ -12,8 +12,8 @@ export class VideoEntity extends BaseEntity {
 	public readonly isPublic: boolean
 	public readonly isHosted: boolean
 	public readonly link: string | null
-	public readonly media: MediaOutput | null
-	public readonly preview: MediaOutput
+	public readonly media: Media | null
+	public readonly preview: Media
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -55,9 +55,9 @@ type VideoConstructorArgs = {
 	id: string,
 	isPublic: boolean
 	isHosted: boolean
-	preview: MediaOutput
+	preview: Media
 	link: string | null
-	media: MediaOutput | null
+	media: Media | null
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

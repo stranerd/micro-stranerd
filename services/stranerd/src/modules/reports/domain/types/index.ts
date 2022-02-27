@@ -1,7 +1,8 @@
 import { UserBio, UserRoles } from '@modules/users'
-import { MediaOutput } from '@utils/common'
+import { MediaOutput } from '@utils/commons'
 
 export { UserBio, UserRoles }
+export type Media = MediaOutput
 
 export enum ReportType {
 	users = 'users',
@@ -29,7 +30,7 @@ type AnswerReportType = {
 
 type PastQuestionType = {
 	question: string
-	questionMedia: MediaOutput[]
+	questionMedia: Media[]
 }
 
 export type ReportData = {

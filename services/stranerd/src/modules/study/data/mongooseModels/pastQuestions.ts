@@ -1,4 +1,4 @@
-import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { PastQuestionFromModel } from '../models/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/study/pastQuestions'
@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 		required: true
 	},
 	questionMedia: {
-		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as PastQuestionFromModel['questionMedia'],
 		required: false,
 		default: []
 	},

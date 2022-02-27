@@ -1,5 +1,5 @@
-import { BaseEntity, MediaOutput } from '@utils/commons'
-import { PastQuestionData } from '../types'
+import { BaseEntity } from '@utils/commons'
+import { Media, PastQuestionData } from '../types'
 
 export class PastQuestionEntity extends BaseEntity {
 	public readonly id: string
@@ -7,7 +7,7 @@ export class PastQuestionEntity extends BaseEntity {
 	public readonly institutionId: string
 	public readonly courseId: string
 	public readonly question: string
-	public readonly questionMedia: MediaOutput[]
+	public readonly questionMedia: Media[]
 	public readonly data: PastQuestionData
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -32,7 +32,7 @@ type PastQuestionConstructorArgs = {
 	courseId: string
 	year: number
 	question: string
-	questionMedia: MediaOutput[]
+	questionMedia: Media[]
 	data: PastQuestionData
 	createdAt: number
 	updatedAt: number

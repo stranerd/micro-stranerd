@@ -1,4 +1,4 @@
-import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { QuestionFromModel } from '../models/questions'
 import { QuestionChangeStreamCallbacks } from '@utils/changeStreams/questions/questions'
 import { QuestionEntity } from '../../domain/entities/questions'
@@ -52,7 +52,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		default: []
 	},
 	attachments: {
-		type: [Object] as unknown as MediaOutput[],
+		type: [Object] as unknown as QuestionFromModel['attachments'],
 		required: false,
 		default: []
 	},

@@ -1,5 +1,5 @@
-import { BaseEntity, MediaOutput } from '@utils/commons'
-import { QuestionData, UserBio, UserRoles } from '../types'
+import { BaseEntity } from '@utils/commons'
+import { Media, QuestionData, UserBio, UserRoles } from '../types'
 
 export const BEST_ANSWERS_COUNT = 2
 
@@ -7,7 +7,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly id: string
 	public readonly body: string
 	public readonly tags: string[]
-	public readonly attachments: MediaOutput[]
+	public readonly attachments: Media[]
 	public readonly subjectId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
@@ -50,7 +50,7 @@ type QuestionConstructorArgs = {
 	id: string
 	body: string
 	tags: string[]
-	attachments: MediaOutput[]
+	attachments: Media[]
 	subjectId: string
 	userId: string
 	userBio: UserBio
