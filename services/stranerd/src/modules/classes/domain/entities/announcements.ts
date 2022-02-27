@@ -1,9 +1,9 @@
-import { UserBio, UserRoles } from '../types'
+import { ClassUsers, UserBio, UserRoles } from '../types'
 import { BaseEntity } from '@utils/commons'
 
 export class AnnouncementEntity extends BaseEntity {
 	public readonly id: string
-	public readonly admins: string[]
+	public readonly users: Record<ClassUsers, string[]>
 	public readonly classId: string
 	public readonly userId: string
 	public readonly userBio: UserBio
@@ -14,7 +14,7 @@ export class AnnouncementEntity extends BaseEntity {
 
 	constructor ({
 		             id,
-		             admins,
+		             users,
 		             classId,
 		             userId,
 		             userBio,
@@ -25,7 +25,7 @@ export class AnnouncementEntity extends BaseEntity {
 	             }: AnnouncementConstructorArgs) {
 		super()
 		this.id = id
-		this.admins = admins
+		this.users = users
 		this.classId = classId
 		this.userId = userId
 		this.userBio = userBio
@@ -37,12 +37,12 @@ export class AnnouncementEntity extends BaseEntity {
 }
 
 type AnnouncementConstructorArgs = {
-	id: string,
-	admins: string[],
-	classId: string,
-	userId: string,
-	userBio: UserBio,
-	userRoles: UserRoles,
+	id: string
+	users: Record<ClassUsers, string[]>
+	classId: string
+	userId: string
+	userBio: UserBio
+	userRoles: UserRoles
 	body: string
 	createdAt: number
 	updatedAt: number

@@ -3,6 +3,7 @@ import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { Group } from '../mongooseModels/groups'
 import { parseQueryParams, QueryParams } from '@utils/commons'
+import { ClassUsers } from '../../domain/types'
 
 export class GroupRepository implements IGroupRepository {
 	private static instance: GroupRepository
@@ -37,17 +38,17 @@ export class GroupRepository implements IGroupRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<GroupToModel>) {
-		const group = await Group.findOneAndUpdate({ _id: id, admins: userId }, { $set: data }, { new: true })
+		const group = await Group.findOneAndUpdate({ _id: id, 'users.admins': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(group)
 	}
 
 	async delete (id: string, userId: string) {
-		const group = await Group.findOneAndDelete({ _id: id, admins: userId })
+		const group = await Group.findOneAndDelete({ _id: id, 'users.admins': userId })
 		return !!group
 	}
 
-	async updateGroupsAdmins (classId: string, admins: string[]) {
-		const groups = await Group.updateMany({ classId }, { $set: { admins } })
+	async updateGroupsUsers (classId: string, users: Record<ClassUsers, string[]>) {
+		const groups = await Group.updateMany({ classId }, { $set: { users } })
 		return groups.acknowledged
 	}
 }

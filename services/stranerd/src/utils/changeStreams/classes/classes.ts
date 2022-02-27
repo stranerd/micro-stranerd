@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { ClassEntity, ClassFromModel, UpdateAnnouncementsAdmins, UpdateGroupsAdmins } from '@modules/classes'
+import { ClassEntity, ClassFromModel, UpdateAnnouncementsUsers, UpdateGroupsUsers } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { createRootSet } from '@utils/modules/study/sets'
 import { SetType } from '@modules/study/domain/types'
@@ -32,9 +32,9 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		)
 
 		if (changes.users?.admins) await Promise.all(
-			[UpdateAnnouncementsAdmins, UpdateGroupsAdmins].map((u) => u.execute({
+			[UpdateAnnouncementsUsers, UpdateGroupsUsers].map((u) => u.execute({
 				classId: after.id,
-				admins: after.getAllAdmins()
+				users: after.getAllMembers()
 			}))
 		)
 	},

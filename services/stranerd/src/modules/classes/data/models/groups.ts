@@ -1,6 +1,7 @@
+import { ClassUsers } from '../../domain/types'
+
 export interface GroupFromModel extends GroupToModel {
 	_id: string
-	admins: string[]
 	createdAt: number
 	updatedAt: number
 }
@@ -8,4 +9,5 @@ export interface GroupFromModel extends GroupToModel {
 export interface GroupToModel {
 	classId: string
 	name: string
+	users: Record<ClassUsers, string[]>
 }

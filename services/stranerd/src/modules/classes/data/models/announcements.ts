@@ -1,14 +1,14 @@
-import { UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
 
 export interface AnnouncementFromModel extends AnnouncementToModel {
 	_id: string
-	admins: string[]
 	createdAt: number
 	updatedAt: number
 }
 
 export interface AnnouncementToModel {
 	classId: string
+	users: Record<ClassUsers, string[]>
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

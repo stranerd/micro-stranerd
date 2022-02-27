@@ -18,6 +18,7 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 			name: entity.name,
 			description: entity.description,
 			avatar: entity.avatar,
+			users: entity.users,
 			userId: entity.userId,
 			userBio: entity.userBio,
 			userRoles: entity.userRoles

@@ -3,17 +3,18 @@ import { AnnouncementFromModel } from '../models/announcements'
 import { AnnouncementEntity } from '../../domain/entities/announcements'
 import { AnnouncementChangeStreamCallbacks } from '@utils/changeStreams/classes/announcements'
 import { AnnouncementMapper } from '../mappers/announcements'
+import { ClassUsers } from '../../domain/types'
 
 const Schema = new mongoose.Schema<AnnouncementFromModel>({
 	_id: {
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	admins: {
+	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],
 		required: false,
 		default: []
-	},
+	}])),
 	classId: {
 		type: String,
 		required: true

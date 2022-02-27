@@ -3,6 +3,7 @@ import { ClassFromModel } from '../models/classes'
 import { ClassEntity } from '../../domain/entities/classes'
 import { ClassChangeStreamCallbacks } from '@utils/changeStreams/classes/classes'
 import { ClassMapper } from '../mappers/classes'
+import { ClassUsers } from '../../domain/types'
 
 const Schema = new mongoose.Schema<ClassFromModel>({
 	_id: {
@@ -37,21 +38,16 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		default: {} as unknown as ClassFromModel['avatar']
 	},
 	users: {
-		admins: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		members: {
-			type: [String],
-			required: false,
-			default: []
-		},
 		requests: {
 			type: [String],
 			required: false,
 			default: []
-		}
+		},
+		...Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
+			type: [String],
+			required: false,
+			default: []
+		}]))
 	},
 	createdAt: {
 		type: Number,

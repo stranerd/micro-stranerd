@@ -1,4 +1,4 @@
-import { Media, UserBio, UserRoles } from '../types'
+import { ClassUsers, Media, UserBio, UserRoles } from '../types'
 import { BaseEntity } from '@utils/commons'
 
 export class ClassEntity extends BaseEntity {
@@ -9,12 +9,7 @@ export class ClassEntity extends BaseEntity {
 	public readonly name: string
 	public readonly description: string
 	public readonly avatar: Media
-	public readonly users: {
-		members: string[]
-		admins: string[]
-		tutors: string[]
-		requests: string[]
-	}
+	public readonly users: Record<ClassUsers | 'requests', string[]>
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -43,25 +38,24 @@ export class ClassEntity extends BaseEntity {
 		this.updatedAt = updatedAt
 	}
 
-	getAllAdmins () {
-		return [this.userId, ...this.users.admins]
+	getAllMembers () {
+		return Object.fromEntries(
+			Object.entries(this.users)
+				.filter(([key]) => key !== 'requests')
+				.map((e) => e)
+		) as Record<ClassUsers, string[]>
 	}
 }
 
 type ClassConstructorArgs = {
 	id: string,
-	userId: string,
-	userBio: UserBio,
-	userRoles: UserRoles,
-	name: string,
+	userId: string
+	userBio: UserBio
+	userRoles: UserRoles
+	name: string
 	description: string
-	avatar: Media,
-	users: {
-		members: string[]
-		admins: string[]
-		tutors: string[]
-		requests: string[]
-	}
+	avatar: Media
+	users: Record<ClassUsers | 'requests', string[]>
 	createdAt: number
 	updatedAt: number
 }

@@ -14,13 +14,13 @@ import { AddAnnouncementUseCase } from './domain/useCases/announcements/addAnnou
 import { UpdateAnnouncementUseCase } from './domain/useCases/announcements/updateAnnouncement'
 import { DeleteAnnouncementUseCase } from './domain/useCases/announcements/deleteAnnouncement'
 import { UpdateAnnouncementsUserBioUseCase } from './domain/useCases/announcements/updateAnnouncementsUserBio'
-import { UpdateAnnouncementsAdminsUseCase } from './domain/useCases/announcements/updateAnnouncementsAdmins'
+import { UpdateAnnouncementsUsersUseCase } from './domain/useCases/announcements/updateAnnouncementsUsers'
 import { GetGroupsUseCase } from './domain/useCases/groups/getGroups'
 import { FindGroupUseCase } from './domain/useCases/groups/findGroup'
 import { AddGroupUseCase } from './domain/useCases/groups/addGroup'
 import { UpdateGroupUseCase } from './domain/useCases/groups/updateGroup'
 import { DeleteGroupUseCase } from './domain/useCases/groups/deleteGroup'
-import { UpdateGroupsAdminsUseCase } from './domain/useCases/groups/updateGroupsAdmins'
+import { UpdateGroupsUsersUseCase } from './domain/useCases/groups/updateGroupsUsers'
 import { GetDiscussionsUseCase } from './domain/useCases/discussions/getDiscussions'
 import { FindDiscussionUseCase } from './domain/useCases/discussions/findDiscussion'
 import { AddDiscussionUseCase } from './domain/useCases/discussions/addDiscussion'
@@ -46,14 +46,14 @@ export const AddAnnouncement = new AddAnnouncementUseCase(announcementRepository
 export const UpdateAnnouncement = new UpdateAnnouncementUseCase(announcementRepository)
 export const DeleteAnnouncement = new DeleteAnnouncementUseCase(announcementRepository)
 export const UpdateAnnouncementsUserBio = new UpdateAnnouncementsUserBioUseCase(announcementRepository)
-export const UpdateAnnouncementsAdmins = new UpdateAnnouncementsAdminsUseCase(announcementRepository)
+export const UpdateAnnouncementsUsers = new UpdateAnnouncementsUsersUseCase(announcementRepository)
 
 export const GetGroups = new GetGroupsUseCase(groupRepository)
 export const FindGroup = new FindGroupUseCase(groupRepository)
 export const AddGroup = new AddGroupUseCase(groupRepository)
 export const UpdateGroup = new UpdateGroupUseCase(groupRepository)
 export const DeleteGroup = new DeleteGroupUseCase(groupRepository)
-export const UpdateGroupsAdmins = new UpdateGroupsAdminsUseCase(groupRepository)
+export const UpdateGroupsUsers = new UpdateGroupsUsersUseCase(groupRepository)
 
 export const GetDiscussions = new GetDiscussionsUseCase(discussionRepository)
 export const FindDiscussion = new FindDiscussionUseCase(discussionRepository)

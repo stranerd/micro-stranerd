@@ -1,9 +1,10 @@
 import { BaseUseCase } from '@utils/commons'
 import { IGroupRepository } from '../../irepositories/groups'
+import { ClassUsers } from '../../types'
 
-type Input = { classId: string, admins: string[] }
+type Input = { classId: string, users: Record<ClassUsers, string[]> }
 
-export class UpdateGroupsAdminsUseCase extends BaseUseCase<Input, boolean> {
+export class UpdateGroupsUsersUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IGroupRepository
 
 	constructor (repository: IGroupRepository) {
@@ -12,6 +13,6 @@ export class UpdateGroupsAdminsUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (input: Input) {
-		return await this.repository.updateGroupsAdmins(input.classId, input.admins)
+		return await this.repository.updateGroupsUsers(input.classId, input.users)
 	}
 }
