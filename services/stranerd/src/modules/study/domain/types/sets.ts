@@ -21,7 +21,7 @@ type ClassType = {
 	type: SetType.classes
 	classId: string
 	className: string
-	classAvatar: Media
+	classAvatar: Media | null
 }
 
 export type SetData = UserType | ClassType

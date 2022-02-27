@@ -8,7 +8,7 @@ export class ClassEntity extends BaseEntity {
 	public readonly userRoles: UserRoles
 	public readonly name: string
 	public readonly description: string
-	public readonly avatar: Media
+	public readonly avatar: Media | null
 	public readonly users: Record<ClassUsers | 'requests', string[]>
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -58,7 +58,7 @@ type ClassConstructorArgs = {
 	userRoles: UserRoles
 	name: string
 	description: string
-	avatar: Media
+	avatar: Media | null
 	users: Record<ClassUsers | 'requests', string[]>
 	createdAt: number
 	updatedAt: number

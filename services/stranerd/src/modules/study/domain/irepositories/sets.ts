@@ -10,7 +10,7 @@ export interface ISetRepository {
 	update: (id: string, userId: string, data: Partial<SetToModel>) => Promise<SetEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateSetsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
-	updateSetsClassName: (classId: string, className: string, classAvatar: Media) => Promise<boolean>
+	updateSetsClassName: (classId: string, className: string, classAvatar: Media | null) => Promise<boolean>
 	updateSetProp: (id: string, userId: string, prop: SetSaved, add: boolean, values: string[]) => Promise<boolean>
 	removeSetProp: (prop: SetSaved, value: string) => Promise<boolean>
 	deleteSetChildren: (id: string) => Promise<boolean>

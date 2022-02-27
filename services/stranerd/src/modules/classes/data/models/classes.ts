@@ -9,7 +9,7 @@ export interface ClassFromModel extends ClassToModel {
 export interface ClassToModel {
 	name: string
 	description: string
-	avatar: Media
+	avatar: Media | null
 	users: Record<ClassUsers | 'requests', string[]>
 	userId: string
 	userBio: UserBio

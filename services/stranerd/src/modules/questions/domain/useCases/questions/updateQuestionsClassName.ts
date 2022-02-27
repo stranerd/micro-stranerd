@@ -2,7 +2,7 @@ import { IQuestionRepository } from '../../irepositories/questions'
 import { BaseUseCase } from '@utils/commons'
 import { Media } from '../../types'
 
-type Input = { classId: string, className: string, classAvatar: Media }
+type Input = { classId: string, className: string, classAvatar: Media | null }
 
 export class UpdateQuestionsClassNameUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IQuestionRepository

@@ -77,7 +77,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return questions.acknowledged
 	}
 
-	async updateQuestionsClassName (classId: string, className: string, classAvatar: Media) {
+	async updateQuestionsClassName (classId: string, className: string, classAvatar: Media | null) {
 		const questions = await Question.updateMany({ 'data.classId': classId }, {
 			$set: { 'data.className': className, 'data.classAvatar': classAvatar }
 		})

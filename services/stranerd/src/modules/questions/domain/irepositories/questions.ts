@@ -10,7 +10,7 @@ export interface IQuestionRepository {
 	update: (id: string, userId: string, data: Partial<QuestionToModel>) => Promise<QuestionEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateQuestionsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
-	updateQuestionsClassName: (classId: string, className: string, classAvatar: Media) => Promise<boolean>
+	updateQuestionsClassName: (classId: string, className: string, classAvatar: Media | null) => Promise<boolean>
 	updateAnswers: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	updateBestAnswer: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 }

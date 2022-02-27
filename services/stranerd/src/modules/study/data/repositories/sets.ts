@@ -47,7 +47,7 @@ export class SetRepository implements ISetRepository {
 		return sets.acknowledged
 	}
 
-	async updateSetsClassName (classId: string, className: string, classAvatar: Media) {
+	async updateSetsClassName (classId: string, className: string, classAvatar: Media | null) {
 		const sets = await Set.updateMany({ 'data.classId': classId }, {
 			$set: { 'data.className': className, 'data.classAvatar': classAvatar }
 		})
