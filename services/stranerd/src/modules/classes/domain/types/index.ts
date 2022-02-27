@@ -1,4 +1,4 @@
-import { MediaOutput } from '@utils/common'
+import { MediaOutput } from '@utils/commons'
 
 export { UserBio, UserRoles } from '@modules/users'
 

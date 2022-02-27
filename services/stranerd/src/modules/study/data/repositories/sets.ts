@@ -2,7 +2,7 @@ import { ISetRepository } from '../../domain/irepositories/sets'
 import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { MediaOutput, parseQueryParams, QueryParams } from '@utils/commons'
 import { SetSaved, UserBio, UserRoles } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {
@@ -44,6 +44,13 @@ export class SetRepository implements ISetRepository {
 
 	async updateSetsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
 		const sets = await Set.updateMany({ userId }, { $set: { userBio, userRoles } })
+		return sets.acknowledged
+	}
+
+	async updateSetsClassName (classId: string, className: string, classAvatar: MediaOutput) {
+		const sets = await Set.updateMany({ 'data.classId': classId }, {
+			$set: { 'data.className': className, 'data.classAvatar': classAvatar }
+		})
 		return sets.acknowledged
 	}
 

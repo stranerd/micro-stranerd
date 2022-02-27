@@ -36,7 +36,8 @@ export const getClassRootSet = async (classId: string) => {
 	if (!rootSet) {
 		const classInstance = await FindClass.execute(classId)
 		rootSet = await createRootSet(classInstance!.userId, classInstance!.userBio, classInstance!.userRoles, {
-			type: SetType.classes, classId
+			type: SetType.classes, classId: classInstance!.id,
+			className: classInstance!.name, classAvatar: classInstance!.avatar
 		})
 	}
 	return rootSet

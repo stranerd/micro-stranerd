@@ -1,6 +1,7 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { DiscussionEntity, DiscussionFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
+import { publishers } from '@utils/events'
 
 export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFromModel, DiscussionEntity> = {
 	created: async ({ after }) => {
@@ -14,5 +15,7 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('classes/discussions', before)
 		await getSocketEmitter().emitOpenDeleted(`classes/discussions/${before.id}`, before)
+
+		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}
 }

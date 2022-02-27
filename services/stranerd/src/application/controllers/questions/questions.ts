@@ -17,6 +17,7 @@ import {
 	ValidationError
 } from '@utils/commons'
 import { QuestionType } from '@modules/questions/domain/types'
+import { ClassEntity, FindClass } from '@modules/classes'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -55,12 +56,21 @@ export class QuestionController {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
 			},
-			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] },
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
+
+		let classInst = null as ClassEntity | null
+		if (classId) classInst = await FindClass.execute(classId)
+		if (isClasses && !classInst) throw new NotFoundError()
 
 		const data = {
 			body, subjectId, tags, attachments,
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+			data: isClasses ? {
+				type,
+				classId,
+				className: classInst!.name,
+				classAvatar: classInst!.avatar
+			} : isUsers ? { type } : ({} as any)
 		}
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
@@ -99,15 +109,24 @@ export class QuestionController {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
 			},
-			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] },
+			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
+
+		let classInst = null as ClassEntity | null
+		if (classId) classInst = await FindClass.execute(classId)
+		if (isClasses && !classInst) throw new NotFoundError()
 
 		const data = {
 			body, subjectId, tags, attachments,
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+			data: isClasses ? {
+				type,
+				classId,
+				className: classInst!.name,
+				classAvatar: classInst!.avatar
+			} : isUsers ? { type } : ({} as any)
 		}
 
 		return await AddQuestion.execute(data)

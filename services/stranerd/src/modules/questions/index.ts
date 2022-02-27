@@ -10,28 +10,29 @@ import { FindSubjectUseCase } from './domain/useCases/subjects/findSubject'
 import { GetSubjectsUseCase } from './domain/useCases/subjects/getSubjects'
 import { GetAnswerCommentsUseCase } from './domain/useCases/answerComments/getAnswerComments'
 import { FindAnswerCommentUseCase } from './domain/useCases/answerComments/findAnswerComment'
+import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
+import { UpdateAnswerCommentsUserBioUseCase } from './domain/useCases/answerComments/updateAnswerCommentsUserBio'
 import { AddAnswerCommentUseCase } from './domain/useCases/answerComments/addAnswerComment'
 import { GetAnswersUseCase } from './domain/useCases/answers/getAnswers'
 import { AddAnswerUseCase } from './domain/useCases/answers/addAnswer'
 import { FindAnswerUseCase } from './domain/useCases/answers/findAnswer'
 import { DeleteAnswerUseCase } from './domain/useCases/answers/deleteAnswer'
 import { UpdateAnswerUseCase } from './domain/useCases/answers/updateAnswer'
+import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/updateAnswersCommentsCount'
+import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
+import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
 import { GetQuestionsUseCase } from './domain/useCases/questions/getQuestions'
 import { FindQuestionUseCase } from './domain/useCases/questions/findQuestion'
 import { AddQuestionUseCase } from './domain/useCases/questions/addQuestion'
 import { UpdateQuestionUseCase } from './domain/useCases/questions/updateQuestion'
 import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestion'
-import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
-import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/updateAnswersCommentsCount'
-import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
 import { UpdateBestAnswerUseCase } from './domain/useCases/questions/updateBestAnswer'
 import { UpdateQuestionsAnswersUseCase } from './domain/useCases/questions/updateQuestionsAnswers'
 import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updateQuestionsUserBio'
+import { UpdateQuestionsClassNameUseCase } from './domain/useCases/questions/updateQuestionsClassName'
+import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
-import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
-import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
-import { UpdateAnswerCommentsUserBioUseCase } from './domain/useCases/answerComments/updateAnswerCommentsUserBio'
 
 const subjectRepository = SubjectRepository.getInstance()
 const answerCommentRepository = AnswerCommentRepository.getInstance()
@@ -68,6 +69,7 @@ export const DeleteQuestion = new DeleteQuestionUseCase(questionRepository)
 export const UpdateBestAnswer = new UpdateBestAnswerUseCase(questionRepository)
 export const UpdateQuestionsAnswers = new UpdateQuestionsAnswersUseCase(questionRepository)
 export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(questionRepository)
+export const UpdateQuestionsClassName = new UpdateQuestionsClassNameUseCase(questionRepository)
 
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)

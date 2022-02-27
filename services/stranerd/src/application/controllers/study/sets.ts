@@ -3,6 +3,7 @@ import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Vali
 import { FindUser } from '@modules/users'
 import { getClassRootSet, getUserRootSet } from '@utils/modules/study/sets'
 import { SetType } from '@modules/study/domain/types'
+import { ClassEntity, FindClass } from '@modules/classes'
 
 export class SetController {
 	static async FindSet (req: Request) {
@@ -53,10 +54,17 @@ export class SetController {
 			parent = rootSet?.id ?? null
 		}
 
+		let classInst = null as ClassEntity | null
+		if (classId) classInst = await FindClass.execute(classId)
+		if (isClasses && !classInst) throw new NotFoundError()
+
 		const data = {
 			name, isPublic, parent, tags,
 			userId: user.id, userBio: user.bio, userRoles: user.roles,
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+			data: isClasses ? {
+				type, classId, className: classInst!.name,
+				classAvatar: classInst!.avatar
+			} : isUsers ? { type } : ({} as any)
 		}
 
 		return await AddSet.execute(data)
@@ -87,9 +95,16 @@ export class SetController {
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
 
+		let classInst = null as ClassEntity | null
+		if (classId) classInst = await FindClass.execute(classId)
+		if (isClasses && !classInst) throw new NotFoundError()
+
 		const data = {
 			name, isPublic, parent, tags,
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
+			data: isClasses ? {
+				type, classId, className: classInst!.name,
+				classAvatar: classInst!.avatar
+			} : isUsers ? { type } : ({} as any)
 		}
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
