@@ -36,7 +36,7 @@ export class AnnouncementEntity extends BaseEntity {
 	}
 
 	getAllUsers () {
-		return [...this.users.admins, ...this.users.tutors, this.users.members]
+		return Object.values(this.users).flat()
 	}
 }
 

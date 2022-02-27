@@ -54,11 +54,7 @@ export class ClassController {
 			name, description, avatar,
 			userId: user.id,
 			userBio: user.bio,
-			userRoles: user.roles,
-			users: {
-				admins: [user.id],
-				tutors: [], members: [], requests: []
-			}
+			userRoles: user.roles
 		}
 
 		return await AddClass.execute(data)

@@ -37,17 +37,15 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		required: false,
 		default: {} as unknown as ClassFromModel['avatar']
 	},
-	users: {
-		requests: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		...Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
-			type: [String],
-			required: false,
-			default: []
-		}]))
+	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
+		type: [String],
+		required: false,
+		default: []
+	}])),
+	requests: {
+		type: [String],
+		required: false,
+		default: []
 	},
 	createdAt: {
 		type: Number,

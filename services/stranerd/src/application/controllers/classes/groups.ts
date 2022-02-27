@@ -53,7 +53,7 @@ export class GroupController {
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,
-			users: classInst.getAllMembers()
+			users: classInst.users
 		}
 
 		return await AddGroup.execute(data)

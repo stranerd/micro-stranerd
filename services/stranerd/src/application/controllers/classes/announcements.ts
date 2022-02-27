@@ -50,7 +50,7 @@ export class AnnouncementController {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }
 		})
-
+ 
 		const classInst = await FindClass.execute(classId)
 		if (!classInst) throw new NotFoundError()
 		if (classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
@@ -60,7 +60,7 @@ export class AnnouncementController {
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,
-			users: classInst.getAllMembers()
+			users: classInst.users
 		}
 
 		return await AddAnnouncement.execute(data)

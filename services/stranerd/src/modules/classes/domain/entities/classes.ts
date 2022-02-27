@@ -9,7 +9,8 @@ export class ClassEntity extends BaseEntity {
 	public readonly name: string
 	public readonly description: string
 	public readonly avatar: Media | null
-	public readonly users: Record<ClassUsers | 'requests', string[]>
+	public readonly users: Record<ClassUsers, string[]>
+	public readonly requests: string[]
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -22,6 +23,7 @@ export class ClassEntity extends BaseEntity {
 		             description,
 		             avatar,
 		             users,
+		             requests,
 		             createdAt,
 		             updatedAt
 	             }: ClassConstructorArgs) {
@@ -34,20 +36,13 @@ export class ClassEntity extends BaseEntity {
 		this.description = description
 		this.avatar = avatar
 		this.users = users
+		this.requests = requests
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
 
-	getAllMembers () {
-		return Object.fromEntries(
-			Object.entries(this.users)
-				.filter(([key]) => key !== 'requests')
-				.map((e) => e)
-		) as Record<ClassUsers, string[]>
-	}
-
 	getAllUsers () {
-		return [...this.users.admins, ...this.users.tutors, ...this.users.members]
+		return Object.values(this.users).flat()
 	}
 }
 
@@ -59,7 +54,8 @@ type ClassConstructorArgs = {
 	name: string
 	description: string
 	avatar: Media | null
-	users: Record<ClassUsers | 'requests', string[]>
+	users: Record<ClassUsers, string[]>
+	requests: string[]
 	createdAt: number
 	updatedAt: number
 }

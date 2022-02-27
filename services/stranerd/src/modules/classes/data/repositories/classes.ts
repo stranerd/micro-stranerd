@@ -3,7 +3,7 @@ import { ClassMapper } from '../mappers/classes'
 import { ClassFromModel, ClassToModel } from '../models/classes'
 import { Class } from '../mongooseModels/classes'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
 
 export class ClassRepository implements IClassRepository {
 	private static instance: ClassRepository
@@ -28,8 +28,9 @@ export class ClassRepository implements IClassRepository {
 	}
 
 	async add (data: ClassToModel) {
-		const classInstance = await new Class(data).save()
-		return this.mapper.mapFrom(classInstance)!
+		const classInstance = new Class(data)
+		classInstance.users[ClassUsers.admins] = [data.userId]
+		return this.mapper.mapFrom(await classInstance.save())!
 	}
 
 	async find (id: string) {

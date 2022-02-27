@@ -5,10 +5,22 @@ import { BaseMapper } from '@utils/commons'
 export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassEntity> {
 	mapFrom (model: ClassFromModel | null) {
 		if (!model) return null
-		const { _id, userId, userBio, userRoles, name, description, avatar, users, createdAt, updatedAt } = model
+		const {
+			_id,
+			userId,
+			userBio,
+			userRoles,
+			name,
+			description,
+			avatar,
+			users,
+			requests,
+			createdAt,
+			updatedAt
+		} = model
 		return new ClassEntity({
 			id: _id.toString(), userId, userBio, userRoles,
-			name, description, avatar, users,
+			name, description, avatar, users, requests,
 			createdAt, updatedAt
 		})
 	}

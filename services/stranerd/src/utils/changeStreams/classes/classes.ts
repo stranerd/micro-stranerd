@@ -23,7 +23,7 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitOpenUpdated('classes/classes', after)
 		await getSocketEmitter().emitOpenUpdated(`classes/classes/${after.id}`, after)
 
-		if (changes.name) await Promise.all(
+		if (changes.name || changes.avatar) await Promise.all(
 			[UpdateQuestionsClassName, UpdateSetsClassName].map((u) => u.execute({
 				classId: after.id,
 				className: after.name,
@@ -31,10 +31,10 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 			}))
 		)
 
-		if (changes.users?.admins) await Promise.all(
+		if (changes.users) await Promise.all(
 			[UpdateAnnouncementsUsers, UpdateGroupsUsers].map((u) => u.execute({
 				classId: after.id,
-				users: after.getAllMembers()
+				users: after.users
 			}))
 		)
 	},
