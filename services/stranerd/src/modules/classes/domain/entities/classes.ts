@@ -45,6 +45,10 @@ export class ClassEntity extends BaseEntity {
 				.map((e) => e)
 		) as Record<ClassUsers, string[]>
 	}
+
+	getAllUsers () {
+		return [...this.users.admins, ...this.users.tutors, ...this.users.members]
+	}
 }
 
 type ClassConstructorArgs = {

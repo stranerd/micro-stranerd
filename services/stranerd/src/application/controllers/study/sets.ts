@@ -57,6 +57,7 @@ export class SetController {
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
 		if (isClasses && !classInst) throw new NotFoundError()
+		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
 			name, isPublic, parent, tags,
@@ -71,6 +72,7 @@ export class SetController {
 	}
 
 	static async UpdateSet (req: Request) {
+		const authUserId = req.authUser!.id
 		const isUsers = req.body.data?.type === SetType.users
 		const isClasses = req.body.data?.type === SetType.classes
 		const { name, isPublic, parent, tags, type, classId } = validate({
@@ -98,6 +100,7 @@ export class SetController {
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
 		if (isClasses && !classInst) throw new NotFoundError()
+		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
 			name, isPublic, parent, tags,

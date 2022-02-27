@@ -3,7 +3,7 @@ import { IClassRepository } from '../../irepositories/classes'
 import { BaseUseCase } from '@utils/commons'
 import { ClassEntity } from '../../entities/classes'
 
-type Input = { id: string, userId: string, data: ClassToModel }
+type Input = { id: string, userId: string, data: Partial<ClassToModel> }
 
 export class UpdateClassUseCase extends BaseUseCase<Input, ClassEntity | null> {
 	private repository: IClassRepository

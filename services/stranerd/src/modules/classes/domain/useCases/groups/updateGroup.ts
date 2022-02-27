@@ -3,7 +3,7 @@ import { IGroupRepository } from '../../irepositories/groups'
 import { BaseUseCase } from '@utils/commons'
 import { GroupEntity } from '../../entities/groups'
 
-type Input = { id: string, userId: string, data: GroupToModel }
+type Input = { id: string, userId: string, data: Partial<GroupToModel> }
 
 export class UpdateGroupUseCase extends BaseUseCase<Input, GroupEntity | null> {
 	private repository: IGroupRepository

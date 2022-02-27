@@ -34,6 +34,10 @@ export class AnnouncementEntity extends BaseEntity {
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
+
+	getAllUsers () {
+		return [...this.users.admins, ...this.users.tutors, this.users.members]
+	}
 }
 
 type AnnouncementConstructorArgs = {

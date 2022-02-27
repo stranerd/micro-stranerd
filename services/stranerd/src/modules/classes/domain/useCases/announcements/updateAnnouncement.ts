@@ -3,7 +3,7 @@ import { IAnnouncementRepository } from '../../irepositories/announcements'
 import { BaseUseCase } from '@utils/commons'
 import { AnnouncementEntity } from '../../entities/announcements'
 
-type Input = { id: string, userId: string, data: AnnouncementToModel }
+type Input = { id: string, userId: string, data: Partial<AnnouncementToModel> }
 
 export class UpdateAnnouncementUseCase extends BaseUseCase<Input, AnnouncementEntity | null> {
 	private repository: IAnnouncementRepository
