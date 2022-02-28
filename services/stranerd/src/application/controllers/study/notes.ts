@@ -24,8 +24,7 @@ export class NoteController {
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media,
-			preview: req.body.preview
+			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
@@ -36,8 +35,7 @@ export class NoteController {
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] },
-			preview: { required: false, rules: [Validation.isImage] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -56,8 +54,7 @@ export class NoteController {
 			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media,
-			preview: req.body.preview
+			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
@@ -68,8 +65,7 @@ export class NoteController {
 			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] },
-			preview: { required: false, rules: [Validation.isImage] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] }
 		})
 
 		const authUserId = req.authUser!.id

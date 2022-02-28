@@ -20,7 +20,6 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitOpenUpdated(`study/notes/${after.id}`, after)
 
 		if (changes.media && before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
-		if (changes.preview) await publishers[EventTypes.DELETEFILE].publish(before.preview)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('study/notes', before)
@@ -35,6 +34,5 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.notes })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
-		await publishers[EventTypes.DELETEFILE].publish(before.preview)
 	}
 }

@@ -20,7 +20,6 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await getSocketEmitter().emitOpenUpdated(`study/videos/${after.id}`, after)
 
 		if (changes.media && before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
-		if (changes.preview) await publishers[EventTypes.DELETEFILE].publish(before.preview)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('study/videos', before)
@@ -36,6 +35,5 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await DeletePropertyComments.execute({ property: 'videoId', propertyId: before.id })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
-		await publishers[EventTypes.DELETEFILE].publish(before.preview)
 	}
 }

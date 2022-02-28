@@ -9,7 +9,6 @@ export interface VideoFromModel extends VideoToModel {
 export interface VideoToModel {
 	isPublic: boolean
 	isHosted: boolean
-	preview: Media
 	link: string | null
 	media: Media | null
 	userId: string

@@ -13,7 +13,6 @@ export class NoteEntity extends BaseEntity {
 	public readonly isPublic: boolean
 	public readonly link: string | null
 	public readonly media: Media | null
-	public readonly preview: Media
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -29,7 +28,6 @@ export class NoteEntity extends BaseEntity {
 		             isPublic,
 		             link,
 		             media,
-		             preview,
 		             createdAt,
 		             updatedAt
 	             }: NoteConstructorArgs) {
@@ -45,7 +43,6 @@ export class NoteEntity extends BaseEntity {
 		this.isHosted = isHosted
 		this.link = link
 		this.media = media
-		this.preview = preview
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -57,7 +54,6 @@ type NoteConstructorArgs = {
 	isHosted: boolean
 	link: string | null
 	media: Media | null
-	preview: Media
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
