@@ -51,11 +51,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: []
 	},
-	commentsCount: {
-		type: Number,
-		required: false,
-		default: 0
-	},
 	createdAt: {
 		type: Number,
 		required: false,

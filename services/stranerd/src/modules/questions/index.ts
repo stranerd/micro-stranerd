@@ -18,7 +18,6 @@ import { AddAnswerUseCase } from './domain/useCases/answers/addAnswer'
 import { FindAnswerUseCase } from './domain/useCases/answers/findAnswer'
 import { DeleteAnswerUseCase } from './domain/useCases/answers/deleteAnswer'
 import { UpdateAnswerUseCase } from './domain/useCases/answers/updateAnswer'
-import { UpdateAnswersCommentsCountUseCase } from './domain/useCases/answers/updateAnswersCommentsCount'
 import { UpdateAnswersUserBioUseCase } from './domain/useCases/answers/updateAnswersUserBio'
 import { DeleteQuestionAnswersUseCase } from './domain/useCases/answers/deleteQuestionAnswers'
 import { GetQuestionsUseCase } from './domain/useCases/questions/getQuestions'
@@ -29,7 +28,6 @@ import { DeleteQuestionUseCase } from './domain/useCases/questions/deleteQuestio
 import { UpdateBestAnswerUseCase } from './domain/useCases/questions/updateBestAnswer'
 import { UpdateQuestionsAnswersUseCase } from './domain/useCases/questions/updateQuestionsAnswers'
 import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updateQuestionsUserBio'
-import { UpdateQuestionsClassNameUseCase } from './domain/useCases/questions/updateQuestionsClassName'
 import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
@@ -58,7 +56,6 @@ export const AddAnswer = new AddAnswerUseCase(answerRepository)
 export const UpdateAnswer = new UpdateAnswerUseCase(answerRepository)
 export const DeleteAnswer = new DeleteAnswerUseCase(answerRepository)
 export const DeleteQuestionAnswers = new DeleteQuestionAnswersUseCase(answerRepository)
-export const UpdateAnswersCommentsCount = new UpdateAnswersCommentsCountUseCase(answerRepository)
 export const UpdateAnswersUserBio = new UpdateAnswersUserBioUseCase(answerRepository)
 
 export const GetQuestions = new GetQuestionsUseCase(questionRepository)
@@ -69,7 +66,6 @@ export const DeleteQuestion = new DeleteQuestionUseCase(questionRepository)
 export const UpdateBestAnswer = new UpdateBestAnswerUseCase(questionRepository)
 export const UpdateQuestionsAnswers = new UpdateQuestionsAnswersUseCase(questionRepository)
 export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(questionRepository)
-export const UpdateQuestionsClassName = new UpdateQuestionsClassNameUseCase(questionRepository)
 
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)

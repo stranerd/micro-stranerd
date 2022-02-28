@@ -15,14 +15,13 @@ export class QuestionEntity extends BaseEntity {
 	public readonly data: QuestionData
 	public readonly bestAnswers: string[]
 	public readonly answers: { id: string, userId: string }[]
-	public readonly commentsCount: number
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
 	constructor ({
 		             id, body, subjectId, attachments,
 		             bestAnswers, createdAt, userId, userBio, userRoles, data,
-		             answers, commentsCount, tags, updatedAt
+		             answers, tags, updatedAt
 	             }: QuestionConstructorArgs) {
 		super()
 		this.id = id
@@ -36,7 +35,6 @@ export class QuestionEntity extends BaseEntity {
 		this.data = data
 		this.bestAnswers = bestAnswers
 		this.answers = answers
-		this.commentsCount = commentsCount ?? 0
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -58,7 +56,6 @@ type QuestionConstructorArgs = {
 	data: QuestionData
 	bestAnswers: string[]
 	answers: { id: string, userId: string }[]
-	commentsCount: number
 	createdAt: number
 	updatedAt: number
 }

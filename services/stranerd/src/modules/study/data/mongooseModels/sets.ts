@@ -38,9 +38,9 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		}])
 	),
 	parent: {
-		type: mongoose.Schema.Types.Mixed,
+		type: String,
 		required: false,
-		default: null
+		default: ''
 	},
 	userId: {
 		type: String,

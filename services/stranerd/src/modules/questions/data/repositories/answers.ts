@@ -47,13 +47,6 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answer
 	}
 
-	async updateCommentsCount (id: string, increment: boolean) {
-		const answer = await Answer.findByIdAndUpdate(id, {
-			$inc: { commentsCount: increment ? 1 : -1 }
-		})
-		return !!answer
-	}
-
 	async updateAnswersUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
 		const answers = await Answer.updateMany({ userId }, { $set: { userBio, userRoles } })
 		return !!answers.acknowledged

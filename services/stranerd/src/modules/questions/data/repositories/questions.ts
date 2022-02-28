@@ -4,7 +4,7 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { Media, UserBio, UserRoles } from '../../domain/types'
+import { UserBio, UserRoles } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
@@ -74,13 +74,6 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async updateQuestionsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
 		const questions = await Question.updateMany({ userId }, { $set: { userBio, userRoles } })
-		return questions.acknowledged
-	}
-
-	async updateQuestionsClassName (classId: string, className: string, classAvatar: Media | null) {
-		const questions = await Question.updateMany({ 'data.classId': classId }, {
-			$set: { 'data.className': className, 'data.classAvatar': classAvatar }
-		})
 		return questions.acknowledged
 	}
 

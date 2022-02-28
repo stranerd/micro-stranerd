@@ -24,7 +24,7 @@ export class SetController {
 		const isClasses = req.body.data?.type === SetType.classes
 		if (!user) throw new NotFoundError()
 
-		const { name, isPublic, parent, tags, type, classId } = validate({
+		const val = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
@@ -34,7 +34,7 @@ export class SetController {
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			parent: { required: false, rules: [Validation.isString] },
+			parent: { required: true, rules: [Validation.isString] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
@@ -45,6 +45,14 @@ export class SetController {
 			},
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
+		const { name, isPublic, tags, type, classId  } = val
+		let { parent } = val
+
+		if (parent) {
+			const set = await FindSet.execute(parent)
+			if (!set) throw new NotFoundError()
+			if (set.userId !== authUserId) parent = null
+		}
 
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
@@ -54,32 +62,27 @@ export class SetController {
 		const data = {
 			name, isPublic, parent, tags,
 			userId: user.id, userBio: user.bio, userRoles: user.roles,
-			data: isClasses ? {
-				type, classId, className: classInst!.name,
-				classAvatar: classInst!.avatar
-			} : isUsers ? { type } : ({} as any)
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
 
 		return await AddSet.execute(data)
 	}
 
 	static async UpdateSet (req: Request) {
-		const { name, isPublic, parent, tags } = validate({
+		const { name, isPublic, tags } = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
-			parent: req.body.parent,
 			tags: req.body.tags
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			parent: { required: false, rules: [Validation.isString] },
 			tags: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
 
-		const data = { name, isPublic, parent, tags }
+		const data = { name, isPublic, tags }
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet

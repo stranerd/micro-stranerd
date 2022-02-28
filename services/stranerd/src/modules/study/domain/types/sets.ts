@@ -1,5 +1,3 @@
-import { Media } from './index'
-
 export enum SetSaved {
 	flashCards = 'flashCards',
 	testPreps = 'testPreps',
@@ -20,8 +18,6 @@ type UserType = {
 type ClassType = {
 	type: SetType.classes
 	classId: string
-	className: string
-	classAvatar: Media | null
 }
 
 export type SetData = UserType | ClassType

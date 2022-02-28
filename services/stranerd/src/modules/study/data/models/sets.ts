@@ -16,5 +16,5 @@ export interface SetToModel {
 	userRoles: UserRoles
 	data: SetData
 	tags: string[]
-	parent: string | null
+	parent: string
 }

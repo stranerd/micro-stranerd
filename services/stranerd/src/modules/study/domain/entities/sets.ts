@@ -8,7 +8,7 @@ export class SetEntity extends BaseEntity {
 	public readonly tags: string[]
 	public readonly children: string[]
 	public readonly saved: Record<SetSaved, string[]>
-	public readonly parent: string | null
+	public readonly parent: string
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
@@ -55,7 +55,7 @@ type SetConstructorArgs = {
 	tags: string[]
 	children: string[]
 	saved: Record<SetSaved, string[]>
-	parent: string | null
+	parent: string
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

@@ -101,12 +101,7 @@ export class QuestionController {
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,
-			data: isClasses ? {
-				type,
-				classId,
-				className: classInst!.name,
-				classAvatar: classInst!.avatar
-			} : isUsers ? { type } : ({} as any)
+			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
 
 		return await AddQuestion.execute(data)
