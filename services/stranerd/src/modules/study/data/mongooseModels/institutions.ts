@@ -35,6 +35,6 @@ const Schema = new mongoose.Schema<InstitutionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Institution = mongoose.model<InstitutionFromModel>('StranerdInstitution', Schema)
+export const Institution = mongoose.model<InstitutionFromModel>('StranerdStudyInstitution', Schema)
 
 generateChangeStreams<InstitutionFromModel, InstitutionEntity>(Institution, InstitutionChangeStreamCallbacks, new InstitutionMapper().mapFrom).then()

@@ -49,6 +49,6 @@ const Schema = new mongoose.Schema<AnnouncementFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Announcement = mongoose.model<AnnouncementFromModel>('StranerdAnnouncement', Schema)
+export const Announcement = mongoose.model<AnnouncementFromModel>('StranerdClassesAnnouncement', Schema)
 
 generateChangeStreams<AnnouncementFromModel, AnnouncementEntity>(Announcement, AnnouncementChangeStreamCallbacks, new AnnouncementMapper().mapFrom).then()

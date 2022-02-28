@@ -89,6 +89,6 @@ const BadgeSchema = new mongoose.Schema<BadgeFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Badge = mongoose.model<BadgeFromModel>('StranerdBadge', BadgeSchema)
+export const Badge = mongoose.model<BadgeFromModel>('StranerdUsersBadge', BadgeSchema)
 
 generateChangeStreams<BadgeFromModel, BadgeEntity>(Badge, BadgeChangeStreamCallbacks, new BadgeMapper().mapFrom).then()

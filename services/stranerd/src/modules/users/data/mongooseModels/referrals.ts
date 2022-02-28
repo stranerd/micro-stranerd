@@ -29,6 +29,6 @@ const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Referral = mongoose.model<ReferralFromModel>('StranerdReferral', ReferralSchema)
+export const Referral = mongoose.model<ReferralFromModel>('StranerdUsersReferral', ReferralSchema)
 
 generateChangeStreams<ReferralFromModel, ReferralEntity>(Referral, ReferralChangeStreamCallbacks, new ReferralMapper().mapFrom).then()

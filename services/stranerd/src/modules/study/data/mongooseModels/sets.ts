@@ -73,6 +73,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Set = mongoose.model<SetFromModel>('StranerdSet', Schema)
+export const Set = mongoose.model<SetFromModel>('StranerdStudySet', Schema)
 
 generateChangeStreams<SetFromModel, SetEntity>(Set, SetChangeStreamCallbacks, new SetMapper().mapFrom).then()

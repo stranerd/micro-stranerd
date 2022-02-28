@@ -49,6 +49,6 @@ const Schema = new mongoose.Schema<DiscussionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Discussion = mongoose.model<DiscussionFromModel>('StranerdDiscussion', Schema)
+export const Discussion = mongoose.model<DiscussionFromModel>('StranerdClassesDiscussion', Schema)
 
 generateChangeStreams<DiscussionFromModel, DiscussionEntity>(Discussion, DiscussionChangeStreamCallbacks, new DiscussionMapper().mapFrom).then()

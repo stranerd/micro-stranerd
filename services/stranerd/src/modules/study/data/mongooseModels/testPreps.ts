@@ -38,6 +38,6 @@ const Schema = new mongoose.Schema<TestPrepFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const TestPrep = mongoose.model<TestPrepFromModel>('StranerdTestPrep', Schema)
+export const TestPrep = mongoose.model<TestPrepFromModel>('StranerdStudyTestPrep', Schema)
 
 generateChangeStreams<TestPrepFromModel, TestPrepEntity>(TestPrep, TestPrepChangeStreamCallbacks, new TestPrepMapper().mapFrom).then()

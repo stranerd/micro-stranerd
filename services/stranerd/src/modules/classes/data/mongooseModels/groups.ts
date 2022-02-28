@@ -35,6 +35,6 @@ const Schema = new mongoose.Schema<GroupFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Group = mongoose.model<GroupFromModel>('StranerdGroup', Schema)
+export const Group = mongoose.model<GroupFromModel>('StranerdClassesGroup', Schema)
 
 generateChangeStreams<GroupFromModel, GroupEntity>(Group, GroupChangeStreamCallbacks, new GroupMapper().mapFrom).then()

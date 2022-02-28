@@ -74,6 +74,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Note = mongoose.model<NoteFromModel>('StranerdNote', Schema)
+export const Note = mongoose.model<NoteFromModel>('StranerdStudyNote', Schema)
 
 generateChangeStreams<NoteFromModel, NoteEntity>(Note, NoteChangeStreamCallbacks, new NoteMapper().mapFrom).then()

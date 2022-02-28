@@ -47,6 +47,6 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdPastQuestion', Schema)
+export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdStudyPastQuestion', Schema)
 
 generateChangeStreams<PastQuestionFromModel, PastQuestionEntity>(PastQuestion, PastQuestionChangeStreamCallbacks, new PastQuestionMapper().mapFrom).then()

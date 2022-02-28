@@ -53,6 +53,6 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdFlashCard', Schema)
+export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdStudyFlashCard', Schema)
 
 generateChangeStreams<FlashCardFromModel, FlashCardEntity>(FlashCard, FlashCardChangeStreamCallbacks, new FlashCardMapper().mapFrom).then()
