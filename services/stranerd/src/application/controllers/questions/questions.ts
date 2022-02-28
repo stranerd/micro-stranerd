@@ -3,6 +3,7 @@ import {
 	DeleteQuestion,
 	FindQuestion,
 	GetQuestions,
+	QuestionType,
 	UpdateBestAnswer,
 	UpdateQuestion
 } from '@modules/questions'
@@ -16,7 +17,6 @@ import {
 	Validation,
 	ValidationError
 } from '@utils/commons'
-import { QuestionType } from '@modules/questions/domain/types'
 import { ClassEntity, FindClass } from '@modules/classes'
 
 export class QuestionController {

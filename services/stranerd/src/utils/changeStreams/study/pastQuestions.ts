@@ -1,8 +1,7 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { getSocketEmitter } from '@index'
-import { PastQuestionEntity, PastQuestionFromModel } from '@modules/study'
+import { PastQuestionEntity, PastQuestionFromModel, PastQuestionType } from '@modules/study'
 import { publishers } from '@utils/events'
-import { PastQuestionType } from '@modules/study/domain/types'
 
 export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuestionFromModel, PastQuestionEntity> = {
 	created: async ({ after }) => {

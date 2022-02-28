@@ -86,3 +86,5 @@ export { AnswerEntity } from './domain/entities/answers'
 export { AnswerUpvoteEntity } from './domain/entities/answerUpvotes'
 export { QuestionEntity } from './domain/entities/questions'
 export { SubjectEntity } from './domain/entities/subjects'
+
+export { QuestionType } from './domain/types'

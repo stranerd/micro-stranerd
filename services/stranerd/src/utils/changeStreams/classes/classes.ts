@@ -1,8 +1,6 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { ClassEntity, ClassFromModel, UpdateAnnouncementsUsers, UpdateGroupsUsers } from '@modules/classes'
 import { getSocketEmitter } from '@index'
-import { createRootSet } from '@utils/modules/study/sets'
-import { SetType } from '@modules/study/domain/types'
 import { publishers } from '@utils/events'
 import { UpdateQuestionsClassName } from '@modules/questions'
 import { UpdateSetsClassName } from '@modules/study'
@@ -11,13 +9,6 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('classes/classes', after)
 		await getSocketEmitter().emitOpenCreated(`classes/classes/${after.id}`, after)
-
-		await createRootSet(after.userId, after.userBio, after.userRoles, {
-			type: SetType.classes,
-			classId: after.id,
-			className: after.name,
-			classAvatar: after.avatar
-		})
 	},
 	updated: async ({ after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('classes/classes', after)

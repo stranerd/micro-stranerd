@@ -1,8 +1,6 @@
-import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, UpdateSet, UpdateSetProp } from '@modules/study'
+import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, SetType, UpdateSet, UpdateSetProp } from '@modules/study'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindUser } from '@modules/users'
-import { getClassRootSet, getUserRootSet } from '@utils/modules/study/sets'
-import { SetType } from '@modules/study/domain/types'
 import { ClassEntity, FindClass } from '@modules/classes'
 
 export class SetController {
@@ -26,8 +24,7 @@ export class SetController {
 		const isClasses = req.body.data?.type === SetType.classes
 		if (!user) throw new NotFoundError()
 
-		// eslint-disable-next-line prefer-const
-		let { name, isPublic, parent, tags, type, classId } = validate({
+		const { name, isPublic, parent, tags, type, classId } = validate({
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
@@ -48,11 +45,6 @@ export class SetController {
 			},
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
-
-		if (parent === null) {
-			const rootSet = await (isClasses ? getClassRootSet(classId) : getUserRootSet(user.id))
-			parent = rootSet?.id ?? null
-		}
 
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
