@@ -11,7 +11,7 @@ export interface ClassFromModel extends ClassToModel {
 export interface ClassToModel {
 	name: string
 	description: string
-	avatar: Media | null
+	photo: Media | null
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

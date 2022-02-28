@@ -23,6 +23,6 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitOpenDeleted('classes/classes', before)
 		await getSocketEmitter().emitOpenDeleted(`classes/classes/${before.id}`, before)
 
-		if (before.avatar) await publishers[EventTypes.DELETEFILE].publish(before.avatar)
+		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 	}
 }

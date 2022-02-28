@@ -8,7 +8,7 @@ export class ClassEntity extends BaseEntity {
 	public readonly userRoles: UserRoles
 	public readonly name: string
 	public readonly description: string
-	public readonly avatar: Media | null
+	public readonly photo: Media | null
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly requests: string[]
 	public readonly createdAt: number
@@ -21,7 +21,7 @@ export class ClassEntity extends BaseEntity {
 		             userRoles,
 		             name,
 		             description,
-		             avatar,
+		             photo,
 		             users,
 		             requests,
 		             createdAt,
@@ -34,7 +34,7 @@ export class ClassEntity extends BaseEntity {
 		this.userRoles = userRoles
 		this.name = name
 		this.description = description
-		this.avatar = avatar
+		this.photo = photo
 		this.users = users
 		this.requests = requests
 		this.createdAt = createdAt
@@ -53,7 +53,7 @@ type ClassConstructorArgs = {
 	userRoles: UserRoles
 	name: string
 	description: string
-	avatar: Media | null
+	photo: Media | null
 	users: Record<ClassUsers, string[]>
 	requests: string[]
 	createdAt: number

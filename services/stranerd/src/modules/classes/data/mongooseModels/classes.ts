@@ -32,10 +32,10 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		type: String,
 		required: true
 	},
-	avatar: {
-		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['avatar'],
+	photo: {
+		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['photo'],
 		required: false,
-		default: {} as unknown as ClassFromModel['avatar']
+		default: {} as unknown as ClassFromModel['photo']
 	},
 	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],

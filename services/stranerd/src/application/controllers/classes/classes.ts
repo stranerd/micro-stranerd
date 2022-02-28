@@ -17,17 +17,17 @@ export class ClassController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new NotFoundError()
 
-		const { name, description, avatar } = validate({
+		const { name, description, photo } = validate({
 			name: req.body.name,
 			description: req.body.description,
-			avatar: req.body.avatar
+			photo: req.body.photo
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			avatar: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isImage] }
 		})
 
-		const data = { name, description, avatar }
+		const data = { name, description, photo }
 
 		const updatedClass = await UpdateClass.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -40,18 +40,18 @@ export class ClassController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new NotFoundError()
 
-		const { name, description, avatar } = validate({
+		const { name, description, photo } = validate({
 			name: req.body.name,
 			description: req.body.description,
-			avatar: req.body.avatar
+			photo: req.body.photo
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			avatar: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isImage] }
 		})
 
 		const data = {
-			name, description, avatar,
+			name, description, photo,
 			userId: user.id,
 			userBio: user.bio,
 			userRoles: user.roles
