@@ -1,5 +1,5 @@
-import { BaseEntity, MediaOutput } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { BaseEntity } from '@utils/commons'
+import { Media, UserBio, UserRoles } from '../types'
 
 export class AnswerEntity extends BaseEntity {
 	public readonly id: string
@@ -7,19 +7,18 @@ export class AnswerEntity extends BaseEntity {
 	public readonly body: string
 	public readonly best: boolean
 	public readonly questionId: string
-	public readonly attachments: MediaOutput[]
+	public readonly attachments: Media[]
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
 	public readonly votes: { userId: string, vote: 1 | -1 }[]
-	public readonly commentsCount: number
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
 	constructor ({
 		             id, title, body, questionId,
 		             createdAt, userId, userBio, userRoles, attachments,
-		             best, votes, commentsCount, updatedAt
+		             best, votes, updatedAt
 	             }: AnswerConstructorArgs) {
 		super()
 		this.id = id
@@ -32,7 +31,6 @@ export class AnswerEntity extends BaseEntity {
 		this.userRoles = userRoles
 		this.best = best ?? false
 		this.votes = votes
-		this.commentsCount = commentsCount ?? 0
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -48,7 +46,7 @@ type AnswerConstructorArgs = {
 	title: string
 	body: string
 	questionId: string
-	attachments: MediaOutput[]
+	attachments: Media[]
 	createdAt: number
 	updatedAt: number
 	userId: string
@@ -56,5 +54,4 @@ type AnswerConstructorArgs = {
 	userRoles: UserRoles
 	best: boolean
 	votes: { userId: string, vote: 1 | -1 }[]
-	commentsCount: number
 }

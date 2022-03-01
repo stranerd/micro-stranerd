@@ -1,4 +1,4 @@
-import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { QuestionFromModel } from '../models/questions'
 import { QuestionChangeStreamCallbacks } from '@utils/changeStreams/questions/questions'
 import { QuestionEntity } from '../../domain/entities/questions'
@@ -11,11 +11,6 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 	},
 	body: {
 		type: String,
-		required: true
-	},
-	tags: {
-		type: [String],
-		set: (tags: string[]) => Array.from(new Set(tags)),
 		required: true
 	},
 	subjectId: {
@@ -36,6 +31,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: false,
 		default: {} as unknown as QuestionFromModel['userRoles']
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['data'],
+		required: false,
+		default: {} as unknown as QuestionFromModel['data']
+	},
 	bestAnswers: {
 		type: [String],
 		required: false,
@@ -47,14 +47,9 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		default: []
 	},
 	attachments: {
-		type: [Object] as unknown as MediaOutput[],
+		type: [Object] as unknown as QuestionFromModel['attachments'],
 		required: false,
 		default: []
-	},
-	commentsCount: {
-		type: Number,
-		required: false,
-		default: 0
 	},
 	createdAt: {
 		type: Number,

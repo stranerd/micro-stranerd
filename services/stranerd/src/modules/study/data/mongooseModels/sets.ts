@@ -20,11 +20,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: false
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	children: {
 		type: [String],
 		required: false,
@@ -38,9 +33,9 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		}])
 	),
 	parent: {
-		type: mongoose.Schema.Types.Mixed,
+		type: String,
 		required: false,
-		default: null
+		default: ''
 	},
 	userId: {
 		type: String,
@@ -56,6 +51,11 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: {} as unknown as SetFromModel['userRoles']
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['data'],
+		required: false,
+		default: {} as unknown as SetFromModel['data']
+	},
 	createdAt: {
 		type: Number,
 		required: false,
@@ -68,6 +68,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Set = mongoose.model<SetFromModel>('StranerdSet', Schema)
+export const Set = mongoose.model<SetFromModel>('StranerdStudySet', Schema)
 
 generateChangeStreams<SetFromModel, SetEntity>(Set, SetChangeStreamCallbacks, new SetMapper().mapFrom).then()

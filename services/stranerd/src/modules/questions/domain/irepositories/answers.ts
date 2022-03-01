@@ -9,7 +9,6 @@ export interface IAnswerRepository {
 	find: (id: string) => Promise<AnswerEntity | null>
 	update: (id: string, userId: string, data: Partial<AnswerToModel>) => Promise<AnswerEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
-	updateCommentsCount: (id: string, increment: boolean) => Promise<boolean>
 	updateAnswersUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
 	deleteQuestionAnswers: (questionId: string) => Promise<boolean>
 }

@@ -44,7 +44,7 @@ export class TestRepository implements ITestRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<TestToModel>) {
-		const test = await Test.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const test = await Test.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(test)
 	}
 

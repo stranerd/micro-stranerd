@@ -34,6 +34,6 @@ const Schema = new mongoose.Schema<AnswerUpvoteFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const AnswerUpvote = mongoose.model<AnswerUpvoteFromModel>('StranerdAnswerUpvote', Schema)
+export const AnswerUpvote = mongoose.model<AnswerUpvoteFromModel>('StranerdQuestionsAnswerUpvote', Schema)
 
 generateChangeStreams<AnswerUpvoteFromModel, AnswerUpvoteEntity>(AnswerUpvote, AnswerUpvoteChangeStreamCallbacks, new AnswerUpvoteMapper().mapFrom).then()

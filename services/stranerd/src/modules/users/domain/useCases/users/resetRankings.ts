@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
-import { UserAccount } from '@modules/users/domain/types'
+import { UserAccount } from '../../types'
 
 export class ResetRankingsUseCase implements BaseUseCase<keyof UserAccount['rankings'], boolean> {
 	repository: IUserRepository

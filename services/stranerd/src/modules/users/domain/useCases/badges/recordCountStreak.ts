@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { IBadgeRepository } from '../../i-repositories/badges'
-import { CountStreakBadges } from '@modules/users/domain/types'
+import { CountStreakBadges } from '../../types'
 
 type Input = { userId: string, activity: CountStreakBadges, add: boolean }
 

@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer, UpdateAnswersCommentsCount } from '@modules/questions'
+import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import {
 	CountStreakBadges,
@@ -13,10 +13,9 @@ import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('answersComments', after)
-		await getSocketEmitter().emitOpenCreated(`answersComments/${after.answerId}`, after)
+		await getSocketEmitter().emitOpenCreated('questions/answersComments', after)
+		await getSocketEmitter().emitOpenCreated(`questions/answersComments/${after.answerId}`, after)
 
-		await UpdateAnswersCommentsCount.execute({ id: after.answerId, increment: true })
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -38,14 +37,13 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('answersComments', after)
-		await getSocketEmitter().emitOpenUpdated(`answersComments/${after.answerId}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions/answersComments', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/answersComments/${after.answerId}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('answersComments', before)
-		await getSocketEmitter().emitOpenDeleted(`answersComments/${before.answerId}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions/answersComments', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/answersComments/${before.answerId}`, before)
 
-		await UpdateAnswersCommentsCount.execute({ id: before.answerId, increment: false })
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,

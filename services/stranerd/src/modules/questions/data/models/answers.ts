@@ -1,11 +1,9 @@
-import { MediaOutput } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { Media, UserBio, UserRoles } from '../../domain/types'
 
 export interface AnswerFromModel extends AnswerToModel {
 	_id: string
 	best: boolean
 	votes: { userId: string, vote: 1 | -1 }[]
-	commentsCount: number
 	createdAt: number
 	updatedAt: number
 }
@@ -13,7 +11,7 @@ export interface AnswerFromModel extends AnswerToModel {
 export interface AnswerToModel {
 	title: string
 	body: string
-	attachments: MediaOutput[]
+	attachments: Media[]
 	questionId: string
 	userId: string
 	userBio: UserBio

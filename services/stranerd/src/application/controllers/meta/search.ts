@@ -1,16 +1,17 @@
 import { Request } from '@utils/commons'
-import { GetAnswers, GetQuestions } from '@modules/questions'
+import { GetAnswers, GetQuestions, QuestionType } from '@modules/questions'
 import { GetUsers } from '@modules/users'
-import { GetFlashCards, GetNotes, GetSets, GetTestPreps, GetVideos } from '@modules/study'
+import { GetFlashCards, GetNotes, GetSets, GetTestPreps, GetVideos, SetType } from '@modules/study'
 
 export class SearchController {
 	static async Search (req: Request) {
 		const searchTerm = req.query.search ?? ''
 		const [questions, answers, users, videos, notes, sets, flashCards, testPreps] = await Promise.all([
 			GetQuestions.execute({
+				where: [{ field: 'data.type', value: QuestionType.users }],
 				search: {
 					value: searchTerm,
-					fields: ['body', 'tags']
+					fields: ['body']
 				},
 				limit: 15
 			}),
@@ -32,7 +33,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'description', 'tags']
+					fields: ['title', 'description']
 				},
 				limit: 15
 			}),
@@ -40,15 +41,15 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'description', 'tags']
+					fields: ['title', 'description']
 				},
 				limit: 15
 			}),
 			GetSets.execute({
-				where: [{ field: 'isPublic', value: true }],
+				where: [{ field: 'isPublic', value: true }, { field: 'data.type', value: SetType.users }],
 				search: {
 					value: searchTerm,
-					fields: ['name', 'tags']
+					fields: ['name']
 				},
 				limit: 15
 			}),
@@ -56,7 +57,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'set', 'tags']
+					fields: ['title', 'set']
 				},
 				limit: 15
 			}),

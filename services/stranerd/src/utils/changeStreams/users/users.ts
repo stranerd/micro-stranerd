@@ -10,25 +10,24 @@ import {
 	UpdateVideosUserBio
 } from '@modules/study'
 import { UpdateReportsUserBio } from '@modules/reports'
+import { UpdateAnnouncementsUserBio, UpdateClassesUserBio, UpdateDiscussionsUserBio } from '@modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
-import { createRootSet } from '@utils/modules/study/sets'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('users', after)
-		await getSocketEmitter().emitOpenCreated(`users/${after.id}`, after)
-
-		await createRootSet(after)
+		await getSocketEmitter().emitOpenCreated('users/users', after)
+		await getSocketEmitter().emitOpenCreated(`users/users/${after.id}`, after)
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('users', after)
-		await getSocketEmitter().emitOpenUpdated(`users/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('users/users', after)
+		await getSocketEmitter().emitOpenUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
 			UpdateChatMetasUserBio, UpdateSessionsUserBio, UpdateReviewsUserBio, UpdateReportsUserBio,
-			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio
+			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio,
+			UpdateClassesUserBio, UpdateAnnouncementsUserBio, UpdateDiscussionsUserBio
 		].map(async (useCase) => await useCase.execute({
 			userId: after.id,
 			userBio: after.bio,
@@ -71,7 +70,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('users', before)
-		await getSocketEmitter().emitOpenDeleted(`users/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('users/users', before)
+		await getSocketEmitter().emitOpenDeleted(`users/users/${before.id}`, before)
 	}
 }

@@ -26,6 +26,10 @@ import { coursesRoutes } from './study/courses'
 import { setsRoutes } from './study/sets'
 import { testPrepsRoutes } from './study/testPreps'
 import { testsRoutes } from './study/tests'
+import { announcementsRoutes } from './classes/announcements'
+import { classesRoutes } from './classes/classes'
+import { discussionRoutes } from './classes/discussions'
+import { groupsRoutes } from './classes/groups'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -54,6 +58,10 @@ export const routes: Route[] = [
 	...setsRoutes,
 	...testPrepsRoutes,
 	...testsRoutes,
+	...announcementsRoutes,
+	...classesRoutes,
+	...discussionRoutes,
+	...groupsRoutes,
 	{
 		path: '/',
 		method: 'get',

@@ -21,8 +21,8 @@ import { publishers } from '@utils/events'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('answers', after)
-		await getSocketEmitter().emitOpenCreated(`answers/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('questions/answers', after)
+		await getSocketEmitter().emitOpenCreated(`questions/answers/${after.id}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answers })
 		await UpdateQuestionsAnswers.execute({
@@ -54,8 +54,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('answers', after)
-		await getSocketEmitter().emitOpenUpdated(`answers/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions/answers', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/answers/${after.id}`, after)
 
 		if (changes.best) {
 			const question = await FindQuestion.execute(after.questionId)
@@ -99,8 +99,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('answers', before)
-		await getSocketEmitter().emitOpenDeleted(`answers/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions/answers', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/answers/${before.id}`, before)
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,

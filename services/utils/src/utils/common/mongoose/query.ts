@@ -11,7 +11,7 @@ export type QueryParams = {
 	where?: Where[]
 	auth?: Where[]
 	whereType?: 'and' | 'or'
-	sort?: { field: string, order?: 1 | -1 }
+	sort?: [{ field: string, desc?: boolean }]
 	limit?: number
 	all?: boolean
 	page?: number
@@ -42,8 +42,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	if (query.length > 0) totalClause['$and'] = query
 
 	// Handle sort clauses
-	const sortField = params.sort?.field ?? null
-	const sortOrder = [-1, 1].indexOf(Number(params.sort?.order)) !== -1 ? Number(params.sort?.order) : 1
+	const sort = params.sort?.map((p) => [p.field, p.desc ? 'desc' : 'asc']) ?? []
 
 	const all = params.all ?? false
 
@@ -57,7 +56,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	const total = await collection.countDocuments(totalClause).exec()
 
 	let builtQuery = collection.find(totalClause)
-	if (sortField) builtQuery = builtQuery.sort([[sortField, sortOrder]])
+	if (sort.length) builtQuery = builtQuery.sort(Object.fromEntries(sort))
 	if (!all && limit) {
 		builtQuery = builtQuery.limit(limit)
 		if (page) builtQuery = builtQuery.skip((page - 1) * limit)

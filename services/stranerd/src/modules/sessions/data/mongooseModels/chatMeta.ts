@@ -49,6 +49,6 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdChatMeta', Schema)
+export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdSessionsChatMeta', Schema)
 
 generateChangeStreams<ChatMetaFromModel, ChatMetaEntity>(ChatMeta, ChatMetaChangeStreamCallbacks, new ChatMetaMapper().mapFrom).then()

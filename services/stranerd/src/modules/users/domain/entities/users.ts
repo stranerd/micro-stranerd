@@ -1,7 +1,6 @@
 import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus, UserTutor } from '../types'
-import { BaseEntity } from '@utils/commons'
+import { AuthApps, BaseEntity } from '@utils/commons'
 import { getNextRank, getRank } from './ranks'
-import { AuthApps } from '@utils/common'
 
 export class UserEntity extends BaseEntity {
 	public readonly id: string

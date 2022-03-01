@@ -15,8 +15,8 @@ import { publishers } from '@utils/events'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('questions', after)
-		await getSocketEmitter().emitOpenCreated(`questions/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('questions/questions', after)
+		await getSocketEmitter().emitOpenCreated(`questions/questions/${after.id}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.questions })
 
@@ -49,8 +49,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		])
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('questions', after)
-		await getSocketEmitter().emitOpenUpdated(`questions/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions/questions', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/questions/${after.id}`, after)
 
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
@@ -60,8 +60,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('questions', before)
-		await getSocketEmitter().emitOpenDeleted(`questions/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions/questions', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/questions/${before.id}`, before)
 
 		await DeleteQuestionAnswers.execute({ questionId: before.id })
 

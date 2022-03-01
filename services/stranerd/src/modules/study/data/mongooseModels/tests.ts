@@ -66,6 +66,6 @@ const Schema = new mongoose.Schema<TestFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Test = mongoose.model<TestFromModel>('StranerdTest', Schema)
+export const Test = mongoose.model<TestFromModel>('StranerdStudyTest', Schema)
 
 generateChangeStreams<TestFromModel, TestEntity>(Test, TestChangeStreamCallbacks, new TestMapper().mapFrom).then()

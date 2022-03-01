@@ -1,5 +1,4 @@
-import { UserBio, UserRoles } from '../../domain/types'
-import { SetSaved } from '@modules/study/domain/types/sets'
+import { SetData, SetSaved, UserBio, UserRoles } from '../../domain/types'
 
 export interface SetFromModel extends SetToModel {
 	_id: string
@@ -15,6 +14,6 @@ export interface SetToModel {
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
-	tags: string[]
-	parent: string | null
+	data: SetData
+	parent: string
 }

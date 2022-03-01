@@ -1,7 +1,6 @@
-import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, SetSaved, UpdateFlashCard } from '@modules/study'
+import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, UpdateFlashCard } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class FlashCardController {
 	static async FindFlashCard (req: Request) {
@@ -21,8 +20,7 @@ export class FlashCardController {
 		const data = validate({
 			title: req.body.title,
 			isPublic: req.body.isPublic,
-			set: req.body.set,
-			tags: req.body.tags
+			set: req.body.set
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
@@ -32,10 +30,6 @@ export class FlashCardController {
 					Validation.isArrayOfX((cur: any) => Validation.isString(cur?.question).valid && Validation.isString(cur?.answer).valid, 'questions'),
 					Validation.hasMoreThanX(0)
 				]
-			},
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
 
@@ -51,8 +45,7 @@ export class FlashCardController {
 		const data = validate({
 			title: req.body.title,
 			isPublic: req.body.isPublic,
-			set: req.body.set,
-			tags: req.body.tags
+			set: req.body.set
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
@@ -62,10 +55,6 @@ export class FlashCardController {
 					Validation.isArrayOfX((cur: any) => Validation.isString(cur?.question).valid && Validation.isString(cur?.answer).valid, 'questions'),
 					Validation.hasMoreThanX(0)
 				]
-			},
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			}
 		})
 
@@ -73,21 +62,12 @@ export class FlashCardController {
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) {
-			const flashCard = await AddFlashCard.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: authUserId
-			})
-			await saveNewItemToSet({
-				setId: req.body.setId?.toString() ?? null,
-				itemId: flashCard.id,
-				userId: flashCard.userId,
-				type: SetSaved.flashCards
-			})
-			return flashCard
-		}
+		if (user) return await AddFlashCard.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: authUserId
+		})
 		throw new NotFoundError()
 	}
 

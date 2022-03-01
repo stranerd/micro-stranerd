@@ -25,11 +25,9 @@ export class CourseController {
 
 	static async UpdateCourse (req: Request) {
 		const data = validate({
-			name: req.body.name,
-			institutionId: req.body.institutionId
+			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
 		const updatedCourse = await UpdateCourse.execute({ id: req.params.id, data })

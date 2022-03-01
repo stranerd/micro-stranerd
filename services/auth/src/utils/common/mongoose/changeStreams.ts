@@ -87,7 +87,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 		.on('error', async (err) => {
 			await Logger.error(`Change Stream errored out: ${dbName}: ${err.message}`)
 			changeStream.close()
-			return startChangeStream(collection, callbacks, mapper, err.message.includes('Resume of change stream was not possible, as the resume point may no longer be in the oplog'))
+			return startChangeStream(collection, callbacks, mapper, true)
 		})
 
 	await Logger.info(`${dbName} changestream started`)

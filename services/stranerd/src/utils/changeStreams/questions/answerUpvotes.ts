@@ -5,8 +5,8 @@ import { CountStreakBadges, RecordCountStreak, ScoreRewards, UpdateUserNerdScore
 
 export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvoteFromModel, AnswerUpvoteEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('answerUpvotes', after)
-		await getSocketEmitter().emitOpenCreated(`answerUpvotes/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('questions/answerUpvotes', after)
+		await getSocketEmitter().emitOpenCreated(`questions/answerUpvotes/${after.id}`, after)
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -20,12 +20,12 @@ export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvo
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('answerUpvotes', after)
-		await getSocketEmitter().emitOpenUpdated(`answerUpvotes/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('questions/answerUpvotes', after)
+		await getSocketEmitter().emitOpenUpdated(`questions/answerUpvotes/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('answerUpvotes', before)
-		await getSocketEmitter().emitOpenDeleted(`answerUpvotes/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('questions/answerUpvotes', before)
+		await getSocketEmitter().emitOpenDeleted(`questions/answerUpvotes/${before.id}`, before)
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,

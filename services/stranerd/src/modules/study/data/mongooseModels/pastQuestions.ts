@@ -1,4 +1,4 @@
-import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { PastQuestionFromModel } from '../models/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/study/pastQuestions'
@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 		required: true
 	},
 	questionMedia: {
-		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as PastQuestionFromModel['questionMedia'],
 		required: false,
 		default: []
 	},
@@ -47,6 +47,6 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdPastQuestion', Schema)
+export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdStudyPastQuestion', Schema)
 
 generateChangeStreams<PastQuestionFromModel, PastQuestionEntity>(PastQuestion, PastQuestionChangeStreamCallbacks, new PastQuestionMapper().mapFrom).then()

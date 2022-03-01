@@ -1,7 +1,6 @@
-import { AddVideo, DeleteVideo, FindVideo, GetVideos, SetSaved, UpdateVideo } from '@modules/study'
+import { AddVideo, DeleteVideo, FindVideo, GetVideos, UpdateVideo } from '@modules/study'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { saveNewItemToSet } from '@utils/modules/study/sets'
 
 export class VideoController {
 	static async FindVideo (req: Request) {
@@ -22,23 +21,16 @@ export class VideoController {
 			title: req.body.title,
 			description: req.body.description,
 			isPublic: req.body.isPublic,
-			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media,
-			preview: req.body.preview
+			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
-			preview: { required: false, rules: [Validation.isImage] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -54,44 +46,28 @@ export class VideoController {
 			title: req.body.title,
 			description: req.body.description,
 			isPublic: req.body.isPublic,
-			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
-			media: req.body.media,
-			preview: req.body.preview
+			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] },
-			preview: { required: false, rules: [Validation.isImage] }
+			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
 		})
 
 		const authUserId = req.authUser!.id
 
 		const user = await FindUser.execute(authUserId)
 
-		if (user) {
-			const video = await AddVideo.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: authUserId
-			})
-			await saveNewItemToSet({
-				setId: req.body.setId?.toString() ?? null,
-				itemId: video.id,
-				userId: video.userId,
-				type: SetSaved.videos
-			})
-			return video
-		}
+		if (user) return await AddVideo.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: authUserId
+		})
 		throw new NotFoundError()
 	}
 

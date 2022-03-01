@@ -5,9 +5,33 @@ import { BaseMapper } from '@utils/commons'
 export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 	mapFrom (model: SetFromModel | null) {
 		if (!model) return null
-		const { _id, name, isPublic, children, tags, saved, parent, userId, userBio, userRoles, createdAt, updatedAt } = model
+		const {
+			_id,
+			name,
+			isPublic,
+			children,
+			saved,
+			parent,
+			userId,
+			userBio,
+			userRoles,
+			data,
+			createdAt,
+			updatedAt
+		} = model
 		return new SetEntity({
-			id: _id.toString(), name, isPublic, children, tags, saved, parent, userId, userBio, userRoles, createdAt, updatedAt
+			id: _id.toString(),
+			name,
+			isPublic,
+			children,
+			saved,
+			parent,
+			userId,
+			userBio,
+			userRoles,
+			data,
+			createdAt,
+			updatedAt
 		})
 	}
 
@@ -16,11 +40,11 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 			name: entity.name,
 			isPublic: entity.isPublic,
 			saved: entity.saved,
-			tags: entity.tags,
 			parent: entity.parent,
 			userId: entity.userId,
 			userBio: entity.userBio,
-			userRoles: entity.userRoles
+			userRoles: entity.userRoles,
+			data: entity.data
 		}
 	}
 }

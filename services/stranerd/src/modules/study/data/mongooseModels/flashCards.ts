@@ -22,11 +22,6 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		type: [Object],
 		required: true
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	userId: {
 		type: String,
 		required: true
@@ -53,6 +48,6 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdFlashCard', Schema)
+export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdStudyFlashCard', Schema)
 
 generateChangeStreams<FlashCardFromModel, FlashCardEntity>(FlashCard, FlashCardChangeStreamCallbacks, new FlashCardMapper().mapFrom).then()

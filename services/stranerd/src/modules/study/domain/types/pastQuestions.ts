@@ -1,4 +1,4 @@
-import { MediaOutput } from '@utils/common'
+import { Media } from './index'
 
 export enum PastQuestionType {
 	objective = 'objective',
@@ -11,27 +11,27 @@ type ObjType = {
 	type: PastQuestionType.objective
 	correctIndex: number
 	options: string[]
-	optionsMedia: MediaOutput[][]
+	optionsMedia: Media[][]
 	explanation: string
-	explanationMedia: MediaOutput[]
+	explanationMedia: Media[]
 }
 
 type TheoryType = {
 	type: PastQuestionType.theory
 	answer: string
-	answerMedia: MediaOutput[]
+	answerMedia: Media[]
 }
 
 type GermanType = {
 	type: PastQuestionType.german
 	answer: string
-	answerMedia: MediaOutput[]
+	answerMedia: Media[]
 }
 
 type PracticalType = {
 	type: PastQuestionType.practical
 	answer: string
-	answerMedia: MediaOutput[]
+	answerMedia: Media[]
 }
 
 export type PastQuestionData = ObjType | TheoryType | PracticalType | GermanType

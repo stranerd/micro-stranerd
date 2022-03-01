@@ -18,11 +18,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: ''
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	userId: {
 		type: String,
 		required: true
@@ -57,11 +52,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: null
 	},
-	preview: {
-		type: mongoose.Schema.Types.Mixed,
-		default: null as any,
-		required: false
-	},
 	createdAt: {
 		type: Number,
 		required: false,
@@ -74,6 +64,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Note = mongoose.model<NoteFromModel>('StranerdNote', Schema)
+export const Note = mongoose.model<NoteFromModel>('StranerdStudyNote', Schema)
 
 generateChangeStreams<NoteFromModel, NoteEntity>(Note, NoteChangeStreamCallbacks, new NoteMapper().mapFrom).then()

@@ -18,11 +18,6 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: ''
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	userId: {
 		type: String,
 		required: true
@@ -57,11 +52,6 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: null
 	},
-	preview: {
-		type: mongoose.Schema.Types.Mixed,
-		default: null as any,
-		required: false
-	},
 	createdAt: {
 		type: Number,
 		required: false,
@@ -74,6 +64,6 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Video = mongoose.model<VideoFromModel>('StranerdVideo', Schema)
+export const Video = mongoose.model<VideoFromModel>('StranerdStudyVideo', Schema)
 
 generateChangeStreams<VideoFromModel, VideoEntity>(Video, VideoChangeStreamCallbacks, new VideoMapper().mapFrom).then()

@@ -1,4 +1,4 @@
-import { generateChangeStreams, MediaOutput, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/commons'
 import { AnswerFromModel } from '../models/answers'
 import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
 import { AnswerEntity } from '../../domain/entities/answers'
@@ -37,7 +37,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		default: {} as unknown as AnswerFromModel['userRoles']
 	},
 	attachments: {
-		type: [mongoose.Schema.Types.Mixed] as unknown as MediaOutput[],
+		type: [mongoose.Schema.Types.Mixed] as unknown as AnswerFromModel['attachments'],
 		required: false,
 		default: []
 	},
@@ -51,11 +51,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: []
 	},
-	commentsCount: {
-		type: Number,
-		required: false,
-		default: 0
-	},
 	createdAt: {
 		type: Number,
 		required: false,
@@ -68,7 +63,7 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Answer = mongoose.model<AnswerFromModel>('StranerdAnswer', Schema)
+export const Answer = mongoose.model<AnswerFromModel>('StranerdQuestionsAnswer', Schema)
 
 generateChangeStreams<AnswerFromModel, AnswerEntity>(Answer, AnswerChangeStreamCallbacks, new AnswerMapper().mapFrom).then()
 

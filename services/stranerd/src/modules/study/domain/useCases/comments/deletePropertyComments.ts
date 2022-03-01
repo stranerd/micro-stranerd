@@ -1,6 +1,6 @@
 import { ICommentRepository } from '../../irepositories/comments'
 import { BaseUseCase } from '@utils/commons'
-import { CommentToModel } from '@modules/study/data/models/comments'
+import { CommentToModel } from '../../../data/models/comments'
 
 type Input = { property: keyof Omit<CommentToModel['data'], 'type'>, propertyId: string }
 

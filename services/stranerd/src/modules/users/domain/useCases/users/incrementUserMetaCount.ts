@@ -1,6 +1,6 @@
 import { BaseUseCase } from '@utils/commons'
 import { IUserRepository } from '../../i-repositories/users'
-import { UserAccount } from '@modules/users/domain/types'
+import { UserAccount } from '../../types'
 
 type Input = { id: string, value: 1 | -1, property: keyof Omit<UserAccount['meta'], 'tutorSessions' | 'sessions'> }
 

@@ -6,7 +6,6 @@ export class FlashCardEntity extends BaseEntity {
 	public readonly title: string
 	public readonly isPublic: boolean
 	public readonly set: { question: string, answer: string }[]
-	public readonly tags: string[]
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
@@ -18,7 +17,6 @@ export class FlashCardEntity extends BaseEntity {
 		             title,
 		             isPublic,
 		             set,
-		             tags,
 		             userId,
 		             userBio,
 		             userRoles,
@@ -30,7 +28,6 @@ export class FlashCardEntity extends BaseEntity {
 		this.title = title
 		this.isPublic = isPublic
 		this.set = set
-		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
 		this.userRoles = userRoles
@@ -47,7 +44,6 @@ type FlashCardConstructorArgs = {
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
-	tags: string[]
 	createdAt: number
 	updatedAt: number
 }

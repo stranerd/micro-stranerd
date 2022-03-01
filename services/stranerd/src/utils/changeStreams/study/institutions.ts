@@ -4,16 +4,16 @@ import { getSocketEmitter } from '@index'
 
 export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<InstitutionFromModel, InstitutionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('institutions', after)
-		await getSocketEmitter().emitOpenCreated(`institutions/${after.id}`, after)
+		await getSocketEmitter().emitOpenCreated('study/institutions', after)
+		await getSocketEmitter().emitOpenCreated(`study/institutions/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('institutions', after)
-		await getSocketEmitter().emitOpenUpdated(`institutions/${after.id}`, after)
+		await getSocketEmitter().emitOpenUpdated('study/institutions', after)
+		await getSocketEmitter().emitOpenUpdated(`study/institutions/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('institutions', before)
-		await getSocketEmitter().emitOpenDeleted(`institutions/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('study/institutions', before)
+		await getSocketEmitter().emitOpenDeleted(`study/institutions/${before.id}`, before)
 
 		await DeleteInstitutionCourses.execute(before.id)
 	}
