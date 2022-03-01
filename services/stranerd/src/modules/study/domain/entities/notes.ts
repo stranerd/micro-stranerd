@@ -5,7 +5,6 @@ export class NoteEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly description: string
-	public readonly tags: string[]
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
@@ -20,7 +19,6 @@ export class NoteEntity extends BaseEntity {
 		             id,
 		             title,
 		             description,
-		             tags,
 		             userId,
 		             userBio,
 		             userRoles,
@@ -35,7 +33,6 @@ export class NoteEntity extends BaseEntity {
 		this.id = id
 		this.title = title
 		this.description = description
-		this.tags = tags
 		this.userId = userId
 		this.userBio = userBio
 		this.userRoles = userRoles
@@ -59,7 +56,6 @@ type NoteConstructorArgs = {
 	userRoles: UserRoles
 	title: string
 	description: string
-	tags: string[]
 	createdAt: number
 	updatedAt: number
 }

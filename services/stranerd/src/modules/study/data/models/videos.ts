@@ -16,5 +16,4 @@ export interface VideoToModel {
 	userRoles: UserRoles
 	title: string
 	description: string
-	tags: string[]
 }

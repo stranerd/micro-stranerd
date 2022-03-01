@@ -11,7 +11,7 @@ export class SearchController {
 				where: [{ field: 'data.type', value: QuestionType.users }],
 				search: {
 					value: searchTerm,
-					fields: ['body', 'tags']
+					fields: ['body']
 				},
 				limit: 15
 			}),
@@ -33,7 +33,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'description', 'tags']
+					fields: ['title', 'description']
 				},
 				limit: 15
 			}),
@@ -41,7 +41,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'description', 'tags']
+					fields: ['title', 'description']
 				},
 				limit: 15
 			}),
@@ -49,7 +49,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }, { field: 'data.type', value: SetType.users }],
 				search: {
 					value: searchTerm,
-					fields: ['name', 'tags']
+					fields: ['name']
 				},
 				limit: 15
 			}),
@@ -57,7 +57,7 @@ export class SearchController {
 				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
-					fields: ['title', 'set', 'tags']
+					fields: ['title', 'set']
 				},
 				limit: 15
 			}),

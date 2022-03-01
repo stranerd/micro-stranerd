@@ -16,5 +16,4 @@ export interface FlashCardToModel {
 		question: string,
 		answer: string
 	}[]
-	tags: string[]
 }

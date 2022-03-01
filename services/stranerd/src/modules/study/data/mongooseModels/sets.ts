@@ -20,11 +20,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: false
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	children: {
 		type: [String],
 		required: false,

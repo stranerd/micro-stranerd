@@ -18,11 +18,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: ''
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	userId: {
 		type: String,
 		required: true

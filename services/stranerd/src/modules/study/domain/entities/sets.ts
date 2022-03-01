@@ -5,7 +5,6 @@ export class SetEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
 	public readonly isPublic: boolean
-	public readonly tags: string[]
 	public readonly children: string[]
 	public readonly saved: Record<SetSaved, string[]>
 	public readonly parent: string
@@ -22,7 +21,6 @@ export class SetEntity extends BaseEntity {
 		             children,
 		             isPublic,
 		             saved,
-		             tags,
 		             parent,
 		             userId,
 		             userBio,
@@ -37,7 +35,6 @@ export class SetEntity extends BaseEntity {
 		this.isPublic = isPublic
 		this.children = children
 		this.saved = saved
-		this.tags = tags
 		this.parent = parent
 		this.userId = userId
 		this.userBio = userBio
@@ -52,7 +49,6 @@ type SetConstructorArgs = {
 	id: string
 	name: string
 	isPublic: boolean
-	tags: string[]
 	children: string[]
 	saved: Record<SetSaved, string[]>
 	parent: string

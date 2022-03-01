@@ -32,25 +32,20 @@ export class QuestionController {
 	static async UpdateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 
-		const { body, subjectId, tags, attachments } = validate({
+		const { body, subjectId, attachments } = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
-			tags: req.body.tags,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			subjectId: { required: true, rules: [Validation.isString] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
 			}
 		})
 
-		const data = { body, subjectId, tags, attachments }
+		const data = { body, subjectId, attachments }
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -66,20 +61,15 @@ export class QuestionController {
 
 		if (!user) throw new NotFoundError()
 
-		const { body, subjectId, tags, attachments, type, classId } = validate({
+		const { body, subjectId, attachments, type, classId } = validate({
 			body: req.body.body,
 			subjectId: req.body.subjectId,
-			tags: req.body.tags,
 			attachments: req.body.attachments,
 			type: req.body.data?.type,
 			classId: req.body.data?.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			subjectId: { required: true, rules: [Validation.isString] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
@@ -97,7 +87,7 @@ export class QuestionController {
 		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
-			body, subjectId, tags, attachments,
+			body, subjectId, attachments,
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,

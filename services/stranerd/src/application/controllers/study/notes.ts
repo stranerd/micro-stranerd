@@ -21,7 +21,6 @@ export class NoteController {
 			title: req.body.title,
 			description: req.body.description,
 			isPublic: req.body.isPublic,
-			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
@@ -29,10 +28,6 @@ export class NoteController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] }
@@ -51,7 +46,6 @@ export class NoteController {
 			title: req.body.title,
 			description: req.body.description,
 			isPublic: req.body.isPublic,
-			tags: req.body.tags,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
@@ -59,10 +53,6 @@ export class NoteController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] }

@@ -22,11 +22,6 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		type: [Object],
 		required: true
 	},
-	tags: {
-		type: [String],
-		required: true,
-		set: (tags: string[]) => Array.from(new Set(tags))
-	},
 	userId: {
 		type: String,
 		required: true

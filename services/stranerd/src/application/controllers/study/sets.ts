@@ -28,24 +28,19 @@ export class SetController {
 			name: req.body.name,
 			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
-			tags: req.body.tags,
 			type: req.body.data?.type,
 			classId: req.body.data?.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			isPublic: { required: true, rules: [Validation.isBoolean] },
 			parent: { required: true, rules: [Validation.isString] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
 			},
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
-		const { name, isPublic, tags, type, classId  } = val
+		const { name, isPublic, type, classId } = val
 		let { parent } = val
 
 		if (parent) {
@@ -60,7 +55,7 @@ export class SetController {
 		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
-			name, isPublic, parent, tags,
+			name, isPublic, parent,
 			userId: user.id, userBio: user.bio, userRoles: user.roles,
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
@@ -69,20 +64,15 @@ export class SetController {
 	}
 
 	static async UpdateSet (req: Request) {
-		const { name, isPublic, tags } = validate({
+		const { name, isPublic } = validate({
 			name: req.body.name,
-			isPublic: !!req.body.isPublic,
-			tags: req.body.tags
+			isPublic: !!req.body.isPublic
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
-			tags: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			}
+			isPublic: { required: true, rules: [Validation.isBoolean] }
 		})
 
-		const data = { name, isPublic, tags }
+		const data = { name, isPublic }
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet

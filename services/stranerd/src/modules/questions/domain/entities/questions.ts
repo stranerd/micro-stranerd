@@ -6,7 +6,6 @@ export const BEST_ANSWERS_COUNT = 2
 export class QuestionEntity extends BaseEntity {
 	public readonly id: string
 	public readonly body: string
-	public readonly tags: string[]
 	public readonly attachments: Media[]
 	public readonly subjectId: string
 	public readonly userId: string
@@ -21,13 +20,12 @@ export class QuestionEntity extends BaseEntity {
 	constructor ({
 		             id, body, subjectId, attachments,
 		             bestAnswers, createdAt, userId, userBio, userRoles, data,
-		             answers, tags, updatedAt
+		             answers, updatedAt
 	             }: QuestionConstructorArgs) {
 		super()
 		this.id = id
 		this.body = body
 		this.attachments = attachments
-		this.tags = tags
 		this.subjectId = subjectId
 		this.userId = userId
 		this.userBio = userBio
@@ -47,7 +45,6 @@ export class QuestionEntity extends BaseEntity {
 type QuestionConstructorArgs = {
 	id: string
 	body: string
-	tags: string[]
 	attachments: Media[]
 	subjectId: string
 	userId: string

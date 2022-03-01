@@ -16,5 +16,4 @@ export interface NoteToModel {
 	userRoles: UserRoles
 	title: string
 	description: string
-	tags: string[]
 }
