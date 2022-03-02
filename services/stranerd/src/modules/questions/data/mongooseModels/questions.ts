@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		type: String,
 		required: true
 	},
-	subjectId: {
+	subject: {
 		type: String,
 		required: true
 	},

@@ -32,20 +32,20 @@ export class QuestionController {
 	static async UpdateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 
-		const { body, subjectId, attachments } = validate({
+		const { body, subject, attachments } = validate({
 			body: req.body.body,
-			subjectId: req.body.subjectId,
+			subject: req.body.subject,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			subjectId: { required: true, rules: [Validation.isString] },
+			subject: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
 			}
 		})
 
-		const data = { body, subjectId, attachments }
+		const data = { body, subject, attachments }
 
 		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -61,15 +61,15 @@ export class QuestionController {
 
 		if (!user) throw new NotFoundError()
 
-		const { body, subjectId, attachments, type, classId } = validate({
+		const { body, subject, attachments, type, classId } = validate({
 			body: req.body.body,
-			subjectId: req.body.subjectId,
+			subject: req.body.subject,
 			attachments: req.body.attachments,
 			type: req.body.data?.type,
 			classId: req.body.data?.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			subjectId: { required: true, rules: [Validation.isString] },
+			subject: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
@@ -87,7 +87,7 @@ export class QuestionController {
 		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
-			body, subjectId, attachments,
+			body, subject, attachments,
 			userId: authUserId,
 			userBio: user.bio,
 			userRoles: user.roles,

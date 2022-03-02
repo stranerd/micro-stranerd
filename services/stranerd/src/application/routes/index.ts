@@ -8,7 +8,6 @@ import { answerCommentsRoutes } from './questions/answerComments'
 import { answersRoutes } from './questions/answers'
 import { answerUpvotesRoutes } from './questions/answerUpvotes'
 import { questionsRoutes } from './questions/questions'
-import { subjectsRoutes } from './questions/subjects'
 import { chatMetaRoutes } from './sessions/chatMeta'
 import { chatRoutes } from './sessions/chat'
 import { sessionRoutes } from './sessions/session'
@@ -41,7 +40,6 @@ export const routes: Route[] = [
 	...answerCommentsRoutes,
 	...answerUpvotesRoutes,
 	...questionsRoutes,
-	...subjectsRoutes,
 	...sessionRoutes,
 	...chatMetaRoutes,
 	...chatRoutes,

@@ -16,7 +16,7 @@ const app = getNewServerInstance(routes, {
 	],
 	open: [
 		'users/users', 'users/reviews', 'users/badges',
-		'questions/answerComments', 'questions/answers', 'questions/answerUpvotes', 'questions/questions', 'questions/subjects',
+		'questions/answerComments', 'questions/answers', 'questions/answerUpvotes', 'questions/questions',
 		'study/courses', 'study/notes', 'study/institutions', 'study/comments', 'study/videos', 'study/flashCards', 'study/sets', 'study/testPreps',
 		'classes/classes', 'classes/groups', 'classes/discussions', 'classes/announcements'
 	]

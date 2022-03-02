@@ -11,7 +11,7 @@ export interface QuestionFromModel extends QuestionToModel {
 export interface QuestionToModel {
 	body: string
 	attachments: Media[]
-	subjectId: string
+	subject: string
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

@@ -1,15 +1,13 @@
-import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import {
 	CountStreakBadges,
-	GetUsers,
 	IncrementUserMetaCount,
 	RecordCountStreak,
 	ScoreRewards,
 	UpdateUserNerdScore,
 	UserMeta
 } from '@modules/users'
-import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
@@ -30,23 +28,6 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 			activity: CountStreakBadges.NewQuestion,
 			add: true
 		})
-
-		const tutors = await GetUsers.execute({
-			where: [
-				{ field: `roles.${AuthApps.Stranerd}.isTutor`, value: true },
-				{ field: 'tutor.strongestSubject', value: after.subjectId }
-			]
-		})
-		await Promise.all([
-			tutors.results.map((t) => t.id).map(async (id) => {
-				await sendNotification(id, {
-					title: 'New Question',
-					body: 'A new question was just asked that you might be interested in. Go check it out',
-					action: 'questions',
-					data: { questionId: after.id }
-				})
-			})
-		])
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('questions/questions', after)

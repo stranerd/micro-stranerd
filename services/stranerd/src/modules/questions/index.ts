@@ -2,12 +2,6 @@ import { AnswerCommentRepository } from './data/repositories/answerComments'
 import { AnswerRepository } from './data/repositories/answers'
 import { AnswerUpvoteRepository } from './data/repositories/answerUpvotes'
 import { QuestionRepository } from './data/repositories/questions'
-import { SubjectRepository } from './data/repositories/subjects'
-import { AddSubjectUseCase } from './domain/useCases/subjects/addSubject'
-import { UpdateSubjectUseCase } from './domain/useCases/subjects/updateSubject'
-import { DeleteSubjectUseCase } from './domain/useCases/subjects/deleteSubject'
-import { FindSubjectUseCase } from './domain/useCases/subjects/findSubject'
-import { GetSubjectsUseCase } from './domain/useCases/subjects/getSubjects'
 import { GetAnswerCommentsUseCase } from './domain/useCases/answerComments/getAnswerComments'
 import { FindAnswerCommentUseCase } from './domain/useCases/answerComments/findAnswerComment'
 import { DeleteAnswersCommentsUseCase } from './domain/useCases/answerComments/deleteAnswerComments'
@@ -32,17 +26,10 @@ import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/creat
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
 
-const subjectRepository = SubjectRepository.getInstance()
 const answerCommentRepository = AnswerCommentRepository.getInstance()
 const answerRepository = AnswerRepository.getInstance()
 const questionRepository = QuestionRepository.getInstance()
 const answerUpvoteRepository = AnswerUpvoteRepository.getInstance()
-
-export const AddSubject = new AddSubjectUseCase(subjectRepository)
-export const UpdateSubject = new UpdateSubjectUseCase(subjectRepository)
-export const DeleteSubject = new DeleteSubjectUseCase(subjectRepository)
-export const FindSubject = new FindSubjectUseCase(subjectRepository)
-export const GetSubjects = new GetSubjectsUseCase(subjectRepository)
 
 export const GetAnswerComments = new GetAnswerCommentsUseCase(answerCommentRepository)
 export const FindAnswerComment = new FindAnswerCommentUseCase(answerCommentRepository)
@@ -75,12 +62,10 @@ export { AnswerCommentFromModel } from './data/models/answerComments'
 export { AnswerFromModel } from './data/models/answers'
 export { AnswerUpvoteFromModel } from './data/models/answerUpvotes'
 export { QuestionFromModel } from './data/models/questions'
-export { SubjectFromModel } from './data/models/subjects'
 
 export { AnswerCommentEntity } from './domain/entities/answerComments'
 export { AnswerEntity } from './domain/entities/answers'
 export { AnswerUpvoteEntity } from './domain/entities/answerUpvotes'
 export { QuestionEntity } from './domain/entities/questions'
-export { SubjectEntity } from './domain/entities/subjects'
 
 export { QuestionType } from './domain/types'

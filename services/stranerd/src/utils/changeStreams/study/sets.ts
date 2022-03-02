@@ -25,8 +25,8 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenCreated('study/sets', before)
-		await getSocketEmitter().emitOpenCreated(`study/sets/${before.id}`, before)
+		await getSocketEmitter().emitOpenDeleted('study/sets', before)
+		await getSocketEmitter().emitOpenDeleted(`study/sets/${before.id}`, before)
 		await RemoveSetProp.execute({ prop: SetSaved.sets, value: before.id })
 		await DeleteSetChildren.execute(before.id)
 

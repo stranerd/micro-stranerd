@@ -7,7 +7,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly id: string
 	public readonly body: string
 	public readonly attachments: Media[]
-	public readonly subjectId: string
+	public readonly subject: string
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
@@ -18,7 +18,7 @@ export class QuestionEntity extends BaseEntity {
 	public readonly updatedAt: number
 
 	constructor ({
-		             id, body, subjectId, attachments,
+		             id, body, subject, attachments,
 		             bestAnswers, createdAt, userId, userBio, userRoles, data,
 		             answers, updatedAt
 	             }: QuestionConstructorArgs) {
@@ -26,7 +26,7 @@ export class QuestionEntity extends BaseEntity {
 		this.id = id
 		this.body = body
 		this.attachments = attachments
-		this.subjectId = subjectId
+		this.subject = subject
 		this.userId = userId
 		this.userBio = userBio
 		this.userRoles = userRoles
@@ -46,7 +46,7 @@ type QuestionConstructorArgs = {
 	id: string
 	body: string
 	attachments: Media[]
-	subjectId: string
+	subject: string
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
