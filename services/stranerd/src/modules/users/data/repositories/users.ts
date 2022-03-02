@@ -154,11 +154,4 @@ export class UserRepository implements IUserRepository {
 		})
 		return !!res.acknowledged
 	}
-
-	async updateUserSubjects (userId: string, strongestSubject: string, weakerSubjects: string[]) {
-		const user = await User.findByIdAndUpdate(userId, {
-			$set: { 'tutor.strongestSubject': strongestSubject, 'tutor.weakerSubjects': weakerSubjects }
-		})
-		return !!user
-	}
 }

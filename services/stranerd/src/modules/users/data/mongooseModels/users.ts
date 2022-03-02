@@ -66,18 +66,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		required: false,
 		default: {} as unknown as UserFromModel['roles']
 	},
-	tutor: {
-		strongestSubject: {
-			type: String,
-			required: false,
-			default: null
-		},
-		weakerSubjects: {
-			type: [String],
-			required: false,
-			default: []
-		}
-	},
 	dates: {
 		createdAt: {
 			type: Number,

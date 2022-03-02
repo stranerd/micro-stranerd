@@ -23,7 +23,6 @@ import { UpdateUserStatusUseCase } from './domain/useCases/users/updateUserStatu
 import { SetUsersCurrentSessionUseCase } from './domain/useCases/users/setUsersCurrentSession'
 import { UpdateUserQueuedSessionsUseCase } from './domain/useCases/users/updateUserQueuedSessions'
 import { IncrementUsersSessionsCountUseCase } from './domain/useCases/users/incrementUsersSessionsCount'
-import { UpdateUserSubjectsUseCase } from './domain/useCases/users/updateUserSubjects'
 import { UpdateUserStreakUseCase } from './domain/useCases/users/updateUserStreak'
 import { ResetRankingsUseCase } from './domain/useCases/users/resetRankings'
 import { ReferralRepository } from './data/repositories/referrals'
@@ -58,7 +57,6 @@ export const UpdateUserStreak = new UpdateUserStreakUseCase(userRepository)
 export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
-export const UpdateUserSubjects = new UpdateUserSubjectsUseCase(userRepository)
 export const ResetRankings = new ResetRankingsUseCase(userRepository)
 
 export const GetBadges = new GetBadgesUseCase(badgeRepository)

@@ -17,11 +17,6 @@ export type UserDates = {
 	deletedAt: number | null
 }
 
-export type UserTutor = {
-	strongestSubject: string | null,
-	weakerSubjects: string[]
-}
-
 export type UserStatus = {
 	connections: string[]
 	lastUpdatedAt: number
