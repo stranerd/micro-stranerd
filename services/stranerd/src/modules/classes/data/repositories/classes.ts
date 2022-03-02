@@ -55,4 +55,70 @@ export class ClassRepository implements IClassRepository {
 		const classInstance = await Class.findOneAndDelete({ _id: id, 'users.admins': userId })
 		return !!classInstance
 	}
+
+	async requestClass (classId: string, userId: string, add: boolean) {
+		const classInst = await Class.findOneAndUpdate({
+			_id: classId,
+			[`users.${ClassUsers.members}`]: { $nin: userId },
+			requests: { [add ? '$nin' : '$in']: userId }
+		}, {
+			[add ? '$addToSet' : '$pull']: { requests: userId }
+		})
+		return !!classInst
+	}
+
+	async leaveClass (classId: string, userId: string) {
+		const classInst = await Class.findOneAndUpdate({
+			_id: classId,
+			[`users.${ClassUsers.members}`]: userId
+		}, {
+			$pull: {
+				[`users.${ClassUsers.members}`]: userId,
+				[`users.${ClassUsers.tutors}`]: userId,
+				[`users.${ClassUsers.admins}`]: userId
+			}
+		})
+		return !!classInst
+	}
+
+	async acceptRequest (classId: string, adminId: string, requestId: string, accept: boolean) {
+		const classInst = await Class.findByIdAndUpdate({
+			_id: classId,
+			[`users.${ClassUsers.admins}`]: { $in: adminId },
+			requests: { $in: requestId }
+		}, {
+			$pull: { requests: requestId },
+			...(accept ? {
+				$addToSet: { [`users.${ClassUsers.members}`]: requestId }
+			} : {})
+		})
+		return !!classInst
+	}
+
+	async addMembers (classId: string, adminId: string, userIds: string[], add: boolean) {
+		const classInst = await Class.findByIdAndUpdate({
+			_id: classId,
+			[`users.${ClassUsers.admins}`]: { $in: adminId }
+		}, {
+			[add ? '$addToSet' : '$pull']: {
+				[`users.${ClassUsers.members}`]: {
+					[add ? '$each' : '$in']: userIds
+				}
+			},
+			...(add ? { $pull: { requests: { $in: userIds } } } : {})
+		})
+		return !!classInst
+	}
+
+	async changeMemberRole (classId: string, adminId: string, userId: string, role: ClassUsers, add: boolean) {
+		const classInst = await Class.findByIdAndUpdate({
+			_id: classId,
+			[`users.${ClassUsers.admins}`]: { $in: adminId }
+		}, {
+			[add ? '$addToSet' : '$pull']: {
+				[`users.${role}`]: userId
+			}
+		})
+		return !!classInst
+	}
 }

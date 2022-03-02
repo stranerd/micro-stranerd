@@ -8,7 +8,6 @@ export interface FlashCardFromModel extends FlashCardToModel {
 
 export interface FlashCardToModel {
 	title: string
-	isPublic: boolean
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles

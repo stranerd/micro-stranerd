@@ -32,11 +32,6 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: {} as unknown as VideoFromModel['userRoles']
 	},
-	isPublic: {
-		type: Boolean,
-		required: false,
-		default: true
-	},
 	isHosted: {
 		type: Boolean,
 		required: false,

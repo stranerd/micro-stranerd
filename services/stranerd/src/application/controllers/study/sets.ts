@@ -10,10 +10,6 @@ export class SetController {
 
 	static async GetSets (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'isPublic', value: true }, ...(req.authUser ? [{
-			field: 'userId',
-			value: req.authUser.id
-		}] : [])]
 		return await GetSets.execute(query)
 	}
 
@@ -26,13 +22,11 @@ export class SetController {
 
 		const val = validate({
 			name: req.body.name,
-			isPublic: !!req.body.isPublic,
 			parent: req.body.parent,
 			type: req.body.data?.type,
 			classId: req.body.data?.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
 			parent: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
@@ -40,7 +34,7 @@ export class SetController {
 			},
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
-		const { name, isPublic, type, classId } = val
+		const { name, type, classId } = val
 		let { parent } = val
 
 		if (parent) {
@@ -55,7 +49,7 @@ export class SetController {
 		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
-			name, isPublic, parent,
+			name, parent,
 			userId: user.id, userBio: user.bio, userRoles: user.roles,
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
@@ -64,15 +58,13 @@ export class SetController {
 	}
 
 	static async UpdateSet (req: Request) {
-		const { name, isPublic } = validate({
-			name: req.body.name,
-			isPublic: !!req.body.isPublic
+		const { name } = validate({
+			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isPublic: { required: true, rules: [Validation.isBoolean] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
-		const data = { name, isPublic }
+		const data = { name }
 
 		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet

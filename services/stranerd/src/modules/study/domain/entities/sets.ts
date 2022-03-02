@@ -4,7 +4,6 @@ import { SetData, SetSaved, UserBio, UserRoles } from '../types'
 export class SetEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
-	public readonly isPublic: boolean
 	public readonly children: string[]
 	public readonly saved: Record<SetSaved, string[]>
 	public readonly parent: string
@@ -19,7 +18,6 @@ export class SetEntity extends BaseEntity {
 		             id,
 		             name,
 		             children,
-		             isPublic,
 		             saved,
 		             parent,
 		             userId,
@@ -32,7 +30,6 @@ export class SetEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.name = name
-		this.isPublic = isPublic
 		this.children = children
 		this.saved = saved
 		this.parent = parent
@@ -48,7 +45,6 @@ export class SetEntity extends BaseEntity {
 type SetConstructorArgs = {
 	id: string
 	name: string
-	isPublic: boolean
 	children: string[]
 	saved: Record<SetSaved, string[]>
 	parent: string

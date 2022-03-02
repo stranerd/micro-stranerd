@@ -8,7 +8,6 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 		const {
 			_id,
 			name,
-			isPublic,
 			children,
 			saved,
 			parent,
@@ -22,7 +21,6 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 		return new SetEntity({
 			id: _id.toString(),
 			name,
-			isPublic,
 			children,
 			saved,
 			parent,
@@ -38,7 +36,6 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 	mapTo (entity: SetEntity) {
 		return {
 			name: entity.name,
-			isPublic: entity.isPublic,
 			saved: entity.saved,
 			parent: entity.parent,
 			userId: entity.userId,

@@ -13,11 +13,6 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 		type: String,
 		required: true
 	},
-	isPublic: {
-		type: Boolean,
-		required: true,
-		default: false
-	},
 	set: {
 		type: [Object],
 		required: true

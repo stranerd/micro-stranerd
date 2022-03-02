@@ -15,11 +15,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: ''
 	},
-	isPublic: {
-		type: Boolean,
-		required: false,
-		default: false
-	},
 	children: {
 		type: [String],
 		required: false,

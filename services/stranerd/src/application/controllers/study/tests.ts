@@ -44,7 +44,7 @@ export class TestController {
 			prepId: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.keys(TestType), (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TestType), (cur, val) => cur === val)]
 			},
 			time: {
 				required: false,

@@ -9,21 +9,15 @@ export class FlashCardController {
 
 	static async GetFlashCard (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'isPublic', value: true }, ...(req.authUser ? [{
-			field: 'userId',
-			value: req.authUser.id
-		}] : [])]
 		return await GetFlashCards.execute(query)
 	}
 
 	static async UpdateFlashCard (req: Request) {
 		const data = validate({
 			title: req.body.title,
-			isPublic: req.body.isPublic,
 			set: req.body.set
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
 			set: {
 				required: true,
 				rules: [
@@ -44,11 +38,9 @@ export class FlashCardController {
 	static async CreateFlashCard (req: Request) {
 		const data = validate({
 			title: req.body.title,
-			isPublic: req.body.isPublic,
 			set: req.body.set
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
 			set: {
 				required: true,
 				rules: [

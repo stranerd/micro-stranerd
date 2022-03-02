@@ -9,10 +9,6 @@ export class VideoController {
 
 	static async GetVideo (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'isPublic', value: true }, ...(req.authUser ? [{
-			field: 'userId',
-			value: req.authUser.id
-		}] : [])]
 		return await GetVideos.execute(query)
 	}
 
@@ -20,14 +16,12 @@ export class VideoController {
 		const data = validate({
 			title: req.body.title,
 			description: req.body.description,
-			isPublic: req.body.isPublic,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
@@ -45,14 +39,12 @@ export class VideoController {
 		const data = validate({
 			title: req.body.title,
 			description: req.body.description,
-			isPublic: req.body.isPublic,
 			isHosted: req.body.isHosted,
 			link: req.body.link,
 			media: req.body.media
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			isPublic: { required: true, rules: [Validation.isBoolean] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }

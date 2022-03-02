@@ -32,11 +32,6 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: {} as unknown as NoteFromModel['userRoles']
 	},
-	isPublic: {
-		type: Boolean,
-		required: false,
-		default: true
-	},
 	isHosted: {
 		type: Boolean,
 		required: false,

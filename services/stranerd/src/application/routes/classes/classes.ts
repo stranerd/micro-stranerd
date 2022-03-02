@@ -64,5 +64,70 @@ export const classesRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/classes/classes/:id/requests',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ClassController.RequestClass(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/classes/classes/:id/leave',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ClassController.LeaveClass(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/classes/classes/:id/requests',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ClassController.AcceptRequest(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/classes/classes/:id/members',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ClassController.AddMembers(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/classes/classes/:id/roles',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await ClassController.ChangeMemberRole(req)
+				}
+			})
+		]
 	}
 ]

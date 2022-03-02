@@ -27,6 +27,11 @@ import { AddDiscussionUseCase } from './domain/useCases/discussions/addDiscussio
 import { UpdateDiscussionUseCase } from './domain/useCases/discussions/updateDiscussion'
 import { DeleteDiscussionUseCase } from './domain/useCases/discussions/deleteDiscussion'
 import { UpdateDiscussionsUserBioUseCase } from './domain/useCases/discussions/updateDiscussionsUserBio'
+import { RequestClassUseCase } from './domain/useCases/classes/requestClass'
+import { LeaveClassUseCase } from './domain/useCases/classes/leaveClass'
+import { AcceptRequestUseCase } from './domain/useCases/classes/acceptRequest'
+import { AddMembersUseCase } from './domain/useCases/classes/addMembers'
+import { ChangeMemberRoleUseCase } from './domain/useCases/classes/changeMemberRole'
 
 const classRepository = ClassRepository.getInstance()
 const announcementRepository = AnnouncementRepository.getInstance()
@@ -39,6 +44,11 @@ export const AddClass = new AddClassUseCase(classRepository)
 export const UpdateClass = new UpdateClassUseCase(classRepository)
 export const DeleteClass = new DeleteClassUseCase(classRepository)
 export const UpdateClassesUserBio = new UpdateClassesUserBioUseCase(classRepository)
+export const RequestToJoinClass = new RequestClassUseCase(classRepository)
+export const LeaveClass = new LeaveClassUseCase(classRepository)
+export const AcceptClassRequest = new AcceptRequestUseCase(classRepository)
+export const AddClassMembers = new AddMembersUseCase(classRepository)
+export const ChangeClassMemberRole = new ChangeMemberRoleUseCase(classRepository)
 
 export const GetAnnouncements = new GetAnnouncementsUseCase(announcementRepository)
 export const FindAnnouncement = new FindAnnouncementUseCase(announcementRepository)

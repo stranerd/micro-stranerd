@@ -1,6 +1,18 @@
-import { AddClass, DeleteClass, FindClass, GetClasses, UpdateClass } from '@modules/classes'
+import {
+	AcceptClassRequest,
+	AddClass,
+	AddClassMembers,
+	ChangeClassMemberRole,
+	DeleteClass,
+	FindClass,
+	GetClasses,
+	LeaveClass,
+	RequestToJoinClass,
+	UpdateClass
+} from '@modules/classes'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { ClassUsers } from '@modules/classes/domain/types'
 
 export class ClassController {
 	static async FindClass (req: Request) {
@@ -64,6 +76,93 @@ export class ClassController {
 		const authUserId = req.authUser!.id
 		const isDeleted = await DeleteClass.execute({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
+		throw new NotAuthorizedError()
+	}
+
+	static async RequestClass (req: Request) {
+		const { request } = validate({
+			request: req.body.request
+		}, {
+			request: { required: true, rules: [Validation.isBoolean] }
+		})
+
+		const requested = await RequestToJoinClass.execute({
+			classId: req.params.id,
+			userId: req.authUser!.id,
+			request
+		})
+		if (requested) return requested
+		throw new NotAuthorizedError()
+	}
+
+	static async LeaveClass (req: Request) {
+		const left = await LeaveClass.execute({
+			classId: req.params.id,
+			userId: req.authUser!.id
+		})
+		if (left) return left
+		throw new NotAuthorizedError()
+	}
+
+	static async AcceptRequest (req: Request) {
+		const { accept, userId } = validate({
+			accept: req.body.request,
+			userId: req.body.userId
+		}, {
+			accept: { required: true, rules: [Validation.isBoolean] },
+			userId: { required: true, rules: [Validation.isString] }
+		})
+
+		const accepted = await AcceptClassRequest.execute({
+			classId: req.params.id,
+			adminId: req.authUser!.id,
+			requestId: userId, accept
+		})
+		if (accepted) return accepted
+		throw new NotAuthorizedError()
+	}
+
+	static async AddMembers (req: Request) {
+		const { accept, userIds } = validate({
+			accept: req.body.request,
+			userIds: req.body.userIds
+		}, {
+			accept: { required: true, rules: [Validation.isBoolean] },
+			userIds: {
+				required: true,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0)]
+			}
+		})
+
+		const accepted = await AddClassMembers.execute({
+			classId: req.params.id,
+			adminId: req.authUser!.id,
+			userIds, accept
+		})
+		if (accepted) return accepted
+		throw new NotAuthorizedError()
+	}
+
+	static async ChangeMemberRole (req: Request) {
+		const { add, userId, role } = validate({
+			add: req.body.request,
+			userId: req.body.userId,
+			role: req.body.role
+		}, {
+			add: { required: true, rules: [Validation.isBoolean] },
+			userId: { required: true, rules: [Validation.isString] },
+			role: {
+				required: true,
+				rules: [Validation.arrayContainsX(Object.values(ClassUsers), (cur, val) => cur === val)]
+			}
+		})
+
+		const added = await ChangeClassMemberRole.execute({
+			classId: req.params.id,
+			adminId: req.authUser!.id,
+			userId, add, role
+		})
+		if (added) return added
 		throw new NotAuthorizedError()
 	}
 }

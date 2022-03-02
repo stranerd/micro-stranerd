@@ -30,7 +30,6 @@ export class SearchController {
 				limit: 15
 			}),
 			GetVideos.execute({
-				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description']
@@ -38,7 +37,6 @@ export class SearchController {
 				limit: 15
 			}),
 			GetNotes.execute({
-				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['title', 'description']
@@ -46,7 +44,7 @@ export class SearchController {
 				limit: 15
 			}),
 			GetSets.execute({
-				where: [{ field: 'isPublic', value: true }, { field: 'data.type', value: SetType.users }],
+				where: [{ field: 'data.type', value: SetType.users }],
 				search: {
 					value: searchTerm,
 					fields: ['name']
@@ -54,7 +52,6 @@ export class SearchController {
 				limit: 15
 			}),
 			GetFlashCards.execute({
-				where: [{ field: 'isPublic', value: true }],
 				search: {
 					value: searchTerm,
 					fields: ['title', 'set']
