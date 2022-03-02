@@ -15,11 +15,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 		required: false,
 		default: ''
 	},
-	children: {
-		type: [String],
-		required: false,
-		default: []
-	},
 	saved: Object.fromEntries(
 		Object.keys(SetSaved).map((key) => [key, {
 			type: [String],
@@ -27,11 +22,6 @@ const Schema = new mongoose.Schema<SetFromModel>({
 			default: []
 		}])
 	),
-	parent: {
-		type: String,
-		required: false,
-		default: ''
-	},
 	userId: {
 		type: String,
 		required: true

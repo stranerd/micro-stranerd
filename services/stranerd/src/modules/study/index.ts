@@ -21,8 +21,6 @@ import { UpdateSetUseCase } from './domain/useCases/sets/updateSet'
 import { UpdateSetsUserBioUseCase } from './domain/useCases/sets/updateSetsUserBio'
 import { UpdateSetPropUseCase } from './domain/useCases/sets/updateSetProp'
 import { RemoveSetPropUseCase } from './domain/useCases/sets/removeSetProp'
-import { DeleteSetChildrenUseCase } from './domain/useCases/sets/deleteSetChildren'
-import { UpdateSetChildrenUseCase } from './domain/useCases/sets/updateSetChildren'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -95,8 +93,6 @@ export const DeleteSet = new DeleteSetUseCase(setRepository)
 export const UpdateSetsUserBio = new UpdateSetsUserBioUseCase(setRepository)
 export const UpdateSetProp = new UpdateSetPropUseCase(setRepository)
 export const RemoveSetProp = new RemoveSetPropUseCase(setRepository)
-export const DeleteSetChildren = new DeleteSetChildrenUseCase(setRepository)
-export const UpdateSetChildren = new UpdateSetChildrenUseCase(setRepository)
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)

@@ -3,6 +3,8 @@ import { RecordRank, UpdateReviewsUserBio, UserEntity, UserFromModel } from '@mo
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetasUserBio, UpdateSessionsUserBio } from '@modules/sessions'
 import {
+	AddSet,
+	SetType,
 	UpdateCommentsUserBio,
 	UpdateFlashCardsUserBio,
 	UpdateNotesUserBio,
@@ -18,6 +20,13 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('users/users', after)
 		await getSocketEmitter().emitOpenCreated(`users/users/${after.id}`, after)
+
+		await AddSet.execute({
+			name: '', data: { type: SetType.users },
+			userId: after.id,
+			userBio: after.bio,
+			userRoles: after.roles
+		})
 	},
 	updated: async ({ before, after, changes }) => {
 		await getSocketEmitter().emitOpenUpdated('users/users', after)

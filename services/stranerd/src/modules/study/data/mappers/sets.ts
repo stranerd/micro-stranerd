@@ -8,9 +8,7 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 		const {
 			_id,
 			name,
-			children,
 			saved,
-			parent,
 			userId,
 			userBio,
 			userRoles,
@@ -21,9 +19,7 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 		return new SetEntity({
 			id: _id.toString(),
 			name,
-			children,
 			saved,
-			parent,
 			userId,
 			userBio,
 			userRoles,
@@ -37,7 +33,6 @@ export class SetMapper extends BaseMapper<SetFromModel, SetToModel, SetEntity> {
 		return {
 			name: entity.name,
 			saved: entity.saved,
-			parent: entity.parent,
 			userId: entity.userId,
 			userBio: entity.userBio,
 			userRoles: entity.userRoles,

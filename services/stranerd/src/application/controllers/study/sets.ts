@@ -20,28 +20,18 @@ export class SetController {
 		const isClasses = req.body.data?.type === SetType.classes
 		if (!user) throw new NotFoundError()
 
-		const val = validate({
+		const { name, type, classId } = validate({
 			name: req.body.name,
-			parent: req.body.parent,
 			type: req.body.data?.type,
 			classId: req.body.data?.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			parent: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
 			},
 			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
 		})
-		const { name, type, classId } = val
-		let { parent } = val
-
-		if (parent) {
-			const set = await FindSet.execute(parent)
-			if (!set) throw new NotFoundError()
-			if (set.userId !== authUserId) parent = null
-		}
 
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
@@ -49,7 +39,7 @@ export class SetController {
 		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
-			name, parent,
+			name,
 			userId: user.id, userBio: user.bio, userRoles: user.roles,
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
