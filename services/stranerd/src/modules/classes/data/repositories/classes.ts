@@ -30,6 +30,7 @@ export class ClassRepository implements IClassRepository {
 	async add (data: ClassToModel) {
 		const classInstance = new Class(data)
 		classInstance.users[ClassUsers.admins] = [data.userId]
+		classInstance.users[ClassUsers.members] = [data.userId]
 		return this.mapper.mapFrom(await classInstance.save())!
 	}
 
@@ -68,16 +69,11 @@ export class ClassRepository implements IClassRepository {
 	}
 
 	async leaveClass (classId: string, userId: string) {
+		const allObjects = Object.fromEntries(Object.values(ClassUsers).map((key) => [`users.${key}`, userId]))
 		const classInst = await Class.findOneAndUpdate({
 			_id: classId,
 			[`users.${ClassUsers.members}`]: userId
-		}, {
-			$pull: {
-				[`users.${ClassUsers.members}`]: userId,
-				[`users.${ClassUsers.tutors}`]: userId,
-				[`users.${ClassUsers.admins}`]: userId
-			}
-		})
+		}, { $pull: allObjects })
 		return !!classInst
 	}
 
@@ -112,8 +108,7 @@ export class ClassRepository implements IClassRepository {
 
 	async changeMemberRole (classId: string, adminId: string, userId: string, role: ClassUsers, add: boolean) {
 		const classInst = await Class.findByIdAndUpdate({
-			_id: classId,
-			[`users.${ClassUsers.admins}`]: { $in: adminId }
+			_id: classId, userId: adminId
 		}, {
 			[add ? '$addToSet' : '$pull']: {
 				[`users.${role}`]: userId

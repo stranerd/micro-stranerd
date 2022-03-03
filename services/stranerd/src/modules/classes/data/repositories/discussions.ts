@@ -2,8 +2,9 @@ import { IDiscussionRepository } from '../../domain/irepositories/discussions'
 import { DiscussionMapper } from '../mappers/discussions'
 import { DiscussionFromModel, DiscussionToModel } from '../models/discussions'
 import { Discussion } from '../mongooseModels/discussions'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio, UserRoles } from '../../domain/types'
+import { Group } from '@modules/classes/data/mongooseModels/groups'
 
 export class DiscussionRepository implements IDiscussionRepository {
 	private static instance: DiscussionRepository
@@ -28,8 +29,17 @@ export class DiscussionRepository implements IDiscussionRepository {
 	}
 
 	async add (data: DiscussionToModel) {
-		const discussion = await new Discussion(data).save()
-		return this.mapper.mapFrom(discussion)!
+		const session = await mongoose.startSession()
+		let res = null as any
+		await session.withTransaction(async (session) => {
+			const discussion = await new Discussion(data).save({ session })
+			const discussionData = this.mapper.mapForMeta(discussion)
+			await Group.findOneAndUpdate({ _id: data.groupId }, { $set: { last: discussionData } }, { session })
+			res = discussion
+			return discussion
+		})
+		await session.endSession()
+		return this.mapper.mapFrom(res)!
 	}
 
 	async find (id: string) {
@@ -48,7 +58,15 @@ export class DiscussionRepository implements IDiscussionRepository {
 	}
 
 	async delete (id: string, userId: string) {
-		const discussion = await Discussion.findOneAndDelete({ _id: id, userId })
-		return !!discussion
+		const session = await mongoose.startSession()
+		let res = false
+		await session.withTransaction(async (session) => {
+			const discussion = await Discussion.findOneAndDelete({ _id: id, userId }, { session })
+			if (discussion) await Group.findOneAndUpdate({ 'last._id': discussion.id }, { $set: { last: null } }, { session })
+			res = !!discussion
+			return discussion
+		})
+		await session.endSession()
+		return res
 	}
 }

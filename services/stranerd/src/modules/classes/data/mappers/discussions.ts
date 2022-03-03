@@ -23,4 +23,12 @@ export class DiscussionMapper extends BaseMapper<DiscussionFromModel, Discussion
 			userRoles: entity.userRoles
 		}
 	}
+
+	mapForMeta (model: DiscussionFromModel) {
+		const { _id, userId, userBio, userRoles, content, media, groupId, createdAt, updatedAt } = model
+		return {
+			id: _id.toString(), userId, userBio, userRoles,
+			content, media, groupId, createdAt, updatedAt
+		}
+	}
 }

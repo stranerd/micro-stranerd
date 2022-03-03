@@ -3,7 +3,7 @@ import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { Group } from '../mongooseModels/groups'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers } from '../../domain/types'
+import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
 
 export class GroupRepository implements IGroupRepository {
 	private static instance: GroupRepository
@@ -45,6 +45,11 @@ export class GroupRepository implements IGroupRepository {
 	async delete (id: string, userId: string) {
 		const group = await Group.findOneAndDelete({ _id: id, 'users.admins': userId })
 		return !!group
+	}
+
+	async updateGroupsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+		const groups = await Group.updateMany({ userId }, { $set: { userBio, userRoles } })
+		return groups.acknowledged
 	}
 
 	async updateGroupsUsers (classId: string, users: Record<ClassUsers, string[]>) {

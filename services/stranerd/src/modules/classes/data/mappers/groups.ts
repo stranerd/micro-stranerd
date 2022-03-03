@@ -1,13 +1,15 @@
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { GroupEntity } from '../../domain/entities/groups'
 import { BaseMapper } from '@utils/commons'
+import { DiscussionMapper } from './discussions'
 
 export class GroupMapper extends BaseMapper<GroupFromModel, GroupToModel, GroupEntity> {
 	mapFrom (model: GroupFromModel | null) {
 		if (!model) return null
-		const { _id, name, classId, users, createdAt, updatedAt } = model
+		const { _id, name, last, classId, userId, userBio, userRoles, users, createdAt, updatedAt } = model
+		const lastData = new DiscussionMapper().mapFrom(last)
 		return new GroupEntity({
-			id: _id.toString(), name, classId, users, createdAt, updatedAt
+			id: _id.toString(), name, last: lastData, classId, userId, userBio, userRoles, users, createdAt, updatedAt
 		})
 	}
 
@@ -15,7 +17,10 @@ export class GroupMapper extends BaseMapper<GroupFromModel, GroupToModel, GroupE
 		return {
 			name: entity.name,
 			classId: entity.classId,
-			users: entity.users
+			users: entity.users,
+			userId: entity.userId,
+			userBio: entity.userBio,
+			userRoles: entity.userRoles
 		}
 	}
 }

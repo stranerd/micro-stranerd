@@ -12,7 +12,12 @@ import {
 	UpdateVideosUserBio
 } from '@modules/study'
 import { UpdateReportsUserBio } from '@modules/reports'
-import { UpdateAnnouncementsUserBio, UpdateClassesUserBio, UpdateDiscussionsUserBio } from '@modules/classes'
+import {
+	UpdateAnnouncementsUserBio,
+	UpdateClassesUserBio,
+	UpdateDiscussionsUserBio,
+	UpdateGroupsUserBio
+} from '@modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -36,7 +41,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
 			UpdateChatMetasUserBio, UpdateSessionsUserBio, UpdateReviewsUserBio, UpdateReportsUserBio,
 			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio,
-			UpdateClassesUserBio, UpdateAnnouncementsUserBio, UpdateDiscussionsUserBio
+			UpdateClassesUserBio, UpdateAnnouncementsUserBio, UpdateGroupsUserBio, UpdateDiscussionsUserBio
 		].map(async (useCase) => await useCase.execute({
 			userId: after.id,
 			userBio: after.bio,

@@ -36,7 +36,7 @@ export class AnnouncementEntity extends BaseEntity {
 	}
 
 	getAllUsers () {
-		return Object.values(this.users).flat()
+		return Array.from(new Set(Object.values(this.users).flat()))
 	}
 }
 

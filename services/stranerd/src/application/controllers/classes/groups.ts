@@ -1,6 +1,7 @@
 import { AddGroup, DeleteGroup, FindClass, FindGroup, GetGroups, UpdateGroup } from '@modules/classes'
 import { FindUser } from '@modules/users'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { ClassUsers } from '@modules/classes/domain/types'
 
 export class GroupController {
 	static async FindGroup (req: Request) {
@@ -46,7 +47,7 @@ export class GroupController {
 
 		const classInst = await FindClass.execute(classId)
 		if (!classInst) throw new NotFoundError()
-		if (classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
+		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
 			name, classId,

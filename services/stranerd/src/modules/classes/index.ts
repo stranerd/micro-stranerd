@@ -20,6 +20,7 @@ import { FindGroupUseCase } from './domain/useCases/groups/findGroup'
 import { AddGroupUseCase } from './domain/useCases/groups/addGroup'
 import { UpdateGroupUseCase } from './domain/useCases/groups/updateGroup'
 import { DeleteGroupUseCase } from './domain/useCases/groups/deleteGroup'
+import { UpdateGroupsUserBioUseCase } from './domain/useCases/groups/updateGroupsUserBio'
 import { UpdateGroupsUsersUseCase } from './domain/useCases/groups/updateGroupsUsers'
 import { GetDiscussionsUseCase } from './domain/useCases/discussions/getDiscussions'
 import { FindDiscussionUseCase } from './domain/useCases/discussions/findDiscussion'
@@ -63,6 +64,7 @@ export const FindGroup = new FindGroupUseCase(groupRepository)
 export const AddGroup = new AddGroupUseCase(groupRepository)
 export const UpdateGroup = new UpdateGroupUseCase(groupRepository)
 export const DeleteGroup = new DeleteGroupUseCase(groupRepository)
+export const UpdateGroupsUserBio = new UpdateGroupsUserBioUseCase(groupRepository)
 export const UpdateGroupsUsers = new UpdateGroupsUsersUseCase(groupRepository)
 
 export const GetDiscussions = new GetDiscussionsUseCase(discussionRepository)

@@ -106,7 +106,7 @@ export class ClassController {
 
 	static async AcceptRequest (req: Request) {
 		const { accept, userId } = validate({
-			accept: req.body.request,
+			accept: req.body.accept,
 			userId: req.body.userId
 		}, {
 			accept: { required: true, rules: [Validation.isBoolean] },
@@ -124,7 +124,7 @@ export class ClassController {
 
 	static async AddMembers (req: Request) {
 		const { accept, userIds } = validate({
-			accept: req.body.request,
+			accept: req.body.accept,
 			userIds: req.body.userIds
 		}, {
 			accept: { required: true, rules: [Validation.isBoolean] },
@@ -145,7 +145,7 @@ export class ClassController {
 
 	static async ChangeMemberRole (req: Request) {
 		const { add, userId, role } = validate({
-			add: req.body.request,
+			add: req.body.add,
 			userId: req.body.userId,
 			role: req.body.role
 		}, {
