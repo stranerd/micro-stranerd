@@ -34,7 +34,7 @@ export class DiscussionController {
 
 		if (user) return await AddDiscussion.execute({
 			...data,
-			links: [],
+			links: Validation.extractUrls(data.content),
 			classId: group.classId,
 			userBio: user.bio,
 			userRoles: user.roles,
