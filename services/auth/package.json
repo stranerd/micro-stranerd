@@ -13,21 +13,21 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@stranerd/api-commons": "^1.5.1",
-		"axios": "^0.24.0",
+		"@stranerd/api-commons": "^1.5.3",
+		"axios": "^0.26.0",
 		"bcrypt": "^5.0.1",
-		"google-auth-library": "^7.10.2"
+		"google-auth-library": "^7.14.0"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.0",
-		"@types/node": "^16.11.7",
-		"@typescript-eslint/eslint-plugin": "^5.3.1",
-		"@typescript-eslint/parser": "^5.3.1",
-		"eslint": "^8.2.0",
-		"eslint-plugin-promise": "^5.1.1",
+		"@types/node": "^17.0.21",
+		"@typescript-eslint/eslint-plugin": "^5.13.0",
+		"@typescript-eslint/parser": "^5.13.0",
+		"eslint": "^8.10.0",
+		"eslint-plugin-promise": "^6.0.0",
 		"ts-node-dev": "^1.1.8",
-		"tsconfig-paths": "^3.11.0",
+		"tsconfig-paths": "^3.13.0",
 		"tscpaths": "^0.0.9",
-		"typescript": "^4.4.4"
+		"typescript": "^4.6.2"
 	}
 }
