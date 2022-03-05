@@ -27,10 +27,19 @@ const Schema = new mongoose.Schema<DiscussionFromModel>({
 		type: String,
 		required: true
 	},
+	classId: {
+		type: String,
+		required: true
+	},
 	content: {
 		type: String,
 		required: false,
-		default: null as unknown as string
+		default: ''
+	},
+	links: {
+		type: [String],
+		required: false,
+		default: []
 	},
 	media: {
 		type: mongoose.Schema.Types.Mixed,

@@ -69,4 +69,9 @@ export class DiscussionRepository implements IDiscussionRepository {
 		await session.endSession()
 		return res
 	}
+
+	async deleteGroupDiscussions (groupId: string) {
+		const discussions = await Discussion.deleteMany({ groupId })
+		return discussions.acknowledged
+	}
 }

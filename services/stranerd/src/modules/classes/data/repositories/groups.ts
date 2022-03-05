@@ -56,4 +56,9 @@ export class GroupRepository implements IGroupRepository {
 		const groups = await Group.updateMany({ classId }, { $set: { users } })
 		return groups.acknowledged
 	}
+
+	async deleteClassGroups (classId: string) {
+		const groups = await Group.deleteMany({ classId })
+		return groups.acknowledged
+	}
 }

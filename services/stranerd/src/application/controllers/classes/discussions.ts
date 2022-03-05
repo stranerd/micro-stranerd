@@ -18,10 +18,7 @@ export class DiscussionController {
 			media: req.body.media,
 			groupId: req.body.groupId
 		}, {
-			content: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!req.body.media), Validation.isString, Validation.isLongerThanX(0)]
-			},
+			content: { required: true, rules: [Validation.isString] },
 			media: {
 				required: false,
 				rules: [Validation.isRequiredIfX(!req.body.content), Validation.isFile]
@@ -37,6 +34,8 @@ export class DiscussionController {
 
 		if (user) return await AddDiscussion.execute({
 			...data,
+			links: [],
+			classId: group.classId,
 			userBio: user.bio,
 			userRoles: user.roles,
 			userId: user.id

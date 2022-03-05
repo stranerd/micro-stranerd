@@ -10,4 +10,5 @@ export interface IDiscussionRepository {
 	update: (id: string, userId: string, data: Partial<DiscussionToModel>) => Promise<DiscussionEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateDiscussionsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
+	deleteGroupDiscussions: (groupId: string) => Promise<boolean>
 }

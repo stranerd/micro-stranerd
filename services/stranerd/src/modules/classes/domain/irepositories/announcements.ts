@@ -11,4 +11,5 @@ export interface IAnnouncementRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateAnnouncementsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
 	updateAnnouncementsUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
+	deleteClassAnnouncements: (classId: string) => Promise<boolean>
 }

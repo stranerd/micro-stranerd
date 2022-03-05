@@ -33,6 +33,9 @@ import { LeaveClassUseCase } from './domain/useCases/classes/leaveClass'
 import { AcceptRequestUseCase } from './domain/useCases/classes/acceptRequest'
 import { AddMembersUseCase } from './domain/useCases/classes/addMembers'
 import { ChangeMemberRoleUseCase } from './domain/useCases/classes/changeMemberRole'
+import { DeleteClassAnnouncementsUseCase } from './domain/useCases/announcements/deleteClassAnnouncements'
+import { DeleteClassGroupsUseCase } from './domain/useCases/groups/deleteClassGroups'
+import { DeleteGroupDiscussionsUseCase } from './domain/useCases/discussions/deleteGroupDiscussions'
 
 const classRepository = ClassRepository.getInstance()
 const announcementRepository = AnnouncementRepository.getInstance()
@@ -58,6 +61,7 @@ export const UpdateAnnouncement = new UpdateAnnouncementUseCase(announcementRepo
 export const DeleteAnnouncement = new DeleteAnnouncementUseCase(announcementRepository)
 export const UpdateAnnouncementsUserBio = new UpdateAnnouncementsUserBioUseCase(announcementRepository)
 export const UpdateAnnouncementsUsers = new UpdateAnnouncementsUsersUseCase(announcementRepository)
+export const DeleteClassAnnouncements = new DeleteClassAnnouncementsUseCase(announcementRepository)
 
 export const GetGroups = new GetGroupsUseCase(groupRepository)
 export const FindGroup = new FindGroupUseCase(groupRepository)
@@ -66,6 +70,7 @@ export const UpdateGroup = new UpdateGroupUseCase(groupRepository)
 export const DeleteGroup = new DeleteGroupUseCase(groupRepository)
 export const UpdateGroupsUserBio = new UpdateGroupsUserBioUseCase(groupRepository)
 export const UpdateGroupsUsers = new UpdateGroupsUsersUseCase(groupRepository)
+export const DeleteClassGroups = new DeleteClassGroupsUseCase(groupRepository)
 
 export const GetDiscussions = new GetDiscussionsUseCase(discussionRepository)
 export const FindDiscussion = new FindDiscussionUseCase(discussionRepository)
@@ -73,6 +78,7 @@ export const AddDiscussion = new AddDiscussionUseCase(discussionRepository)
 export const UpdateDiscussion = new UpdateDiscussionUseCase(discussionRepository)
 export const DeleteDiscussion = new DeleteDiscussionUseCase(discussionRepository)
 export const UpdateDiscussionsUserBio = new UpdateDiscussionsUserBioUseCase(discussionRepository)
+export const DeleteGroupDiscussions = new DeleteGroupDiscussionsUseCase(discussionRepository)
 
 export { AnnouncementFromModel } from './data/models/announcements'
 export { ClassFromModel } from './data/models/classes'

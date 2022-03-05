@@ -11,13 +11,14 @@ type SessionData = { action: 'sessions', data: { userId: string, sessionId: stri
 type UserData = { action: 'users', data: { userId: string } }
 type AccountData = { action: 'account', data: { profile?: true, wallet?: true } }
 type RoleData = { action: 'roles', data: { admin?: true, tutor?: true } }
+type AnnouncementData = { action: 'announcements', data: { classId: string, announcementId: string } }
 
 type NotificationData =
 	Omit<NotificationToModel, 'userId'>
-	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData)
+	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData)
 
 export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
-	await CreateNotification.execute({ ...data, userId })
+	await CreateNotification.execute([{ ...data, userId }])
 	if (asEmail) {
 		const user = await FindUser.execute(userId)
 		if (user) {
@@ -34,4 +35,8 @@ export const sendNotification = async (userId: string, data: NotificationData & 
 			})
 		}
 	}
+}
+
+export const broadcastNotifications = async (userIds: string[], data: NotificationData & { title: string }) => {
+	await CreateNotification.execute(userIds.map((userId) => ({ ...data, userId })))
 }

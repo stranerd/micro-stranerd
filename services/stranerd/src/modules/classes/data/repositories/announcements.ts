@@ -59,4 +59,9 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		const announcements = await Announcement.updateMany({ classId }, { $set: { users } })
 		return announcements.acknowledged
 	}
+
+	async deleteClassAnnouncements (classId: string) {
+		const announcements = await Announcement.deleteMany({ classId })
+		return announcements.acknowledged
+	}
 }

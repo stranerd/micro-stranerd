@@ -1,5 +1,12 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { ClassEntity, ClassFromModel, UpdateAnnouncementsUsers, UpdateGroupsUsers } from '@modules/classes'
+import {
+	ClassEntity,
+	ClassFromModel,
+	DeleteClassAnnouncements,
+	DeleteClassGroups,
+	UpdateAnnouncementsUsers,
+	UpdateGroupsUsers
+} from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
@@ -24,5 +31,6 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitOpenDeleted(`classes/classes/${before.id}`, before)
 
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		await Promise.all([DeleteClassGroups, DeleteClassAnnouncements].map((useCase) => useCase.execute(before.id)))
 	}
 }

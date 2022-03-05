@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { GroupEntity, GroupFromModel } from '@modules/classes'
+import { DeleteGroupDiscussions, GroupEntity, GroupFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 
 export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, GroupEntity> = {
@@ -14,5 +14,6 @@ export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, G
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('classes/groups', before)
 		await getSocketEmitter().emitOpenDeleted(`classes/groups/${before.id}`, before)
+		await DeleteGroupDiscussions.execute(before.id)
 	}
 }

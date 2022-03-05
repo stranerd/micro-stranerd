@@ -10,7 +10,9 @@ export interface DiscussionToModel {
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
-	content: string | null
+	content: string
 	media: Media | null
+	links: string[]
 	groupId: string
+	classId: string
 }

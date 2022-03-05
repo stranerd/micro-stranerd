@@ -26,9 +26,9 @@ export class NotificationRepository implements INotificationRepository {
 		return this.mapper.mapFrom(notification)
 	}
 
-	async createNotification (data: NotificationToModel) {
-		const notification = await new Notification(data).save()
-		return this.mapper.mapFrom(notification)!
+	async createNotification (data: NotificationToModel[]) {
+		const notifications = await Notification.insertMany(data)
+		return notifications.map((notification) => this.mapper.mapFrom(notification)!)
 	}
 
 	async markNotificationsSeen (data: { userId: string, ids?: string[], seen: boolean }) {

@@ -6,9 +6,11 @@ export class DiscussionEntity extends BaseEntity {
 	public readonly userId: string
 	public readonly userBio: UserBio
 	public readonly userRoles: UserRoles
-	public readonly content: string | null
+	public readonly content: string
 	public readonly media: Media | null
+	public readonly links: string[]
 	public readonly groupId: string
+	public readonly classId: string
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -19,7 +21,9 @@ export class DiscussionEntity extends BaseEntity {
 		             userRoles,
 		             content,
 		             media,
+		             links,
 		             groupId,
+		             classId,
 		             createdAt,
 		             updatedAt
 	             }: DiscussionConstructorArgs) {
@@ -30,20 +34,24 @@ export class DiscussionEntity extends BaseEntity {
 		this.userRoles = userRoles
 		this.content = content
 		this.media = media
+		this.links = links
 		this.groupId = groupId
+		this.classId = classId
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
 }
 
 type DiscussionConstructorArgs = {
-	id: string,
-	userId: string,
-	userBio: UserBio,
-	userRoles: UserRoles,
-	content: string | null,
-	media: Media | null,
+	id: string
+	userId: string
+	userBio: UserBio
+	userRoles: UserRoles
+	content: string
+	media: Media | null
+	links: string[]
 	groupId: string
+	classId: string
 	createdAt: number
 	updatedAt: number
 }

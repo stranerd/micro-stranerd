@@ -1,11 +1,22 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnnouncementEntity, AnnouncementFromModel } from '@modules/classes'
+import { AnnouncementEntity, AnnouncementFromModel, FindClass } from '@modules/classes'
 import { getSocketEmitter } from '@index'
+import { broadcastNotifications } from '@utils/modules/users/notifications'
 
 export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitOpenCreated('classes/announcements', after)
 		await getSocketEmitter().emitOpenCreated(`classes/announcements/${after.id}`, after)
+
+		const users = after.getAllUsers().filter((userId) => userId !== after.userId)
+		const classInst = await FindClass.execute(after.classId)
+		if (!classInst) return
+		await broadcastNotifications(users, {
+			title: `New announcement in ${classInst.name}`,
+			body: after.body,
+			action: 'announcements',
+			data: { classId: after.classId, announcementId: after.id }
+		})
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitOpenUpdated('classes/announcements', after)

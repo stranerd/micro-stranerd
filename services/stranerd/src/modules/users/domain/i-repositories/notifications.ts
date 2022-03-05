@@ -5,7 +5,7 @@ import { QueryParams, QueryResults } from '@utils/commons'
 export interface INotificationRepository {
 	findNotification (data: { userId: string, id: string }): Promise<NotificationEntity | null>
 
-	createNotification (data: NotificationToModel): Promise<NotificationEntity>
+	createNotification (data: NotificationToModel[]): Promise<NotificationEntity[]>
 
 	markNotificationsSeen (data: { userId: string, ids?: string[], seen: boolean }): Promise<void>
 

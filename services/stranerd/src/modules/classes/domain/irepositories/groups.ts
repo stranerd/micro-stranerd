@@ -11,4 +11,5 @@ export interface IGroupRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateGroupsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
 	updateGroupsUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
+	deleteClassGroups: (classId: string) => Promise<boolean>
 }
