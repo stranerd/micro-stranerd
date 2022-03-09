@@ -9,10 +9,19 @@ type NotificationData = {
 	}
 }
 
+type ClassDiscussionData = {
+	type: 'classes-discussions'
+	data: {
+		id: string
+		classId: string
+		groupId: string
+	}
+}
+
 export type PushNotification = {
 	userIds: string[],
 	app: AuthApps
 	title: string
 	body: string
-	data: NotificationData
+	data: NotificationData | ClassDiscussionData
 }

@@ -8,9 +8,9 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		await getSocketEmitter().emitOpenCreated('classes/announcements', after)
 		await getSocketEmitter().emitOpenCreated(`classes/announcements/${after.id}`, after)
 
-		const users = after.getAllUsers().filter((userId) => userId !== after.userId)
 		const classInst = await FindClass.execute(after.classId)
 		if (!classInst) return
+		const users = classInst.getAllUsers().filter((userId) => userId !== after.userId)
 		await broadcastNotifications(users, {
 			title: `New announcement in ${classInst.name}`,
 			body: after.body,
