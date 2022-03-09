@@ -123,23 +123,23 @@ export class ClassController {
 	}
 
 	static async AddMembers (req: Request) {
-		const { accept, userIds } = validate({
-			accept: req.body.accept,
+		const { add, userIds } = validate({
+			add: req.body.add,
 			userIds: req.body.userIds
 		}, {
-			accept: { required: true, rules: [Validation.isBoolean] },
+			add: { required: true, rules: [Validation.isBoolean] },
 			userIds: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0)]
 			}
 		})
 
-		const accepted = await AddClassMembers.execute({
+		const added = await AddClassMembers.execute({
 			classId: req.params.id,
 			adminId: req.authUser!.id,
-			userIds, accept
+			userIds, add
 		})
-		if (accepted) return accepted
+		if (added) return added
 		throw new NotAuthorizedError()
 	}
 

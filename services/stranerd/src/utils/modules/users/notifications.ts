@@ -12,10 +12,11 @@ type UserData = { action: 'users', data: { userId: string } }
 type AccountData = { action: 'account', data: { profile?: true, wallet?: true } }
 type RoleData = { action: 'roles', data: { admin?: true, tutor?: true } }
 type AnnouncementData = { action: 'announcements', data: { classId: string, announcementId: string } }
+type ClassesData = { action: 'classes', data: { classId: string } }
 
 type NotificationData =
 	Omit<NotificationToModel, 'userId'>
-	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData)
+	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData | ClassesData)
 
 export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
 	await CreateNotification.execute([{ ...data, userId }])

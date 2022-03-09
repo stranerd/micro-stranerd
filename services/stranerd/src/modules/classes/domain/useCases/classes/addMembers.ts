@@ -1,7 +1,7 @@
 import { IClassRepository } from '../../irepositories/classes'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { classId: string, adminId: string, userIds: string[], accept: boolean }
+type Input = { classId: string, adminId: string, userIds: string[], add: boolean }
 
 export class AddMembersUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IClassRepository
@@ -12,6 +12,6 @@ export class AddMembersUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (data: Input) {
-		return await this.repository.addMembers(data.classId, data.adminId, data.userIds, data.accept)
+		return await this.repository.addMembers(data.classId, data.adminId, data.userIds, data.add)
 	}
 }

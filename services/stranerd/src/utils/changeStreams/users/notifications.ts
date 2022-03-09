@@ -9,7 +9,7 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 		await getSocketEmitter().emitMineCreated(`users/notifications/${after.id}`, after, after.userId)
 
 		await publishers[EventTypes.PUSHNOTIFICATION].publish({
-			userId: after.userId, app: AuthApps.Stranerd,
+			userIds: [after.userId], app: AuthApps.Stranerd,
 			title: after.title, body: after.body,
 			data: {
 				type: 'notifications',
