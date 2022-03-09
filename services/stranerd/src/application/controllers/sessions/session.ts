@@ -1,6 +1,6 @@
 import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { NotFoundError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class SessionController {
 	static async getSessions (req: Request) {
@@ -9,6 +9,7 @@ export class SessionController {
 			{ field: 'studentId', value: req.authUser!.id },
 			{ field: 'tutorId', value: req.authUser!.id }
 		]
+		query.authType = QueryKeys.or
 		return await GetSessions.execute(query)
 	}
 

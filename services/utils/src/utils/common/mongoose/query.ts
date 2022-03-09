@@ -1,16 +1,21 @@
 import { mongoose } from './index'
 
+export enum QueryKeys { and = 'and', or = 'or' }
+
 export enum Conditions {
 	lt = 'lt', lte = 'lte', gt = 'gt', gte = 'gte',
 	eq = 'eq', ne = 'ne', in = 'in', nin = 'nin'
 }
 
 type Where = { field: string, value: any, condition?: Conditions }
+type WhereBlock = { condition: QueryKeys, value: (Where | WhereBlock)[] }
+type WhereClause = Where | WhereBlock
 
 export type QueryParams = {
-	where?: Where[]
-	auth?: Where[]
-	whereType?: 'and' | 'or'
+	where?: WhereClause[]
+	auth?: WhereClause[]
+	whereType?: QueryKeys
+	authType?: QueryKeys
 	sort?: [{ field: string, desc?: boolean }]
 	limit?: number
 	all?: boolean
@@ -21,14 +26,12 @@ export type QueryParams = {
 export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
 	// Handle where clauses
 	const query = [] as ReturnType<typeof buildWhereQuery>[]
-	const whereType = ['and', 'or'].indexOf(params.whereType as string) !== -1 ? params.whereType! : 'and'
+	const whereType = Object.values(QueryKeys).indexOf(params.whereType!) !== -1 ? params.whereType! : QueryKeys.and
+	const authType = Object.values(QueryKeys).indexOf(params.authType!) !== -1 ? params.authType! : QueryKeys.and
 	const where = buildWhereQuery(params.where ?? [], whereType)
 	if (where) query.push(where)
-	if (params.auth) {
-		const authType = params.auth.length > 1 ? 'or' : 'and'
-		const auth = buildWhereQuery(params.auth ?? [], authType)
-		if (auth) query.push(auth)
-	}
+	const auth = buildWhereQuery(params.auth ?? [], authType)
+	if (auth) query.push(auth)
 	if (params.search && params.search.fields.length > 0) {
 		const search = params.search.fields.map((field) => ({
 			[field]: {
@@ -96,23 +99,25 @@ export type QueryResults<Model> = {
 	results: Model[]
 }
 
-const buildWhereQuery = (params: Where[], type: 'and' | 'or') => {
-	const where = params.map(({ field, value, condition }) => {
+const buildWhereQuery = (params: WhereClause[], key: QueryKeys = QueryKeys.and) => {
+	const where = params.map((param) => {
+		if (Object.values(QueryKeys).includes(param.condition as QueryKeys)) return buildWhereQuery(param.value, param.condition as QueryKeys)
+		const { field } = param as Where
 		const checkedField = field === 'id' ? '_id' : (field ?? '')
-		const checkedValue = value === undefined ? '' : value
-		const checkedCondition = Object.keys(Conditions).indexOf(condition as unknown as string) > -1 ? condition : Conditions.eq
+		const checkedValue = param.value === undefined ? '' : param.value
+		const checkedCondition = Object.keys(Conditions).indexOf(param.condition as string) > -1 ? param.condition : Conditions.eq
 		return ({
 			field: checkedField,
 			value: checkedValue,
-			condition: checkedCondition
+			condition: checkedCondition,
+			isWhere: true
 		})
-	}).map((c) => ({
-		[`${c.field}`]: {
-			[`$${c.condition}`]: c.value
+	}).filter((c) => c).map((c) => {
+		if (c.isWhere) return {
+			[`${c.field}`]: { [`$${c.condition}`]: c.value }
 		}
-	}))
+		else return c
+	})
 
-	return where.length > 0 ? {
-		[`$${type}`]: where
-	} : null
+	return where.length > 0 ? { [`$${key}`]: where } : null
 }
