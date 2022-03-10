@@ -84,7 +84,7 @@ export class QuestionController {
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
 		if (isClasses && !classInst) throw new NotFoundError()
-		if (isClasses && classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
+		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
 
 		const data = {
 			body, subject, attachments,
