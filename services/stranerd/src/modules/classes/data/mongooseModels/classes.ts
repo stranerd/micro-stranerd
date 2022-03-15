@@ -35,7 +35,12 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 	photo: {
 		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['photo'],
 		required: false,
-		default: {} as unknown as ClassFromModel['photo']
+		default: null as unknown as ClassFromModel['photo']
+	},
+	coverPhoto: {
+		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['coverPhoto'],
+		required: false,
+		default: null as unknown as ClassFromModel['coverPhoto']
 	},
 	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],

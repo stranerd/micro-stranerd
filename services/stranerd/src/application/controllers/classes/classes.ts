@@ -26,20 +26,19 @@ export class ClassController {
 
 	static async UpdateClass (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
-		if (!user) throw new NotFoundError()
-
-		const { name, description, photo } = validate({
+		const { name, description, photo, coverPhoto } = validate({
 			name: req.body.name,
 			description: req.body.description,
-			photo: req.body.photo
+			photo: req.body.photo,
+			coverPhoto: req.body.coverPhoto
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			photo: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
 
-		const data = { name, description, photo }
+		const data = { name, description, photo, coverPhoto }
 
 		const updatedClass = await UpdateClass.execute({ id: req.params.id, userId: authUserId, data })
 
@@ -52,18 +51,20 @@ export class ClassController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new NotFoundError()
 
-		const { name, description, photo } = validate({
+		const { name, description, photo, coverPhoto } = validate({
 			name: req.body.name,
 			description: req.body.description,
-			photo: req.body.photo
+			photo: req.body.photo,
+			coverPhoto: req.body.coverPhoto
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			photo: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
 
 		const data = {
-			name, description, photo,
+			name, description, photo, coverPhoto,
 			userId: user.id,
 			userBio: user.bio,
 			userRoles: user.roles

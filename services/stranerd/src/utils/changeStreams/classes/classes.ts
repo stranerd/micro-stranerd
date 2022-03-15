@@ -40,12 +40,15 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 				title: after.name
 			})
 		}
+		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitOpenDeleted('classes/classes', before)
 		await getSocketEmitter().emitOpenDeleted(`classes/classes/${before.id}`, before)
 
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 		await Promise.all([DeleteClassGroups, DeleteClassAnnouncements].map((useCase) => useCase.execute(before.id)))
 	}
 }

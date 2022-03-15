@@ -22,9 +22,6 @@ export class AnnouncementController {
 
 	static async UpdateAnnouncement (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
-		if (!user) throw new NotFoundError()
-
 		const { body } = validate({
 			body: req.body.body
 		}, {

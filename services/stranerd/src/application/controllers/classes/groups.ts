@@ -15,9 +15,6 @@ export class GroupController {
 
 	static async UpdateGroup (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
-		if (!user) throw new NotFoundError()
-
 		const { name } = validate({
 			name: req.body.name
 		}, {

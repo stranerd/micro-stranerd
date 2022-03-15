@@ -12,6 +12,7 @@ export interface ClassToModel {
 	name: string
 	description: string
 	photo: Media | null
+	coverPhoto: Media | null
 	userId: string
 	userBio: UserBio
 	userRoles: UserRoles
