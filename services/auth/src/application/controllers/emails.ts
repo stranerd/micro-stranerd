@@ -17,6 +17,7 @@ export class EmailsController {
 			lastName: req.body.lastName,
 			password: req.body.password,
 			photo: req.body.photo,
+			coverPhoto: req.body.coverPhoto,
 			referrer: req.body.referrer,
 			description: req.body.description
 		}
@@ -41,6 +42,7 @@ export class EmailsController {
 				rules: [Validation.isString]
 			},
 			photo: { required: false, rules: [Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			referrer: { required: false, rules: [Validation.isString] }

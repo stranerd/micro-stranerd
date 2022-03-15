@@ -50,6 +50,7 @@ export class UserRepository implements IUserRepository {
 					lastName: details.lastName,
 					password: await hash(details.password),
 					photo: details.photo,
+					coverPhoto: details.coverPhoto,
 					lastSignedInAt: Date.now()
 				},
 				$addToSet: {

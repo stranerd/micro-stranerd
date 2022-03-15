@@ -8,6 +8,7 @@ export class UserEntity extends BaseEntity {
 	public readonly firstName: string
 	public readonly lastName: string
 	public readonly photo: MediaOutput | null
+	public readonly coverPhoto: MediaOutput | null
 	public readonly referrer: string | null
 	public readonly isVerified: boolean
 	public readonly authTypes: AuthTypes[]
@@ -24,6 +25,7 @@ export class UserEntity extends BaseEntity {
 		this.lastName = data.lastName
 		this.description = data.description
 		this.photo = data.photo
+		this.coverPhoto = data.coverPhoto
 		this.referrer = data.referrer
 		this.isVerified = data.isVerified
 		this.authTypes = data.authTypes
@@ -42,6 +44,7 @@ export interface UserConstructorArgs {
 	firstName: string;
 	lastName: string;
 	photo: MediaOutput | null;
+	coverPhoto: MediaOutput | null;
 	referrer: string | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];

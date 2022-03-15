@@ -45,6 +45,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		required: false,
 		default: null
 	},
+	coverPhoto: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: null
+	},
 	referrer: {
 		type: String,
 		required: false,

@@ -13,7 +13,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				lastName: after.lastName,
 				email: after.email,
 				description: after.description,
-				photo: after.photo
+				photo: after.photo,
+				coverPhoto: after.coverPhoto
 			},
 			timestamp: after.signedUpAt
 		})
@@ -35,8 +36,9 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 	},
 	updated: async ({ before, after, changes }) => {
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 
-		const updatedBio = changes.firstName || changes.lastName || changes.photo || changes.email || changes.description
+		const updatedBio = changes.firstName || changes.lastName || changes.photo || changes.email || changes.description || changes.coverPhoto
 
 		if (updatedBio) await publishers[EventTypes.AUTHUSERUPDATED].publish({
 			id: after.id,
@@ -45,7 +47,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				lastName: after.lastName,
 				email: after.email,
 				description: after.description,
-				photo: after.photo
+				photo: after.photo,
+				coverPhoto: after.coverPhoto
 			},
 			timestamp: Date.now()
 		})
@@ -63,6 +66,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		})
 	},
 	deleted: async ({ before }) => {
+		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 		await publishers[EventTypes.AUTHUSERDELETED].publish({
 			id: before.id,
 			timestamp: Date.now()

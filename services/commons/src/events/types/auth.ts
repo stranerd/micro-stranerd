@@ -9,6 +9,7 @@ export type AuthUserChange = {
 		description: string
 		email: string
 		photo: MediaOutput | null
+		coverPhoto: MediaOutput | null
 	},
 	timestamp: number
 }

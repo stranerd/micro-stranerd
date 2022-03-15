@@ -15,12 +15,14 @@ export class UserController {
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			description: req.body.description,
-			photo: req.body.photo
+			photo: req.body.photo,
+			coverPhoto: req.body.coverPhoto
 		}, {
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			photo: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
 
 		return await UpdateUserProfile.execute({ userId, data: validateData })
