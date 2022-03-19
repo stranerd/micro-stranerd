@@ -18,7 +18,7 @@ const app = getNewServerInstance(routes, {
 		'users/users', 'users/reviews', 'users/badges',
 		'questions/answerComments', 'questions/answers', 'questions/answerUpvotes', 'questions/questions',
 		'study/notes', 'study/comments', 'study/videos', 'study/flashCards', 'study/sets', 'study/testPreps',
-		'school/courses', 'school/institutions',
+		'school/courses', 'school/institutions', 'school/faculties',
 		'classes/classes', 'classes/groups', 'classes/discussions', 'classes/announcements'
 	]
 }, {
