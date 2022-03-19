@@ -17,6 +17,16 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 		type: String,
 		required: true
 	},
+	facultyId: {
+		type: String,
+		required: false,
+		default: null
+	},
+	departmentId: {
+		type: String,
+		required: false,
+		default: null
+	},
 	createdAt: {
 		type: Number,
 		required: false,

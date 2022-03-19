@@ -1,5 +1,5 @@
-import { AddCourse, DeleteCourse, FindCourse, GetCourses, UpdateCourse } from '@modules/school'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { AddCourse, DeleteCourse, FindCourse, FindDepartment, GetCourses, UpdateCourse } from '@modules/school'
+import { BadRequestError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class CourseController {
 	static async FindCourse (req: Request) {
@@ -14,13 +14,24 @@ export class CourseController {
 	static async CreateCourse (req: Request) {
 		const data = validate({
 			name: req.body.name,
-			institutionId: req.body.institutionId
+			institutionId: req.body.institutionId,
+			departmentId: req.body.departmentId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString] }
+			institutionId: { required: true, rules: [Validation.isString] },
+			departmentId: { required: false, rules: [Validation.isString] }
 		})
+		const department = !data.departmentId ? null : await FindDepartment.execute(data.departmentId)
+		if (data.departmentId) {
+			if (!department) throw new NotFoundError()
+			if (department.institutionId !== data.institutionId) throw new BadRequestError('Department provided doesn\'t belong to the provided institution')
+		}
 
-		return await AddCourse.execute(data)
+		return await AddCourse.execute({
+			...data,
+			departmentId: department?.id ?? null,
+			facultyId: department?.facultyId ?? null
+		})
 	}
 
 	static async UpdateCourse (req: Request) {

@@ -37,6 +37,11 @@ export class CourseRepository implements ICourseRepository {
 		return deleteData.acknowledged
 	}
 
+	async deleteDepartmentCourses (departmentId: string): Promise<boolean> {
+		const deleteData = await Course.deleteMany({ departmentId })
+		return deleteData.acknowledged
+	}
+
 	async add (data: CourseToModel) {
 		const course = await new Course(data).save()
 		return this.mapper.mapFrom(course)!

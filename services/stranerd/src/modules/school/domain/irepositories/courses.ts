@@ -9,4 +9,5 @@ export interface ICourseRepository {
 	find: (id: string) => Promise<CourseEntity | null>
 	delete: (id: string) => Promise<boolean>
 	deleteInstitutionCourses: (institutionId: string) => Promise<boolean>
+	deleteDepartmentCourses: (departmentId: string) => Promise<boolean>
 }

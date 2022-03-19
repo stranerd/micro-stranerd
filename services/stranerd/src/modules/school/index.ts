@@ -8,6 +8,7 @@ import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
 import { FindCourseUseCase } from './domain/useCases/courses/findCourse'
 import { GetCoursesUseCase } from './domain/useCases/courses/getCourses'
 import { DeleteInstitutionCoursesUseCase } from './domain/useCases/courses/deleteInstitutionCourses'
+import { DeleteDepartmentCoursesUseCase } from './domain/useCases/courses/deleteDepartmentCourses'
 import { AddInstitutionUseCase } from './domain/useCases/institutions/addInstitution'
 import { UpdateInstitutionUseCase } from './domain/useCases/institutions/updateInstitution'
 import { DeleteInstitutionUseCase } from './domain/useCases/institutions/deleteInstitution'
@@ -37,6 +38,7 @@ export const DeleteCourse = new DeleteCourseUseCase(courseRepository)
 export const FindCourse = new FindCourseUseCase(courseRepository)
 export const GetCourses = new GetCoursesUseCase(courseRepository)
 export const DeleteInstitutionCourses = new DeleteInstitutionCoursesUseCase(courseRepository)
+export const DeleteDepartmentCourses = new DeleteDepartmentCoursesUseCase(courseRepository)
 
 export const AddInstitution = new AddInstitutionUseCase(institutionRepository)
 export const UpdateInstitution = new UpdateInstitutionUseCase(institutionRepository)

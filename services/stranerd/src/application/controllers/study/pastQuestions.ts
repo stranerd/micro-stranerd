@@ -7,6 +7,7 @@ import {
 	UpdatePastQuestion
 } from '@modules/study'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { FindCourse } from '@modules/school'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {
@@ -22,21 +23,10 @@ export class PastQuestionController {
 		const isObjective = req.body.data?.type === PastQuestionType.objective
 
 		const {
-			institutionId,
-			courseId,
-			year,
-			type,
-			question,
-			questionMedia,
-			answer,
-			answerMedia,
-			correctIndex,
-			options,
-			optionsMedia,
-			explanation,
-			explanationMedia
+			courseId, year, type, question, questionMedia,
+			answer, answerMedia,
+			correctIndex, options, optionsMedia, explanation, explanationMedia
 		} = validate({
-			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			year: req.body.year,
 			question: req.body.question,
@@ -51,7 +41,6 @@ export class PastQuestionController {
 			explanation: req.body.data?.explanation,
 			explanationMedia: req.body.data?.explanationMedia
 		}, {
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			type: {
@@ -95,9 +84,11 @@ export class PastQuestionController {
 				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
+		const course = await FindCourse.execute(courseId)
+		if (!course) throw new NotFoundError()
 
 		const data = {
-			institutionId, courseId, year, question, questionMedia,
+			institutionId: course.institutionId, courseId, year, question, questionMedia,
 			data: isObjective ? {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
 			} : { type, answer, answerMedia }
@@ -113,21 +104,10 @@ export class PastQuestionController {
 		const isObjective = req.body.data?.type === PastQuestionType.objective
 
 		const {
-			institutionId,
-			courseId,
-			year,
-			type,
-			question,
-			questionMedia,
-			answer,
-			answerMedia,
-			correctIndex,
-			options,
-			optionsMedia,
-			explanation,
-			explanationMedia
+			courseId, year, type, question, questionMedia,
+			answer, answerMedia,
+			correctIndex, options, optionsMedia, explanation, explanationMedia
 		} = validate({
-			institutionId: req.body.institutionId,
 			courseId: req.body.courseId,
 			year: req.body.year,
 			question: req.body.question,
@@ -142,7 +122,6 @@ export class PastQuestionController {
 			explanation: req.body.data?.explanation,
 			explanationMedia: req.body.data?.explanationMedia
 		}, {
-			institutionId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courseId: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			year: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			type: {
@@ -186,9 +165,11 @@ export class PastQuestionController {
 				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
+		const course = await FindCourse.execute(courseId)
+		if (!course) throw new NotFoundError()
 
 		const data = {
-			institutionId, courseId, year, question, questionMedia,
+			institutionId: course.institutionId, courseId, year, question, questionMedia,
 			data: isObjective ? {
 				type, correctIndex, options, optionsMedia, explanation, explanationMedia
 			} : { type, answer, answerMedia }
