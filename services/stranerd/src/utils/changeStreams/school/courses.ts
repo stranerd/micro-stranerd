@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { CourseEntity, CourseFromModel } from '@modules/study'
+import { CourseEntity, CourseFromModel } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
 export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel, CourseEntity> = {

@@ -1,4 +1,4 @@
-import { AddCourse, DeleteCourse, FindCourse, GetCourses, UpdateCourse } from '@modules/study'
+import { AddCourse, DeleteCourse, FindCourse, GetCourses, UpdateCourse } from '@modules/school'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class CourseController {

@@ -1,7 +1,5 @@
 import { TestPrepRepository } from './data/repositories/testPreps'
 import { SetRepository } from './data/repositories/sets'
-import { CourseRepository } from './data/repositories/courses'
-import { InstitutionRepository } from './data/repositories/institutions'
 import { CommentRepository } from './data/repositories/comments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
@@ -21,17 +19,6 @@ import { UpdateSetUseCase } from './domain/useCases/sets/updateSet'
 import { UpdateSetsUserBioUseCase } from './domain/useCases/sets/updateSetsUserBio'
 import { UpdateSetPropUseCase } from './domain/useCases/sets/updateSetProp'
 import { RemoveSetPropUseCase } from './domain/useCases/sets/removeSetProp'
-import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
-import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
-import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
-import { FindCourseUseCase } from './domain/useCases/courses/findCourse'
-import { GetCoursesUseCase } from './domain/useCases/courses/getCourses'
-import { DeleteInstitutionCoursesUseCase } from './domain/useCases/courses/deleteInstitutionCourses'
-import { AddInstitutionUseCase } from './domain/useCases/institutions/addInstitution'
-import { UpdateInstitutionUseCase } from './domain/useCases/institutions/updateInstitution'
-import { DeleteInstitutionUseCase } from './domain/useCases/institutions/deleteInstitution'
-import { FindInstitutionUseCase } from './domain/useCases/institutions/findInstitution'
-import { GetInstitutionsUseCase } from './domain/useCases/institutions/getInstitutions'
 import { GetCommentsUseCase } from './domain/useCases/comments/getComments'
 import { FindCommentUseCase } from './domain/useCases/comments/findComment'
 import { AddCommentUseCase } from './domain/useCases/comments/addComment'
@@ -70,8 +57,6 @@ import { UpdateTestTaskIdsUseCase } from './domain/useCases/tests/updateTestTask
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
-const courseRepository = CourseRepository.getInstance()
-const institutionRepository = InstitutionRepository.getInstance()
 const commentRepository = CommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
@@ -93,19 +78,6 @@ export const DeleteSet = new DeleteSetUseCase(setRepository)
 export const UpdateSetsUserBio = new UpdateSetsUserBioUseCase(setRepository)
 export const UpdateSetProp = new UpdateSetPropUseCase(setRepository)
 export const RemoveSetProp = new RemoveSetPropUseCase(setRepository)
-
-export const AddCourse = new AddCourseUseCase(courseRepository)
-export const UpdateCourse = new UpdateCourseUseCase(courseRepository)
-export const DeleteCourse = new DeleteCourseUseCase(courseRepository)
-export const FindCourse = new FindCourseUseCase(courseRepository)
-export const GetCourses = new GetCoursesUseCase(courseRepository)
-export const DeleteInstitutionCourses = new DeleteInstitutionCoursesUseCase(courseRepository)
-
-export const AddInstitution = new AddInstitutionUseCase(institutionRepository)
-export const UpdateInstitution = new UpdateInstitutionUseCase(institutionRepository)
-export const DeleteInstitution = new DeleteInstitutionUseCase(institutionRepository)
-export const FindInstitution = new FindInstitutionUseCase(institutionRepository)
-export const GetInstitutions = new GetInstitutionsUseCase(institutionRepository)
 
 export const GetComments = new GetCommentsUseCase(commentRepository)
 export const FindComment = new FindCommentUseCase(commentRepository)
@@ -155,9 +127,7 @@ export { CommentData, CommentType } from './domain/types'
 export { SetSaved, SetType } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
-export { CourseFromModel } from './data/models/courses'
 export { SetFromModel } from './data/models/sets'
-export { InstitutionFromModel } from './data/models/institutions'
 export { CommentFromModel } from './data/models/comments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
@@ -167,9 +137,7 @@ export { TestFromModel } from './data/models/tests'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
 export { CommentEntity } from './domain/entities/comments'
-export { CourseEntity } from './domain/entities/courses'
 export { SetEntity } from './domain/entities/sets'
-export { InstitutionEntity } from './domain/entities/institutions'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'

@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { InstitutionFromModel } from '../models/institutions'
-import { InstitutionChangeStreamCallbacks } from '@utils/changeStreams/study/institutions'
+import { InstitutionChangeStreamCallbacks } from '@utils/changeStreams/school/institutions'
 import { InstitutionEntity } from '../../domain/entities/institutions'
 import { InstitutionMapper } from '../mappers/institutions'
 
@@ -12,11 +12,6 @@ const Schema = new mongoose.Schema<InstitutionFromModel>({
 	name: {
 		type: String,
 		required: true
-	},
-	isSchool: {
-		type: Boolean,
-		required: false,
-		default: false
 	},
 	isGateway: {
 		type: Boolean,

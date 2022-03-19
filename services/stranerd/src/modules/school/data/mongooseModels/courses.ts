@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { CourseFromModel } from '../models/courses'
-import { CourseChangeStreamCallbacks } from '@utils/changeStreams/study/courses'
+import { CourseChangeStreamCallbacks } from '@utils/changeStreams/school/courses'
 import { CourseEntity } from '../../domain/entities/courses'
 import { CourseMapper } from '../mappers/courses'
 

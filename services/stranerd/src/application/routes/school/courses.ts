@@ -1,10 +1,10 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { CourseController } from '../../controllers/study/courses'
+import { CourseController } from '../../controllers/school/courses'
 import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const coursesRoutes: Route[] = [
 	{
-		path: '/study/courses',
+		path: '/school/courses',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const coursesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/courses/:id',
+		path: '/school/courses/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const coursesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/courses',
+		path: '/school/courses',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const coursesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/courses/:id',
+		path: '/school/courses/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -56,7 +56,7 @@ export const coursesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/courses/:id',
+		path: '/school/courses/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,

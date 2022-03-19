@@ -1,4 +1,4 @@
-import { AddInstitution, DeleteInstitution, FindInstitution, GetInstitutions, UpdateInstitution } from '@modules/study'
+import { AddInstitution, DeleteInstitution, FindInstitution, GetInstitutions, UpdateInstitution } from '@modules/school'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class InstitutionController {
@@ -14,11 +14,9 @@ export class InstitutionController {
 	static async CreateInstitution (req: Request) {
 		const data = validate({
 			name: req.body.name,
-			isSchool: req.body.isSchool,
 			isGateway: req.body.isGateway
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isSchool: { required: true, rules: [Validation.isBoolean] },
 			isGateway: { required: true, rules: [Validation.isBoolean] }
 		})
 
@@ -28,11 +26,9 @@ export class InstitutionController {
 	static async UpdateInstitution (req: Request) {
 		const data = validate({
 			name: req.body.name,
-			isSchool: req.body.isSchool,
 			isGateway: req.body.isGateway
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isSchool: { required: true, rules: [Validation.isBoolean] },
 			isGateway: { required: true, rules: [Validation.isBoolean] }
 		})
 

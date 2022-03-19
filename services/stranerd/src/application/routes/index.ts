@@ -20,8 +20,6 @@ import { flashcardsRoutes } from './study/flashCards'
 import { notesRoutes } from './study/notes'
 import { commentsRoutes } from './study/comments'
 import { videosRoutes } from './study/videos'
-import { institutionsRoutes } from './study/institutions'
-import { coursesRoutes } from './study/courses'
 import { setsRoutes } from './study/sets'
 import { testPrepsRoutes } from './study/testPreps'
 import { testsRoutes } from './study/tests'
@@ -29,6 +27,8 @@ import { announcementsRoutes } from './classes/announcements'
 import { classesRoutes } from './classes/classes'
 import { discussionRoutes } from './classes/discussions'
 import { groupsRoutes } from './classes/groups'
+import { institutionsRoutes } from './school/institutions'
+import { coursesRoutes } from './school/courses'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -51,8 +51,6 @@ export const routes: Route[] = [
 	...notesRoutes,
 	...videosRoutes,
 	...commentsRoutes,
-	...institutionsRoutes,
-	...coursesRoutes,
 	...setsRoutes,
 	...testPrepsRoutes,
 	...testsRoutes,
@@ -60,6 +58,8 @@ export const routes: Route[] = [
 	...classesRoutes,
 	...discussionRoutes,
 	...groupsRoutes,
+	...coursesRoutes,
+	...institutionsRoutes,
 	{
 		path: '/',
 		method: 'get',

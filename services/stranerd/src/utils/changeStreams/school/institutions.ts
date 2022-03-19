@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { DeleteInstitutionCourses, InstitutionEntity, InstitutionFromModel } from '@modules/study'
+import { DeleteInstitutionCourses, InstitutionEntity, InstitutionFromModel } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
 export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<InstitutionFromModel, InstitutionEntity> = {
