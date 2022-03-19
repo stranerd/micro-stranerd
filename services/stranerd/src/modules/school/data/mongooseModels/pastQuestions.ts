@@ -1,7 +1,7 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { PastQuestionFromModel } from '../models/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
-import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/study/pastQuestions'
+import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/school/pastQuestions'
 import { PastQuestionMapper } from '../mappers/pastQuestions'
 
 const Schema = new mongoose.Schema<PastQuestionFromModel>({
@@ -47,6 +47,6 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdStudyPastQuestion', Schema)
+export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdSchoolPastQuestion', Schema)
 
 generateChangeStreams<PastQuestionFromModel, PastQuestionEntity>(PastQuestion, PastQuestionChangeStreamCallbacks, new PastQuestionMapper().mapFrom).then()

@@ -1,13 +1,6 @@
 import { addDelayedJob, ChangeStreamCallbacks, Conditions, DelayedJobs, removeDelayedJob } from '@utils/commons'
-import {
-	GetPastQuestions,
-	PastQuestionType,
-	TestEntity,
-	TestFromModel,
-	TestType,
-	UpdateTest,
-	UpdateTestTaskIds
-} from '@modules/study'
+import { TestEntity, TestFromModel, TestType, UpdateTest, UpdateTestTaskIds } from '@modules/study'
+import { GetPastQuestions, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
 import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'

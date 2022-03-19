@@ -68,7 +68,7 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	const results = await builtQuery.exec()
 
 	const start = 1
-	const last = Math.ceil(total / limit)
+	const last = Math.ceil(total / limit) || 1
 	const next = page >= last ? null : page + 1
 	const previous = page <= start ? null : page - 1
 

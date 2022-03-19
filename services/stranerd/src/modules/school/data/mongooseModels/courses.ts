@@ -39,6 +39,6 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Course = mongoose.model<CourseFromModel>('StranerdStudyCourse', Schema)
+export const Course = mongoose.model<CourseFromModel>('StranerdSchoolCourse', Schema)
 
 generateChangeStreams<CourseFromModel, CourseEntity>(Course, CourseChangeStreamCallbacks, new CourseMapper().mapFrom).then()

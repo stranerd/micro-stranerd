@@ -12,7 +12,7 @@ const app = getNewServerInstance(routes, {
 	],
 	admin: [
 		'reports/reports',
-		'study/pastQuestions'
+		'school/pastQuestions'
 	],
 	open: [
 		'users/users', 'users/reviews', 'users/badges',

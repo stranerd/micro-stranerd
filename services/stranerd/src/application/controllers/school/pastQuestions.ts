@@ -1,13 +1,13 @@
 import {
 	AddPastQuestion,
 	DeletePastQuestion,
+	FindCourse,
 	FindPastQuestion,
 	GetPastQuestions,
 	PastQuestionType,
 	UpdatePastQuestion
-} from '@modules/study'
+} from '@modules/school'
 import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { FindCourse } from '@modules/school'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {

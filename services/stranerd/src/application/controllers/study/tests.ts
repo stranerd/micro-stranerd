@@ -1,13 +1,5 @@
-import {
-	AddTest,
-	FindTest,
-	FindTestPrep,
-	GetPastQuestions,
-	GetTests,
-	TestType,
-	UpdateTest,
-	UpdateTestAnswer
-} from '@modules/study'
+import { AddTest, FindTest, FindTestPrep, GetTests, TestType, UpdateTest, UpdateTestAnswer } from '@modules/study'
+import { GetPastQuestions } from '@modules/school'
 import {
 	NotAuthorizedError,
 	NotFoundError,

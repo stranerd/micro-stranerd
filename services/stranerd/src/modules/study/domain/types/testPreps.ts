@@ -1,4 +1,4 @@
-import { PastQuestionType } from './pastQuestions'
+import { PastQuestionType } from '@modules/school'
 
 export enum PrepType {
 	pastQuestion = 'pastQuestion'
@@ -13,3 +13,4 @@ type PQType = {
 }
 
 export type PrepData = PQType
+export type { PastQuestionType }

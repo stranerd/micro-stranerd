@@ -1,10 +1,10 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { PastQuestionController } from '../../controllers/study/pastQuestions'
+import { PastQuestionController } from '../../controllers/school/pastQuestions'
 import { isAdmin } from '@application/middlewares/isAdmin'
 
 export const pastQuestionsRoutes: Route[] = [
 	{
-		path: '/study/pastQuestions',
+		path: '/school/pastQuestions',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const pastQuestionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/pastQuestions/:id',
+		path: '/school/pastQuestions/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const pastQuestionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/pastQuestions/',
+		path: '/school/pastQuestions/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const pastQuestionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/pastQuestions/:id',
+		path: '/school/pastQuestions/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -56,7 +56,7 @@ export const pastQuestionsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/pastQuestions/:id',
+		path: '/school/pastQuestions/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,

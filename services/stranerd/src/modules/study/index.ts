@@ -4,7 +4,6 @@ import { CommentRepository } from './data/repositories/comments'
 import { VideoRepository } from './data/repositories/videos'
 import { NoteRepository } from './data/repositories/notes'
 import { FlashCardRepository } from './data/repositories/flashCards'
-import { PastQuestionRepository } from './data/repositories/pastQuestions'
 import { TestRepository } from './data/repositories/tests'
 import { GetTestPrepsUseCase } from './domain/useCases/testPreps/getTestPreps'
 import { FindTestPrepUseCase } from './domain/useCases/testPreps/findTestPrep'
@@ -42,11 +41,6 @@ import { AddFlashCardUseCase } from './domain/useCases/flashCards/addFlashCard'
 import { UpdateFlashCardUseCase } from './domain/useCases/flashCards/updateFlashCard'
 import { DeleteFlashCardUseCase } from './domain/useCases/flashCards/deleteFlashCard'
 import { UpdateFlashCardsUserBioUseCase } from './domain/useCases/flashCards/updateFlashCardsUserBio'
-import { GetPastQuestionsUseCase } from './domain/useCases/pastQuestions/getPastQuestions'
-import { FindPastQuestionUseCase } from './domain/useCases/pastQuestions/findPastQuestion'
-import { AddPastQuestionUseCase } from './domain/useCases/pastQuestions/addPastQuestion'
-import { UpdatePastQuestionUseCase } from './domain/useCases/pastQuestions/updatePastQuestion'
-import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/deletePastQuestion'
 import { GetTestsUseCase } from './domain/useCases/tests/getTests'
 import { FindTestUseCase } from './domain/useCases/tests/findTest'
 import { AddTestUseCase } from './domain/useCases/tests/addTest'
@@ -61,7 +55,6 @@ const commentRepository = CommentRepository.getInstance()
 const videoRepository = VideoRepository.getInstance()
 const noteRepository = NoteRepository.getInstance()
 const flashCardRepository = FlashCardRepository.getInstance()
-const pastQuestionRepository = PastQuestionRepository.getInstance()
 const testRepository = TestRepository.getInstance()
 
 export const GetTestPreps = new GetTestPrepsUseCase(testPrepRepository)
@@ -106,12 +99,6 @@ export const UpdateFlashCard = new UpdateFlashCardUseCase(flashCardRepository)
 export const DeleteFlashCard = new DeleteFlashCardUseCase(flashCardRepository)
 export const UpdateFlashCardsUserBio = new UpdateFlashCardsUserBioUseCase(flashCardRepository)
 
-export const GetPastQuestions = new GetPastQuestionsUseCase(pastQuestionRepository)
-export const FindPastQuestion = new FindPastQuestionUseCase(pastQuestionRepository)
-export const AddPastQuestion = new AddPastQuestionUseCase(pastQuestionRepository)
-export const UpdatePastQuestion = new UpdatePastQuestionUseCase(pastQuestionRepository)
-export const DeletePastQuestion = new DeletePastQuestionUseCase(pastQuestionRepository)
-
 export const GetTests = new GetTestsUseCase(testRepository)
 export const FindTest = new FindTestUseCase(testRepository)
 export const AddTest = new AddTestUseCase(testRepository)
@@ -121,7 +108,6 @@ export const UpdateTestAnswer = new UpdateTestAnswerUseCase(testRepository)
 export const UpdateTestTaskIds = new UpdateTestTaskIdsUseCase(testRepository)
 
 export { PrepType, PrepData } from './domain/types'
-export { PastQuestionData, PastQuestionType } from './domain/types'
 export { TestData, TestType } from './domain/types'
 export { CommentData, CommentType } from './domain/types'
 export { SetSaved, SetType } from './domain/types'
@@ -132,7 +118,6 @@ export { CommentFromModel } from './data/models/comments'
 export { VideoFromModel } from './data/models/videos'
 export { NoteFromModel } from './data/models/notes'
 export { FlashCardFromModel } from './data/models/flashCards'
-export { PastQuestionFromModel } from './data/models/pastQuestions'
 export { TestFromModel } from './data/models/tests'
 
 export { TestPrepEntity } from './domain/entities/testPreps'
@@ -141,5 +126,4 @@ export { SetEntity } from './domain/entities/sets'
 export { VideoEntity } from './domain/entities/videos'
 export { NoteEntity } from './domain/entities/notes'
 export { FlashCardEntity } from './domain/entities/flashCards'
-export { PastQuestionEntity } from './domain/entities/pastQuestions'
 export { TestEntity } from './domain/entities/tests'

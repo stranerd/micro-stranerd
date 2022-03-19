@@ -15,7 +15,6 @@ import { reviewsRoutes } from './users/reviews'
 import { messagesRoutes } from './meta/messages'
 import { searchRoutes } from './meta/search'
 import { reportRoutes } from './reports/reports'
-import { pastQuestionsRoutes } from './study/pastQuestions'
 import { flashcardsRoutes } from './study/flashCards'
 import { notesRoutes } from './study/notes'
 import { commentsRoutes } from './study/comments'
@@ -31,6 +30,7 @@ import { institutionsRoutes } from './school/institutions'
 import { coursesRoutes } from './school/courses'
 import { facultiesRoutes } from './school/faculties'
 import { departmentsRoutes } from './school/departments'
+import { pastQuestionsRoutes } from './school/pastQuestions'
 
 export const routes: Route[] = [
 	...badgesRoutes,
@@ -48,7 +48,6 @@ export const routes: Route[] = [
 	...messagesRoutes,
 	...searchRoutes,
 	...reportRoutes,
-	...pastQuestionsRoutes,
 	...flashcardsRoutes,
 	...notesRoutes,
 	...videosRoutes,
@@ -64,6 +63,7 @@ export const routes: Route[] = [
 	...institutionsRoutes,
 	...facultiesRoutes,
 	...departmentsRoutes,
+	...pastQuestionsRoutes,
 	{
 		path: '/',
 		method: 'get',

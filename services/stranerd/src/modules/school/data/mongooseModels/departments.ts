@@ -33,6 +33,6 @@ const Schema = new mongoose.Schema<DepartmentFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Department = mongoose.model<DepartmentFromModel>('StranerdStudyDepartment', Schema)
+export const Department = mongoose.model<DepartmentFromModel>('StranerdSchoolDepartment', Schema)
 
 generateChangeStreams<DepartmentFromModel, DepartmentEntity>(Department, DepartmentChangeStreamCallbacks, new DepartmentMapper().mapFrom).then()

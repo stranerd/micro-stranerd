@@ -1,7 +1,7 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
 import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
 import { FindUser } from '@modules/users'
-import { FindPastQuestion } from '@modules/study'
+import { FindPastQuestion } from '@modules/school'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReportController {
