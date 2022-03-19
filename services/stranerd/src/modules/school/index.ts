@@ -1,6 +1,7 @@
 import { CourseRepository } from './data/repositories/courses'
 import { InstitutionRepository } from './data/repositories/institutions'
 import { FacultyRepository } from './data/repositories/faculties'
+import { DepartmentRepository } from './data/repositories/departments'
 import { AddCourseUseCase } from './domain/useCases/courses/addCourse'
 import { UpdateCourseUseCase } from './domain/useCases/courses/updateCourse'
 import { DeleteCourseUseCase } from './domain/useCases/courses/deleteCourse'
@@ -18,10 +19,17 @@ import { DeleteFacultyUseCase } from './domain/useCases/faculties/deleteFaculty'
 import { FindFacultyUseCase } from './domain/useCases/faculties/findFaculty'
 import { GetFacultiesUseCase } from './domain/useCases/faculties/getFaculties'
 import { DeleteInstitutionFacultiesUseCase } from './domain/useCases/faculties/deleteInstitutionFaculties'
+import { AddDepartmentUseCase } from './domain/useCases/departments/addDepartment'
+import { UpdateDepartmentUseCase } from './domain/useCases/departments/updateDepartment'
+import { DeleteDepartmentUseCase } from './domain/useCases/departments/deleteDepartment'
+import { FindDepartmentUseCase } from './domain/useCases/departments/findDepartment'
+import { GetDepartmentsUseCase } from './domain/useCases/departments/getDepartments'
+import { DeleteFacultyDepartmentsUseCase } from './domain/useCases/departments/deleteFacultyDepartments'
 
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
 const facultyRepository = FacultyRepository.getInstance()
+const departmentRepository = DepartmentRepository.getInstance()
 
 export const AddCourse = new AddCourseUseCase(courseRepository)
 export const UpdateCourse = new UpdateCourseUseCase(courseRepository)
@@ -43,10 +51,19 @@ export const FindFaculty = new FindFacultyUseCase(facultyRepository)
 export const GetFaculties = new GetFacultiesUseCase(facultyRepository)
 export const DeleteInstitutionFaculties = new DeleteInstitutionFacultiesUseCase(facultyRepository)
 
+export const AddDepartment = new AddDepartmentUseCase(departmentRepository)
+export const UpdateDepartment = new UpdateDepartmentUseCase(departmentRepository)
+export const DeleteDepartment = new DeleteDepartmentUseCase(departmentRepository)
+export const FindDepartment = new FindDepartmentUseCase(departmentRepository)
+export const GetDepartments = new GetDepartmentsUseCase(departmentRepository)
+export const DeleteFacultyDepartments = new DeleteFacultyDepartmentsUseCase(departmentRepository)
+
 export { CourseFromModel } from './data/models/courses'
 export { InstitutionFromModel } from './data/models/institutions'
 export { FacultyFromModel } from './data/models/faculties'
+export { DepartmentFromModel } from './data/models/departments'
 
 export { CourseEntity } from './domain/entities/courses'
 export { InstitutionEntity } from './domain/entities/institutions'
 export { FacultyEntity } from './domain/entities/faculties'
+export { DepartmentEntity } from './domain/entities/departments'

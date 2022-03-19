@@ -1,4 +1,4 @@
-import { AddFaculty, DeleteFaculty, FindFaculty, GetFaculties, UpdateFaculty } from '@modules/school'
+import { AddFaculty, DeleteFaculty, FindFaculty, FindInstitution, GetFaculties, UpdateFaculty } from '@modules/school'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class FacultyController {
@@ -19,6 +19,8 @@ export class FacultyController {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			institutionId: { required: true, rules: [Validation.isString] }
 		})
+		const institution = await FindInstitution.execute(data.institutionId)
+		if (!institution) throw new NotFoundError()
 
 		return await AddFaculty.execute(data)
 	}
