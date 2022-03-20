@@ -1,9 +1,7 @@
 import { IAnswerRepository } from '../../irepositories/answers'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { questionId: string }
-
-export class DeleteQuestionAnswersUseCase extends BaseUseCase<Input, boolean> {
+export class DeleteQuestionAnswersUseCase extends BaseUseCase<string, boolean> {
 	private repository: IAnswerRepository
 
 	constructor (repository: IAnswerRepository) {
@@ -11,7 +9,7 @@ export class DeleteQuestionAnswersUseCase extends BaseUseCase<Input, boolean> {
 		this.repository = repository
 	}
 
-	async execute (input: Input) {
-		return await this.repository.deleteQuestionAnswers(input.questionId)
+	async execute (questionId: string) {
+		return await this.repository.deleteQuestionAnswers(questionId)
 	}
 }

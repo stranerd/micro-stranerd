@@ -6,4 +6,5 @@ export interface IAnswerUpvoteRepository {
 	add: (data: AnswerUpvoteToModel) => Promise<AnswerUpvoteEntity>
 	get: (query: QueryParams) => Promise<QueryResults<AnswerUpvoteEntity>>
 	find: (id: string) => Promise<AnswerUpvoteEntity | null>
+	deleteAnswerVotes: (answerId: string) => Promise<boolean>
 }

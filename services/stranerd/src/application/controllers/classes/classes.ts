@@ -11,7 +11,7 @@ import {
 	UpdateClass
 } from '@modules/classes'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 
 export class ClassController {
@@ -49,7 +49,7 @@ export class ClassController {
 	static async CreateClass (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await FindUser.execute(authUserId)
-		if (!user) throw new NotFoundError()
+		if (!user) throw new BadRequestError('user not found')
 
 		const { name, description, photo, coverPhoto } = validate({
 			name: req.body.name,

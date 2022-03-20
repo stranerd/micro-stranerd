@@ -9,6 +9,7 @@ import { GetChatsUseCase } from './domain/usecases/chats/getChats'
 import { FindChatUseCase } from './domain/usecases/chats/findChat'
 import { AddChatUseCase } from './domain/usecases/chats/addChat'
 import { MarkChatReadUseCase } from './domain/usecases/chats/markChatRead'
+import { DeleteSessionChatsUseCase } from './domain/usecases/chats/deleteSessionChats'
 import { FindSessionUseCase } from './domain/usecases/sessions/findSession'
 import { GetSessionsUseCase } from './domain/usecases/sessions/getSessions'
 import { AddSessionUseCase } from './domain/usecases/sessions/addSession'
@@ -27,6 +28,7 @@ export const FindChat = new FindChatUseCase(personalChatRepository)
 export const GetChats = new GetChatsUseCase(personalChatRepository)
 export const AddChat = new AddChatUseCase(personalChatRepository)
 export const MarkChatRead = new MarkChatReadUseCase(personalChatRepository)
+export const DeleteSessionChats = new DeleteSessionChatsUseCase(personalChatRepository)
 
 export const FindSession = new FindSessionUseCase(sessionRepository)
 export const GetSessions = new GetSessionsUseCase(sessionRepository)

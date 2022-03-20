@@ -85,4 +85,9 @@ export class ChatRepository implements IChatRepository {
 		const chat = await Chat.findOneAndDelete({ _id: id, from: userId })
 		return !!chat
 	}
+
+	async deleteSessionChats (sessionId: string) {
+		const chats = await Chat.deleteMany({ sessionId })
+		return chats.acknowledged
+	}
 }

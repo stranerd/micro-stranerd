@@ -8,4 +8,5 @@ export interface IPastQuestionRepository {
 	find: (id: string) => Promise<PastQuestionEntity | null>
 	update: (id: string, data: PastQuestionToModel) => Promise<PastQuestionEntity | null>
 	delete: (id: string) => Promise<boolean>
+	deleteCourseQuestions: (courseId: string) => Promise<boolean>
 }

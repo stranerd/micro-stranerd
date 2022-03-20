@@ -32,6 +32,7 @@ import { FindPastQuestionUseCase } from './domain/useCases/pastQuestions/findPas
 import { AddPastQuestionUseCase } from './domain/useCases/pastQuestions/addPastQuestion'
 import { UpdatePastQuestionUseCase } from './domain/useCases/pastQuestions/updatePastQuestion'
 import { DeletePastQuestionUseCase } from './domain/useCases/pastQuestions/deletePastQuestion'
+import { DeleteCourseQuestionUseCase } from './domain/useCases/pastQuestions/deleteCourseQuestions'
 
 const courseRepository = CourseRepository.getInstance()
 const institutionRepository = InstitutionRepository.getInstance()
@@ -72,6 +73,7 @@ export const FindPastQuestion = new FindPastQuestionUseCase(pastQuestionReposito
 export const AddPastQuestion = new AddPastQuestionUseCase(pastQuestionRepository)
 export const UpdatePastQuestion = new UpdatePastQuestionUseCase(pastQuestionRepository)
 export const DeletePastQuestion = new DeletePastQuestionUseCase(pastQuestionRepository)
+export const DeleteCourseQuestions = new DeleteCourseQuestionUseCase(pastQuestionRepository)
 
 export { PastQuestionData, PastQuestionType } from './domain/types'
 

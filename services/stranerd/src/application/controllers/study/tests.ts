@@ -1,14 +1,6 @@
 import { AddTest, FindTest, FindTestPrep, GetTests, TestType, UpdateTest, UpdateTestAnswer } from '@modules/study'
 import { GetPastQuestions } from '@modules/school'
-import {
-	NotAuthorizedError,
-	NotFoundError,
-	QueryParams,
-	Request,
-	validate,
-	Validation,
-	ValidationError
-} from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { getRandomN } from '@utils/functions'
 
 export class TestController {
@@ -45,7 +37,7 @@ export class TestController {
 		})
 
 		const prep = await FindTestPrep.execute(prepId)
-		if (!prep) throw new NotFoundError()
+		if (!prep) throw new BadRequestError('test prep not found')
 		const { results } = await GetPastQuestions.execute({
 			where: [
 				{ field: 'data.type', value: prep.data.questionType },
@@ -55,9 +47,7 @@ export class TestController {
 			],
 			all: true
 		})
-		if (results.length < prep.questions) throw new ValidationError([{
-			field: '', messages: ['Not enough questions to take this test.']
-		}])
+		if (results.length < prep.questions) throw new BadRequestError('Not enough questions to take this test')
 		const questions = getRandomN(results, isUnTimed ? results.length : prep.questions).map((q) => q.id)
 
 		const data = {

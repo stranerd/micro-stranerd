@@ -1,6 +1,6 @@
 import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class SessionController {
 	static async getSessions (req: Request) {
@@ -29,7 +29,8 @@ export class SessionController {
 		const studentUser = await FindUser.execute(req.authUser!.id)
 		const tutorUser = await FindUser.execute(req.body.tutorId)
 
-		if (!studentUser || !tutorUser) throw new NotFoundError()
+		if (!studentUser) throw new BadRequestError('student not found')
+		if (!studentUser || !tutorUser) throw new BadRequestError('tutor not found')
 
 		const data = validate({
 			message: req.body.message,

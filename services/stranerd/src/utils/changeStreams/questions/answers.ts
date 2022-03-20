@@ -3,6 +3,7 @@ import {
 	AnswerEntity,
 	AnswerFromModel,
 	DeleteAnswerComments,
+	DeleteAnswerVotes,
 	FindQuestion,
 	UpdateBestAnswer,
 	UpdateQuestionsAnswers
@@ -115,7 +116,10 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			add: false
 		})
 
-		await DeleteAnswerComments.execute({ answerId: before.id })
+		await Promise.all([
+			DeleteAnswerComments.execute(before.id),
+			DeleteAnswerVotes.execute(before.id)
+		])
 
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))

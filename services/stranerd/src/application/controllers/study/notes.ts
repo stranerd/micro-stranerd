@@ -1,6 +1,6 @@
 import { AddNote, DeleteNote, FindNote, GetNotes, UpdateNote } from '@modules/study'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class NoteController {
 	static async FindNote (req: Request) {
@@ -50,17 +50,14 @@ export class NoteController {
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isFile] }
 		})
 
-		const authUserId = req.authUser!.id
-
-		const user = await FindUser.execute(authUserId)
-
-		if (user) return await AddNote.execute({
+		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+		return await AddNote.execute({
 			...data,
 			userBio: user.bio,
 			userRoles: user.roles,
-			userId: authUserId
+			userId: user.id
 		})
-		throw new NotFoundError()
 	}
 
 	static async DeleteNote (req: Request) {

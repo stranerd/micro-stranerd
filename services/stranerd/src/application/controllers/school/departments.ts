@@ -6,7 +6,7 @@ import {
 	GetDepartments,
 	UpdateDepartment
 } from '@modules/school'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class DepartmentController {
 	static async FindDepartment (req: Request) {
@@ -27,7 +27,7 @@ export class DepartmentController {
 			facultyId: { required: true, rules: [Validation.isString] }
 		})
 		const faculty = await FindFaculty.execute(data.facultyId)
-		if (!faculty) throw new NotFoundError()
+		if (!faculty) throw new BadRequestError('faculty not found')
 
 		return await AddDepartment.execute({ ...data, institutionId: faculty.institutionId })
 	}
@@ -41,13 +41,13 @@ export class DepartmentController {
 
 		const updatedDepartment = await UpdateDepartment.execute({ id: req.params.id, data })
 		if (updatedDepartment) return updatedDepartment
-		throw new NotFoundError()
+		throw new BadRequestError('department not found')
 	}
 
 	static async DeleteDepartment (req: Request) {
 		const isDeleted = await DeleteDepartment.execute(req.params.id)
 
 		if (isDeleted) return isDeleted
-		throw new NotFoundError()
+		throw new BadRequestError('department not found')
 	}
 }

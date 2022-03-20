@@ -11,4 +11,5 @@ export interface ITestRepository {
 	updateAnswer: (id: string, userId: string, questionId: string, answer: AnswerType) => Promise<boolean>
 	updateTaskIds: (id: string, taskIds: TaskID[]) => Promise<void>
 	delete: (id: string, userId: string) => Promise<boolean>
+	deletePrepTests: (prepId: string) => Promise<boolean>
 }

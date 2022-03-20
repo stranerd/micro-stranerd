@@ -8,15 +8,7 @@ import {
 	UpdateQuestion
 } from '@modules/questions'
 import { FindUser } from '@modules/users'
-import {
-	NotAuthorizedError,
-	NotFoundError,
-	QueryParams,
-	Request,
-	validate,
-	Validation,
-	ValidationError
-} from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassEntity, FindClass } from '@modules/classes'
 
 export class QuestionController {
@@ -59,7 +51,7 @@ export class QuestionController {
 		const isUsers = req.body.data?.type === QuestionType.users
 		const isClasses = req.body.data?.type === QuestionType.classes
 
-		if (!user) throw new NotFoundError()
+		if (!user) throw new BadRequestError('user not found')
 
 		const { body, subject, attachments, type, classId } = validate({
 			body: req.body.body,
@@ -83,8 +75,8 @@ export class QuestionController {
 
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
-		if (isClasses && !classInst) throw new NotFoundError()
-		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
+		if (isClasses && !classInst) throw new BadRequestError('class not found')
+		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
 
 		const data = {
 			body, subject, attachments,
@@ -107,16 +99,10 @@ export class QuestionController {
 		})
 
 		const question = await FindQuestion.execute(req.params.id)
-		if (!question) throw new NotFoundError()
+		if (!question) throw new BadRequestError('question not found')
 		if (question.userId !== authUserId) throw new NotAuthorizedError()
-		if (question.isAnswered) throw new ValidationError([{
-			field: 'answerId',
-			messages: ['question is already answered']
-		}])
-		if (question.bestAnswers.find((a) => a === answerId)) throw new ValidationError([{
-			field: 'answerId',
-			messages: ['answer is already marked as a best answer']
-		}])
+		if (question.isAnswered) throw new BadRequestError('question is already answered')
+		if (question.bestAnswers.find((a) => a === answerId)) throw new BadRequestError('answer is already marked best answer')
 
 		return await UpdateBestAnswer.execute({
 			id: question.id,

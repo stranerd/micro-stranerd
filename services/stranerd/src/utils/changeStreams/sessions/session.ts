@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AddChat, CancelSession, SessionEntity, SessionFromModel } from '@modules/sessions'
+import { AddChat, CancelSession, DeleteSessionChats, SessionEntity, SessionFromModel } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import {
 	CountStreakBadges,
@@ -158,6 +158,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await getSocketEmitter().emitMineDeleted(`sessions/sessions/${before.id}`, before, before.studentId)
 		await getSocketEmitter().emitMineDeleted('sessions/sessions', before, before.tutorId)
 		await getSocketEmitter().emitMineDeleted(`sessions/sessions/${before.id}`, before, before.tutorId)
+		await DeleteSessionChats.execute(before.id)
 		if (before.done) {
 			await IncrementUsersSessionsCount.execute({
 				tutorId: before.tutorId,

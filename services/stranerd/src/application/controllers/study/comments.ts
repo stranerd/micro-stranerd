@@ -1,6 +1,6 @@
 import { AddComment, CommentType, FindComment, GetComments } from '@modules/study'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class CommentController {
 	static async FindComment (req: Request) {
@@ -28,15 +28,11 @@ export class CommentController {
 			videoId: { required: false, rules: [Validation.isRequiredIfX(isVideoType), Validation.isString] }
 		})
 
-		const authUserId = req.authUser!.id
-
-		const user = await FindUser.execute(authUserId)
-
-		if (user) return await AddComment.execute({
+		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+		return await AddComment.execute({
 			body, userId: user.id, userBio: user.bio, userRoles: user.roles,
 			data: isVideoType ? { type, videoId } : ({} as any)
 		})
-
-		throw new NotFoundError()
 	}
 }

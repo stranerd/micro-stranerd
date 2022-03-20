@@ -68,4 +68,9 @@ export class TestRepository implements ITestRepository {
 			$addToSet: { taskIds: { $each: taskIds } }
 		})
 	}
+
+	async deletePrepTests (prepId: string) {
+		const tests = await Test.deleteMany({ prepId })
+		return tests.acknowledged
+	}
 }

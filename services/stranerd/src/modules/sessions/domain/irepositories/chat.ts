@@ -8,4 +8,5 @@ export interface IChatRepository {
 	find: (id: string, userId: string) => Promise<ChatEntity | null>
 	markRead: (id: string, path: [string, string]) => Promise<boolean>
 	delete: (id: string, userId: string) => Promise<boolean>
+	deleteSessionChats: (sessionId: string) => Promise<boolean>
 }

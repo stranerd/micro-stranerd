@@ -1,5 +1,5 @@
 import { AddInstitution, DeleteInstitution, FindInstitution, GetInstitutions, UpdateInstitution } from '@modules/school'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class InstitutionController {
 	static async FindInstitution (req: Request) {
@@ -34,13 +34,13 @@ export class InstitutionController {
 
 		const updatedInstitution = await UpdateInstitution.execute({ id: req.params.id, data })
 		if (updatedInstitution) return updatedInstitution
-		throw new NotFoundError()
+		throw new BadRequestError('institution not found')
 	}
 
 	static async DeleteInstitution (req: Request) {
 		const isDeleted = await DeleteInstitution.execute(req.params.id)
 
 		if (isDeleted) return isDeleted
-		throw new NotFoundError()
+		throw new BadRequestError('institution not found')
 	}
 }

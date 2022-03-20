@@ -1,5 +1,5 @@
 import { AddCourse, DeleteCourse, FindCourse, FindDepartment, GetCourses, UpdateCourse } from '@modules/school'
-import { BadRequestError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class CourseController {
 	static async FindCourse (req: Request) {
@@ -23,8 +23,8 @@ export class CourseController {
 		})
 		const department = !data.departmentId ? null : await FindDepartment.execute(data.departmentId)
 		if (data.departmentId) {
-			if (!department) throw new NotFoundError()
-			if (department.institutionId !== data.institutionId) throw new BadRequestError('Department provided doesn\'t belong to the provided institution')
+			if (!department) throw new BadRequestError('department not found')
+			if (department.institutionId !== data.institutionId) throw new BadRequestError('mismatched department and institution')
 		}
 
 		return await AddCourse.execute({
@@ -43,13 +43,13 @@ export class CourseController {
 
 		const updatedCourse = await UpdateCourse.execute({ id: req.params.id, data })
 		if (updatedCourse) return updatedCourse
-		throw new NotFoundError()
+		throw new BadRequestError('course not found')
 	}
 
 	static async DeleteCourse (req: Request) {
 		const isDeleted = await DeleteCourse.execute(req.params.id)
 
 		if (isDeleted) return isDeleted
-		throw new NotFoundError()
+		throw new BadRequestError('course not found')
 	}
 }

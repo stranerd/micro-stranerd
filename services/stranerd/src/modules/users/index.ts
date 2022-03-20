@@ -5,6 +5,7 @@ import { UpdateUserWithBioUseCase } from './domain/useCases/users/updateUserWith
 import { MarkUserAsDeletedUseCase } from './domain/useCases/users/markUserAsDeleted'
 import { UpdateUserWithRolesUseCase } from './domain/useCases/users/updateUserWithRoles'
 import { IncrementUserMetaCountUseCase } from './domain/useCases/users/incrementUserMetaCount'
+import { UpdateUserSchoolDataUseCase } from './domain/useCases/users/updateUserSchoolData'
 import { NotificationRepository } from './data/repositories/notifications'
 import { FindNotificationUseCase } from './domain/useCases/notifications/findNotification'
 import { CreateNotificationUseCase } from './domain/useCases/notifications/createNotification'
@@ -58,6 +59,7 @@ export const UpdateUserRatings = new UpdateUserRatingsUseCase(userRepository)
 export const UpdateUserStatus = new UpdateUserStatusUseCase(userRepository)
 export const ResetAllUsersStatus = new ResetAllUsersStatusUseCase(userRepository)
 export const ResetRankings = new ResetRankingsUseCase(userRepository)
+export const UpdateUserSchoolData = new UpdateUserSchoolDataUseCase(userRepository)
 
 export const GetBadges = new GetBadgesUseCase(badgeRepository)
 export const FindBadge = new FindBadgeUseCase(badgeRepository)
@@ -91,5 +93,6 @@ export { ReviewEntity } from './domain/entities/reviews'
 export { UserEntity } from './domain/entities/users'
 export { RankTypes } from './domain/entities/ranks'
 export {
-	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta, UserRoles
+	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta, UserRoles,
+	UserSchoolData, UserSchoolType
 } from './domain/types'

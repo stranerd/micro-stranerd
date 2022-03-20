@@ -65,4 +65,9 @@ export class AnswerUpvoteRepository implements IAnswerUpvoteRepository {
 		const upvote = await AnswerUpvote.findById(id)
 		return this.mapper.mapFrom(upvote)
 	}
+
+	async deleteAnswerVotes (answerId: string) {
+		const votes = await AnswerUpvote.deleteMany({ answerId })
+		return votes.acknowledged
+	}
 }

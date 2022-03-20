@@ -1,6 +1,7 @@
 import { AuthRoles, MediaOutput } from '@utils/commons'
 
 export * from './badges'
+export * from './badges'
 
 export type UserBio = {
 	email: string
@@ -82,3 +83,38 @@ export enum ScoreRewards {
 	NewNote = 1,
 	NewVideo = 1
 }
+
+export enum UserSchoolType {
+	'secondary' = 'secondary',
+	'aspirant' = 'aspirant',
+	'college' = 'college'
+}
+
+type SecondaryType = {
+	type: UserSchoolType.secondary
+	exams: {
+		institutionId: string
+		courseIds: string[]
+		startDate: number
+		endDate: number
+	}[]
+}
+
+type AspirantType = {
+	type: UserSchoolType.aspirant
+	exams: {
+		institutionId: string
+		courseIds: string[]
+		startDate: number
+		endDate: number
+	}[]
+}
+
+type CollegeType = {
+	type: UserSchoolType.college
+	institutionId: string
+	facultyId: string
+	departmentId: string
+}
+
+export type UserSchoolData = SecondaryType | AspirantType | CollegeType

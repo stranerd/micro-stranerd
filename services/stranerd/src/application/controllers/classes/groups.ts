@@ -1,6 +1,6 @@
 import { AddGroup, DeleteGroup, FindClass, FindGroup, GetGroups, UpdateGroup } from '@modules/classes'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 
 export class GroupController {
@@ -32,7 +32,7 @@ export class GroupController {
 	static async CreateGroup (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await FindUser.execute(authUserId)
-		if (!user) throw new NotFoundError()
+		if (!user) throw new BadRequestError('user not found')
 
 		const { name, classId } = validate({
 			name: req.body.name,
@@ -43,8 +43,8 @@ export class GroupController {
 		})
 
 		const classInst = await FindClass.execute(classId)
-		if (!classInst) throw new NotFoundError()
-		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new NotAuthorizedError()
+		if (!classInst) throw new BadRequestError('class not found')
+		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
 		const data = {
 			name, classId,

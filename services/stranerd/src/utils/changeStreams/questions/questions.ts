@@ -44,7 +44,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitOpenDeleted('questions/questions', before)
 		await getSocketEmitter().emitOpenDeleted(`questions/questions/${before.id}`, before)
 
-		await DeleteQuestionAnswers.execute({ questionId: before.id })
+		await DeleteQuestionAnswers.execute(before.id)
 
 		await UpdateUserNerdScore.execute({
 			userId: before.userId,

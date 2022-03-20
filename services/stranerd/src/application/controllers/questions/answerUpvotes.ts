@@ -1,5 +1,5 @@
-import { CreateAnswerUpvote, FindAnswerUpvote, GetAnswerUpvotes } from '@modules/questions'
-import { QueryParams, Request } from '@utils/commons'
+import { CreateAnswerUpvote, FindAnswer, FindAnswerUpvote, GetAnswerUpvotes } from '@modules/questions'
+import { BadRequestError, QueryParams, Request } from '@utils/commons'
 
 export class AnswerUpvoteController {
 	static async FindAnswerUpvote (req: Request) {
@@ -13,8 +13,10 @@ export class AnswerUpvoteController {
 
 	static async VoteAnswer (req: Request) {
 		const vote = !!req.body.vote
+		const answer = await FindAnswer.execute(req.params.id)
+		if (!answer) throw new BadRequestError('answer not found')
 		return await CreateAnswerUpvote.execute({
-			answerId: req.params.id,
+			answerId: req.params.answerId,
 			userId: req.authUser!.id,
 			vote: vote ? 1 : -1
 		})

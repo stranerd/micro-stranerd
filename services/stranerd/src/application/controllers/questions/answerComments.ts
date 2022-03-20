@@ -1,6 +1,6 @@
-import { AddAnswerComment, FindAnswerComment, GetAnswerComments } from '@modules/questions'
+import { AddAnswerComment, FindAnswer, FindAnswerComment, GetAnswerComments } from '@modules/questions'
 import { FindUser } from '@modules/users'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class AnswerCommentController {
 	static async FindAnswerComment (req: Request) {
@@ -21,19 +21,15 @@ export class AnswerCommentController {
 			answerId: { required: true, rules: [Validation.isString] }
 		})
 
-		const authUserId = req.authUser!.id
-
-		const user = await FindUser.execute(authUserId)
-
-		if (user) {
-			return await AddAnswerComment.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: req.authUser!.id
-			})
-		}
-
-		throw new NotFoundError()
+		const answer = await FindAnswer.execute(data.answerId)
+		if (!answer) throw new BadRequestError('answer not found')
+		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+		return await AddAnswerComment.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: user.id
+		})
 	}
 }

@@ -1,5 +1,5 @@
 import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, SetType, UpdateSet, UpdateSetProp } from '@modules/study'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindUser } from '@modules/users'
 import { ClassEntity, FindClass } from '@modules/classes'
 
@@ -18,7 +18,7 @@ export class SetController {
 		const user = await FindUser.execute(authUserId)
 		const isUsers = req.body.data?.type === SetType.users
 		const isClasses = req.body.data?.type === SetType.classes
-		if (!user) throw new NotFoundError()
+		if (!user) throw new BadRequestError('user not found')
 
 		const { name, type, classId } = validate({
 			name: req.body.name,
@@ -35,8 +35,8 @@ export class SetController {
 
 		let classInst = null as ClassEntity | null
 		if (classId) classInst = await FindClass.execute(classId)
-		if (isClasses && !classInst) throw new NotFoundError()
-		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new NotAuthorizedError()
+		if (isClasses && !classInst) throw new BadRequestError('class not found')
+		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
 
 		const data = {
 			name,
@@ -119,6 +119,6 @@ export class SetController {
 		const isDeleted = await DeleteSet.execute({ id: req.params.id, userId: req.authUser!.id })
 
 		if (isDeleted) return isDeleted
-		throw new NotFoundError()
+		throw new BadRequestError('set not found')
 	}
 }

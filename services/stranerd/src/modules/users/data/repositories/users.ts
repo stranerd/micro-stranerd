@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/i-repositories/users'
-import { UserAccount, UserBio, UserRankings, UserRoles } from '../../domain/types'
+import { UserAccount, UserBio, UserRankings, UserRoles, UserSchoolData } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
 import { mongoose, parseQueryParams } from '@utils/commons'
@@ -153,5 +153,10 @@ export class UserRepository implements IUserRepository {
 			$set: { 'status.connections': [] }
 		})
 		return !!res.acknowledged
+	}
+
+	async updateUserSchoolData (userId: string, data: UserSchoolData) {
+		const user = await User.findByIdAndUpdate(userId, { $set: { school: data } })
+		return !!user
 	}
 }

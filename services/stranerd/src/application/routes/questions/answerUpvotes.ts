@@ -27,7 +27,7 @@ export const answerUpvotesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/answerUpvotes/:id/vote',
+		path: '/questions/answerUpvotes/:answerId/vote',
 		method: 'post',
 		controllers: [
 			requireAuthUser,

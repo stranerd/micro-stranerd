@@ -48,6 +48,7 @@ import { UpdateTestUseCase } from './domain/useCases/tests/updateTest'
 import { DeleteTestUseCase } from './domain/useCases/tests/deleteTest'
 import { UpdateTestAnswerUseCase } from './domain/useCases/tests/updateTestAnswer'
 import { UpdateTestTaskIdsUseCase } from './domain/useCases/tests/updateTestTaskIds'
+import { DeletePrepTestsUseCase } from './domain/useCases/tests/deletePrepTests'
 
 const testPrepRepository = TestPrepRepository.getInstance()
 const setRepository = SetRepository.getInstance()
@@ -106,6 +107,7 @@ export const UpdateTest = new UpdateTestUseCase(testRepository)
 export const DeleteTest = new DeleteTestUseCase(testRepository)
 export const UpdateTestAnswer = new UpdateTestAnswerUseCase(testRepository)
 export const UpdateTestTaskIds = new UpdateTestTaskIdsUseCase(testRepository)
+export const DeletePrepTests = new DeletePrepTestsUseCase(testRepository)
 
 export { PrepType, PrepData } from './domain/types'
 export { TestData, TestType } from './domain/types'

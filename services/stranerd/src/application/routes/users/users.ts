@@ -16,6 +16,19 @@ export const usersRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/users/users/school',
+		method: 'put',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await UsersController.updateSchool(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/users/users/',
 		method: 'get',
 		controllers: [

@@ -46,4 +46,9 @@ export class PastQuestionRepository implements IPastQuestionRepository {
 		const pastQuestion = await PastQuestion.findById(id)
 		return this.mapper.mapFrom(pastQuestion)
 	}
+
+	async deleteCourseQuestions (courseId: string) {
+		const pastQuestions = await PastQuestion.deleteMany({ courseId })
+		return pastQuestions.acknowledged
+	}
 }

@@ -2,7 +2,7 @@ import { FindAnswer, FindQuestion } from '@modules/questions'
 import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
 import { FindUser } from '@modules/users'
 import { FindPastQuestion } from '@modules/school'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReportController {
 	static async GetReports (req: Request) {
@@ -35,11 +35,11 @@ export class ReportController {
 		let reportedData: ReportData | null = null
 
 		const reporter = await FindUser.execute(req.authUser!.id)
-		if (!reporter) throw new NotFoundError()
+		if (!reporter) throw new BadRequestError('reporter not found')
 
 		if (type == ReportType.users) {
 			const user = await FindUser.execute(reportedId)
-			if (!user) throw new NotFoundError()
+			if (!user) throw new BadRequestError('user not found')
 			reportedData = {
 				type: ReportType.users,
 				reported: { userId: user.id, userBio: user.bio, userRoles: user.roles }
@@ -48,7 +48,7 @@ export class ReportController {
 
 		if (type == ReportType.questions) {
 			const question = await FindQuestion.execute(reportedId)
-			if (!question) throw new NotFoundError()
+			if (!question) throw new BadRequestError('question not found')
 			reportedData = {
 				type: ReportType.questions,
 				reported: { userId: question.userId, body: question.body }
@@ -57,7 +57,7 @@ export class ReportController {
 
 		if (type == ReportType.answers) {
 			const answer = await FindAnswer.execute(reportedId)
-			if (!answer) throw new NotFoundError()
+			if (!answer) throw new BadRequestError('answer not found')
 			reportedData = {
 				type: ReportType.answers,
 				reported: {
@@ -71,7 +71,7 @@ export class ReportController {
 
 		if (type == ReportType.pastQuestions) {
 			const question = await FindPastQuestion.execute(reportedId)
-			if (!question) throw new NotFoundError()
+			if (!question) throw new BadRequestError('past question not found')
 			reportedData = {
 				type: ReportType.pastQuestions,
 				reported: {
@@ -81,7 +81,7 @@ export class ReportController {
 			}
 		}
 
-		if (!reportedData) throw new NotFoundError()
+		if (!reportedData) throw new BadRequestError('invalid report data')
 
 		return await CreateReport.execute({
 			message, reportedId, data: reportedData,

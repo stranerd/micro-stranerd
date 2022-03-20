@@ -1,6 +1,6 @@
 import { AddDiscussion, FindDiscussion, FindGroup, GetDiscussions } from '@modules/classes'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class DiscussionController {
 	static async FindDiscussion (req: Request) {
@@ -28,11 +28,12 @@ export class DiscussionController {
 
 		const userId = req.authUser!.id
 		const group = await FindGroup.execute(data.groupId)
-		if (!group) throw new NotFoundError()
-		if (!group.getAllUsers().includes(userId)) throw new NotAuthorizedError()
+		if (!group) throw new BadRequestError('group not found')
+		if (!group.getAllUsers().includes(userId)) throw new BadRequestError('not a group member')
 		const user = await FindUser.execute(userId)
+		if (!user) throw new BadRequestError('user not found')
 
-		if (user) return await AddDiscussion.execute({
+		return await AddDiscussion.execute({
 			...data,
 			links: Validation.extractUrls(data.content),
 			classId: group.classId,
@@ -40,7 +41,5 @@ export class DiscussionController {
 			userRoles: user.roles,
 			userId: user.id
 		})
-
-		throw new NotFoundError()
 	}
 }

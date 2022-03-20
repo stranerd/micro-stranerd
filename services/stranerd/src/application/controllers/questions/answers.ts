@@ -1,6 +1,6 @@
 import { AddAnswer, DeleteAnswer, FindAnswer, FindQuestion, GetAnswers, UpdateAnswer } from '@modules/questions'
 import { FindUser } from '@modules/users'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class AnswerController {
 	static async FindAnswer (req: Request) {
@@ -27,7 +27,6 @@ export class AnswerController {
 		})
 
 		const authUserId = req.authUser!.id
-
 		const updatedAnswer = await UpdateAnswer.execute({ id: req.params.id, userId: authUserId, data })
 
 		if (updatedAnswer) return updatedAnswer
@@ -50,21 +49,16 @@ export class AnswerController {
 			}
 		})
 
-		const authUserId = req.authUser!.id
-
-		const user = await FindUser.execute(authUserId)
 		const question = await FindQuestion.execute(req.body.questionId)
-
-		if (user && question) {
-			return await AddAnswer.execute({
-				...data,
-				userBio: user.bio,
-				userRoles: user.roles,
-				userId: req.authUser!.id
-			})
-		}
-
-		throw new NotFoundError()
+		if (!question) throw new BadRequestError('question not found')
+		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+		return await AddAnswer.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: user.id
+		})
 	}
 
 	static async DeleteAnswer (req: Request) {

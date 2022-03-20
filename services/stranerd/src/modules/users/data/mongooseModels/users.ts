@@ -122,6 +122,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		meta: Meta,
 		ratings: UserRating,
 		streak: UserStreak
+	},
+	school: {
+		type: mongoose.Schema.Types.Mixed as unknown as UserFromModel['school'],
+		required: false,
+		default: null
 	}
 }, { minimize: false })
 

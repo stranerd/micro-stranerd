@@ -1,5 +1,5 @@
 import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
-import { QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
@@ -25,12 +25,13 @@ export class ReviewsController {
 		})
 
 		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
 
 		return await CreateReview.execute({
 			...data,
-			userBio: user!.bio,
-			userRoles: user!.roles,
-			userId: req.authUser!.id
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: user.id
 		})
 	}
 }

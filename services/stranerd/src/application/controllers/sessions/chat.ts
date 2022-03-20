@@ -1,5 +1,5 @@
-import { AddChat, FindChat, GetChats, MarkChatRead } from '@modules/sessions'
-import { Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { AddChat, FindChat, FindSession, GetChats, MarkChatRead } from '@modules/sessions'
+import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ChatController {
 	static async getChats (req: Request) {
@@ -30,6 +30,11 @@ export class ChatController {
 			sessionId: { required: false, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			to: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
+
+		if (sessionId) {
+			const session = await FindSession.execute(sessionId)
+			if (!session) throw new BadRequestError('session not found')
+		}
 
 		const authUserId = req.authUser!.id
 		return await AddChat.execute({

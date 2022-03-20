@@ -1,5 +1,5 @@
 import { UserEntity } from '../entities/users'
-import { ScoreRewards, UserAccount, UserBio, UserRoles } from '../types'
+import { ScoreRewards, UserAccount, UserBio, UserRoles, UserSchoolData } from '../types'
 import { QueryParams, QueryResults } from '@utils/commons'
 
 export interface IUserRepository {
@@ -32,4 +32,6 @@ export interface IUserRepository {
 	updateUserStatus (userId: string, socketId: string, add: boolean): Promise<boolean>
 
 	resetAllUsersStatus (): Promise<boolean>
+
+	updateUserSchoolData (userId: string, data: UserSchoolData): Promise<boolean>
 }

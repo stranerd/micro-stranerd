@@ -7,7 +7,7 @@ import {
 	PastQuestionType,
 	UpdatePastQuestion
 } from '@modules/school'
-import { NotAuthorizedError, NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {
@@ -85,7 +85,7 @@ export class PastQuestionController {
 			}
 		})
 		const course = await FindCourse.execute(courseId)
-		if (!course) throw new NotFoundError()
+		if (!course) throw new BadRequestError('course not found')
 
 		const data = {
 			institutionId: course.institutionId, courseId, year, question, questionMedia,
@@ -97,7 +97,7 @@ export class PastQuestionController {
 		const updatedPastQuestion = await UpdatePastQuestion.execute({ id: req.params.id, data })
 
 		if (updatedPastQuestion) return updatedPastQuestion
-		throw new NotFoundError()
+		throw new BadRequestError('past question not found')
 	}
 
 	static async CreatePastQuestion (req: Request) {
@@ -166,7 +166,7 @@ export class PastQuestionController {
 			}
 		})
 		const course = await FindCourse.execute(courseId)
-		if (!course) throw new NotFoundError()
+		if (!course) throw newBadRequestError('course not found')
 
 		const data = {
 			institutionId: course.institutionId, courseId, year, question, questionMedia,

@@ -1,5 +1,5 @@
 import { AddFaculty, DeleteFaculty, FindFaculty, FindInstitution, GetFaculties, UpdateFaculty } from '@modules/school'
-import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class FacultyController {
 	static async FindFaculty (req: Request) {
@@ -20,7 +20,8 @@ export class FacultyController {
 			institutionId: { required: true, rules: [Validation.isString] }
 		})
 		const institution = await FindInstitution.execute(data.institutionId)
-		if (!institution) throw new NotFoundError()
+		if (!institution) throw new BadRequestError('institution not found')
+		if (institution.isGateway) throw new BadRequestError('institution is a gateway body')
 
 		return await AddFaculty.execute(data)
 	}
@@ -34,13 +35,13 @@ export class FacultyController {
 
 		const updatedFaculty = await UpdateFaculty.execute({ id: req.params.id, data })
 		if (updatedFaculty) return updatedFaculty
-		throw new NotFoundError()
+		throw new BadRequestError('faculty not found')
 	}
 
 	static async DeleteFaculty (req: Request) {
 		const isDeleted = await DeleteFaculty.execute(req.params.id)
 
 		if (isDeleted) return isDeleted
-		throw new NotFoundError()
+		throw new BadRequestError('faculty not found')
 	}
 }

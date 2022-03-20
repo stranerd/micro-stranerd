@@ -1,4 +1,4 @@
-import { UserAccount, UserBio, UserDates, UserRoles, UserSession, UserStatus } from '../types'
+import { UserAccount, UserBio, UserDates, UserRoles, UserSchoolData, UserSession, UserStatus } from '../types'
 import { AuthApps, BaseEntity } from '@utils/commons'
 import { getNextRank, getRank } from './ranks'
 
@@ -10,8 +10,9 @@ export class UserEntity extends BaseEntity {
 	public readonly status: UserStatus
 	public readonly account: UserAccount
 	public readonly session: UserSession
+	public readonly school: UserSchoolData | null
 
-	constructor ({ id, bio, roles, dates, status, account, session }: UserConstructorArgs) {
+	constructor ({ id, bio, roles, dates, status, account, session, school }: UserConstructorArgs) {
 		super()
 		this.id = id
 		this.bio = bio ?? {}
@@ -20,6 +21,7 @@ export class UserEntity extends BaseEntity {
 		this.status = status
 		this.account = account
 		this.session = session
+		this.school = school
 	}
 
 	get rank () {
@@ -49,4 +51,5 @@ type UserConstructorArgs = {
 	status: UserStatus
 	account: UserAccount
 	session: UserSession
+	school: UserSchoolData | null
 }

@@ -25,6 +25,7 @@ import { UpdateQuestionsUserBioUseCase } from './domain/useCases/questions/updat
 import { CreateAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/createAnswerUpvote'
 import { GetAnswerUpvotesUseCase } from './domain/useCases/answerUpvotes/getAnswerUpvotes'
 import { FindAnswerUpvoteUseCase } from './domain/useCases/answerUpvotes/findAnswerUpvote'
+import { DeleteAnswerVotesUseCase } from './domain/useCases/answerUpvotes/deleteAnswerVotes'
 
 const answerCommentRepository = AnswerCommentRepository.getInstance()
 const answerRepository = AnswerRepository.getInstance()
@@ -57,6 +58,7 @@ export const UpdateQuestionsUserBio = new UpdateQuestionsUserBioUseCase(question
 export const GetAnswerUpvotes = new GetAnswerUpvotesUseCase(answerUpvoteRepository)
 export const FindAnswerUpvote = new FindAnswerUpvoteUseCase(answerUpvoteRepository)
 export const CreateAnswerUpvote = new CreateAnswerUpvoteUseCase(answerUpvoteRepository)
+export const DeleteAnswerVotes = new DeleteAnswerVotesUseCase(answerUpvoteRepository)
 
 export { AnswerCommentFromModel } from './data/models/answerComments'
 export { AnswerFromModel } from './data/models/answers'
