@@ -1,7 +1,6 @@
 export { UserBio, UserRoles } from '@modules/users'
 export * from './testPreps'
 export * from './tests'
-export * from './pastQuestions'
 export * from './comments'
 export * from './sets'
 

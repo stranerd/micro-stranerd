@@ -12,12 +12,13 @@ const app = getNewServerInstance(routes, {
 	],
 	admin: [
 		'reports/reports',
-		'study/pastQuestions'
+		'school/pastQuestions'
 	],
 	open: [
 		'users/users', 'users/reviews', 'users/badges',
 		'questions/answerComments', 'questions/answers', 'questions/answerUpvotes', 'questions/questions',
-		'study/courses', 'study/notes', 'study/institutions', 'study/comments', 'study/videos', 'study/flashCards', 'study/sets', 'study/testPreps',
+		'study/notes', 'study/comments', 'study/videos', 'study/flashCards', 'study/sets', 'study/testPreps',
+		'school/courses', 'school/institutions', 'school/faculties', 'school/departments',
 		'classes/classes', 'classes/groups', 'classes/discussions', 'classes/announcements'
 	]
 }, {

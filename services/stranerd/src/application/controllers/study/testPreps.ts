@@ -1,12 +1,5 @@
-import {
-	AddTestPrep,
-	DeleteTestPrep,
-	FindTestPrep,
-	GetTestPreps,
-	PastQuestionType,
-	PrepType,
-	UpdateTestPrep
-} from '@modules/study'
+import { AddTestPrep, DeleteTestPrep, FindTestPrep, GetTestPreps, PrepType, UpdateTestPrep } from '@modules/study'
+import { PastQuestionType } from '@modules/school'
 import { NotFoundError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class TestPrepController {
