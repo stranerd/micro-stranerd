@@ -13,7 +13,6 @@ import { chatRoutes } from './sessions/chat'
 import { sessionRoutes } from './sessions/session'
 import { reviewsRoutes } from './users/reviews'
 import { messagesRoutes } from './meta/messages'
-import { searchRoutes } from './meta/search'
 import { reportRoutes } from './reports/reports'
 import { flashcardsRoutes } from './study/flashCards'
 import { notesRoutes } from './study/notes'
@@ -46,7 +45,6 @@ export const routes: Route[] = [
 	...chatMetaRoutes,
 	...chatRoutes,
 	...messagesRoutes,
-	...searchRoutes,
 	...reportRoutes,
 	...flashcardsRoutes,
 	...notesRoutes,

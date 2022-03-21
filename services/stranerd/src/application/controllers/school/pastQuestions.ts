@@ -166,7 +166,7 @@ export class PastQuestionController {
 			}
 		})
 		const course = await FindCourse.execute(courseId)
-		if (!course) throw newBadRequestError('course not found')
+		if (!course) throw new BadRequestError('course not found')
 
 		const data = {
 			institutionId: course.institutionId, courseId, year, question, questionMedia,
