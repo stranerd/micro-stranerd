@@ -13,7 +13,7 @@ export class AnswerUpvoteController {
 
 	static async VoteAnswer (req: Request) {
 		const vote = !!req.body.vote
-		const answer = await FindAnswer.execute(req.params.id)
+		const answer = await FindAnswer.execute(req.params.answerId)
 		if (!answer) throw new BadRequestError('answer not found')
 		return await CreateAnswerUpvote.execute({
 			answerId: req.params.answerId,
