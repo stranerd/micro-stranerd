@@ -115,14 +115,11 @@ export class UserRepository implements IUserRepository {
 			res.streak = !isLessThan && isNextDay ? count + 1 : 1
 
 			const updateData = {
-				$set: { 'account.streak.lastEvaluatedAt': Date.now() },
-				$inc: {
-					'account.streak.longestStreak': res.increase && count === longestStreak ? 1 : 0
-				}
+				'account.streak.lastEvaluatedAt': Date.now(),
+				'account.streak.count': res.increase ? count + 1 : 1
 			}
-			if (res.increase) updateData.$inc['account.streak.count'] = 1
-			else updateData.$set['account.streak.count'] = 1
-			if (!res.skip) await User.findByIdAndUpdate(userId, updateData, { session })
+			if (res.increase && count + 1 > longestStreak) updateData['account.streak.longestStreak'] = count + 1
+			if (!res.skip) await User.findByIdAndUpdate(userId, { $set: updateData }, { session })
 
 			return res
 		})

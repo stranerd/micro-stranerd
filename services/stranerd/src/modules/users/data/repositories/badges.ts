@@ -73,10 +73,9 @@ export class BadgeRepository implements IBadgeRepository {
 				const increase = !isLessThan && isNextDay
 
 				if (!skip) {
-					if (increase) updateData.$inc[`data.streak.${activity}.value`] = 1
-					else updateData.$set[`data.streak.${activity}.value`] = 1
-					if (increase && value === longestStreak) {
-						updateData.$inc[`data.streak.${activity}.longestStreak`] = 1
+					updateData.$set[`data.streak.${activity}.value`] = increase ? value + 1 : 1
+					if (increase && value + 1 > longestStreak) {
+						updateData.$set[`data.streak.${activity}.longestStreak`] = value + 1
 						updateData.$addToSet[`badges.streak.${activity}`] = { $each: streakLevels.newLevels }
 					}
 					updateData.$set[`data.streak.${activity}.lastEvaluatedAt`] = Date.now()
