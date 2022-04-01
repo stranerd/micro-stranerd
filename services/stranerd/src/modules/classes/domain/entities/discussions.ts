@@ -8,7 +8,7 @@ export class DiscussionEntity extends BaseEntity {
 	public readonly userRoles: UserRoles
 	public readonly content: string
 	public readonly media: Media | null
-	public readonly links: string[]
+	public readonly links: { original: string, normalized: string }[]
 	public readonly groupId: string
 	public readonly classId: string
 	public readonly createdAt: number
@@ -49,7 +49,7 @@ type DiscussionConstructorArgs = {
 	userRoles: UserRoles
 	content: string
 	media: Media | null
-	links: string[]
+	links: { original: string, normalized: string }[]
 	groupId: string
 	classId: string
 	createdAt: number

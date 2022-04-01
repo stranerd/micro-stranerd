@@ -37,7 +37,7 @@ const Schema = new mongoose.Schema<DiscussionFromModel>({
 		default: ''
 	},
 	links: {
-		type: [String],
+		type: [mongoose.Schema.Types.Mixed] as unknown as DiscussionFromModel['links'],
 		required: false,
 		default: []
 	},

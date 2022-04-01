@@ -12,7 +12,7 @@ export interface DiscussionToModel {
 	userRoles: UserRoles
 	content: string
 	media: Media | null
-	links: string[]
+	links: { original: string, normalized: string }[]
 	groupId: string
 	classId: string
 }
