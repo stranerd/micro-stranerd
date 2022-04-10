@@ -3,7 +3,6 @@ import { FlashCardEntity, FlashCardFromModel, RemoveSetProp, SetSaved } from '@m
 import { getSocketEmitter } from '@index'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
-getSocketEmitter().register('study/flashCards', getSocketEmitter().quickRegisters.isOpen)
 export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFromModel, FlashCardEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/flashCards', after)

@@ -3,7 +3,6 @@ import { DiscussionEntity, DiscussionFromModel, FindGroup } from '@modules/class
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
-getSocketEmitter().register('classes/discussions', getSocketEmitter().quickRegisters.isOpen)
 export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFromModel, DiscussionEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('classes/discussions', after)

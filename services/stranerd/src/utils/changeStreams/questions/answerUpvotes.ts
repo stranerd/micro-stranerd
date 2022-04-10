@@ -3,7 +3,6 @@ import { AnswerUpvoteEntity, AnswerUpvoteFromModel } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { CountStreakBadges, RecordCountStreak, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 
-getSocketEmitter().register('questions/answerUpvotes', getSocketEmitter().quickRegisters.isOpen)
 export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvoteFromModel, AnswerUpvoteEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/answerUpvotes', after)

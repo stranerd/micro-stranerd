@@ -5,7 +5,6 @@ import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
 import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 
-getSocketEmitter().register('study/tests', getSocketEmitter().quickRegisters.isMine)
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('study/tests', after, after.userId)

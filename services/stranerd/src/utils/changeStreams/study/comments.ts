@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { CommentEntity, CommentFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('study/comments', getSocketEmitter().quickRegisters.isOpen)
 export const CommentChangeStreamCallbacks: ChangeStreamCallbacks<CommentFromModel, CommentEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/comments', after)

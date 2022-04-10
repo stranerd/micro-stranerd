@@ -11,7 +11,6 @@ import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
 
-getSocketEmitter().register('classes/classes', getSocketEmitter().quickRegisters.isOpen)
 export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('classes/classes', after)

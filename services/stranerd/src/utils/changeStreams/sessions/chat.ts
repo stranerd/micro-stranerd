@@ -4,7 +4,6 @@ import { publishers } from '@utils/events'
 import { startSessionTimer } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('sessions/chats', getSocketEmitter().quickRegisters.isMine)
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('sessions/chats', after, after.path[0])

@@ -3,7 +3,6 @@ import { NotificationEntity, NotificationFromModel } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
-getSocketEmitter().register('users/notifications', getSocketEmitter().quickRegisters.isMine)
 export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<NotificationFromModel, NotificationEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('users/notifications', after, after.userId)

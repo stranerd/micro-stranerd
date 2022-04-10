@@ -3,7 +3,6 @@ import { FindUser, ReferralEntity, ReferralFromModel } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('users/referrals', getSocketEmitter().quickRegisters.isMine)
 export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromModel, ReferralEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('users/referrals', after, after.userId)

@@ -3,7 +3,6 @@ import { RemoveSetProp, SetEntity, SetFromModel, SetSaved } from '@modules/study
 import { getSocketEmitter } from '@index'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
-getSocketEmitter().register('study/sets', getSocketEmitter().quickRegisters.isOpen)
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/sets', after)

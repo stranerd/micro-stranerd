@@ -4,7 +4,6 @@ import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
-getSocketEmitter().register('study/notes', getSocketEmitter().quickRegisters.isOpen)
 export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, NoteEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/notes', after)

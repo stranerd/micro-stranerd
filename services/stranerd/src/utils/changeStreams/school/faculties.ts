@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { DeleteFacultyDepartments, FacultyEntity, FacultyFromModel } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('school/faculties', getSocketEmitter().quickRegisters.isOpen)
 export const FacultyChangeStreamCallbacks: ChangeStreamCallbacks<FacultyFromModel, FacultyEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('school/faculties', after)

@@ -20,7 +20,6 @@ import {
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
 
-getSocketEmitter().register('questions/answers', getSocketEmitter().quickRegisters.isOpen)
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/answers', after)

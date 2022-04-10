@@ -63,6 +63,7 @@ export class SocketEmitter {
 	register (channel: string, onJoin?: OnJoinFn) {
 		if (!onJoin) onJoin = async ({ channel }) => channel
 		this.routes[channel] = onJoin
+		this.routes[channel + '/:id'] = onJoin
 	}
 
 	private getJoinCb (channel: string) {

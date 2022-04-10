@@ -3,7 +3,6 @@ import { AnnouncementEntity, AnnouncementFromModel, FindClass } from '@modules/c
 import { getSocketEmitter } from '@index'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
 
-getSocketEmitter().register('classes/announcements', getSocketEmitter().quickRegisters.isOpen)
 export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('classes/announcements', after)

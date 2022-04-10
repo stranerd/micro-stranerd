@@ -11,7 +11,6 @@ import {
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
-getSocketEmitter().register('questions/questions', getSocketEmitter().quickRegisters.isOpen)
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/questions', after)

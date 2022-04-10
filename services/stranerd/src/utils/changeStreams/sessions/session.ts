@@ -14,7 +14,6 @@ import {
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('sessions/sessions', getSocketEmitter().quickRegisters.isMine)
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('sessions/sessions', after, after.studentId)

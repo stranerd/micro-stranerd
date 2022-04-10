@@ -14,7 +14,6 @@ const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) 
 	await Logger.success(newLevels, oldLevels)
 }
 
-getSocketEmitter().register('users/badges', getSocketEmitter().quickRegisters.isMine)
 export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('users/badges', after, after.userId)

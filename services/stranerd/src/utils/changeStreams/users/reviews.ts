@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { ReviewEntity, ReviewFromModel, UpdateUserRatings } from '@modules/users'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('users/reviews', getSocketEmitter().quickRegisters.isOpen)
 export const ReviewChangeStreamCallbacks: ChangeStreamCallbacks<ReviewFromModel, ReviewEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('users/reviews', after)

@@ -3,7 +3,6 @@ import { getSocketEmitter } from '@index'
 import { PastQuestionEntity, PastQuestionFromModel, PastQuestionType } from '@modules/school'
 import { publishers } from '@utils/events'
 
-getSocketEmitter().register('school/pastQuestions', getSocketEmitter().quickRegisters.isOpen)
 export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuestionFromModel, PastQuestionEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('school/pastQuestions', after)

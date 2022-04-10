@@ -11,7 +11,6 @@ import {
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-getSocketEmitter().register('questions/answerComments', getSocketEmitter().quickRegisters.isOpen)
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/answerComments', after)

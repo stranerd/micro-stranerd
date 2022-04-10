@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { DeletePrepTests, RemoveSetProp, SetSaved, TestPrepEntity, TestPrepFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('study/testPreps', getSocketEmitter().quickRegisters.isOpen)
 export const TestPrepChangeStreamCallbacks: ChangeStreamCallbacks<TestPrepFromModel, TestPrepEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/testPreps', after)

@@ -21,7 +21,6 @@ import {
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('users/users', getSocketEmitter().quickRegisters.isOpen)
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('users/users', after)

@@ -4,7 +4,6 @@ import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
-getSocketEmitter().register('study/videos', getSocketEmitter().quickRegisters.isOpen)
 export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, VideoEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/videos', after)

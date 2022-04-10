@@ -7,7 +7,6 @@ import {
 } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('school/institutions', getSocketEmitter().quickRegisters.isOpen)
 export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<InstitutionFromModel, InstitutionEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('school/institutions', after)

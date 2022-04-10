@@ -3,7 +3,6 @@ import { ChatMetaEntity, ChatMetaFromModel, UpdateChatMetaBio } from '@modules/s
 import { FindUser } from '@modules/users'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('sessions/chatMetas', getSocketEmitter().quickRegisters.isMine)
 export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitPathCreated('sessions/chatMetas', after, after.userId)

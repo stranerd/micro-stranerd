@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { CourseEntity, CourseFromModel, DeleteCourseQuestions } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
-getSocketEmitter().register('school/courses', getSocketEmitter().quickRegisters.isOpen)
 export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel, CourseEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('school/courses', after)
