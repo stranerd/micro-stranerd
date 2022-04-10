@@ -14,7 +14,7 @@ enum EmitTypes {
 type LeaveRoomParams = { channel: string }
 type JoinRoomParams = { channel: string, token?: string, app?: string }
 type Callback = (params: { code: StatusCodes, message: string, channel: string }) => void
-type OnJoinFn = (data: { channel: string, user: AuthUser | null, app: AuthApps }, params: Record<string, any>) => Promise<string | null>
+export type OnJoinFn = (data: { channel: string, user: AuthUser | null, app: AuthApps }, params: Record<string, any>) => Promise<string | null>
 export type SocketCallers = {
 	onConnect: (userId: string, socketId: string) => Promise<void>
 	onDisconnect: (userId: string, socketId: string) => Promise<void>

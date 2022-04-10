@@ -1,7 +1,7 @@
 import { IDiscussionRepository } from '../../irepositories/discussions'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { id: string, userId: string }
+type Input = { id: string, userId: string, classId: string }
 
 export class DeleteDiscussionUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IDiscussionRepository
@@ -12,6 +12,6 @@ export class DeleteDiscussionUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (data: Input) {
-		return await this.repository.delete(data.id, data.userId)
+		return await this.repository.delete(data.classId, data.id, data.userId)
 	}
 }

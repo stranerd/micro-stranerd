@@ -2,7 +2,9 @@ import { IGroupRepository } from '../../irepositories/groups'
 import { BaseUseCase } from '@utils/commons'
 import { GroupEntity } from '../../entities/groups'
 
-export class FindGroupUseCase extends BaseUseCase<string, GroupEntity | null> {
+type Input = { classId: string, id: string }
+
+export class FindGroupUseCase extends BaseUseCase<Input, GroupEntity | null> {
 	private repository: IGroupRepository
 
 	constructor (repository: IGroupRepository) {
@@ -10,7 +12,7 @@ export class FindGroupUseCase extends BaseUseCase<string, GroupEntity | null> {
 		this.repository = repository
 	}
 
-	async execute (id: string) {
-		return await this.repository.find(id)
+	async execute (input: Input) {
+		return await this.repository.find(input.classId, input.id)
 	}
 }

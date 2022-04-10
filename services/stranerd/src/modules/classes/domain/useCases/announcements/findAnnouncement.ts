@@ -2,7 +2,9 @@ import { IAnnouncementRepository } from '../../irepositories/announcements'
 import { BaseUseCase } from '@utils/commons'
 import { AnnouncementEntity } from '../../entities/announcements'
 
-export class FindAnnouncementUseCase extends BaseUseCase<string, AnnouncementEntity | null> {
+type Input = { classId: string, id: string }
+
+export class FindAnnouncementUseCase extends BaseUseCase<Input, AnnouncementEntity | null> {
 	private repository: IAnnouncementRepository
 
 	constructor (repository: IAnnouncementRepository) {
@@ -10,7 +12,7 @@ export class FindAnnouncementUseCase extends BaseUseCase<string, AnnouncementEnt
 		this.repository = repository
 	}
 
-	async execute (id: string) {
-		return await this.repository.find(id)
+	async execute (input: Input) {
+		return await this.repository.find(input.classId, input.id)
 	}
 }

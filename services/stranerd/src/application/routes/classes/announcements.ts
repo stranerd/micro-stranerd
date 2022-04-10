@@ -3,7 +3,7 @@ import { AnnouncementController } from '../../controllers/classes/announcements'
 
 export const announcementsRoutes: Route[] = [
 	{
-		path: '/classes/announcements',
+		path: '/classes/announcements/:classId',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const announcementsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/announcements/:id',
+		path: '/classes/announcements/:classId/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -27,7 +27,7 @@ export const announcementsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/announcements/:id',
+		path: '/classes/announcements/:classId/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -40,7 +40,7 @@ export const announcementsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/announcements',
+		path: '/classes/announcements/:classId/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -53,7 +53,7 @@ export const announcementsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/announcements/:id',
+		path: '/classes/announcements/:classId/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,

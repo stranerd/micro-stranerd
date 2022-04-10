@@ -3,7 +3,7 @@ import { GroupController } from '../../controllers/classes/groups'
 
 export const groupsRoutes: Route[] = [
 	{
-		path: '/classes/groups',
+		path: '/classes/groups/:classId',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const groupsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/groups/:id',
+		path: '/classes/groups/:classId/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -27,7 +27,7 @@ export const groupsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/groups/:id',
+		path: '/classes/groups/:classId/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -40,7 +40,7 @@ export const groupsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/groups',
+		path: '/classes/groups/:classId/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -53,7 +53,7 @@ export const groupsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/groups/:id',
+		path: '/classes/groups/:classId/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,

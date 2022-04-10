@@ -4,11 +4,12 @@ import { BadRequestError, QueryParams, Request, validate, Validation } from '@ut
 
 export class DiscussionController {
 	static async FindDiscussion (req: Request) {
-		return await FindDiscussion.execute(req.params.id)
+		return await FindDiscussion.execute({ id: req.params.id, classId: req.params.classId })
 	}
 
 	static async GetDiscussions (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'classId', value: req.params.classId }]
 		return await GetDiscussions.execute(query)
 	}
 

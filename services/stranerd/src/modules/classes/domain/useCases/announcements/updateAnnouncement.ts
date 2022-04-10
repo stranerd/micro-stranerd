@@ -3,7 +3,7 @@ import { IAnnouncementRepository } from '../../irepositories/announcements'
 import { BaseUseCase } from '@utils/commons'
 import { AnnouncementEntity } from '../../entities/announcements'
 
-type Input = { id: string, userId: string, data: Partial<AnnouncementToModel> }
+type Input = { classId: string, id: string, userId: string, data: Partial<AnnouncementToModel> }
 
 export class UpdateAnnouncementUseCase extends BaseUseCase<Input, AnnouncementEntity | null> {
 	private repository: IAnnouncementRepository
@@ -14,6 +14,6 @@ export class UpdateAnnouncementUseCase extends BaseUseCase<Input, AnnouncementEn
 	}
 
 	async execute (input: Input) {
-		return await this.repository.update(input.id, input.userId, input.data)
+		return await this.repository.update(input.classId, input.id, input.userId, input.data)
 	}
 }

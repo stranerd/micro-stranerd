@@ -42,13 +42,17 @@ export class DiscussionRepository implements IDiscussionRepository {
 		return this.mapper.mapFrom(res)!
 	}
 
-	async find (id: string) {
-		const discussion = await Discussion.findById(id)
+	async find (classId: string, id: string) {
+		const discussion = await Discussion.findOne({ _id: id, classId })
 		return this.mapper.mapFrom(discussion)
 	}
 
-	async update (id: string, userId: string, data: Partial<DiscussionToModel>) {
-		const discussion = await Discussion.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
+	async update (classId: string, id: string, userId: string, data: Partial<DiscussionToModel>) {
+		const discussion = await Discussion.findOneAndUpdate({
+			_id: id,
+			userId,
+			classId
+		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(discussion)
 	}
 
@@ -57,11 +61,11 @@ export class DiscussionRepository implements IDiscussionRepository {
 		return discussions.acknowledged
 	}
 
-	async delete (id: string, userId: string) {
+	async delete (classId: string, id: string, userId: string) {
 		const session = await mongoose.startSession()
 		let res = false
 		await session.withTransaction(async (session) => {
-			const discussion = await Discussion.findOneAndDelete({ _id: id, userId }, { session })
+			const discussion = await Discussion.findOneAndDelete({ _id: id, userId, classId }, { session })
 			if (discussion) await Group.findOneAndUpdate({ 'last._id': discussion.id }, { $set: { last: null } }, { session })
 			res = !!discussion
 			return discussion

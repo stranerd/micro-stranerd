@@ -4,16 +4,16 @@ import { getSocketEmitter } from '@index'
 
 export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, GroupEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('classes/groups', after)
-		await getSocketEmitter().emitCreated(`classes/groups/${after.id}`, after)
+		await getSocketEmitter().emitPathCreated('classes/groups', after, after.classId)
+		await getSocketEmitter().emitPathCreated('classes/groups', after, `${after.classId}/${after.id}`)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated('classes/groups', after)
-		await getSocketEmitter().emitUpdated(`classes/groups/${after.id}`, after)
+		await getSocketEmitter().emitPathUpdated('classes/groups', after, after.classId)
+		await getSocketEmitter().emitPathUpdated('classes/groups', after, `${after.classId}/${after.id}`)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('classes/groups', before)
-		await getSocketEmitter().emitDeleted(`classes/groups/${before.id}`, before)
+		await getSocketEmitter().emitPathDeleted('classes/groups', before, before.classId)
+		await getSocketEmitter().emitPathDeleted('classes/groups', before, `${before.classId}/${before.id}`)
 		await DeleteGroupDiscussions.execute(before.id)
 	}
 }

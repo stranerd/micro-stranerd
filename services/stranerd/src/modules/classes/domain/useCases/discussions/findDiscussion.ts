@@ -2,7 +2,9 @@ import { IDiscussionRepository } from '../../irepositories/discussions'
 import { BaseUseCase } from '@utils/commons'
 import { DiscussionEntity } from '../../entities/discussions'
 
-export class FindDiscussionUseCase extends BaseUseCase<string, DiscussionEntity | null> {
+type Input = { id: string, classId: string }
+
+export class FindDiscussionUseCase extends BaseUseCase<Input, DiscussionEntity | null> {
 	private repository: IDiscussionRepository
 
 	constructor (repository: IDiscussionRepository) {
@@ -10,7 +12,7 @@ export class FindDiscussionUseCase extends BaseUseCase<string, DiscussionEntity 
 		this.repository = repository
 	}
 
-	async execute (id: string) {
-		return await this.repository.find(id)
+	async execute (input: Input) {
+		return await this.repository.find(input.classId, input.id)
 	}
 }

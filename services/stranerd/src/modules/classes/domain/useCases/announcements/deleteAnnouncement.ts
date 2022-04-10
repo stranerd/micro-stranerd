@@ -1,7 +1,7 @@
 import { IAnnouncementRepository } from '../../irepositories/announcements'
 import { BaseUseCase } from '@utils/commons'
 
-type Input = { id: string, userId: string }
+type Input = { classId: string, id: string, userId: string }
 
 export class DeleteAnnouncementUseCase extends BaseUseCase<Input, boolean> {
 	private repository: IAnnouncementRepository
@@ -12,6 +12,6 @@ export class DeleteAnnouncementUseCase extends BaseUseCase<Input, boolean> {
 	}
 
 	async execute (data: Input) {
-		return await this.repository.delete(data.id, data.userId)
+		return await this.repository.delete(data.classId, data.id, data.userId)
 	}
 }

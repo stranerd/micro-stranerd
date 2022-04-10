@@ -1,8 +1,9 @@
-import { getNewServerInstance, Logger, setupMongooseConnection } from '@utils/commons'
+import { getNewServerInstance, Logger, OnJoinFn, setupMongooseConnection } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
 import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
+import { FindClass } from '@modules/classes'
 
 const app = getNewServerInstance(routes, {
 	onConnect: async (userId, socketId) => {
@@ -27,10 +28,18 @@ const start = async () => {
 			})
 	)
 
-	getSocketEmitter().register('classes/announcements', getSocketEmitter().quickRegisters.isOpen)
+	const classJoinCb: OnJoinFn = async (data, params) => {
+		const { classId = null } = params
+		if (!classId || !data.user) return null
+		const classInst = await FindClass.execute(classId)
+		if (!classInst?.getAllUsers().includes(data.user.id)) return null
+		return await getSocketEmitter().quickRegisters.isOpen(data, params)
+	}
+
 	getSocketEmitter().register('classes/classes', getSocketEmitter().quickRegisters.isOpen)
-	getSocketEmitter().register('classes/discussions', getSocketEmitter().quickRegisters.isOpen)
-	getSocketEmitter().register('classes/groups', getSocketEmitter().quickRegisters.isOpen)
+	getSocketEmitter().register('classes/announcements/:classId', classJoinCb)
+	getSocketEmitter().register('classes/discussions/:classId', classJoinCb)
+	getSocketEmitter().register('classes/groups/:classId', classJoinCb)
 	getSocketEmitter().register('questions/answerComments', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('questions/answers', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('questions/answerUpvotes', getSocketEmitter().quickRegisters.isOpen)

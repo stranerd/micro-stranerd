@@ -5,11 +5,12 @@ import { ClassUsers } from '@modules/classes/domain/types'
 
 export class GroupController {
 	static async FindGroup (req: Request) {
-		return await FindGroup.execute(req.params.id)
+		return await FindGroup.execute({ id: req.params.id, classId: req.params.classId })
 	}
 
 	static async GetGroup (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'classId', value: req.params.classId }]
 		return await GetGroups.execute(query)
 	}
 
@@ -23,7 +24,12 @@ export class GroupController {
 
 		const data = { name }
 
-		const updatedGroup = await UpdateGroup.execute({ id: req.params.id, userId: authUserId, data })
+		const updatedGroup = await UpdateGroup.execute({
+			id: req.params.id,
+			classId: req.params.classId,
+			userId: authUserId,
+			data
+		})
 
 		if (updatedGroup) return updatedGroup
 		throw new NotAuthorizedError()
@@ -36,7 +42,7 @@ export class GroupController {
 
 		const { name, classId } = validate({
 			name: req.body.name,
-			classId: req.body.classId
+			classId: req.params.classId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }
@@ -59,7 +65,11 @@ export class GroupController {
 
 	static async DeleteGroup (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteGroup.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await DeleteGroup.execute({
+			id: req.params.id,
+			classId: req.params.classId,
+			userId: authUserId
+		})
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

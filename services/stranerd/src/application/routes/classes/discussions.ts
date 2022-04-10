@@ -3,7 +3,7 @@ import { DiscussionController } from '../../controllers/classes/discussions'
 
 export const discussionRoutes: Route[] = [
 	{
-		path: '/classes/discussions',
+		path: '/classes/discussions/:classId',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -15,7 +15,7 @@ export const discussionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/discussions/:id',
+		path: '/classes/discussions/:classId/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -27,7 +27,7 @@ export const discussionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/discussions',
+		path: '/classes/discussions/:classId',
 		method: 'post',
 		controllers: [
 			requireAuthUser,

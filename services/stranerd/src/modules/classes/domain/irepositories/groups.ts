@@ -6,9 +6,9 @@ import { ClassUsers, UserBio, UserRoles } from '../types'
 export interface IGroupRepository {
 	add: (data: GroupToModel) => Promise<GroupEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<GroupEntity>>
-	find: (id: string) => Promise<GroupEntity | null>
-	update: (id: string, userId: string, data: Partial<GroupToModel>) => Promise<GroupEntity | null>
-	delete: (id: string, userId: string) => Promise<boolean>
+	find: (classId: string, id: string) => Promise<GroupEntity | null>
+	update: (classId: string, id: string, userId: string, data: Partial<GroupToModel>) => Promise<GroupEntity | null>
+	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateGroupsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
 	updateGroupsUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassGroups: (classId: string) => Promise<boolean>

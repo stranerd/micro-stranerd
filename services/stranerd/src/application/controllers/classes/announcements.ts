@@ -12,11 +12,12 @@ import { ClassUsers } from '@modules/classes/domain/types'
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {
-		return await FindAnnouncement.execute(req.params.id)
+		return await FindAnnouncement.execute({ id: req.params.id, classId: req.params.classId })
 	}
 
 	static async GetAnnouncement (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'classId', value: req.params.classId }]
 		return await GetAnnouncements.execute(query)
 	}
 
@@ -30,7 +31,12 @@ export class AnnouncementController {
 
 		const data = { body }
 
-		const updatedAnnouncement = await UpdateAnnouncement.execute({ id: req.params.id, userId: authUserId, data })
+		const updatedAnnouncement = await UpdateAnnouncement.execute({
+			id: req.params.id,
+			classId: req.params.classId,
+			userId: authUserId,
+			data
+		})
 
 		if (updatedAnnouncement) return updatedAnnouncement
 		throw new NotAuthorizedError()
@@ -43,7 +49,7 @@ export class AnnouncementController {
 
 		const { body, classId } = validate({
 			body: req.body.body,
-			classId: req.body.classId
+			classId: req.params.classId
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }
@@ -66,7 +72,11 @@ export class AnnouncementController {
 
 	static async DeleteAnnouncement (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteAnnouncement.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await DeleteAnnouncement.execute({
+			id: req.params.id,
+			userId: authUserId,
+			classId: req.params.classId
+		})
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

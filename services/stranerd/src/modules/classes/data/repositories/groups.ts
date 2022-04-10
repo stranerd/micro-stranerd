@@ -32,18 +32,22 @@ export class GroupRepository implements IGroupRepository {
 		return this.mapper.mapFrom(group)!
 	}
 
-	async find (id: string) {
-		const group = await Group.findById(id)
+	async find (classId: string, id: string) {
+		const group = await Group.findOne({ _id: id, classId })
 		return this.mapper.mapFrom(group)
 	}
 
-	async update (id: string, userId: string, data: Partial<GroupToModel>) {
-		const group = await Group.findOneAndUpdate({ _id: id, 'users.admins': userId }, { $set: data }, { new: true })
+	async update (classId: string, id: string, userId: string, data: Partial<GroupToModel>) {
+		const group = await Group.findOneAndUpdate({
+			_id: id,
+			'users.admins': userId,
+			classId
+		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(group)
 	}
 
-	async delete (id: string, userId: string) {
-		const group = await Group.findOneAndDelete({ _id: id, 'users.admins': userId })
+	async delete (classId: string, id: string, userId: string) {
+		const group = await Group.findOneAndDelete({ _id: id, 'users.admins': userId, classId })
 		return !!group
 	}
 

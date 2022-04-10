@@ -3,7 +3,7 @@ import { IDiscussionRepository } from '../../irepositories/discussions'
 import { BaseUseCase } from '@utils/commons'
 import { DiscussionEntity } from '../../entities/discussions'
 
-type Input = { id: string, userId: string, data: DiscussionToModel }
+type Input = { id: string, userId: string, data: DiscussionToModel, classId: string, }
 
 export class UpdateDiscussionUseCase extends BaseUseCase<Input, DiscussionEntity | null> {
 	private repository: IDiscussionRepository
@@ -14,6 +14,6 @@ export class UpdateDiscussionUseCase extends BaseUseCase<Input, DiscussionEntity
 	}
 
 	async execute (input: Input) {
-		return await this.repository.update(input.id, input.userId, input.data)
+		return await this.repository.update(input.classId, input.id, input.userId, input.data)
 	}
 }
