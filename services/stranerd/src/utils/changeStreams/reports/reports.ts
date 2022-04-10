@@ -2,17 +2,18 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { ReportEntity, ReportFromModel } from '@modules/reports'
 import { getSocketEmitter } from '@index'
 
+getSocketEmitter().register('reports/reports', getSocketEmitter().quickRegisters.isAdmin)
 export const ReportChangeStreamCallbacks: ChangeStreamCallbacks<ReportFromModel, ReportEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitAdminCreated('reports/reports', after)
-		await getSocketEmitter().emitAdminCreated(`reports/reports/${after.id}`, after)
+		await getSocketEmitter().emitCreated('reports/reports', after)
+		await getSocketEmitter().emitCreated(`reports/reports/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitAdminUpdated('reports/reports', after)
-		await getSocketEmitter().emitAdminUpdated(`reports/reports/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('reports/reports', after)
+		await getSocketEmitter().emitUpdated(`reports/reports/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitAdminDeleted('reports/reports', before)
-		await getSocketEmitter().emitAdminDeleted(`reports/reports/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('reports/reports', before)
+		await getSocketEmitter().emitDeleted(`reports/reports/${before.id}`, before)
 	}
 }

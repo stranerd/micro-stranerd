@@ -21,10 +21,11 @@ import {
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
+getSocketEmitter().register('users/users', getSocketEmitter().quickRegisters.isOpen)
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('users/users', after)
-		await getSocketEmitter().emitOpenCreated(`users/users/${after.id}`, after)
+		await getSocketEmitter().emitCreated('users/users', after)
+		await getSocketEmitter().emitCreated(`users/users/${after.id}`, after)
 
 		await AddSet.execute({
 			name: '', data: { type: SetType.users },
@@ -34,8 +35,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('users/users', after)
-		await getSocketEmitter().emitOpenUpdated(`users/users/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('users/users', after)
+		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
@@ -84,7 +85,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('users/users', before)
-		await getSocketEmitter().emitOpenDeleted(`users/users/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('users/users', before)
+		await getSocketEmitter().emitDeleted(`users/users/${before.id}`, before)
 	}
 }

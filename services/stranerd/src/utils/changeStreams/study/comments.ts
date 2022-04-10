@@ -2,17 +2,18 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { CommentEntity, CommentFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 
+getSocketEmitter().register('study/comments', getSocketEmitter().quickRegisters.isOpen)
 export const CommentChangeStreamCallbacks: ChangeStreamCallbacks<CommentFromModel, CommentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('study/comments', after)
-		await getSocketEmitter().emitOpenCreated(`study/comments/${after.id}`, after)
+		await getSocketEmitter().emitCreated('study/comments', after)
+		await getSocketEmitter().emitCreated(`study/comments/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('study/comments', after)
-		await getSocketEmitter().emitOpenUpdated(`study/comments/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('study/comments', after)
+		await getSocketEmitter().emitUpdated(`study/comments/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('study/comments', before)
-		await getSocketEmitter().emitOpenDeleted(`study/comments/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('study/comments', before)
+		await getSocketEmitter().emitDeleted(`study/comments/${before.id}`, before)
 	}
 }

@@ -10,7 +10,7 @@ import { publishers, subscribers } from '@utils/events'
 import { routes } from '@application/routes'
 import { initializeApp } from 'firebase-admin/app'
 
-const app = getNewServerInstance(routes, { mine: [], admin: [], open: [] }, {
+const app = getNewServerInstance(routes, {
 	onConnect: async () => {
 	},
 	onDisconnect: async () => {

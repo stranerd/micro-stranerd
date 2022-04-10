@@ -11,14 +11,15 @@ import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
 
+getSocketEmitter().register('classes/classes', getSocketEmitter().quickRegisters.isOpen)
 export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('classes/classes', after)
-		await getSocketEmitter().emitOpenCreated(`classes/classes/${after.id}`, after)
+		await getSocketEmitter().emitCreated('classes/classes', after)
+		await getSocketEmitter().emitCreated(`classes/classes/${after.id}`, after)
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitOpenUpdated('classes/classes', after)
-		await getSocketEmitter().emitOpenUpdated(`classes/classes/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('classes/classes', after)
+		await getSocketEmitter().emitUpdated(`classes/classes/${after.id}`, after)
 
 		if (changes.users) {
 			await Promise.all([UpdateAnnouncementsUsers, UpdateGroupsUsers].map((u) => u.execute({
@@ -44,8 +45,8 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('classes/classes', before)
-		await getSocketEmitter().emitOpenDeleted(`classes/classes/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('classes/classes', before)
+		await getSocketEmitter().emitDeleted(`classes/classes/${before.id}`, before)
 
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)

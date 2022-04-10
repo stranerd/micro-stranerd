@@ -3,10 +3,11 @@ import { AnnouncementEntity, AnnouncementFromModel, FindClass } from '@modules/c
 import { getSocketEmitter } from '@index'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
 
+getSocketEmitter().register('classes/announcements', getSocketEmitter().quickRegisters.isOpen)
 export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('classes/announcements', after)
-		await getSocketEmitter().emitOpenCreated(`classes/announcements/${after.id}`, after)
+		await getSocketEmitter().emitCreated('classes/announcements', after)
+		await getSocketEmitter().emitCreated(`classes/announcements/${after.id}`, after)
 
 		const classInst = await FindClass.execute(after.classId)
 		if (!classInst) return
@@ -19,11 +20,11 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('classes/announcements', after)
-		await getSocketEmitter().emitOpenUpdated(`classes/announcements/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('classes/announcements', after)
+		await getSocketEmitter().emitUpdated(`classes/announcements/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('classes/announcements', before)
-		await getSocketEmitter().emitOpenDeleted(`classes/announcements/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('classes/announcements', before)
+		await getSocketEmitter().emitDeleted(`classes/announcements/${before.id}`, before)
 	}
 }

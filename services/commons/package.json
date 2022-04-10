@@ -42,6 +42,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.2.10",
 		"morgan": "^1.10.0",
+		"path-to-regexp": "^6.2.0",
 		"pug": "^3.0.2",
 		"redis": "^4.0.6",
 		"socket.io": "4.4.1"

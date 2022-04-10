@@ -5,23 +5,6 @@ import { routes } from '@application/routes'
 import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
 
 const app = getNewServerInstance(routes, {
-	mine: [
-		'users/notifications', 'users/referrals',
-		'sessions/chats', 'sessions/chatMetas', 'sessions/sessions',
-		'study/tests'
-	],
-	admin: [
-		'reports/reports',
-		'school/pastQuestions'
-	],
-	open: [
-		'users/users', 'users/reviews', 'users/badges',
-		'questions/answerComments', 'questions/answers', 'questions/answerUpvotes', 'questions/questions',
-		'study/notes', 'study/comments', 'study/videos', 'study/flashCards', 'study/sets', 'study/testPreps',
-		'school/courses', 'school/institutions', 'school/faculties', 'school/departments',
-		'classes/classes', 'classes/groups', 'classes/discussions', 'classes/announcements'
-	]
-}, {
 	onConnect: async (userId, socketId) => {
 		await UpdateUserStatus.execute({
 			userId, socketId, add: true

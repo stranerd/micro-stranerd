@@ -14,10 +14,11 @@ const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) 
 	await Logger.success(newLevels, oldLevels)
 }
 
+getSocketEmitter().register('users/badges', getSocketEmitter().quickRegisters.isMine)
 export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitMineCreated('users/badges', after, after.userId)
-		await getSocketEmitter().emitMineCreated(`users/badges/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathCreated('users/badges', after, after.userId)
+		await getSocketEmitter().emitPathCreated(`users/badges/${after.id}`, after, after.userId)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -34,8 +35,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	updated: async ({ after, before }) => {
-		await getSocketEmitter().emitMineUpdated('users/badges', after, after.userId)
-		await getSocketEmitter().emitMineUpdated(`users/badges/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathUpdated('users/badges', after, after.userId)
+		await getSocketEmitter().emitPathUpdated(`users/badges/${after.id}`, after, after.userId)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -57,8 +58,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitMineDeleted('users/badges', before, before.userId)
-		await getSocketEmitter().emitMineDeleted(`users/badges/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitPathDeleted('users/badges', before, before.userId)
+		await getSocketEmitter().emitPathDeleted(`users/badges/${before.id}`, before, before.userId)
 
 		const funcs = [] as (() => Promise<void>)[]
 

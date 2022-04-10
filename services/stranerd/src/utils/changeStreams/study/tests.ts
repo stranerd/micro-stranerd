@@ -5,10 +5,11 @@ import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
 import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'
 
+getSocketEmitter().register('study/tests', getSocketEmitter().quickRegisters.isMine)
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitMineCreated('study/tests', after, after.userId)
-		await getSocketEmitter().emitMineCreated(`study/tests/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathCreated('study/tests', after, after.userId)
+		await getSocketEmitter().emitPathCreated(`study/tests/${after.id}`, after, after.userId)
 
 		if (after.data.type === TestType.timed) {
 			const delay = after.data.time * 60 * 1000
@@ -20,8 +21,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitMineUpdated('study/tests', after, after.userId)
-		await getSocketEmitter().emitMineUpdated(`study/tests/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathUpdated('study/tests', after, after.userId)
+		await getSocketEmitter().emitPathUpdated(`study/tests/${after.id}`, after, after.userId)
 
 		if (changes.done && !before.done && after.done) {
 			if (after.data.type === TestType.timed) await UpdateUserNerdScore.execute({
@@ -49,8 +50,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitMineDeleted('study/tests', before, before.userId)
-		await getSocketEmitter().emitMineDeleted(`study/tests/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitPathDeleted('study/tests', before, before.userId)
+		await getSocketEmitter().emitPathDeleted(`study/tests/${before.id}`, before, before.userId)
 
 		await Promise.all(before.taskIds.map(removeDelayedJob))
 	}

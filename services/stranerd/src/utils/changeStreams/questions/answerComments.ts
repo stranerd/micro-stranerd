@@ -11,10 +11,11 @@ import {
 } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
+getSocketEmitter().register('questions/answerComments', getSocketEmitter().quickRegisters.isOpen)
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('questions/answersComments', after)
-		await getSocketEmitter().emitOpenCreated(`questions/answersComments/${after.answerId}`, after)
+		await getSocketEmitter().emitCreated('questions/answerComments', after)
+		await getSocketEmitter().emitCreated(`questions/answerComments/${after.answerId}`, after)
 
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({
@@ -37,12 +38,12 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('questions/answersComments', after)
-		await getSocketEmitter().emitOpenUpdated(`questions/answersComments/${after.answerId}`, after)
+		await getSocketEmitter().emitUpdated('questions/answerComments', after)
+		await getSocketEmitter().emitUpdated(`questions/answerComments/${after.answerId}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('questions/answersComments', before)
-		await getSocketEmitter().emitOpenDeleted(`questions/answersComments/${before.answerId}`, before)
+		await getSocketEmitter().emitDeleted('questions/answerComments', before)
+		await getSocketEmitter().emitDeleted(`questions/answerComments/${before.answerId}`, before)
 
 		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answerComments })
 		await UpdateUserNerdScore.execute({

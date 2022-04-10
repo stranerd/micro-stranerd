@@ -4,10 +4,11 @@ import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
 
+getSocketEmitter().register('study/videos', getSocketEmitter().quickRegisters.isOpen)
 export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, VideoEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('study/videos', after)
-		await getSocketEmitter().emitOpenCreated(`study/videos/${after.id}`, after)
+		await getSocketEmitter().emitCreated('study/videos', after)
+		await getSocketEmitter().emitCreated(`study/videos/${after.id}`, after)
 
 		await UpdateUserNerdScore.execute({
 			userId: after.userId,
@@ -16,14 +17,14 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.videos })
 	},
 	updated: async ({ before, changes, after }) => {
-		await getSocketEmitter().emitOpenUpdated('study/videos', after)
-		await getSocketEmitter().emitOpenUpdated(`study/videos/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('study/videos', after)
+		await getSocketEmitter().emitUpdated(`study/videos/${after.id}`, after)
 
 		if (changes.media && before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('study/videos', before)
-		await getSocketEmitter().emitOpenDeleted(`study/videos/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('study/videos', before)
+		await getSocketEmitter().emitDeleted(`study/videos/${before.id}`, before)
 
 		await RemoveSetProp.execute({ prop: SetSaved.videos, value: before.id })
 		await UpdateUserNerdScore.execute({

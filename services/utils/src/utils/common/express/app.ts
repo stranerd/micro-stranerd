@@ -10,7 +10,7 @@ import fileUpload from 'express-fileupload'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
-import { setupSocketConnection, SocketCallers, SocketEmitter, SocketParams } from '../sockets'
+import { SocketCallers, SocketEmitter } from '../sockets'
 import { isDev } from '../config'
 import { parseAuthUser } from './middlewares/parseAuthUser'
 import { getCacheInstance } from '../cache'
@@ -36,11 +36,10 @@ const postRoutes: Route[] = [
 	}
 ]
 
-export const getNewServerInstance = (routes: Route[], socketChannels: SocketParams, socketCallers: SocketCallers) => {
+export const getNewServerInstance = (routes: Route[], socketCallers: SocketCallers) => {
 	const app = express()
 	app.disable('x-powered-by')
 	const server = http.createServer(app)
-	const socket = new io.Server(server, { cors: { origin: '*' } })
 	if (isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(cors({ origin: '*' }))
@@ -62,7 +61,8 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 			useTempFiles: false
 		})
 	)
-	setupSocketConnection(socket, socketChannels, socketCallers)
+	const socket = new io.Server(server, { cors: { origin: '*' } })
+	const socketEmitter = new SocketEmitter(socket, socketCallers)
 
 	const allRoutes = [...preRoutes, ...routes, ...postRoutes]
 	allRoutes.forEach(({ method, path, controllers }) => {
@@ -82,7 +82,7 @@ export const getNewServerInstance = (routes: Route[], socketChannels: SocketPara
 		})
 	}
 
-	return { start, socketEmitter: new SocketEmitter(socket) }
+	return { start, socketEmitter }
 }
 
 const formatPath = (path: string) => `/${path}/`

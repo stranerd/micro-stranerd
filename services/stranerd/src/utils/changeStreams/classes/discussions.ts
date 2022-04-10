@@ -3,10 +3,11 @@ import { DiscussionEntity, DiscussionFromModel, FindGroup } from '@modules/class
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
+getSocketEmitter().register('classes/discussions', getSocketEmitter().quickRegisters.isOpen)
 export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFromModel, DiscussionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('classes/discussions', after)
-		await getSocketEmitter().emitOpenCreated(`classes/discussions/${after.id}`, after)
+		await getSocketEmitter().emitCreated('classes/discussions', after)
+		await getSocketEmitter().emitCreated(`classes/discussions/${after.id}`, after)
 
 		const group = await FindGroup.execute(after.groupId)
 		if (!group) return
@@ -22,12 +23,12 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('classes/discussions', after)
-		await getSocketEmitter().emitOpenUpdated(`classes/discussions/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('classes/discussions', after)
+		await getSocketEmitter().emitUpdated(`classes/discussions/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('classes/discussions', before)
-		await getSocketEmitter().emitOpenDeleted(`classes/discussions/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('classes/discussions', before)
+		await getSocketEmitter().emitDeleted(`classes/discussions/${before.id}`, before)
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}

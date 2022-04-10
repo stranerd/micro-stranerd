@@ -14,12 +14,13 @@ import {
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
+getSocketEmitter().register('sessions/sessions', getSocketEmitter().quickRegisters.isMine)
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitMineCreated('sessions/sessions', after, after.studentId)
-		await getSocketEmitter().emitMineCreated(`sessions/sessions/${after.id}`, after, after.studentId)
-		await getSocketEmitter().emitMineCreated('sessions/sessions', after, after.tutorId)
-		await getSocketEmitter().emitMineCreated(`sessions/sessions/${after.id}`, after, after.tutorId)
+		await getSocketEmitter().emitPathCreated('sessions/sessions', after, after.studentId)
+		await getSocketEmitter().emitPathCreated('sessions/sessions', after, after.tutorId)
+		await getSocketEmitter().emitPathCreated(`sessions/sessions/${after.id}`, after, after.studentId)
+		await getSocketEmitter().emitPathCreated(`sessions/sessions/${after.id}`, after, after.tutorId)
 
 		await UpdateUserQueuedSessions.execute({
 			studentId: after.studentId,
@@ -45,10 +46,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}, true)
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitMineUpdated('sessions/sessions', after, after.studentId)
-		await getSocketEmitter().emitMineUpdated(`sessions/sessions/${after.id}`, after, after.studentId)
-		await getSocketEmitter().emitMineUpdated('sessions/sessions', after, after.tutorId)
-		await getSocketEmitter().emitMineUpdated(`sessions/sessions/${after.id}`, after, after.tutorId)
+		await getSocketEmitter().emitPathUpdated('sessions/sessions', after, after.studentId)
+		await getSocketEmitter().emitPathUpdated('sessions/sessions', after, after.tutorId)
+		await getSocketEmitter().emitPathUpdated(`sessions/sessions/${after.id}`, after, after.studentId)
+		await getSocketEmitter().emitPathUpdated(`sessions/sessions/${after.id}`, after, after.tutorId)
 
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
@@ -154,10 +155,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitMineDeleted('sessions/sessions', before, before.studentId)
-		await getSocketEmitter().emitMineDeleted(`sessions/sessions/${before.id}`, before, before.studentId)
-		await getSocketEmitter().emitMineDeleted('sessions/sessions', before, before.tutorId)
-		await getSocketEmitter().emitMineDeleted(`sessions/sessions/${before.id}`, before, before.tutorId)
+		await getSocketEmitter().emitPathDeleted('sessions/sessions', before, before.studentId)
+		await getSocketEmitter().emitPathDeleted(`sessions/sessions/${before.id}`, before, before.studentId)
+		await getSocketEmitter().emitPathDeleted('sessions/sessions', before, before.tutorId)
+		await getSocketEmitter().emitPathDeleted(`sessions/sessions/${before.id}`, before, before.tutorId)
 		await DeleteSessionChats.execute(before.id)
 		if (before.done) {
 			await IncrementUsersSessionsCount.execute({

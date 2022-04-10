@@ -3,10 +3,11 @@ import { NotificationEntity, NotificationFromModel } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 
+getSocketEmitter().register('users/notifications', getSocketEmitter().quickRegisters.isMine)
 export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<NotificationFromModel, NotificationEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitMineCreated('users/notifications', after, after.userId)
-		await getSocketEmitter().emitMineCreated(`users/notifications/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathCreated('users/notifications', after, after.userId)
+		await getSocketEmitter().emitPathCreated(`users/notifications/${after.id}`, after, after.userId)
 
 		await publishers[EventTypes.PUSHNOTIFICATION].publish({
 			userIds: [after.userId], app: AuthApps.Stranerd,
@@ -18,11 +19,11 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitMineUpdated('users/notifications', after, after.userId)
-		await getSocketEmitter().emitMineUpdated(`users/notifications/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitPathUpdated('users/notifications', after, after.userId)
+		await getSocketEmitter().emitPathUpdated(`users/notifications/${after.id}`, after, after.userId)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitMineDeleted('users/notifications', before, before.userId)
-		await getSocketEmitter().emitMineDeleted(`users/notifications/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitPathDeleted('users/notifications', before, before.userId)
+		await getSocketEmitter().emitPathDeleted(`users/notifications/${before.id}`, before, before.userId)
 	}
 }

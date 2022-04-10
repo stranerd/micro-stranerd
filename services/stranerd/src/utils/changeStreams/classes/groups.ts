@@ -2,18 +2,19 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { DeleteGroupDiscussions, GroupEntity, GroupFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 
+getSocketEmitter().register('classes/groups', getSocketEmitter().quickRegisters.isOpen)
 export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, GroupEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitOpenCreated('classes/groups', after)
-		await getSocketEmitter().emitOpenCreated(`classes/groups/${after.id}`, after)
+		await getSocketEmitter().emitCreated('classes/groups', after)
+		await getSocketEmitter().emitCreated(`classes/groups/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitOpenUpdated('classes/groups', after)
-		await getSocketEmitter().emitOpenUpdated(`classes/groups/${after.id}`, after)
+		await getSocketEmitter().emitUpdated('classes/groups', after)
+		await getSocketEmitter().emitUpdated(`classes/groups/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitOpenDeleted('classes/groups', before)
-		await getSocketEmitter().emitOpenDeleted(`classes/groups/${before.id}`, before)
+		await getSocketEmitter().emitDeleted('classes/groups', before)
+		await getSocketEmitter().emitDeleted(`classes/groups/${before.id}`, before)
 		await DeleteGroupDiscussions.execute(before.id)
 	}
 }
