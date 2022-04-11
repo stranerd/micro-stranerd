@@ -10,5 +10,7 @@ export interface ErrorToModel {
 	to: string,
 	content: string,
 	from: string,
-	attachments: Record<string, boolean>
+	data: {
+		attachments?: Record<string, boolean>
+	}
 }

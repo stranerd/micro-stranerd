@@ -7,7 +7,9 @@ export class ErrorEntity extends BaseEntity {
 	public readonly to: string
 	public readonly content: string
 	public readonly from: string
-	public readonly attachments: Record<string, boolean>
+	public readonly data: {
+		attachments?: Record<string, boolean>
+	}
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -19,7 +21,7 @@ export class ErrorEntity extends BaseEntity {
 		this.to = data.to
 		this.content = data.content
 		this.from = data.from
-		this.attachments = data.attachments
+		this.data = data.data
 		this.createdAt = data.createdAt
 		this.updatedAt = data.updatedAt
 	}
@@ -32,7 +34,9 @@ type ErrorConstructor = {
 	to: string,
 	content: string,
 	from: string,
-	attachments: Record<string, boolean>
+	data: {
+		attachments?: Record<string, boolean>
+	}
 	createdAt: number
 	updatedAt: number
 }

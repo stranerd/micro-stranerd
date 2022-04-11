@@ -1,6 +1,6 @@
 import { CreateNotification, FindUser, NotificationToModel } from '@modules/users'
 import { publishers } from '@utils/events'
-import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
+import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain } from '@utils/environment'
 
 type QuestionData = { action: 'questions', data: { questionId: string } }
@@ -28,11 +28,13 @@ export const sendNotification = async (userId: string, data: NotificationData & 
 				meta: { link: clientDomain }
 			})
 			await publishers[EventTypes.SENDMAIL].publish({
-				from: Emails.NO_REPLY,
+				from: EmailsList.NO_REPLY,
 				to: user.bio.email,
 				subject: data.title,
 				content,
-				attachments: { logoWhite: true }
+				data: {
+					attachments: { logoWhite: true }
+				}
 			})
 		}
 	}

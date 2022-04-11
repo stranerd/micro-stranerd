@@ -1,4 +1,4 @@
-import { Emails, EventTypes, readEmailFromPug } from '@utils/commons'
+import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { publishers } from '@utils/events'
 
 type Message = {
@@ -13,10 +13,12 @@ export const sendNewMessageEmail = async (message: Message) => {
 		message
 	})
 	await publishers[EventTypes.SENDMAIL].publish({
-		from: Emails.NO_REPLY,
+		from: EmailsList.NO_REPLY,
 		to: 'support@stranerd.com',
 		subject: 'New Message',
 		content,
-		attachments: { logoWhite: true }
+		data: {
+			attachments: { logoWhite: true }
+		}
 	})
 }

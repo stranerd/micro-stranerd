@@ -1,4 +1,4 @@
-import { AuthUser, MediaOutput } from '@utils/commons'
+import { AuthApps, MediaOutput } from '@utils/commons'
 
 export interface UserUpdateInput {
 	firstName: string
@@ -9,14 +9,11 @@ export interface UserUpdateInput {
 }
 
 export interface RoleInput {
-	app: AppTypes
+	app: AuthApps
 	userId: string
-	role: RoleTypes
+	role: string
 	value: boolean
 }
-
-export type AppTypes = keyof AuthUser['roles']
-export type RoleTypes = keyof AuthUser['roles'][AppTypes]
 
 export interface RegisterInput {
 	email: string;

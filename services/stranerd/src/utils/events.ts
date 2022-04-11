@@ -1,4 +1,4 @@
-import { CronTypes, DelayedJobs, eventBus, EventTypes } from '@utils/commons'
+import { CronTypes, DelayedJobs, Events, EventTypes, getEventBus } from '@utils/commons'
 import {
 	CreateReferral,
 	CreateUserWithBio,
@@ -14,23 +14,25 @@ import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { UpdateTest } from '@modules/study'
 
+const eventBus = getEventBus()
+
 export const subscribers = {
-	[EventTypes.AUTHNEWREFERRAL]: eventBus.createSubscriber(EventTypes.AUTHNEWREFERRAL, async (data) => {
+	[EventTypes.AUTHNEWREFERRAL]: eventBus.createSubscriber<Events[EventTypes.AUTHNEWREFERRAL]>(EventTypes.AUTHNEWREFERRAL, async (data) => {
 		await CreateReferral.execute({ userId: data.referrer, referred: data.referred })
 	}),
-	[EventTypes.AUTHUSERCREATED]: eventBus.createSubscriber(EventTypes.AUTHUSERCREATED, async (data) => {
+	[EventTypes.AUTHUSERCREATED]: eventBus.createSubscriber<Events[EventTypes.AUTHUSERCREATED]>(EventTypes.AUTHUSERCREATED, async (data) => {
 		await CreateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
 	}),
-	[EventTypes.AUTHUSERUPDATED]: eventBus.createSubscriber(EventTypes.AUTHUSERUPDATED, async (data) => {
+	[EventTypes.AUTHUSERUPDATED]: eventBus.createSubscriber<Events[EventTypes.AUTHUSERUPDATED]>(EventTypes.AUTHUSERUPDATED, async (data) => {
 		await UpdateUserWithBio.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
 	}),
-	[EventTypes.AUTHROLESUPDATED]: eventBus.createSubscriber(EventTypes.AUTHROLESUPDATED, async (data) => {
+	[EventTypes.AUTHROLESUPDATED]: eventBus.createSubscriber<Events[EventTypes.AUTHROLESUPDATED]>(EventTypes.AUTHROLESUPDATED, async (data) => {
 		await UpdateUserWithRoles.execute({ id: data.id, data: data.data, timestamp: data.timestamp })
 	}),
-	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber(EventTypes.AUTHUSERDELETED, async (data) => {
+	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber<Events[EventTypes.AUTHUSERDELETED]>(EventTypes.AUTHUSERDELETED, async (data) => {
 		await MarkUserAsDeleted.execute({ id: data.id, timestamp: data.timestamp })
 	}),
-	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber(EventTypes.TASKSDELAYED, async (data) => {
+	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 		if (data.type === DelayedJobs.ScheduledSessionStart) {
 			const { sessionId, studentId: userId } = data.data
@@ -60,7 +62,7 @@ export const subscribers = {
 			data: { done: true }
 		})
 	}),
-	[EventTypes.TASKSCRON]: eventBus.createSubscriber(EventTypes.TASKSCRON, async ({ type }) => {
+	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {
 			await ResetRankings.execute(UserRankings.daily)
 		}
@@ -73,7 +75,7 @@ export const subscribers = {
 }
 
 export const publishers = {
-	[EventTypes.SENDMAIL]: eventBus.createPublisher(EventTypes.SENDMAIL),
-	[EventTypes.DELETEFILE]: eventBus.createPublisher(EventTypes.DELETEFILE),
-	[EventTypes.PUSHNOTIFICATION]: eventBus.createPublisher(EventTypes.PUSHNOTIFICATION)
+	[EventTypes.SENDMAIL]: eventBus.createPublisher<Events[EventTypes.SENDMAIL]>(EventTypes.SENDMAIL),
+	[EventTypes.DELETEFILE]: eventBus.createPublisher<Events[EventTypes.DELETEFILE]>(EventTypes.DELETEFILE),
+	[EventTypes.PUSHNOTIFICATION]: eventBus.createPublisher<Events[EventTypes.PUSHNOTIFICATION]>(EventTypes.PUSHNOTIFICATION)
 }

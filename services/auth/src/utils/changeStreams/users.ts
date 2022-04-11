@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks, Emails, EventTypes, readEmailFromPug } from '@utils/commons'
+import { ChangeStreamCallbacks, EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { publishers } from '@utils/events'
 import { UserEntity, UserFromModel } from '@modules/index'
 import { subscribeToMailingList } from '@utils/mailing'
@@ -29,9 +29,9 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: after.email,
 			subject: 'Welcome To Stranerd',
-			from: Emails.NO_REPLY,
+			from: EmailsList.NO_REPLY,
 			content: emailContent,
-			attachments: {}
+			data: {}
 		})
 	},
 	updated: async ({ before, after, changes }) => {

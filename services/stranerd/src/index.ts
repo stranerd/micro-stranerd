@@ -1,4 +1,4 @@
-import { getNewServerInstance, Logger, OnJoinFn, setupMongooseConnection } from '@utils/commons'
+import { AuthApps, getNewServerInstance, Logger, OnJoinFn, setupMongooseConnection } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
@@ -28,6 +28,8 @@ const start = async () => {
 			})
 	)
 
+	const isAdmin: OnJoinFn = async ({ user, channel }) => user?.roles[AuthApps.Stranerd]?.isAdmin ? channel : null
+
 	const classJoinCb: OnJoinFn = async (data, params) => {
 		const { classId = null } = params
 		if (!classId || !data.user) return null
@@ -44,7 +46,7 @@ const start = async () => {
 	getSocketEmitter().register('questions/answers', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('questions/answerUpvotes', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('questions/questions', getSocketEmitter().quickRegisters.isOpen)
-	getSocketEmitter().register('reports/reports', getSocketEmitter().quickRegisters.isAdmin)
+	getSocketEmitter().register('reports/reports', isAdmin)
 	getSocketEmitter().register('school/courses', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('school/departments', getSocketEmitter().quickRegisters.isOpen)
 	getSocketEmitter().register('school/faculties', getSocketEmitter().quickRegisters.isOpen)

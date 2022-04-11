@@ -29,10 +29,10 @@ const Schema = new mongoose.Schema<ErrorFromModel>({
 		type: String,
 		required: true
 	},
-	attachments: {
-		type: Object as unknown as ErrorFromModel['attachments'],
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as ErrorFromModel['data'],
 		required: false,
-		default: {} as unknown as ErrorFromModel['attachments']
+		default: {} as unknown as ErrorFromModel['data']
 	},
 	createdAt: {
 		type: Number,

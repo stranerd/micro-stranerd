@@ -6,12 +6,12 @@ export class ErrorMapper extends BaseMapper<ErrorFromModel, ErrorToModel, ErrorE
 	mapFrom (model: ErrorFromModel | null) {
 		if (!model) return null
 		const {
-			_id, content, subject, to, from, error, attachments,
+			_id, content, subject, to, from, error, data,
 			createdAt, updatedAt
 		} = model
 		return new ErrorEntity({
 			id: _id.toString(),
-			content, subject, to, from, error, attachments,
+			content, subject, to, from, error, data,
 			createdAt, updatedAt
 		})
 	}
@@ -23,7 +23,7 @@ export class ErrorMapper extends BaseMapper<ErrorFromModel, ErrorToModel, ErrorE
 			to: entity.to,
 			from: entity.from,
 			error: entity.error,
-			attachments: entity.attachments
+			data: entity.data
 		}
 	}
 }

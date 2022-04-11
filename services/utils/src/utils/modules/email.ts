@@ -1,11 +1,11 @@
 import { createTransport } from 'nodemailer'
 import path from 'path'
 import { emails, isDev } from '@utils/environment'
-import { Email, Emails, Logger } from '@utils/commons'
+import { EmailsList, Logger, TypedEmail } from '@utils/commons'
 import { AddError } from '@modules/emails'
 
-export const sendMail = async (email: Email) => {
-	const { to, subject, content, from = Emails.NO_REPLY } = email
+export const sendMail = async (email: TypedEmail) => {
+	const { to, subject, content, from = EmailsList.NO_REPLY } = email
 	const { clientId, privateKey } = emails[from]
 
 	const transporter = createTransport({
@@ -17,17 +17,17 @@ export const sendMail = async (email: Email) => {
 
 	const attachments = [] as { filename: string, path: string, cid: string }[]
 
-	if (email.attachments.logoWhite) attachments.push({
+	if (email.data.attachments?.logoWhite) attachments.push({
 		filename: 'logo-white.png',
 		path: path.join('emails/attachments/logo-white.png'),
 		cid: 'logo-white'
 	})
-	if (email.attachments.logoBlue) attachments.push({
+	if (email.data.attachments?.logoBlue) attachments.push({
 		filename: 'logo-blue.png',
 		path: path.join('emails/attachments/logo-blue.png'),
 		cid: 'logo-blue'
 	})
-	if (email.attachments.icon) attachments.push({
+	if (email.data.attachments?.icon) attachments.push({
 		filename: 'icon.png',
 		path: path.join('emails/attachments/icon.png'),
 		cid: 'icon'
@@ -40,7 +40,7 @@ export const sendMail = async (email: Email) => {
 	})
 }
 
-export const sendMailAndCatchError = async (email: Email) => {
+export const sendMailAndCatchError = async (email: TypedEmail) => {
 	try {
 		if (isDev) await Logger.info(email.to, email.content)
 		await sendMail(email)
