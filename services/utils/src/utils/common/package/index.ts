@@ -13,7 +13,7 @@ export * from './mongoose'
 export * from './utils/tokens'
 export * from './utils/authUser'
 export * from './utils/utils'
-export * from './validations/'
+export * from './validations'
 export * from './sockets'
 
 export const getEnvOrFail = (key: string) => {

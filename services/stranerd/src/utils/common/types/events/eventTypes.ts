@@ -1,5 +1,6 @@
 import { TypedEmail } from '../emails'
-import { CronTypes, MediaOutput } from '../../package'
+// @ts-ignore
+import { CronTypes, MediaOutput } from '../../commons'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 import { PushNotification } from './types/push'
 

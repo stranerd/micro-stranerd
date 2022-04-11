@@ -59,6 +59,8 @@ link-commons:
 	rm ./services/$(app)/src/utils/commons.ts &&\
 	ln ./services/commons/links/commons.ts ./services/$(app)/src/utils &&\
 	rm -r ./services/$(app)/src/utils/common &&\
-	mkdir ./services/$(app)/src/utils/common -p &&\
-	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
+	mkdir ./services/$(app)/src/utils/common/package -p &&\
+	mkdir ./services/$(app)/src/utils/common/types -p &&\
+	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common/package &&\
+	cp -al ./services/commons/links/types/* ./services/$(app)/src/utils/common/types &&\
 ) echo

@@ -1,4 +1,5 @@
-import { AuthRoles, MediaOutput } from '../../../package'
+// @ts-ignore
+import { AuthRoles, MediaOutput } from '../../../commons'
 
 export type AuthUserChange = {
 	id: string

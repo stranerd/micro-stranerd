@@ -5,8 +5,8 @@ import { broadcastNotifications } from '@utils/modules/users/notifications'
 
 export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitPathCreated('classes/announcements', after, after.classId)
-		await getSocketEmitter().emitPathCreated('classes/announcements', after, `${after.classId}/${after.id}`)
+		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}`, after)
+		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}/${after.id}`, after)
 
 		const classInst = await FindClass.execute(after.classId)
 		if (!classInst) return
@@ -19,11 +19,11 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitPathUpdated('classes/announcements', after, after.classId)
-		await getSocketEmitter().emitPathUpdated('classes/announcements', after, `${after.classId}/${after.id}`)
+		await getSocketEmitter().emitUpdated(`classes/announcements/${after.classId}`, after)
+		await getSocketEmitter().emitUpdated(`classes/announcements/${after.classId}/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitPathDeleted('classes/announcements', before, before.classId)
-		await getSocketEmitter().emitPathDeleted('classes/announcements', before, `${before.classId}/${before.id}`)
+		await getSocketEmitter().emitDeleted(`classes/announcements/${before.classId}`, before)
+		await getSocketEmitter().emitDeleted(`classes/announcements/${before.classId}/${before.id}`, before)
 	}
 }

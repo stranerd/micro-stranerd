@@ -1,4 +1,5 @@
-import { Email } from '../../package'
+// @ts-ignore
+import { Email } from '../../commons'
 
 export enum EmailsList {
 	NO_REPLY = 'no-reply@stranerd.com'
