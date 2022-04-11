@@ -1,11 +1,11 @@
-import { CronTypes, Events, EventTypes, getEventBus, retryAllFailedJobs, TypedEmail } from '@utils/commons'
+import { appInstance, CronTypes, Events, EventTypes, TypedEmail } from '@utils/commons'
 import { DeleteFile } from '@modules/storage'
 import { GetAndDeleteAllErrors } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { DeleteUserTokens } from '@modules/push'
 import { sendNotification } from '@utils/modules/push'
 
-const eventBus = getEventBus()
+const eventBus = appInstance.eventBus
 
 export const subscribers = {
 	[EventTypes.AUTHUSERDELETED]: eventBus.createSubscriber<Events[EventTypes.AUTHUSERDELETED]>(EventTypes.AUTHUSERDELETED, async (data) => {
@@ -18,7 +18,7 @@ export const subscribers = {
 		await sendMailAndCatchError(data)
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async (data) => {
-		if (data.type === CronTypes.halfHourly) await retryAllFailedJobs()
+		if (data.type === CronTypes.halfHourly) await appInstance.job.retryAllFailedJobs()
 		if (data.type === CronTypes.hourly) {
 			const errors = await GetAndDeleteAllErrors.execute()
 			await Promise.all(

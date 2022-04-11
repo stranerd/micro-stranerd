@@ -1,7 +1,6 @@
 import { mongoose } from './index'
 import { BaseEntity } from '../structure'
-import { getCacheInstance } from '../cache'
-import { getLogger } from '../logger'
+import { Instance } from '../instance'
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
 
@@ -37,7 +36,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 			// @ts-ignore
 			const streamId = data._id._data
 			const cacheName = `streams-${streamId}`
-			const cached = await getCacheInstance().setInTransaction(cacheName, streamId, 15)
+			const cached = await Instance.getInstance().cache.setInTransaction(cacheName, streamId, 15)
 			if (cached[0]) return
 			await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
 
@@ -85,12 +84,12 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 			}
 		})
 		.on('error', async (err) => {
-			await getLogger().error(`Change Stream errored out: ${dbName}: ${err.message}`)
+			await Instance.getInstance().logger.error(`Change Stream errored out: ${dbName}: ${err.message}`)
 			changeStream.close()
 			return startChangeStream(collection, callbacks, mapper, true)
 		})
 
-	await getLogger().info(`${dbName} changestream started`)
+	await Instance.getInstance().logger.info(`${dbName} changestream started`)
 }
 
 export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (

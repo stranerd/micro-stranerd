@@ -1,10 +1,4 @@
-import {
-	EventTypes,
-	getNewServerInstance,
-	Logger,
-	setupMongooseConnection,
-	startProcessingQueues
-} from '@utils/commons'
+import { appInstance, DelayedEvent, EventTypes, getNewServerInstance } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { publishers, subscribers } from '@utils/events'
 import { routes } from '@application/routes'
@@ -20,7 +14,7 @@ export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {
 	initializeApp()
-	await setupMongooseConnection()
+	await appInstance.startDbConnection()
 	await Promise.all(
 		Object.values(subscribers)
 			.map(async (subscriber) => {
@@ -28,8 +22,8 @@ const start = async () => {
 			})
 	)
 	await app.start(port)
-	await Logger.success(`${appId} api has started listening on port`, port)
-	await startProcessingQueues({
+	await appInstance.logger.success(`${appId} api has started listening on port`, port)
+	await appInstance.job.startProcessingQueues<DelayedEvent>({
 		onDelayed: async (data) => {
 			await publishers[EventTypes.TASKSDELAYED].publish(data)
 		},

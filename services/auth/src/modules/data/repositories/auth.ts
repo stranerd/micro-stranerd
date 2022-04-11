@@ -6,11 +6,11 @@ import User from '../mongooseModels/users'
 import { UserFromModel, UserToModel } from '../models/users'
 import { hash, hashCompare } from '@utils/hash'
 import {
+	appInstance,
 	AuthTypes,
 	BadRequestError,
 	EmailsList,
 	EventTypes,
-	getCacheInstance,
 	getRandomValue,
 	MediaOutput,
 	mongoose,
@@ -65,7 +65,7 @@ export class AuthRepository implements IAuthRepository {
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance().set('verification-token-' + token, user.email, TOKENS_TTL_IN_SECS)
+		await appInstance.cache.set('verification-token-' + token, user.email, TOKENS_TTL_IN_SECS)
 
 		// send verification mail
 		const url = `${redirectUrl}?token=${token}`
@@ -84,7 +84,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async verifyEmail (token: string) {
 		// check token in cache
-		const userEmail = await getCacheInstance().get('verification-token-' + token)
+		const userEmail = await appInstance.cache.get('verification-token-' + token)
 		if (!userEmail) throw new BadRequestError('Invalid token')
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
@@ -100,7 +100,7 @@ export class AuthRepository implements IAuthRepository {
 		const token = getRandomValue(40)
 
 		// save to cache
-		await getCacheInstance().set('password-reset-token-' + token, user.email, TOKENS_TTL_IN_SECS)
+		await appInstance.cache.set('password-reset-token-' + token, user.email, TOKENS_TTL_IN_SECS)
 
 		// send reset password mail
 		const url = `${redirectUrl}?token=${token}`
@@ -119,7 +119,7 @@ export class AuthRepository implements IAuthRepository {
 
 	async resetPassword (input: PasswordResetInput) {
 		// check token in cache
-		const userEmail = await getCacheInstance().get('password-reset-token-' + input.token)
+		const userEmail = await appInstance.cache.get('password-reset-token-' + input.token)
 		if (!userEmail) throw new BadRequestError('Invalid token')
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: await hash(input.password) } }, { new: true })

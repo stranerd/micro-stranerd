@@ -1,4 +1,4 @@
-import { Logger, PushNotification } from '@utils/commons'
+import { appInstance, PushNotification } from '@utils/commons'
 import { FindUserTokens, UpdateUserTokens } from '@modules/push'
 import { messaging } from 'firebase-admin'
 
@@ -30,7 +30,7 @@ export const sendNotification = async (notification: PushNotification) => {
 						'messaging/registration-token-not-registered'
 					]
 					if (invalids.includes(err.code)) invalidTokens.push(tokens[index])
-					else Logger.error(err)
+					else appInstance.logger.error(err)
 				})
 			}))
 
@@ -39,6 +39,6 @@ export const sendNotification = async (notification: PushNotification) => {
 			})
 		}))
 	} catch (err) {
-		await Logger.error(err)
+		await appInstance.logger.error(err)
 	}
 }

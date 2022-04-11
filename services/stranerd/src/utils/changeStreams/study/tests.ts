@@ -1,4 +1,4 @@
-import { addDelayedJob, ChangeStreamCallbacks, Conditions, DelayedJobs, removeDelayedJob } from '@utils/commons'
+import { appInstance, ChangeStreamCallbacks, Conditions, DelayedJobs } from '@utils/commons'
 import { TestEntity, TestFromModel, TestType, UpdateTest, UpdateTestTaskIds } from '@modules/study'
 import { GetPastQuestions, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
@@ -12,7 +12,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 
 		if (after.data.type === TestType.timed) {
 			const delay = after.data.time * 60 * 1000
-			const taskId = await addDelayedJob({
+			const taskId = await appInstance.job.addDelayedJob({
 				type: DelayedJobs.TestTimer,
 				data: { testId: after.id, userId: after.userId }
 			}, delay)
@@ -44,7 +44,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 					userId: after.userId,
 					data: { score }
 				})
-				await Promise.all(after.taskIds.map(removeDelayedJob))
+				await Promise.all(after.taskIds.map(appInstance.job.removeDelayedJob))
 			}
 		}
 	},
@@ -52,6 +52,6 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		await getSocketEmitter().emitPathDeleted('study/tests', before, before.userId)
 		await getSocketEmitter().emitPathDeleted(`study/tests/${before.id}`, before, before.userId)
 
-		await Promise.all(before.taskIds.map(removeDelayedJob))
+		await Promise.all(before.taskIds.map(appInstance.job.removeDelayedJob))
 	}
 }

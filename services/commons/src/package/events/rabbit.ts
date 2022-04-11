@@ -1,32 +1,25 @@
 import amqp from 'amqplib'
-import { appId, rabbitURI } from '../config'
+import { Instance } from '../instance'
 
-const register = 'StranerdExchangeColumn'
-
-const globalChannel = (async () => {
-	const con = await amqp.connect(rabbitURI)
+export const pubAndSub = async () => {
+	const column = Instance.getInstance().settings.rabbitColumnName
+	const con = await amqp.connect(Instance.getInstance().settings.rabbitURI)
 
 	const channel = await con.createChannel()
 
 	process.on('exit', () => channel.close())
 
-	await channel.assertExchange(register, 'direct', { durable: true })
+	await channel.assertExchange(column, 'direct', { durable: true })
 	await channel.prefetch(1)
 
-	return channel
-})()
-
-export const pubAndSub = async () => {
-	const channel = await globalChannel
-
 	const publish = async (topic: string, data: any) => {
-		channel.publish(register, topic, Buffer.from(data), { persistent: true })
+		channel.publish(column, topic, Buffer.from(data), { persistent: true })
 	}
 
 	const subscribe = async (topic: string, cb: (data: string, topic: string) => void) => {
-		const queue = `${appId}-${topic}`
+		const queue = `${Instance.getInstance().settings.appId}-${topic}`
 		await channel.assertQueue(queue, { durable: true })
-		await channel.bindQueue(queue, register, topic)
+		await channel.bindQueue(queue, column, topic)
 		channel.consume(queue, (msg) => {
 			if (msg) {
 				try {

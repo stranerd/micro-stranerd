@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { mailchimpConfig } from '@utils/environment'
-import { Logger } from '@utils/commons'
+import { appInstance } from '@utils/commons'
 
 export const subscribeToMailingList = async (email: string) => {
 	const body = {
@@ -15,6 +15,6 @@ export const subscribeToMailingList = async (email: string) => {
 	try {
 		await axios.post(url, bodyJSON, { headers: { Authorization: `auth ${apiKey}` } })
 	} catch (error) {
-		await Logger.error('Mailchimp error:', error)
+		await appInstance.logger.error('Mailchimp error:', error)
 	}
 }

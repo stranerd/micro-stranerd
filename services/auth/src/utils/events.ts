@@ -1,7 +1,7 @@
-import { CronTypes, Events, EventTypes, getEventBus } from '@utils/commons'
+import { appInstance, CronTypes, Events, EventTypes } from '@utils/commons'
 import { deleteUnverifiedUsers } from '@utils/modules/emails'
 
-const eventBus = getEventBus()
+const eventBus = appInstance.eventBus
 
 export const subscribers = {
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async ({ type }) => {

@@ -1,16 +1,15 @@
 import { createClient } from 'redis'
 import { Cache } from '../cache'
-import { redisURI } from '../../config'
-import { getLogger } from '../../logger'
+import { Instance } from '../../instance'
 
 export class RedisCache extends Cache {
 	client: ReturnType<typeof createClient>
 
-	constructor () {
+	constructor (connection: string) {
 		super()
-		this.client = createClient({ url: redisURI })
+		this.client = createClient({ url: connection })
 		this.client.on('error', async function (error) {
-			await getLogger().error('Redis failed with error:', error)
+			await Instance.getInstance().logger.error('Redis failed with error:', error)
 			process.exit(1)
 		})
 		process.on('exit', async () => await this.client.quit())

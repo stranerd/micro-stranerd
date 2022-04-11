@@ -5,10 +5,27 @@
 // For standalone mode, everything is exported from the source code of the commons package, so you test your changes immediately
 // For production or in docker, everything is exported from the latest version of the commons package published to npm-js
 
-// When running in standalone mode, uncomment this export && comment the other
+// When running in dev mode, uncomment this export && comment the other
+// @ts-ignore
+import { getEnvOrFail, Instance } from './common'
 //@ts-ignore
 export * from './common'
 
-// For production or in docker, uncomment this export && comment the other
-//@ts-ignore
+// For production, uncomment this export && comment the other
+// import { Instance, getEnvOrFail } from '@stranerd/api-commons
 // export * from '@stranerd/api-commons'
+
+Instance.initialize({
+	isDev: getEnvOrFail('ENVIRONMENT') === 'local',
+	accessTokenKey: getEnvOrFail('ACCESS_TOKEN_KEY'),
+	accessTokenTTL: 60 * 60,
+	refreshTokenKey: getEnvOrFail('REFRESH_TOKEN_KEY'),
+	refreshTokenTTL: 14 * 24 * 60 * 60,
+	mongoDbURI: getEnvOrFail('MONGODB_URI'),
+	rabbitURI: getEnvOrFail('RABBITMQ_URI'),
+	redisURI: getEnvOrFail('REDIS_URI'),
+	appId: getEnvOrFail('APP_ID'),
+	bullQueueName: 'task-queues',
+	rabbitColumnName: 'StranerdExchangeColumn'
+})
+export const appInstance = Instance.getInstance()

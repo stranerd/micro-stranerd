@@ -11,9 +11,8 @@ import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
 import { SocketCallers, SocketEmitter } from '../sockets'
-import { isDev } from '../config'
 import { parseAuthUser } from './middlewares/parseAuthUser'
-import { getCacheInstance } from '../cache'
+import { Instance } from '../instance'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -40,7 +39,7 @@ export const getNewServerInstance = (routes: Route[], socketCallers: SocketCalle
 	const app = express()
 	app.disable('x-powered-by')
 	const server = http.createServer(app)
-	if (isDev) app.use(morgan('dev'))
+	if (Instance.getInstance().settings.isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(cors({ origin: '*' }))
 	app.use(express.urlencoded({ extended: false }))
@@ -72,7 +71,7 @@ export const getNewServerInstance = (routes: Route[], socketCallers: SocketCalle
 	})
 
 	const start = async (port: number) => {
-		await getCacheInstance().connect()
+		await Instance.getInstance().cache.connect()
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
 				server.listen(port, () => resolve(true))

@@ -1,17 +1,17 @@
-import { ChangeStreamCallbacks, Logger } from '@utils/commons'
+import { appInstance, ChangeStreamCallbacks } from '@utils/commons'
 import { BadgeEntity, BadgeFromModel, CountStreakBadges, RankTypes } from '@modules/users'
 import { getSocketEmitter } from '@index'
 
 const handleCountBadges = async (activity: CountStreakBadges, newLevels: number[], oldLevels: number[]) => {
-	await Logger.success(activity, newLevels, oldLevels)
+	await appInstance.logger.success(activity, newLevels, oldLevels)
 }
 
 const handleStreakBadges = async (activity: CountStreakBadges, newLevels: number[], oldLevels: number[]) => {
-	await Logger.success(activity, newLevels, oldLevels)
+	await appInstance.logger.success(activity, newLevels, oldLevels)
 }
 
 const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) => {
-	await Logger.success(newLevels, oldLevels)
+	await appInstance.logger.success(newLevels, oldLevels)
 }
 
 export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {

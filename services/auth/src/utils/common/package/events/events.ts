@@ -1,7 +1,11 @@
 import { pubAndSub } from './rabbit'
 
 export class EventBus {
-	ps = pubAndSub()
+	ps: ReturnType<typeof pubAndSub>
+
+	constructor () {
+		this.ps = pubAndSub()
+	}
 
 	createPublisher<Event extends { topic: string, data: any }> (topic: Event['topic']) {
 		const { ps } = this

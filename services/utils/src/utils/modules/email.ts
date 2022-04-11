@@ -1,7 +1,7 @@
 import { createTransport } from 'nodemailer'
 import path from 'path'
 import { emails, isDev } from '@utils/environment'
-import { EmailsList, Logger, TypedEmail } from '@utils/commons'
+import { appInstance, EmailsList, TypedEmail } from '@utils/commons'
 import { AddError } from '@modules/emails'
 
 export const sendMail = async (email: TypedEmail) => {
@@ -42,7 +42,7 @@ export const sendMail = async (email: TypedEmail) => {
 
 export const sendMailAndCatchError = async (email: TypedEmail) => {
 	try {
-		if (isDev) await Logger.info(email.to, email.content)
+		if (isDev) await appInstance.logger.info(email.to, email.content)
 		await sendMail(email)
 	} catch (e) {
 		await AddError.execute({

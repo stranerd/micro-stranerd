@@ -1,4 +1,4 @@
-import { CronTypes, DelayedJobs, Events, EventTypes, getEventBus } from '@utils/commons'
+import { appInstance, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
 import {
 	CreateReferral,
 	CreateUserWithBio,
@@ -14,7 +14,7 @@ import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { UpdateTest } from '@modules/study'
 
-const eventBus = getEventBus()
+const eventBus = appInstance.eventBus
 
 export const subscribers = {
 	[EventTypes.AUTHNEWREFERRAL]: eventBus.createSubscriber<Events[EventTypes.AUTHNEWREFERRAL]>(EventTypes.AUTHNEWREFERRAL, async (data) => {
