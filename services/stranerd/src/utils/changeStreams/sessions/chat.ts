@@ -6,10 +6,10 @@ import { getSocketEmitter } from '@index'
 
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitPathCreated('sessions/chats', after, after.path[0])
-		await getSocketEmitter().emitPathCreated('sessions/chats', after, after.path[1])
-		await getSocketEmitter().emitPathCreated(`sessions/chats/${after.id}`, after, after.path[0])
-		await getSocketEmitter().emitPathCreated(`sessions/chats/${after.id}`, after, after.path[1])
+		await getSocketEmitter().emitCreated(`sessions/chats/${after.path[0]}`, after)
+		await getSocketEmitter().emitCreated(`sessions/chats/${after.path[1]}`, after)
+		await getSocketEmitter().emitCreated(`sessions/chats/${after.id}/${after.path[0]}`, after)
+		await getSocketEmitter().emitCreated(`sessions/chats/${after.id}/${after.path[1]}`, after)
 		if (!after.sessionId) return
 		const session = await FindSession.execute({ sessionId: after.sessionId, userId: after.path[0] })
 		if (!session || session.startedAt || session.done) return
@@ -22,16 +22,16 @@ export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, Cha
 		await startSessionTimer(session)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitPathUpdated('sessions/chats', after, after.path[0])
-		await getSocketEmitter().emitPathUpdated('sessions/chats', after, after.path[1])
-		await getSocketEmitter().emitPathUpdated(`sessions/chats/${after.id}`, after, after.path[0])
-		await getSocketEmitter().emitPathUpdated(`sessions/chats/${after.id}`, after, after.path[1])
+		await getSocketEmitter().emitUpdated(`sessions/chats/${after.path[0]}`, after)
+		await getSocketEmitter().emitUpdated(`sessions/chats/${after.path[1]}`, after)
+		await getSocketEmitter().emitUpdated(`sessions/chats/${after.id}/${after.path[0]}`, after)
+		await getSocketEmitter().emitUpdated(`sessions/chats/${after.id}/${after.path[1]}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitPathDeleted('sessions/chats', before, before.path[0])
-		await getSocketEmitter().emitPathDeleted('sessions/chats', before, before.path[1])
-		await getSocketEmitter().emitPathDeleted(`sessions/chats/${before.id}`, before, before.path[0])
-		await getSocketEmitter().emitPathDeleted(`sessions/chats/${before.id}`, before, before.path[1])
+		await getSocketEmitter().emitDeleted(`sessions/chats/${before.path[0]}`, before)
+		await getSocketEmitter().emitDeleted(`sessions/chats/${before.path[1]}`, before)
+		await getSocketEmitter().emitDeleted(`sessions/chats/${before.id}/${before.path[0]}`, before)
+		await getSocketEmitter().emitDeleted(`sessions/chats/${before.id}/${before.path[1]}`, before)
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}
 }

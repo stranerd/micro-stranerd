@@ -5,8 +5,8 @@ import { getSocketEmitter } from '@index'
 
 export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitPathCreated('sessions/chatMetas', after, after.userId)
-		await getSocketEmitter().emitPathCreated(`sessions/chatMetas/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitCreated(`sessions/chatMetas/${after.userId}`, after)
+		await getSocketEmitter().emitCreated(`sessions/chatMetas/${after.id}/${after.userId}`, after)
 		if ((!after.userBio || !after.userRoles) && after.userId) {
 			const user = await FindUser.execute(after.userId)
 			if (user) await UpdateChatMetaBio.execute({
@@ -17,11 +17,11 @@ export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromMo
 		}
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitPathUpdated('sessions/chatMetas', after, after.userId)
-		await getSocketEmitter().emitPathUpdated(`sessions/chatMetas/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitUpdated(`sessions/chatMetas/${after.userId}`, after)
+		await getSocketEmitter().emitUpdated(`sessions/chatMetas/${after.id}/${after.userId}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitPathDeleted('sessions/chatMetas', before, before.userId)
-		await getSocketEmitter().emitPathDeleted(`sessions/chatMetas/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitDeleted(`sessions/chatMetas/${before.userId}`, before)
+		await getSocketEmitter().emitDeleted(`sessions/chatMetas/${before.id}/${before.userId}`, before)
 	}
 }

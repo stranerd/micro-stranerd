@@ -29,34 +29,16 @@ export class SocketEmitter {
 		this.setupSocketConnection(this.socket, callers)
 	}
 
-	get quickRegisters () {
-		const isMine: OnJoinFn = async ({ channel, user }) => user ? `${channel}/${user.id}` : null
-		const isOpen: OnJoinFn = async ({ channel }) => channel
-		return { isMine, isOpen }
-	}
-
 	async emitCreated (channel: string, data: BaseEntity) {
 		await this.emit(channel, EmitTypes.created, data)
-	}
-
-	async emitPathCreated (channel: string, data: BaseEntity, path: string) {
-		await this.emit(`${channel}/${path}`, EmitTypes.created, data)
 	}
 
 	async emitUpdated (channel: string, data: BaseEntity) {
 		await this.emit(channel, EmitTypes.updated, data)
 	}
 
-	async emitPathUpdated (channel: string, data: BaseEntity, path: string) {
-		await this.emit(`${channel}/${path}`, EmitTypes.updated, data)
-	}
-
 	async emitDeleted (channel: string, data: BaseEntity) {
 		await this.emit(channel, EmitTypes.deleted, data)
-	}
-
-	async emitPathDeleted (channel: string, data: BaseEntity, path: string) {
-		await this.emit(`${channel}/${path}`, EmitTypes.deleted, data)
 	}
 
 	register (channel: string, onJoin?: OnJoinFn) {

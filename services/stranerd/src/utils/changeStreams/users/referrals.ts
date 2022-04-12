@@ -5,8 +5,8 @@ import { getSocketEmitter } from '@index'
 
 export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromModel, ReferralEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitPathCreated('users/referrals', after, after.userId)
-		await getSocketEmitter().emitPathCreated(`users/referrals/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitCreated(`users/referrals/${after.userId}`, after)
+		await getSocketEmitter().emitCreated(`users/referrals/${after.id}/${after.userId}`, after)
 		const user = await FindUser.execute(after.referred)
 		if (user) await sendNotification(after.userId, {
 			title: 'New Referral Signup',
@@ -16,11 +16,11 @@ export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromMo
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitPathUpdated('users/referrals', after, after.userId)
-		await getSocketEmitter().emitPathUpdated(`users/referrals/${after.id}`, after, after.userId)
+		await getSocketEmitter().emitUpdated(`users/referrals/${after.userId}`, after)
+		await getSocketEmitter().emitUpdated(`users/referrals/${after.id}/${after.userId}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitPathDeleted('users/referrals', before, before.userId)
-		await getSocketEmitter().emitPathDeleted(`users/referrals/${before.id}`, before, before.userId)
+		await getSocketEmitter().emitDeleted(`users/referrals/${before.userId}`, before)
+		await getSocketEmitter().emitDeleted(`users/referrals/${before.id}/${before.userId}`, before)
 	}
 }

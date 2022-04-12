@@ -5,8 +5,8 @@ import { publishers } from '@utils/events'
 
 export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFromModel, DiscussionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitPathCreated('classes/discussions', after, after.classId)
-		await getSocketEmitter().emitPathCreated('classes/discussions', after, `${after.classId}/${after.id}`)
+		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}`, after)
+		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}/${after.id}`, after)
 
 		const group = await FindGroup.execute({ id: after.groupId, classId: after.classId })
 		if (!group) return
@@ -22,12 +22,12 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		})
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitPathUpdated('classes/discussions', after, after.classId)
-		await getSocketEmitter().emitPathUpdated('classes/discussions', after, `${after.classId}/${after.id}`)
+		await getSocketEmitter().emitUpdated(`classes/discussions/${after.classId}`, after)
+		await getSocketEmitter().emitUpdated(`classes/discussions/${after.classId}/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitPathDeleted('classes/discussions', before, before.classId)
-		await getSocketEmitter().emitPathDeleted('classes/discussions', before, `${before.classId}/${before.id}`)
+		await getSocketEmitter().emitDeleted(`classes/discussions/${before.classId}`, before)
+		await getSocketEmitter().emitDeleted(`classes/discussions/${before.classId}/${before.id}`, before)
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}
