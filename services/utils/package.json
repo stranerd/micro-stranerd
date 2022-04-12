@@ -14,7 +14,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@google-cloud/storage": "^5.19.0",
-		"@stranerd/api-commons": "^2.0.0",
+		"@stranerd/api-commons": "^3.0.0",
 		"firebase-admin": "^10.0.2",
 		"nodemailer": "^6.7.3"
 	},
