@@ -7,7 +7,7 @@ export enum StatusCodes {
 	ValidationError = 422,
 	TooManyRequests = 429,
 	DatabaseConnectionError = 500,
-	EmailNotVerified = 460,
+	AccountNotVerified = 460,
 	AccessTokenExpired = 461,
 	RefreshTokenMisused = 462,
 	InvalidToken = 463

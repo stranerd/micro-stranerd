@@ -4,9 +4,9 @@ import io from 'socket.io'
 import cors from 'cors'
 import morgan from 'morgan'
 import fileUpload from 'express-fileupload'
-/* import slowDown from 'express-slow-down'
- import rateLimit from 'express-rate-limit'
- import { StatusCodes } from './statusCodes' */
+import slowDown from 'express-slow-down'
+import rateLimit from 'express-rate-limit'
+import { StatusCodes } from './statusCodes'
 import { Controller } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
@@ -36,27 +36,28 @@ const postRoutes: Route[] = [
 ]
 
 export const getNewServerInstance = (routes: Route[], socketCallers: SocketCallers) => {
+	const settings = Instance.getInstance().settings
 	const app = express()
 	app.disable('x-powered-by')
 	const server = http.createServer(app)
-	if (Instance.getInstance().settings.isDev) app.use(morgan('dev'))
+	if (settings.isDev) app.use(morgan('dev'))
 	app.use(express.json())
 	app.use(cors({ origin: '*' }))
 	app.use(express.urlencoded({ extended: false }))
 	app.use(express.static(path.join(process.cwd(), 'public')))
-	/* app.use(rateLimit({
-	 windowMs: 30 * 60 * 1000,
-	 max: 1000,
-	 handler: (_: express.Request, res: express.Response) => res.status(StatusCodes.TooManyRequests).json([{ message: 'Too Many Requests' }])
-	 }))
-	 app.use(slowDown({
-	 windowMs: 10 * 60 * 1000,
-	 delayAfter: 500,
-	 delayMs: 500
-	 })) */
+	if (settings.useRateLimit) app.use(rateLimit({
+		windowMs: settings.rateLimitPeriodInMs,
+		max: settings.rateLimit,
+		handler: (_: express.Request, res: express.Response) => res.status(StatusCodes.TooManyRequests).json([{ message: 'Too Many Requests' }])
+	}))
+	if (settings.useSlowDown) app.use(slowDown({
+		windowMs: settings.slowDownPeriodInMs,
+		delayAfter: settings.slowDownAfter,
+		delayMs: settings.slowDownDelayInMs
+	}))
 	app.use(
 		fileUpload({
-			limits: { fileSize: 500 * 1024 * 1024 },
+			limits: { fileSize: settings.maxFileUploadSizeInMb * 1024 * 1024 },
 			useTempFiles: false
 		})
 	)

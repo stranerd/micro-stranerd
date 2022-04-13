@@ -18,9 +18,7 @@ export * from './common/package'
 Instance.initialize({
 	isDev: getEnvOrFail('ENVIRONMENT') === 'local',
 	accessTokenKey: getEnvOrFail('ACCESS_TOKEN_KEY'),
-	accessTokenTTL: 60 * 60,
 	refreshTokenKey: getEnvOrFail('REFRESH_TOKEN_KEY'),
-	refreshTokenTTL: 14 * 24 * 60 * 60,
 	mongoDbURI: getEnvOrFail('MONGODB_URI'),
 	rabbitURI: getEnvOrFail('RABBITMQ_URI'),
 	redisURI: getEnvOrFail('REDIS_URI'),

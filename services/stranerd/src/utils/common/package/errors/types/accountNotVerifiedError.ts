@@ -1,10 +1,10 @@
 import { CustomError } from '../customError'
 import { StatusCodes } from '../../express'
 
-const message = 'Email address not verified'
+const message = 'Account not verified'
 
-export class EmailNotVerifiedError extends CustomError {
-	statusCode = StatusCodes.EmailNotVerified
+export class AccountNotVerifiedError extends CustomError {
+	statusCode = StatusCodes.AccountNotVerified
 	serializedErrors = [{ message }]
 
 	constructor () {
