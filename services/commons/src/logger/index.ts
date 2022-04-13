@@ -1,5 +1,3 @@
-import chalk from 'chalk'
-
 export abstract class Logger {
 	abstract success (...args: any[]): Promise<void>
 
@@ -15,18 +13,18 @@ export class ConsoleLogger extends Logger {
 	log = console.log
 
 	async error (...args: any[]) {
-		this.log('LOG:ERROR:', chalk.red(...args))
+		this.log('LOG:ERROR:', ...args)
 	}
 
 	async success (...args: any[]) {
-		this.log('LOG:SUCCESS:', chalk.green(...args))
+		this.log('LOG:SUCCESS:', ...args)
 	}
 
 	async info (...args: any[]) {
-		this.log('LOG:INFO:', chalk.blue(...args))
+		this.log('LOG:INFO:', ...args)
 	}
 
 	async warn (...args: any[]) {
-		this.log('LOG:WARN:', chalk.yellow(...args))
+		this.log('LOG:WARN:', ...args)
 	}
 }
