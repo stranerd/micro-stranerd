@@ -1,4 +1,5 @@
 import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/commons'
+import { UserUpdateInput } from '@modules/domain/types'
 
 export class UserEntity extends BaseEntity {
 	public readonly id: string
@@ -32,6 +33,14 @@ export class UserEntity extends BaseEntity {
 		this.roles = data.roles ?? {}
 		this.lastSignedInAt = data.lastSignedInAt
 		this.signedUpAt = data.signedUpAt
+	}
+
+	get fullName () {
+		return [this.firstName, this.lastName].join(' ').replaceAll('  ', ' ')
+	}
+
+	static bioKeys (): (keyof UserUpdateInput | 'email')[] {
+		return ['firstName', 'lastName', 'email', 'photo', 'coverPhoto', 'description']
 	}
 }
 

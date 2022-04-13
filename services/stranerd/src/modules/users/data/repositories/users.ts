@@ -24,18 +24,16 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async createUserWithBio (userId: string, data: UserBio, timestamp: number) {
-		let user = await User.findById(userId)
-		if (!user) user = new User()
-		user._id = userId
-		user.bio = data
-		user.dates.createdAt = timestamp
-		user.dates.deletedAt = null
-		await user.save()
+		await User.findByIdAndUpdate(userId, {
+			$set: { bio: data },
+			$setOnInsert: { _id: userId, dates: { createdAt: timestamp, deletedAt: null } }
+		}, { upsert: true })
 	}
 
 	async updateUserWithBio (userId: string, data: UserBio, _: number) {
 		await User.findByIdAndUpdate(userId, {
-			$set: { bio: data, _id: userId }
+			$set: { bio: data },
+			$setOnInsert: { _id: userId }
 		}, { upsert: true })
 	}
 

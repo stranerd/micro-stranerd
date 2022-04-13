@@ -11,12 +11,18 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			data: {
 				firstName: after.firstName,
 				lastName: after.lastName,
+				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
 				photo: after.photo,
 				coverPhoto: after.coverPhoto
 			},
 			timestamp: after.signedUpAt
+		})
+		await publishers[EventTypes.AUTHROLESUPDATED].publish({
+			id: after.id,
+			data: after.roles,
+			timestamp: Date.now()
 		})
 		if (isProd) await subscribeToMailingList(after.email)
 		if (after.referrer) await publishers[EventTypes.AUTHNEWREFERRAL].publish({
@@ -38,13 +44,13 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 
-		const updatedBio = changes.firstName || changes.lastName || changes.photo || changes.email || changes.description || changes.coverPhoto
-
+		const updatedBio = UserEntity.bioKeys().some((key) => changes[key])
 		if (updatedBio) await publishers[EventTypes.AUTHUSERUPDATED].publish({
 			id: after.id,
 			data: {
 				firstName: after.firstName,
 				lastName: after.lastName,
+				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
 				photo: after.photo,
