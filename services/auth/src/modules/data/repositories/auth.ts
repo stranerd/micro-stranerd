@@ -1,7 +1,6 @@
 import { IAuthRepository } from '../../domain/i-repositories/auth'
 import { Credential, PasswordResetInput } from '../../domain/types'
 import { publishers } from '@utils/events'
-import { OAuth2Client } from 'google-auth-library'
 import User from '../mongooseModels/users'
 import { UserFromModel, UserToModel } from '../models/users'
 import { hash, hashCompare } from '@utils/hash'
@@ -18,6 +17,7 @@ import {
 	ValidationError
 } from '@utils/commons'
 import { UserMapper } from '../mappers/users'
+import axios from 'axios'
 
 const TOKENS_TTL_IN_SECS = 60 * 60
 
@@ -128,23 +128,21 @@ export class AuthRepository implements IAuthRepository {
 		return this.mapper.mapFrom(user)!
 	}
 
-	async googleSignIn (tokenId: string, clientId: string, referrer: string | null) {
-		const client = new OAuth2Client(clientId)
+	async googleSignIn (idToken: string, referrer: string | null) {
+		const authUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
+		const { data } = await axios.get(authUrl).catch((err) => {
+			const message = err?.response?.data?.error?.message
+			throw new BadRequestError(message ? 'Invalid id token' : 'Something unexpected happened')
+		})
 
-		const ticket = await client.verifyIdToken({
-			idToken: tokenId,
-			audience: clientId
-		}).catch(() => null)
-		if (!ticket) throw new BadRequestError('Invalid token')
+		const names = (data.name ?? '').split(' ')
+		const firstName = names[0] ?? ''
+		// const middleName = (names.length > 2 ? names[1] : '') ?? ''
+		const lastName = (names.length > 1 ? names.reverse()[0] : '') ?? ''
+		const email = data.email!.toLowerCase()
 
-		const user = ticket.getPayload()
-		if (!user) throw new BadRequestError('Invalid token')
-
-		const [firstName = '', lastName = ''] = (user.name ?? '').split(' ')
-		const email = user.email!.toLowerCase()
-
-		const userPhoto = user.picture ? {
-			link: user.picture
+		const photo = data.picture ? {
+			link: data.picture
 		} as unknown as MediaOutput : null
 
 		const userData = await User.findOne({ email })
@@ -159,8 +157,7 @@ export class AuthRepository implements IAuthRepository {
 				isVerified: true,
 				roles: {},
 				password: '',
-				photo: userPhoto,
-				coverPhoto: null
+				photo, coverPhoto: null
 			}
 			return await this.addNewUser(userData, AuthTypes.google)
 		}
