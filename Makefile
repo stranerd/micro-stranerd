@@ -3,14 +3,16 @@ COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))
 
-make-acme:
-	mkdir -p /etc/traefik && touch /etc/traefik/acmeStaging.json /etc/traefik/acmeProduction.json /etc/traefik/accessLog.json /etc/traefik/log.json && chmod 600 /etc/traefik/acme*.json
+SETUP_FOLDER = /data/docker/mstranerd/traefik
+SETUP = mkdir -p $(SETUP_FOLDER) &&\
+	touch $(SETUP_FOLDER)/acmeStaging.json $(SETUP_FOLDER)/acmeProduction.json $(SETUP_FOLDER)/accessLog.json $(SETUP_FOLDER)/log.json &&\
+	chmod 600 $(SETUP_FOLDER)/acme*.json
 
 dev-start:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
+	$(SETUP) && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --remove-orphans;
 
 dev-start-detach:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
+	$(SETUP) && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d --remove-orphans;
 
 dev-stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans;
@@ -22,10 +24,10 @@ prod-build:
 	docker-compose -f docker-compose.yml build;
 
 prod-start:
-	docker-compose -f docker-compose.yml up --remove-orphans;
+	$(SETUP) && docker-compose -f docker-compose.yml up --remove-orphans;
 
 prod-start-detach:
-	docker-compose -f docker-compose.yml up -d --remove-orphans;
+	$(SETUP) && docker-compose -f docker-compose.yml up -d --remove-orphans;
 
 prod-stop:
 	docker-compose -f docker-compose.yml down --remove-orphans;

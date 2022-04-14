@@ -42,8 +42,8 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - './docker/mongo/data/mongo1/db:/data/db'
-      - './docker/mongo/data/mongo1/configdb:/data/configdb'
+      - '/data/docker/mstranerd/mongo/db:/data/db'
+      - '/data/docker/mstranerd/mongo/configdb:/data/configdb'
     restart: unless-stopped
     command: '--quiet --bind_ip_all --replSet rs0'
 

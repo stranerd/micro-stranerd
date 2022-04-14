@@ -11,10 +11,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "/etc/traefik/acmeStaging.json:/etc/traefik/acmeStaging.json"
-      - "/etc/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
-      - "/etc/traefik/log.json:/etc/traefik/log.json"
-      - "/etc/traefik/accessLog.json:/etc/traefik/accessLog.json"
+      - "/data/docker/mstranerd/traefik/acmeStaging.json:/etc/traefik/acmeStaging.json"
+      - "/data/docker/mstranerd/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
+      - "/data/docker/mstranerd/traefik/log.json:/etc/traefik/log.json"
+      - "/data/docker/mstranerd/traefik/accessLog.json:/etc/traefik/accessLog.json"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   auth:
@@ -24,7 +24,7 @@ services:
     hostname: auth
     restart: always
     volumes:
-      - './docker/public/auth/:/app/public/'
+      - '/data/docker/mstranerd/files/auth/:/app/public/'
     command: 'yarn start'
 
   stranerd:
@@ -34,7 +34,7 @@ services:
     hostname: stranerd
     restart: always
     volumes:
-      - './docker/public/stranerd/:/app/public/'
+      - '/data/docker/mstranerd/files/stranerd/:/app/public/'
     command: 'yarn start'
 
   utils:
@@ -44,5 +44,5 @@ services:
     hostname: tasks
     restart: always
     volumes:
-      - './docker/public/utils/:/app/public/'
+      - '/data/docker/mstranerd/files/utils/:/app/public/'
     command: 'yarn start'
