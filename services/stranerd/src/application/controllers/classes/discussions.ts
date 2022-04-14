@@ -28,7 +28,7 @@ export class DiscussionController {
 		})
 
 		const userId = req.authUser!.id
-		const group = await FindGroup.execute(data.groupId)
+		const group = await FindGroup.execute({ id: data.groupId, classId: req.params.classId })
 		if (!group) throw new BadRequestError('group not found')
 		if (!group.getAllUsers().includes(userId)) throw new BadRequestError('not a group member')
 		const user = await FindUser.execute(userId)
