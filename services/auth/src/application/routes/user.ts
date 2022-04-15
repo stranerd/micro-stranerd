@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { UserController } from '../controllers'
-import { cannotModifyMyRole, isAdminInSpecifiedApp } from '../middlewares'
+import { cannotModifyMyRole, isAdmin } from '../middlewares'
 
 const getUserDetails: Route = {
 	path: '/user',
@@ -34,7 +34,7 @@ const updateUserRole: Route = {
 	path: '/user/roles',
 	method: 'post',
 	controllers: [
-		requireAuthUser, isAdminInSpecifiedApp, cannotModifyMyRole,
+		requireAuthUser, isAdmin, cannotModifyMyRole,
 		makeController(async (req) => {
 			return {
 				status: StatusCodes.Ok,

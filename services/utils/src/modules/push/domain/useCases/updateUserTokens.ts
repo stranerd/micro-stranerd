@@ -1,9 +1,9 @@
 import { ITokenRepository } from '../irepositories/tokens'
 import { TokenToModel } from '../../data/models/tokens'
-import { AuthApps, BaseUseCase } from '@utils/commons'
+import { BaseUseCase } from '@utils/commons'
 import { TokenEntity } from '../entities/tokens'
 
-type Input = { userId: string, app: AuthApps, tokens: string[], add: boolean }
+type Input = { userId: string, tokens: string[], add: boolean }
 
 export class UpdateUserTokensUseCase extends BaseUseCase<TokenToModel, TokenEntity> {
 	private repository: ITokenRepository
@@ -14,6 +14,6 @@ export class UpdateUserTokensUseCase extends BaseUseCase<TokenToModel, TokenEnti
 	}
 
 	async execute (data: Input) {
-		return await this.repository.updateTokens(data.userId, data.app, data.tokens, data.add)
+		return await this.repository.updateTokens(data.userId, data.tokens, data.add)
 	}
 }

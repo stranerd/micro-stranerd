@@ -1,4 +1,4 @@
-import { AuthApps, ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { DiscussionEntity, DiscussionFromModel, FindGroup } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
@@ -13,7 +13,7 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		const users = group.getAllUsers().filter((userId) => userId !== after.userId)
 		const body = after.media ? 'Shared a file' : after.content
 		await publishers[EventTypes.PUSHNOTIFICATION].publish({
-			userIds: users, app: AuthApps.Stranerd,
+			userIds: users,
 			title: group.name, body: `${after.userBio.firstName} ${after.userBio.lastName}: ${body}`,
 			data: {
 				type: 'classes-discussions',

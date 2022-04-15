@@ -1,5 +1,5 @@
 import { FindUser, FindUserByEmail, UpdateUserProfile, UpdateUserRole } from '@modules/index'
-import { AuthApps, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/commons'
+import { NotFoundError, Request, SupportedAuthRoles, validate, Validation, verifyAccessToken } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 
@@ -29,22 +29,22 @@ export class UserController {
 	}
 
 	static async updateUserRole (req: Request) {
-		const validateData = validate({
-			app: req.body.app,
+		const { role, userId, value } = validate({
 			role: req.body.role,
 			userId: req.body.userId,
 			value: req.body.value
 		}, {
-			app: {
+			role: {
 				required: true,
-				rules: [Validation.arrayContainsX(Object.values<string>(AuthApps), (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values<string>(SupportedAuthRoles), (cur, val) => cur === val)]
 			},
-			role: { required: true, rules: [Validation.isString] },
 			value: { required: true, rules: [Validation.isBoolean] },
 			userId: { required: true, rules: [Validation.isString] }
 		})
 
-		return await UpdateUserRole.execute(validateData)
+		return await UpdateUserRole.execute({
+			userId, roles: { [role]: value }
+		})
 	}
 
 	static async signout (req: Request) {
@@ -55,14 +55,12 @@ export class UserController {
 	static async superAdmin (_: Request) {
 		const user = await FindUserByEmail.execute(superAdminEmail)
 		if (!user) throw new NotFoundError()
-		const res = await Promise.all(
-			Object.values(AuthApps).map(async (app) => await UpdateUserRole.execute({
-				app,
-				role: 'isAdmin',
-				userId: user.id,
-				value: true
-			}))
-		)
-		return res.every((r) => r)
+		return await UpdateUserRole.execute({
+			userId: user.id,
+			roles: {
+				[SupportedAuthRoles.isStranerdAdmin]: true,
+				isSuperAdmin: true
+			}
+		})
 	}
 }

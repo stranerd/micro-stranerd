@@ -1,4 +1,4 @@
-import { AuthApps, makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
 import { UpdateUserTokens } from '@modules/push'
 
 const subscribeDevice: Route = {
@@ -7,17 +7,12 @@ const subscribeDevice: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-			const { app, token } = validate({
-				app: req.body.app,
+			const { token } = validate({
 				token: req.body.token
 			}, {
-				app: {
-					required: true,
-					rules: [Validation.arrayContainsX(Object.values<string>(AuthApps), (cur, val) => cur === val)]
-				},
 				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 			})
-			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, app, tokens: [token], add: true })
+			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, tokens: [token], add: true })
 			return {
 				status: StatusCodes.Ok,
 				result: !!res
@@ -32,17 +27,12 @@ const unsubscribeDevice: Route = {
 	controllers: [
 		requireAuthUser,
 		makeController(async (req) => {
-			const { app, token } = validate({
-				app: req.body.app,
+			const { token } = validate({
 				token: req.body.token
 			}, {
-				app: {
-					required: true,
-					rules: [Validation.arrayContainsX(Object.values<string>(AuthApps), (cur, val) => cur === val)]
-				},
 				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 			})
-			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, app, tokens: [token], add: false })
+			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, tokens: [token], add: false })
 			return {
 				status: StatusCodes.Ok,
 				result: !!res

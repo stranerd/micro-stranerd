@@ -2,7 +2,8 @@ import { makeMiddleware, NotAuthenticatedError, NotAuthorizedError, SupportedAut
 
 export const isAdmin = makeMiddleware(
 	async (request) => {
+		const isAdmin = request.authUser?.roles?.[SupportedAuthRoles.isStranerdAdmin] || request.authUser?.roles?.['isSuperAdmin']
 		if (!request.authUser) throw new NotAuthenticatedError()
-		if (!request.authUser.roles?.[SupportedAuthRoles.isStranerdAdmin]) throw new NotAuthorizedError()
+		if (!isAdmin) throw new NotAuthorizedError()
 	}
 )

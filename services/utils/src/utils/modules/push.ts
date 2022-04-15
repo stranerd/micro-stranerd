@@ -9,9 +9,9 @@ const chunkArray = <T> (arr: T[], size: number) => new Array(Math.ceil(arr.lengt
 
 export const sendNotification = async (notification: PushNotification) => {
 	try {
-		const { userIds, app, data, title, body } = notification
+		const { userIds, data, title, body } = notification
 		await Promise.all(userIds.map(async (userId) => {
-			const userTokens = await FindUserTokens.execute({ userId, app })
+			const userTokens = await FindUserTokens.execute({ userId })
 			const chunks = chunkArray(userTokens.tokens, 500)
 			const invalidTokens = [] as string[]
 
@@ -35,7 +35,7 @@ export const sendNotification = async (notification: PushNotification) => {
 			}))
 
 			if (invalidTokens.length) await UpdateUserTokens.execute({
-				userId, app, tokens: invalidTokens, add: false
+				userId, tokens: invalidTokens, add: false
 			})
 		}))
 	} catch (err) {

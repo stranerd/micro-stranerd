@@ -13,10 +13,6 @@ const Schema = new mongoose.Schema<TokenFromModel>({
 		type: String,
 		required: true
 	},
-	app: {
-		type: String,
-		required: true
-	},
 	tokens: {
 		type: [String],
 		required: false,

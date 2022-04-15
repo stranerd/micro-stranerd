@@ -6,17 +6,15 @@ export class TokenMapper extends BaseMapper<TokenFromModel, TokenToModel, TokenE
 	mapFrom (model: TokenFromModel | null) {
 		if (!model) return null
 		const {
-			_id, tokens, userId, app, createdAt, updatedAt
+			_id, tokens, userId, createdAt, updatedAt
 		} = model
 		return new TokenEntity({
-			id: _id.toString(),
-			app, userId, tokens, createdAt, updatedAt
+			id: _id.toString(), userId, tokens, createdAt, updatedAt
 		})
 	}
 
 	mapTo (entity: TokenEntity) {
 		return {
-			app: entity.app,
 			userId: entity.userId
 		}
 	}

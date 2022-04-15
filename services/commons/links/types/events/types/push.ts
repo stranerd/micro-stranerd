@@ -1,5 +1,3 @@
-import { AuthApps } from '../../utils/authUser'
-
 type NotificationData = {
 	type: 'notifications'
 	data: {
@@ -20,7 +18,6 @@ type ClassDiscussionData = {
 
 export type PushNotification = {
 	userIds: string[],
-	app: AuthApps
 	title: string
 	body: string
 	data: NotificationData | ClassDiscussionData

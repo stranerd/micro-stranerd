@@ -1,9 +1,9 @@
 import { ITokenRepository } from '../irepositories/tokens'
 import { TokenToModel } from '../../data/models/tokens'
-import { AuthApps, BaseUseCase } from '@utils/commons'
+import { BaseUseCase } from '@utils/commons'
 import { TokenEntity } from '../entities/tokens'
 
-type Input = { userId: string, app: AuthApps }
+type Input = { userId: string }
 
 export class FindUserTokensUseCase extends BaseUseCase<TokenToModel, TokenEntity> {
 	private repository: ITokenRepository
@@ -14,6 +14,6 @@ export class FindUserTokensUseCase extends BaseUseCase<TokenToModel, TokenEntity
 	}
 
 	async execute (data: Input) {
-		return await this.repository.find(data.userId, data.app)
+		return await this.repository.find(data.userId)
 	}
 }

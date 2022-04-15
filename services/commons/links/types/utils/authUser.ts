@@ -1,3 +1,5 @@
-export enum AuthApps {
-	Stranerd = 'stranerd'
+export enum SupportedAuthRoles {
+	isStranerdAdmin = 'isStranerdAdmin',
+	isStranerdTutor = 'isStranerdTutor',
+	isVerified = 'isVerified',
 }

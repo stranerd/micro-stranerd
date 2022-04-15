@@ -1,7 +1,6 @@
 import { ITokenRepository } from '../../domain/irepositories/tokens'
 import { TokenMapper } from '../mappers/tokens'
 import { Token } from '../mongooseModels/tokens'
-import { AuthApps } from '@utils/commons'
 
 export class TokenRepository implements ITokenRepository {
 	private static instance: TokenRepository
@@ -16,21 +15,21 @@ export class TokenRepository implements ITokenRepository {
 		return TokenRepository.instance
 	}
 
-	async updateTokens (userId: string, app: AuthApps, tokens: string[], add: boolean) {
+	async updateTokens (userId: string, tokens: string[], add: boolean) {
 		if (add) await Token.updateMany(
-			{ app, tokens: { $in: tokens }, userId: { $ne: userId } },
+			{ tokens: { $in: tokens }, userId: { $ne: userId } },
 			{ $pull: { tokens: { $in: tokens } } }
 		)
-		const token = await Token.findOneAndUpdate({ userId, app }, {
-			$set: { userId, app },
+		const token = await Token.findOneAndUpdate({ userId }, {
+			$set: { userId },
 			[add ? '$addToSet' : '$pull']: { 'tokens': { [add ? '$each' : '$in']: tokens } }
 		}, { upsert: true })
 		return this.mapper.mapFrom(token)!
 	}
 
-	async find (userId: string, app: AuthApps) {
-		let token = await Token.findOne({ userId, app })
-		if (!token) token = await Token.create({ userId, app })
+	async find (userId: string) {
+		let token = await Token.findOne({ userId })
+		if (!token) token = await Token.create({ userId })
 		return this.mapper.mapFrom(token)!
 	}
 

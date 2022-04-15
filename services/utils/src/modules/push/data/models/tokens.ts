@@ -1,5 +1,3 @@
-import { AuthApps } from '@utils/commons'
-
 export interface TokenFromModel extends TokenToModel {
 	_id: string
 	tokens: string[]
@@ -8,6 +6,5 @@ export interface TokenFromModel extends TokenToModel {
 }
 
 export interface TokenToModel {
-	userId: string,
-	app: AuthApps,
+	userId: string
 }

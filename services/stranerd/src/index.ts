@@ -1,4 +1,4 @@
-import { appInstance, AuthApps, getNewServerInstance, OnJoinFn } from '@utils/commons'
+import { appInstance, getNewServerInstance, OnJoinFn, SupportedAuthRoles } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
@@ -28,7 +28,10 @@ const start = async () => {
 			})
 	)
 
-	const isAdmin: OnJoinFn = async ({ user, channel }) => user?.roles[AuthApps.Stranerd]?.isAdmin ? channel : null
+	const isAdmin: OnJoinFn = async ({
+		                                 user,
+		                                 channel
+	                                 }) => user?.roles?.[SupportedAuthRoles.isStranerdAdmin] ? channel : null
 	const isMine: OnJoinFn = async ({ channel, user }) => user ? `${channel}/${user.id}` : null
 	const isOpen: OnJoinFn = async ({ channel }) => channel
 	const classJoinCb: OnJoinFn = async (data, params) => {
