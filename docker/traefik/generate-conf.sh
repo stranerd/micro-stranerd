@@ -64,15 +64,15 @@ http:
     auth:
       loadBalancer:
         servers:
-          - url: http://auth:8080/
+          - url: http://auth:$PORT/
     stranerd:
       loadBalancer:
         servers:
-          - url: http://stranerd:8080/
+          - url: http://stranerd:$PORT/
     utils:
       loadBalancer:
         servers:
-          - url: http://utils:8080/
+          - url: http://utils:$PORT/
 
 api:
   insecure: true
@@ -148,15 +148,15 @@ http:
     auth:
       loadBalancer:
         servers:
-          - url: http://auth:8080/
+          - url: http://auth:$PORT/
     stranerd:
       loadBalancer:
         servers:
-          - url: http://stranerd:8080/
+          - url: http://stranerd:$PORT/
     utils:
       loadBalancer:
         servers:
-          - url: http://utils:8080/
+          - url: http://utils:$PORT/
 
 api:
   insecure: true
