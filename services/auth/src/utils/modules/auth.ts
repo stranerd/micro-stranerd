@@ -26,7 +26,7 @@ export const generateAuthOutput = async (user: AuthUserEntity): Promise<AuthOutp
 }
 
 export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { user: AuthUserEntity }> => {
-	let user = null as any
+	let user = null as null | AuthUserEntity
 	const newTokens = await exchangeOldForNewTokens(tokens, async (id: string) => {
 		user = await FindUser.execute(id)
 		if (!user) throw new BadRequestError('No account with such id exists')
@@ -34,5 +34,5 @@ export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { u
 		return { accessToken, refreshToken }
 	})
 
-	return { ...newTokens, user }
+	return { ...newTokens, user: user! }
 }
