@@ -1,9 +1,9 @@
 import { BaseUseCase } from '@utils/commons'
 import { PasswordResetInput } from '../../types'
 import { IAuthRepository } from '../../i-repositories/auth'
-import { UserEntity } from '../../entities/users'
+import { AuthUserEntity } from '../../entities/users'
 
-export class ResetPasswordUseCase implements BaseUseCase<PasswordResetInput, UserEntity> {
+export class ResetPasswordUseCase implements BaseUseCase<PasswordResetInput, AuthUserEntity> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

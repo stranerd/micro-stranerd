@@ -6,7 +6,7 @@ import {
 	makeAccessToken,
 	makeRefreshToken
 } from '@utils/commons'
-import { AuthOutput, FindUser, UserEntity } from '@modules/index'
+import { AuthOutput, AuthUserEntity, FindUser } from '@modules/index'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
 	await deleteCachedAccessToken(userId)
@@ -14,7 +14,7 @@ export const signOutUser = async (userId: string): Promise<boolean> => {
 	return true
 }
 
-export const generateAuthOutput = async (user: UserEntity): Promise<AuthOutput & { user: UserEntity }> => {
+export const generateAuthOutput = async (user: AuthUserEntity): Promise<AuthOutput & { user: AuthUserEntity }> => {
 	const accessToken = await makeAccessToken({
 		id: user.id,
 		roles: user.roles,
@@ -25,7 +25,7 @@ export const generateAuthOutput = async (user: UserEntity): Promise<AuthOutput &
 	return { accessToken, refreshToken, user }
 }
 
-export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { user: UserEntity }> => {
+export const getNewTokens = async (tokens: AuthOutput): Promise<AuthOutput & { user: AuthUserEntity }> => {
 	let user = null as any
 	const newTokens = await exchangeOldForNewTokens(tokens, async (id: string) => {
 		user = await FindUser.execute(id)

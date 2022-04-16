@@ -1,13 +1,13 @@
 import { BaseUseCase } from '@utils/commons'
 import { IAuthRepository } from '../../i-repositories/auth'
-import { UserEntity } from '../../entities/users'
+import { AuthUserEntity } from '../../entities/users'
 
 type Input = {
 	idToken: string
 	referrer: string | null
 }
 
-export class GoogleSignInUseCase implements BaseUseCase<Input, UserEntity> {
+export class GoogleSignInUseCase implements BaseUseCase<Input, AuthUserEntity> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

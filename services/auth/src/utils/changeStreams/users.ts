@@ -1,10 +1,10 @@
 import { ChangeStreamCallbacks, EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { publishers } from '@utils/events'
-import { UserEntity, UserFromModel } from '@modules/index'
+import { AuthUserEntity, UserFromModel } from '@modules/index'
 import { subscribeToMailingList } from '@utils/mailing'
 import { isProd } from '@utils/environment'
 
-export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
+export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, AuthUserEntity> = {
 	created: async ({ after }) => {
 		await publishers[EventTypes.AUTHUSERCREATED].publish({
 			id: after.id,
@@ -44,7 +44,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 
-		const updatedBio = UserEntity.bioKeys().some((key) => changes[key])
+		const updatedBio = AuthUserEntity.bioKeys().some((key) => changes[key])
 		if (updatedBio) await publishers[EventTypes.AUTHUSERUPDATED].publish({
 			id: after.id,
 			data: {

@@ -1,8 +1,8 @@
 import { BaseUseCase, QueryParams, QueryResults } from '@utils/commons'
-import { UserEntity } from '../../entities/users'
+import { AuthUserEntity } from '../../entities/users'
 import { IUserRepository } from '../../i-repositories/users'
 
-export class GetUsersUseCase implements BaseUseCase<QueryParams, QueryResults<UserEntity>> {
+export class GetUsersUseCase implements BaseUseCase<QueryParams, QueryResults<AuthUserEntity>> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

@@ -2,9 +2,9 @@ import { AuthTypes, BaseUseCase } from '@utils/commons'
 import { RegisterInput } from '../../types'
 import { IAuthRepository } from '../../i-repositories/auth'
 import { UserToModel } from '../../../data/models/users'
-import { UserEntity } from '../../entities/users'
+import { AuthUserEntity } from '../../entities/users'
 
-export class RegisterUserUseCase implements BaseUseCase<RegisterInput, UserEntity> {
+export class RegisterUserUseCase implements BaseUseCase<RegisterInput, AuthUserEntity> {
 	repository: IAuthRepository
 
 	constructor (repo: IAuthRepository) {

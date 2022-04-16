@@ -1,8 +1,8 @@
 import { BaseUseCase } from '@utils/commons'
-import { UserEntity } from '../../entities/users'
+import { AuthUserEntity } from '../../entities/users'
 import { IUserRepository } from '../../i-repositories/users'
 
-export class FindUserUseCase implements BaseUseCase<string, UserEntity | null> {
+export class FindUserUseCase implements BaseUseCase<string, AuthUserEntity | null> {
 	repository: IUserRepository
 
 	constructor (repo: IUserRepository) {

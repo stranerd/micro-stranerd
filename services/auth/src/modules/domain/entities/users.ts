@@ -1,7 +1,7 @@
 import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/commons'
 import { UserUpdateInput } from '@modules/domain/types'
 
-export class UserEntity extends BaseEntity {
+export class AuthUserEntity extends BaseEntity {
 	public readonly id: string
 	public readonly email: string
 	public readonly password: string
