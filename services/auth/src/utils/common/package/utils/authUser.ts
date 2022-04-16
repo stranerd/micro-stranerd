@@ -1,13 +1,5 @@
-export type RefreshUser = {
-	id: string
-}
-
-export type AuthUser = {
-	id: string
-	isVerified: boolean
-	authTypes: AuthTypes[]
-	roles: AuthRoles
-}
+export type RefreshUser = { id: string } & Record<string, any>
+export type AuthUser = { id: string } & Record<string, any>
 
 export enum AuthTypes {
 	google = 'google',
@@ -17,5 +9,3 @@ export enum AuthTypes {
 	github = 'github',
 	microsoft = 'microsoft'
 }
-
-export type AuthRoles = Record<string, any>

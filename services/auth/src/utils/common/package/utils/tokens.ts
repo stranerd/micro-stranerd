@@ -55,15 +55,15 @@ type Tokens = {
 
 export const exchangeOldForNewTokens = async (
 	{ accessToken, refreshToken }: Tokens,
-	getAuthUser: (id: string) => Promise<AuthUser>
+	makeTokens: (id: string) => Promise<Tokens>
 ): Promise<Tokens> => {
-	let authUser = await verifyAccessToken(accessToken).catch((err) => {
+	const authUser = await verifyAccessToken(accessToken).catch((err) => {
 		const error = err as CustomError
 		if (error.statusCode === StatusCodes.AccessTokenExpired) return null
 		else throw err
 	})
-	// If auth token is not expired, return it and the refresh token
-	if (authUser) return { accessToken, refreshToken }
+	// If auth token is not expired, get the user id from it
+	if (authUser) return await makeTokens(authUser.id)
 
 	const refreshUser = await verifyRefreshToken(refreshToken)
 	// const cachedRefreshToken = await getCachedRefreshToken(refreshUser.id)
@@ -78,18 +78,5 @@ export const exchangeOldForNewTokens = async (
 	// throw new RefreshTokenMisusedError()
 	// }
 
-	// Use refresh id to call cb passed in to get the user auth details
-	authUser = await getAuthUser(refreshUser.id)
-
-	return {
-		accessToken: await makeAccessToken({
-			id: authUser.id,
-			roles: authUser.roles,
-			isVerified: authUser.isVerified,
-			authTypes: authUser.authTypes
-		}),
-		refreshToken: await makeRefreshToken({
-			id: refreshUser.id
-		})
-	}
+	return await makeTokens(refreshUser.id)
 }

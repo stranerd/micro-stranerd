@@ -7,15 +7,15 @@
 
 // When running in dev mode, uncomment this export && comment the other
 // @ts-ignore
-// import { getEnvOrFail, Instance } from './common/package'
+import { getEnvOrFail, Instance } from './common/package'
 //@ts-ignore
-// export * from './common/package'
+export * from './common/package'
 
 // For production, uncomment this export && comment the other
 //@ts-ignore
-import { getEnvOrFail, Instance } from '@stranerd/api-commons'
+// import { getEnvOrFail, Instance } from '@stranerd/api-commons'
 //@ts-ignore
-export * from '@stranerd/api-commons'
+// export * from '@stranerd/api-commons'
 
 Instance.initialize({
 	isDev: getEnvOrFail('ENVIRONMENT') === 'local',
