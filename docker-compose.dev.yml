@@ -4,10 +4,6 @@ services:
     restart: unless-stopped
     build:
       target: base
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
     volumes:
       - "./services/auth/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
@@ -16,10 +12,6 @@ services:
     restart: unless-stopped
     build:
       target: base
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
     volumes:
       - "./services/stranerd/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
@@ -28,64 +20,32 @@ services:
     restart: unless-stopped
     build:
       target: base
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
     volumes:
       - "./services/utils/src:/app/src:ro"
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   mongodb:
-    image: mongo
-    hostname: mongodb
     ports:
       - '27017:27017'
-    volumes:
-      - '/data/docker/mstranerd/mongo/db:/data/db'
-      - '/data/docker/mstranerd/mongo/configdb:/data/configdb'
     restart: unless-stopped
-    command: '--quiet --bind_ip_all --replSet rs0'
 
   mongodb-express:
-    image: 'mongo-express:latest'
-    hostname: mongodb-express
     restart: unless-stopped
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
     ports:
       - '81:8081'
 
   rabbitmq:
-    build:
-      context: ./docker/rabbitmq
-    hostname: rabbitmq
     restart: unless-stopped
     ports:
       - '82:15672'
 
   redis:
-    image: 'redis:6.2.5-alpine'
-    hostname: redis
     restart: unless-stopped
 
   redis-commander:
-    image: 'rediscommander/redis-commander:latest'
-    hostname: redis-commander
     restart: unless-stopped
-    environment:
-      - 'REDIS_HOSTS=local:redis:6379'
     ports:
       - '83:8081'
-
-  rsinit:
-    build:
-      context: ./docker/mongo
-    hostname: rsinit
-    depends_on:
-      - mongodb
-    restart: on-failure
-    entrypoint: 'bash ./rs.sh'
 
   traefik:
     restart: unless-stopped

@@ -22,9 +22,13 @@ services:
       target: production
     hostname: auth
     restart: always
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - '/data/docker/mstranerd/files/auth/:/app/public/'
-    command: 'yarn start'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   stranerd:
     build:
@@ -32,9 +36,13 @@ services:
       target: production
     hostname: stranerd
     restart: always
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - '/data/docker/mstranerd/files/stranerd/:/app/public/'
-    command: 'yarn start'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   utils:
     build:
@@ -42,6 +50,53 @@ services:
       target: production
     hostname: tasks
     restart: always
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
     volumes:
       - '/data/docker/mstranerd/files/utils/:/app/public/'
-    command: 'yarn start'
+    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
+
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    volumes:
+      - '/data/docker/mstranerd/mongo/db:/data/db'
+      - '/data/docker/mstranerd/mongo/configdb:/data/configdb'
+    restart: always
+    command: '--quiet --bind_ip_all --replSet rs0'
+
+  mongodb-express:
+    image: 'mongo-express:latest'
+    hostname: mongodb-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+
+  rabbitmq:
+    build:
+      context: ./docker/rabbitmq
+    hostname: rabbitmq
+    restart: always
+
+  redis:
+    image: 'redis:6.2.5-alpine'
+    hostname: redis
+    restart: always
+
+  redis-commander:
+    image: 'rediscommander/redis-commander:latest'
+    hostname: redis-commander
+    restart: always
+    environment:
+      - 'REDIS_HOSTS=local:redis:6379'
+
+  rsinit:
+    build:
+      context: ./docker/mongo
+    hostname: rsinit
+    depends_on:
+      - mongodb
+    restart: on-failure
+    entrypoint: 'bash ./rs.sh'
