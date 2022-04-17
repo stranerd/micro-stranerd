@@ -20,15 +20,6 @@ entryPoints:
   websecure:
     address: :443
 
-accessLog:
-  filePath: /etc/traefik/accessLog.json
-  format: json
-
-log:
-  level: DEBUG
-  filePath: /etc/traefik/log.json
-  format: json
-
 http:
   middlewares:
     stripRoutePrefix:
@@ -109,15 +100,6 @@ global:
 entryPoints:
   web:
     address: :80
-
-accessLog:
-  filePath: /etc/traefik/accessLog.json
-  format: json
-
-log:
-  level: DEBUG
-  filePath: /etc/traefik/log.json
-  format: json
 
 http:
   middlewares:
