@@ -11,7 +11,7 @@ export class Request {
 	readonly params: Record<string, string>
 	readonly query: Record<string, string>
 	readonly headers: Record<HeaderKeys, any>
-	readonly files: StorageFile[]
+	readonly files: Record<string, StorageFile[]>
 	authUser: null | AuthUser = null
 	refreshUser: null | RefreshUser = null
 	pendingError: null | CustomError = null
@@ -25,7 +25,7 @@ export class Request {
 		params: Record<string, any>
 		query: Record<string, any>
 		headers: Record<HeaderKeys, any>
-		files: StorageFile[]
+		files: Record<string, StorageFile[]>
 		method: string
 		path: string,
 		data: Record<string, any>

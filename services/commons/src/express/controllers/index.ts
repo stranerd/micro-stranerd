@@ -49,24 +49,17 @@ const extractRequest = (req: Request) => {
 		UserAgent: req.get('User-Agent') ?? null
 	}
 	// @ts-ignore
-	const file = req.files?.file
-	const fileArray: StorageFile[] = []
-	if (file) {
-		if (Array.isArray(file)) file.forEach((f) => fileArray.push({
+	const files = Object.fromEntries(Object.entries(req.files ?? {}).map(([key, file]) => {
+		const fileArray: StorageFile[] = []
+		if (file) (Array.isArray(file) ? file : [file]).forEach((f) => fileArray.push({
 			name: f.name,
 			type: f.mimetype,
 			size: f.size,
 			isTruncated: f.truncated,
 			data: f.data
 		}))
-		else fileArray.push({
-			name: file.name,
-			type: file.mimetype,
-			size: file.size,
-			isTruncated: file.truncated,
-			data: file.data
-		})
-	}
+		return [key, fileArray]
+	}))
 
 	// @ts-ignore
 	const request = req.savedReq ?? new CustomRequest({
@@ -75,8 +68,7 @@ const extractRequest = (req: Request) => {
 		query: req.query ?? {},
 		method: req.method,
 		path: req.path,
-		headers,
-		files: fileArray,
+		headers, files,
 		data: {}
 	})
 	// @ts-ignore
