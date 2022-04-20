@@ -12,5 +12,5 @@ export interface MediaOutput {
 	size: number
 	path: string
 	timestamp: number
-	link: string | null
+	link: string
 }

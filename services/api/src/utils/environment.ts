@@ -1,5 +1,6 @@
 import { EmailsList, getEnvOrFail } from '@utils/commons'
 
+export const baseDomain = getEnvOrFail('BASE_DOMAIN')
 export const port = parseInt(getEnvOrFail('PORT'))
 export const appId = getEnvOrFail('APP_ID')
 
