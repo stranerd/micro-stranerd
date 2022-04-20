@@ -16,11 +16,11 @@ services:
       - "/data/docker/mstranerd/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  auth:
+  api:
     build:
-      context: ./services/auth
+      context: ./services/api
       target: production
-    hostname: auth
+    hostname: api
     restart: always
     depends_on:
       - mongodb
@@ -28,34 +28,6 @@ services:
       - rabbitmq
     volumes:
       - '/data/docker/mstranerd/files/auth/:/app/public/'
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
-
-  stranerd:
-    build:
-      context: ./services/stranerd
-      target: production
-    hostname: stranerd
-    restart: always
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
-    volumes:
-      - '/data/docker/mstranerd/files/stranerd/:/app/public/'
-    command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
-
-  utils:
-    build:
-      context: ./services/utils
-      target: production
-    hostname: tasks
-    restart: always
-    depends_on:
-      - mongodb
-      - redis
-      - rabbitmq
-    volumes:
-      - '/data/docker/mstranerd/files/utils/:/app/public/'
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   mongodb:

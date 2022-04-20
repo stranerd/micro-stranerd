@@ -1,4 +1,4 @@
-APPS = auth stranerd utils
+APPS = api
 COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))

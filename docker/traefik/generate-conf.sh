@@ -25,45 +25,21 @@ http:
     stripRoutePrefix:
       stripPrefix:
         prefixes:
-          - "/auth"
-          - "/stranerd"
-          - "/utils"
+          - "/api"
   routers:
-    auth:
+    api:
       tls:
         certresolver: $CERT_TYPE
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/auth/\`)"
+      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/api/\`)"
       middlewares:
         - stripRoutePrefix
-      service: auth
-    stranerd:
-      tls:
-        certresolver: $CERT_TYPE
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/stranerd/\`)"
-      middlewares:
-        - stripRoutePrefix
-      service: stranerd
-    utils:
-      tls:
-        certresolver: $CERT_TYPE
-      rule: "Host(\`$BASE_DOMAIN\`) && PathPrefix(\`/utils/\`)"
-      middlewares:
-        - stripRoutePrefix
-      service: utils
+      service: api
 
   services:
-    auth:
+    api:
       loadBalancer:
         servers:
-          - url: http://auth:$PORT/
-    stranerd:
-      loadBalancer:
-        servers:
-          - url: http://stranerd:$PORT/
-    utils:
-      loadBalancer:
-        servers:
-          - url: http://utils:$PORT/
+          - url: http://api:$PORT/
 
 api:
   insecure: true
@@ -106,39 +82,19 @@ http:
     stripRoutePrefix:
       stripPrefix:
         prefixes:
-          - "/auth"
-          - "/stranerd"
-          - "/utils"
+          - "/api"
   routers:
-    auth:
-      rule: "PathPrefix(\`/auth/\`)"
+    api:
+      rule: "PathPrefix(\`/api/\`)"
       middlewares:
         - stripRoutePrefix
-      service: auth
-    stranerd:
-      rule: "PathPrefix(\`/stranerd/\`)"
-      middlewares:
-        - stripRoutePrefix
-      service: stranerd
-    utils:
-      rule: "PathPrefix(\`/utils/\`)"
-      middlewares:
-        - stripRoutePrefix
-      service: utils
+      service: api
 
   services:
-    auth:
+    api:
       loadBalancer:
         servers:
-          - url: http://auth:$PORT/
-    stranerd:
-      loadBalancer:
-        servers:
-          - url: http://stranerd:$PORT/
-    utils:
-      loadBalancer:
-        servers:
-          - url: http://utils:$PORT/
+          - url: http://api:$PORT/
 
 api:
   insecure: true
