@@ -1,5 +1,4 @@
-import { OnJoinFn } from '@utils/common/package'
-import { SupportedAuthRoles } from '@utils/common/types'
+import { OnJoinFn, SupportedAuthRoles } from '@utils/commons'
 import { FindClass } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 

@@ -1,5 +1,5 @@
 import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/commons'
-import { UserUpdateInput } from '@modules/domain/types'
+import { UserUpdateInput } from '../types'
 
 export class AuthUserEntity extends BaseEntity {
 	public readonly id: string

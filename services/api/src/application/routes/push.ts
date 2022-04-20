@@ -41,4 +41,4 @@ const unsubscribeDevice: Route = {
 	]
 }
 
-export const pushRoutes = [subscribeDevice, unsubscribeDevice]
+export const pushRoutes: Route[] = [subscribeDevice, unsubscribeDevice]

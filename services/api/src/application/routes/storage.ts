@@ -53,4 +53,4 @@ const uploadFiles: Route = {
 	]
 }
 
-export const storageRoutes = [uploadFile, uploadFiles]
+export const storageRoutes: Route[] = [uploadFile, uploadFiles]

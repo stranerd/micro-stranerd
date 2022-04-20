@@ -1,0 +1,37 @@
+import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+
+export class ReviewsController {
+	static async getReviews (req: Request) {
+		return await GetReviews.execute(req.query as QueryParams)
+	}
+
+	static async findReview (req: Request) {
+		return await FindReview.execute(req.params.id)
+	}
+
+	static async createReview (req: Request) {
+		const data = validate({
+			rating: req.body.rating,
+			review: req.body.review,
+			tutorId: req.body.tutorId
+		}, {
+			rating: {
+				required: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0), Validation.isLessThanX(5.1)]
+			},
+			review: { required: true, rules: [Validation.isString] },
+			tutorId: { required: true, rules: [Validation.isString] }
+		})
+
+		const user = await FindUser.execute(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+
+		return await CreateReview.execute({
+			...data,
+			userBio: user.bio,
+			userRoles: user.roles,
+			userId: user.id
+		})
+	}
+}
