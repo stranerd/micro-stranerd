@@ -2,6 +2,7 @@ import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { DiscussionEntity, DiscussionFromModel, FindGroup } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
+import { sendPushNotification } from '@utils/modules/push'
 
 export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFromModel, DiscussionEntity> = {
 	created: async ({ after }) => {
@@ -12,7 +13,7 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		if (!group) return
 		const users = group.getAllUsers().filter((userId) => userId !== after.userId)
 		const body = after.media ? 'Shared a file' : after.content
-		await publishers[EventTypes.PUSHNOTIFICATION].publish({
+		await sendPushNotification({
 			userIds: users,
 			title: group.name, body: `${after.userBio.firstName} ${after.userBio.lastName}: ${body}`,
 			data: {

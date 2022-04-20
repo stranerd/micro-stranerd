@@ -1,4 +1,12 @@
-import { AddAnswer, DeleteAnswer, FindAnswer, FindQuestion, GetAnswers, UpdateAnswer } from '@modules/questions'
+import {
+	AddAnswer,
+	CreateAnswerUpvote,
+	DeleteAnswer,
+	FindAnswer,
+	FindQuestion,
+	GetAnswers,
+	UpdateAnswer
+} from '@modules/questions'
 import { FindUser } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -65,5 +73,16 @@ export class AnswerController {
 		const isDeleted = await DeleteAnswer.execute({ id: req.params.id, userId: req.authUser!.id })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
+	}
+
+	static async VoteAnswer (req: Request) {
+		const vote = !!req.body.vote
+		const answer = await FindAnswer.execute(req.params.id)
+		if (!answer) throw new BadRequestError('answer not found')
+		return await CreateAnswerUpvote.execute({
+			answerId: req.params.id,
+			userId: req.authUser!.id,
+			vote: vote ? 1 : -1
+		})
 	}
 }
