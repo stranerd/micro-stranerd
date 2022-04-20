@@ -14,7 +14,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@google-cloud/storage": "^5.19.2",
-		"@stranerd/api-commons": "^3.4.0",
+		"@stranerd/api-commons": "^3.4.1",
 		"axios": "^0.26.1",
 		"bcryptjs": "^2.4.3",
 		"firebase-admin": "^10.0.2",

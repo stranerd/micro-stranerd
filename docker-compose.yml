@@ -12,8 +12,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "/data/docker/mstranerd/traefik/acmeStaging.json:/etc/traefik/acmeStaging.json"
-      - "/data/docker/mstranerd/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
+      - "/c/data/docker/mstranerd/traefik/acmeStaging.json:/etc/traefik/acmeStaging.json"
+      - "/c/data/docker/mstranerd/traefik/acmeProduction.json:/etc/traefik/acmeProduction.json"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   api:
@@ -27,15 +27,15 @@ services:
       - redis
       - rabbitmq
     volumes:
-      - '/data/docker/mstranerd/files/auth/:/app/public/'
+      - '/c/data/docker/mstranerd/files/auth/:/app/public/'
     command: 'sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn start'
 
   mongodb:
     image: mongo
     hostname: mongodb
     volumes:
-      - '/data/docker/mstranerd/mongo/db:/data/db'
-      - '/data/docker/mstranerd/mongo/configdb:/data/configdb'
+      - '/c/data/docker/mstranerd/mongo/db:/data/db'
+      - '/c/data/docker/mstranerd/mongo/configdb:/data/configdb'
     restart: always
     command: '--quiet --bind_ip_all --replSet rs0'
 

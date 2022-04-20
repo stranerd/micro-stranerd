@@ -3,7 +3,7 @@ COMMONS = commons
 ALL_FOLDERS = ${APPS} ${COMMONS}
 args = $(filter-out $@,$(MAKECMDGOALS))
 
-SETUP_FOLDER = /data/docker/mstranerd/traefik
+SETUP_FOLDER = /c/data/docker/mstranerd/traefik
 SETUP = mkdir -p $(SETUP_FOLDER) &&\
 	touch $(SETUP_FOLDER)/acmeStaging.json $(SETUP_FOLDER)/acmeProduction.json &&\
 	chmod 600 $(SETUP_FOLDER)/acme*.json
