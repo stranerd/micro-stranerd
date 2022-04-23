@@ -4,13 +4,22 @@ import { CustomError } from '../../errors'
 
 type HeaderKeys = 'AccessToken' | 'RefreshToken' | 'Referer' | 'ContentType' | 'UserAgent'
 
+const parseJSON = (body: Record<string, any>) => Object.fromEntries(Object.entries(body).map(([key, value]) => {
+	try {
+		return [key, JSON.parse(value)]
+	} catch {
+		return [key, value]
+	}
+}))
+
 export class Request {
 	readonly method: string
 	readonly path: string
 	readonly body: Record<string, any>
+	readonly rawBody: Record<string, any>
 	readonly params: Record<string, string>
 	readonly query: Record<string, string>
-	readonly headers: Record<HeaderKeys, any>
+	readonly headers: Record<HeaderKeys | string, any>
 	readonly files: Record<string, StorageFile[]>
 	authUser: null | AuthUser = null
 	refreshUser: null | RefreshUser = null
@@ -32,7 +41,8 @@ export class Request {
 	}) {
 		this.method = method
 		this.path = path
-		this.body = body
+		this.rawBody = body
+		this.body = parseJSON(body)
 		this.params = params
 		this.query = Object.fromEntries(
 			Object.entries(query ?? {})

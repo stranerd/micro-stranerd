@@ -41,7 +41,9 @@ export const makeErrorMiddleware = (cb: (_: CustomRequest, __: Error) => Promise
 }
 
 const extractRequest = (req: Request) => {
+	const allHeaders = Object.fromEntries(Object.entries(req.headers).map(([key, val]) => [key, val ?? null]))
 	const headers = {
+		...allHeaders,
 		AccessToken: req.get('Access-Token') ?? null,
 		RefreshToken: req.get('Refresh-Token') ?? null,
 		ContentType: req.get('Content-Type') ?? null,
