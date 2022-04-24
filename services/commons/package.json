@@ -1,6 +1,6 @@
 {
 	"name": "@stranerd/api-commons",
-	"version": "3.6.0",
+	"version": "3.7.0",
 	"private": false,
 	"description": "",
 	"main": "lib/index.js",
@@ -29,7 +29,7 @@
 		"typescript": "^4.6.3"
 	},
 	"dependencies": {
-		"@stranerd/validate": "^2.3.0",
+		"@stranerd/validate": "^2.4.0",
 		"amqplib": "^0.8.0",
 		"bcryptjs": "^2.4.3",
 		"bull": "^4.8.1",
