@@ -1,11 +1,11 @@
 {
 	"name": "@stranerd/api-commons",
-	"version": "3.7.0",
+	"version": "3.7.1",
 	"private": false,
 	"description": "",
 	"main": "lib/index.js",
 	"scripts": {
-		"build": "tsc --build",
+		"build": "tsc --build --force",
 		"lint": "eslint src/ --ext .ts,.js --fix",
 		"pub": "yarn lint && yarn build && yarn publish --access public"
 	},

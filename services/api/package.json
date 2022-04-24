@@ -5,7 +5,7 @@
 	"main": "lib/index.js",
 	"scripts": {
 		"start": "node lib/index.js",
-		"build": "tsc --build && resolve-tspaths",
+		"build": "tsc --build --force && resolve-tspaths",
 		"dev": "ts-node-dev -r tsconfig-paths/register --transpile-only src/index.ts",
 		"lint": "eslint src/ --ext .ts,.js --fix"
 	},
