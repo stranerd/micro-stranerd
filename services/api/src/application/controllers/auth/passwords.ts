@@ -1,7 +1,6 @@
 import { FindUser, FindUserByEmail, ResetPassword, SendPasswordResetMail, UpdatePassword } from '@modules/auth'
 import { generateAuthOutput } from '@utils/modules/auth'
-import { hashCompare } from '@utils/hash'
-import { BadRequestError, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { BadRequestError, Hash, Request, validate, Validation, ValidationError } from '@utils/commons'
 
 export class PasswordsController {
 	static async sendResetMail (req: Request) {
@@ -51,7 +50,7 @@ export class PasswordsController {
 		const user = await FindUser.execute(userId)
 		if (!user) throw new BadRequestError('No account with such id exists')
 
-		const match = await hashCompare(oldPassword, user.password)
+		const match = await Hash.compare(oldPassword, user.password)
 		if (!match) throw new ValidationError([{ messages: ['old password does not match'], field: 'oldPassword' }])
 
 		return await UpdatePassword.execute({ userId, password })

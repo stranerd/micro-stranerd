@@ -16,13 +16,11 @@
 		"@google-cloud/storage": "^5.19.2",
 		"@stranerd/api-commons": "^3.5.0",
 		"axios": "^0.26.1",
-		"bcryptjs": "^2.4.3",
 		"firebase-admin": "^10.0.2",
 		"nodemailer": "^6.7.3",
 		"stripe": "^8.217.0"
 	},
 	"devDependencies": {
-		"@types/bcryptjs": "^2.4.2",
 		"@types/node": "^17.0.24",
 		"@typescript-eslint/eslint-plugin": "^5.19.0",
 		"@typescript-eslint/parser": "^5.19.0",

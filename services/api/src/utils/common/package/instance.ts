@@ -25,6 +25,7 @@ type Settings = {
 	slowDownPeriodInMs: number
 	slowDownAfter: number
 	slowDownDelayInMs: number
+	hashSaltRounds: number
 }
 
 const setting: Settings = {
@@ -46,7 +47,8 @@ const setting: Settings = {
 	useSlowDown: false,
 	slowDownPeriodInMs: 10 * 60 * 1000,
 	slowDownAfter: 1000,
-	slowDownDelayInMs: 500
+	slowDownDelayInMs: 500,
+	hashSaltRounds: 10
 }
 
 export class Instance {
