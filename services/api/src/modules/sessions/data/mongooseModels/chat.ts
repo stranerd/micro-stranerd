@@ -16,7 +16,7 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 	content: {
 		type: String,
 		required: false,
-		default: null as unknown as string
+		default: ''
 	},
 	media: {
 		type: mongoose.Schema.Types.Mixed,

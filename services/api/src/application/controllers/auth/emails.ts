@@ -8,6 +8,7 @@ import {
 } from '@modules/auth'
 import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/commons'
 import { generateAuthOutput } from '@utils/modules/auth'
+import { UploadFile } from '@modules/storage'
 
 export class EmailsController {
 	static async signup (req: Request) {
@@ -16,8 +17,8 @@ export class EmailsController {
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			password: req.body.password,
-			photo: req.body.photo,
-			coverPhoto: req.body.coverPhoto,
+			photo: req.files.photo?.[0] ?? null,
+			coverPhoto: req.files.coverPhoto?.[0] ?? null,
 			referrer: req.body.referrer,
 			description: req.body.description
 		}
@@ -31,7 +32,11 @@ export class EmailsController {
 			return Validation.isInvalid('email already in use')
 		}
 
-		const validateData = validate(userCredential, {
+		const {
+			email, firstName, lastName,
+			password, description, referrer,
+			photo: userPhoto, coverPhoto: userCoverPhoto
+		} = validate(userCredential, {
 			email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
 			password: {
 				required: true,
@@ -41,12 +46,17 @@ export class EmailsController {
 				required: true,
 				rules: [Validation.isString]
 			},
-			photo: { required: false, rules: [Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isImage] },
+			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			referrer: { required: false, rules: [Validation.isString] }
 		})
+		const photo = userPhoto ? await UploadFile.call('profiles/photos', userPhoto) : null
+		const coverPhoto = userCoverPhoto ? await UploadFile.call('profiles/coverPhotos', userCoverPhoto) : null
+		const validateData = {
+			firstName, lastName, email, password, photo, coverPhoto, description, referrer
+		}
 
 		const updatedUser = user
 			? await UpdateUserDetails.execute({ userId: user.id, data: validateData })

@@ -1,6 +1,7 @@
 import { EmailsList, getEnvOrFail } from '@utils/commons'
 
-export const baseDomain = getEnvOrFail('BASE_DOMAIN')
+const useSSL = parseInt(getEnvOrFail('USE_SSL'))
+export const baseDomain = `http${useSSL ? 's' : ''}://` + getEnvOrFail('BASE_DOMAIN')
 export const port = parseInt(getEnvOrFail('PORT'))
 export const appId = getEnvOrFail('APP_ID')
 

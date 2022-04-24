@@ -2,6 +2,7 @@ import { FindUser, FindUserByEmail, UpdateUserProfile, UpdateUserRole } from '@m
 import { NotFoundError, Request, SupportedAuthRoles, validate, Validation, verifyAccessToken } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
+import { UploadFile } from '@modules/storage'
 
 const roles = Object.values<string>(SupportedAuthRoles).filter((key) => key !== SupportedAuthRoles.isSuperAdmin)
 
@@ -13,21 +14,33 @@ export class UserController {
 
 	static async updateUser (req: Request) {
 		const userId = req.authUser!.id
-		const validateData = validate({
+		const uploadedPhoto = req.files.photo?.[0]
+		const uploadedCoverPhoto = req.files.coverPhoto?.[0]
+		const changedPhoto = !!uploadedPhoto || req.body.photo === null
+		const changedCoverPhoto = !!uploadedCoverPhoto || req.body.coverPhoto === null
+		const data = validate({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			description: req.body.description,
-			photo: req.body.photo,
-			coverPhoto: req.body.coverPhoto
+			photo: uploadedPhoto as any,
+			coverPhoto: uploadedCoverPhoto as any
 		}, {
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			photo: { required: false, rules: [Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
+		const { firstName, lastName, description } = data
+		if (uploadedPhoto) data.photo = await UploadFile.call('profiles/photos', uploadedPhoto)
+		if (uploadedCoverPhoto) data.coverPhoto = await UploadFile.call('profiles/coverPhotos', uploadedCoverPhoto)
+		const validateData = {
+			firstName, lastName, description,
+			...(changedPhoto ? { photo: data.photo } : {}),
+			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
+		}
 
-		return await UpdateUserProfile.execute({ userId, data: validateData })
+		return await UpdateUserProfile.execute({ userId, data: validateData as any })
 	}
 
 	static async updateUserRole (req: Request) {

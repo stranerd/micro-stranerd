@@ -1,6 +1,7 @@
 import { AddDiscussion, FindDiscussion, FindGroup, GetDiscussions } from '@modules/classes'
 import { FindUser } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { UploadFile } from '@modules/storage'
 
 export class DiscussionController {
 	static async FindDiscussion (req: Request) {
@@ -16,13 +17,13 @@ export class DiscussionController {
 	static async CreateDiscussion (req: Request) {
 		const data = validate({
 			content: req.body.content,
-			media: req.body.media,
+			media: req.files.media?.[0] ?? null,
 			groupId: req.body.groupId
 		}, {
 			content: { required: true, rules: [Validation.isString] },
 			media: {
 				required: false,
-				rules: [Validation.isRequiredIfX(!req.body.content), Validation.isFile]
+				rules: [Validation.isNotTruncated, Validation.isFile]
 			},
 			groupId: { required: true, rules: [Validation.isString] }
 		})
@@ -33,9 +34,10 @@ export class DiscussionController {
 		if (!group.getAllUsers().includes(userId)) throw new BadRequestError('not a group member')
 		const user = await FindUser.execute(userId)
 		if (!user) throw new BadRequestError('user not found')
+		const media = data.media ? await UploadFile.call('classes/discussions', data.media) : null
 
 		return await AddDiscussion.execute({
-			...data,
+			...data, media,
 			links: Validation.extractUrls(data.content),
 			classId: group.classId,
 			userBio: user.bio,

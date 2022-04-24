@@ -13,6 +13,7 @@ import {
 import { FindUser } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
+import { UploadFile } from '@modules/storage'
 
 export class ClassController {
 	static async FindClass (req: Request) {
@@ -26,21 +27,32 @@ export class ClassController {
 
 	static async UpdateClass (req: Request) {
 		const authUserId = req.authUser!.id
-		const { name, description, photo, coverPhoto } = validate({
+		const uploadedPhoto = req.files.photo?.[0]
+		const uploadedCoverPhoto = req.files.coverPhoto?.[0]
+		const changedPhoto = !!uploadedPhoto || req.body.photo === null
+		const changedCoverPhoto = !!uploadedCoverPhoto || req.body.coverPhoto === null
+		const data = validate({
 			name: req.body.name,
 			description: req.body.description,
-			photo: req.body.photo,
-			coverPhoto: req.body.coverPhoto
+			photo: uploadedPhoto as any,
+			coverPhoto: uploadedCoverPhoto as any
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			photo: { required: false, rules: [Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isImage] }
+			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 
-		const data = { name, description, photo, coverPhoto }
+		const { name, description } = data
+		if (uploadedPhoto) data.photo = await UploadFile.call('classes/photos', uploadedPhoto)
+		if (uploadedCoverPhoto) data.coverPhoto = await UploadFile.call('classes/coverPhotos', uploadedCoverPhoto)
+		const validateData = {
+			name, description,
+			...(changedPhoto ? { photo: data.photo } : {}),
+			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
+		}
 
-		const updatedClass = await UpdateClass.execute({ id: req.params.id, userId: authUserId, data })
+		const updatedClass = await UpdateClass.execute({ id: req.params.id, userId: authUserId, data: validateData })
 
 		if (updatedClass) return updatedClass
 		throw new NotAuthorizedError()
@@ -51,17 +63,20 @@ export class ClassController {
 		const user = await FindUser.execute(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { name, description, photo, coverPhoto } = validate({
+		const { name, description, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
 			name: req.body.name,
 			description: req.body.description,
-			photo: req.body.photo,
-			coverPhoto: req.body.coverPhoto
+			photo: req.files.photo?.[0] ?? null,
+			coverPhoto: req.files.coverPhoto?.[0] ?? null
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			photo: { required: false, rules: [Validation.isImage] },
 			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
+
+		const photo = classPhoto ? await UploadFile.call('classes/photos', classPhoto) : null
+		const coverPhoto = classCoverPhoto ? await UploadFile.call('classes/coverPhotos', classCoverPhoto) : null
 
 		const data = {
 			name, description, photo, coverPhoto,

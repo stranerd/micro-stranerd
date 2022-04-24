@@ -4,7 +4,7 @@ import { BaseEntity } from '@utils/commons'
 export class ChatEntity extends BaseEntity {
 	public readonly id: string
 	public readonly path: [string, string]
-	public readonly content: string | null
+	public readonly content: string
 	public readonly media: Media | null
 	public readonly sessionId: string | null
 	public readonly createdAt: number
@@ -31,7 +31,7 @@ export class ChatEntity extends BaseEntity {
 type ChatConstructorArgs = {
 	id: string,
 	path: [string, string],
-	content: string | null,
+	content: string,
 	media: Media | null,
 	createdAt: number
 	updatedAt: number
