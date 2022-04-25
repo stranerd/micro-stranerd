@@ -20,12 +20,4 @@ export class ChatMapper extends BaseMapper<ChatFromModel, ChatToModel, ChatEntit
 			sessionId: entity.sessionId
 		}
 	}
-
-	mapForMeta (model: ChatFromModel): ChatFromModel {
-		const { _id, path, content, media, sessionId, readAt, createdAt, updatedAt } = model
-		return {
-			_id: _id.toString(),
-			path, content, media, sessionId, readAt, createdAt, updatedAt
-		}
-	}
 }

@@ -3,19 +3,6 @@ import { UsersController } from '../../controllers/users/users'
 
 export const usersRoutes: Route[] = [
 	{
-		path: '/users/users/streak',
-		method: 'post',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await UsersController.updateStreak(req)
-				}
-			})
-		]
-	},
-	{
 		path: '/users/users/school',
 		method: 'put',
 		controllers: [

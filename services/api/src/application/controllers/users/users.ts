@@ -1,4 +1,4 @@
-import { FindUser, GetUsers, UpdateUserSchoolData, UpdateUserStreak, UserSchoolType } from '@modules/users'
+import { FindUser, GetUsers, UpdateUserSchoolData, UserSchoolType } from '@modules/users'
 import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindDepartment, GetCourses } from '@modules/school'
 
@@ -10,10 +10,6 @@ export class UsersController {
 
 	static async findUser (req: Request) {
 		return await FindUser.execute(req.params.id)
-	}
-
-	static async updateStreak (req: Request) {
-		return await UpdateUserStreak.execute(req.authUser!.id)
 	}
 
 	static async updateSchool (req: Request) {

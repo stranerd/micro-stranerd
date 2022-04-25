@@ -2,7 +2,7 @@ import { appInstance, getNewServerInstance } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
-import { ResetAllUsersStatus, UpdateUserStatus } from '@modules/users'
+import { ResetAllUsersStatus, UpdateUserStatus, UpdateUserStreak } from '@modules/users'
 import { registerSockets } from '@utils/sockets'
 
 const app = getNewServerInstance(routes, {
@@ -10,6 +10,7 @@ const app = getNewServerInstance(routes, {
 		await UpdateUserStatus.execute({
 			userId, socketId, add: true
 		})
+		await UpdateUserStreak.execute(userId)
 	},
 	onDisconnect: async (userId, socketId) => {
 		await UpdateUserStatus.execute({
