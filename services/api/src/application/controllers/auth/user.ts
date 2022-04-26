@@ -1,4 +1,4 @@
-import { FindUser, FindUserByEmail, UpdateUserProfile, UpdateUserRole } from '@modules/auth'
+import { AuthUsersUseCases } from '@modules/auth'
 import { NotFoundError, Request, SupportedAuthRoles, validate, Validation, verifyAccessToken } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
@@ -9,7 +9,7 @@ const roles = Object.values<string>(SupportedAuthRoles).filter((key) => key !== 
 export class UserController {
 	static async findUser (req: Request) {
 		const userId = req.authUser!.id
-		return await FindUser.execute(userId)
+		return await AuthUsersUseCases.findUser(userId)
 	}
 
 	static async updateUser (req: Request) {
@@ -40,7 +40,7 @@ export class UserController {
 			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
 		}
 
-		return await UpdateUserProfile.execute({ userId, data: validateData as any })
+		return await AuthUsersUseCases.updateUserProfile({ userId, data: validateData as any })
 	}
 
 	static async updateUserRole (req: Request) {
@@ -57,7 +57,7 @@ export class UserController {
 			userId: { required: true, rules: [Validation.isString] }
 		})
 
-		return await UpdateUserRole.execute({
+		return await AuthUsersUseCases.updateUserRole({
 			userId, roles: { [role]: value }
 		})
 	}
@@ -68,13 +68,13 @@ export class UserController {
 	}
 
 	static async superAdmin (_: Request) {
-		const user = await FindUserByEmail.execute(superAdminEmail)
+		const user = await AuthUsersUseCases.findUserByEmail(superAdminEmail)
 		if (!user) throw new NotFoundError()
-		return await UpdateUserRole.execute({
+		return await AuthUsersUseCases.updateUserRole({
 			userId: user.id,
 			roles: {
 				[SupportedAuthRoles.isStranerdAdmin]: true,
-				isSuperAdmin: true
+				[SupportedAuthRoles.isSuperAdmin]: true
 			}
 		})
 	}
