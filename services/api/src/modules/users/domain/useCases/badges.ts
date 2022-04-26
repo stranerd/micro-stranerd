@@ -1,6 +1,7 @@
 import { IBadgeRepository } from '../i-repositories/badges'
 import { QueryParams } from '@utils/commons'
-import { CountStreakBadges, RankTypes } from '@modules/users'
+import { CountStreakBadges } from '../types/badges'
+import { RankTypes } from '../entities/ranks'
 
 export class BadgesUseCase {
 	repository: IBadgeRepository

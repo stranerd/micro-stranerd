@@ -1,23 +1,15 @@
-import {
-	AddAnswer,
-	CreateAnswerUpvote,
-	DeleteAnswer,
-	FindAnswer,
-	FindQuestion,
-	GetAnswers,
-	UpdateAnswer
-} from '@modules/questions'
+import { AnswersUseCases, AnswerUpvotesUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class AnswerController {
 	static async FindAnswer (req: Request) {
-		return await FindAnswer.execute(req.params.id)
+		return await AnswersUseCases.find(req.params.id)
 	}
 
 	static async GetAnswers (req: Request) {
 		const query = req.query as QueryParams
-		return await GetAnswers.execute(query)
+		return await AnswersUseCases.get(query)
 	}
 
 	static async UpdateAnswer (req: Request) {
@@ -35,7 +27,7 @@ export class AnswerController {
 		})
 
 		const authUserId = req.authUser!.id
-		const updatedAnswer = await UpdateAnswer.execute({ id: req.params.id, userId: authUserId, data })
+		const updatedAnswer = await AnswersUseCases.update({ id: req.params.id, userId: authUserId, data })
 
 		if (updatedAnswer) return updatedAnswer
 		throw new NotAuthorizedError()
@@ -57,11 +49,12 @@ export class AnswerController {
 			}
 		})
 
-		const question = await FindQuestion.execute(req.body.questionId)
+		const question = await QuestionsUseCases.find(req.body.questionId)
 		if (!question) throw new BadRequestError('question not found')
+		if (question.isAnswered) throw new BadRequestError('question already answered')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AddAnswer.execute({
+		return await AnswersUseCases.add({
 			...data,
 			userBio: user.bio,
 			userRoles: user.roles,
@@ -70,16 +63,16 @@ export class AnswerController {
 	}
 
 	static async DeleteAnswer (req: Request) {
-		const isDeleted = await DeleteAnswer.execute({ id: req.params.id, userId: req.authUser!.id })
+		const isDeleted = await AnswersUseCases.delete({ id: req.params.id, userId: req.authUser!.id })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
 
 	static async VoteAnswer (req: Request) {
 		const vote = !!req.body.vote
-		const answer = await FindAnswer.execute(req.params.id)
+		const answer = await AnswersUseCases.find(req.params.id)
 		if (!answer) throw new BadRequestError('answer not found')
-		return await CreateAnswerUpvote.execute({
+		return await AnswerUpvotesUseCases.add({
 			answerId: req.params.id,
 			userId: req.authUser!.id,
 			vote: vote ? 1 : -1

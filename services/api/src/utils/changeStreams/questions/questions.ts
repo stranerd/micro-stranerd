@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { DeleteQuestionAnswers, QuestionEntity, QuestionFromModel } from '@modules/questions'
+import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
@@ -37,7 +37,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitDeleted('questions/questions', before)
 		await getSocketEmitter().emitDeleted(`questions/questions/${before.id}`, before)
 
-		await DeleteQuestionAnswers.execute(before.id)
+		await AnswersUseCases.deleteQuestionAnswers(before.id)
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.userId,

@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer } from '@modules/questions'
+import { AnswerCommentEntity, AnswerCommentFromModel, AnswersUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -15,7 +15,7 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 			amount: ScoreRewards.NewComment
 		})
 
-		const answer = await FindAnswer.execute(after.answerId)
+		const answer = await AnswersUseCases.find(after.answerId)
 		if (answer && answer.userId !== after.userId) await sendNotification(answer.userId, {
 			title: 'New comment to your answer',
 			body: 'Your answer has a new comment. Go have a look',

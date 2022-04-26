@@ -1,6 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
-import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
+import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UpdateChatMetasUserBio, UpdateSessionsUserBio } from '@modules/sessions'
 import {
 	AddSet,
@@ -38,7 +38,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
-			UpdateQuestionsUserBio.execute, UpdateAnswersUserBio.execute, UpdateAnswerCommentsUserBio.execute,
+			QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
 			UpdateChatMetasUserBio.execute, UpdateSessionsUserBio.execute, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
 			UpdateVideosUserBio.execute, UpdateCommentsUserBio.execute, UpdateNotesUserBio.execute, UpdateFlashCardsUserBio.execute, UpdateSetsUserBio.execute,
 			UpdateClassesUserBio.execute, UpdateAnnouncementsUserBio.execute, UpdateGroupsUserBio.execute, UpdateDiscussionsUserBio.execute

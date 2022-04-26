@@ -1,4 +1,4 @@
-import { FindAnswer, FindQuestion } from '@modules/questions'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ReportData, ReportsUseCases, ReportType } from '@modules/reports'
 import { UsersUseCases } from '@modules/users'
 import { FindPastQuestion } from '@modules/school'
@@ -47,7 +47,7 @@ export class ReportController {
 		}
 
 		if (type == ReportType.questions) {
-			const question = await FindQuestion.execute(reportedId)
+			const question = await QuestionsUseCases.find(reportedId)
 			if (!question) throw new BadRequestError('question not found')
 			reportedData = {
 				type: ReportType.questions,
@@ -56,7 +56,7 @@ export class ReportController {
 		}
 
 		if (type == ReportType.answers) {
-			const answer = await FindAnswer.execute(reportedId)
+			const answer = await AnswersUseCases.find(reportedId)
 			if (!answer) throw new BadRequestError('answer not found')
 			reportedData = {
 				type: ReportType.answers,

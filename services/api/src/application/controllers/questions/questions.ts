@@ -1,24 +1,16 @@
-import {
-	AddQuestion,
-	DeleteQuestion,
-	FindQuestion,
-	GetQuestions,
-	QuestionType,
-	UpdateBestAnswer,
-	UpdateQuestion
-} from '@modules/questions'
+import { QuestionsUseCases, QuestionType } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassEntity, FindClass } from '@modules/classes'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
-		return await FindQuestion.execute(req.params.id)
+		return await QuestionsUseCases.find(req.params.id)
 	}
 
 	static async GetQuestion (req: Request) {
 		const query = req.query as QueryParams
-		return await GetQuestions.execute(query)
+		return await QuestionsUseCases.get(query)
 	}
 
 	static async UpdateQuestion (req: Request) {
@@ -39,7 +31,7 @@ export class QuestionController {
 
 		const data = { body, subject, attachments }
 
-		const updatedQuestion = await UpdateQuestion.execute({ id: req.params.id, userId: authUserId, data })
+		const updatedQuestion = await QuestionsUseCases.update({ id: req.params.id, userId: authUserId, data })
 
 		if (updatedQuestion) return updatedQuestion
 		throw new NotAuthorizedError()
@@ -86,7 +78,7 @@ export class QuestionController {
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
 
-		return await AddQuestion.execute(data)
+		return await QuestionsUseCases.add(data)
 	}
 
 	static async MarkBestAnswer (req: Request) {
@@ -98,13 +90,13 @@ export class QuestionController {
 			answerId: { required: true, rules: [Validation.isString] }
 		})
 
-		const question = await FindQuestion.execute(req.params.id)
+		const question = await QuestionsUseCases.find(req.params.id)
 		if (!question) throw new BadRequestError('question not found')
 		if (question.userId !== authUserId) throw new NotAuthorizedError()
 		if (question.isAnswered) throw new BadRequestError('question is already answered')
 		if (question.bestAnswers.find((a) => a === answerId)) throw new BadRequestError('answer is already marked best answer')
 
-		return await UpdateBestAnswer.execute({
+		return await QuestionsUseCases.updateBestAnswer({
 			id: question.id,
 			answerId,
 			userId: authUserId,
@@ -114,7 +106,7 @@ export class QuestionController {
 
 	static async DeleteQuestion (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteQuestion.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await QuestionsUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

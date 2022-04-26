@@ -1,12 +1,10 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import {
+	AnswerCommentsUseCases,
 	AnswerEntity,
 	AnswerFromModel,
-	DeleteAnswerComments,
-	DeleteAnswerVotes,
-	FindQuestion,
-	UpdateBestAnswer,
-	UpdateQuestionsAnswers
+	AnswerUpvotesUseCases,
+	QuestionsUseCases
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
@@ -19,7 +17,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitCreated(`questions/answers/${after.id}`, after)
 
 		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.answers })
-		await UpdateQuestionsAnswers.execute({
+		await QuestionsUseCases.updateAnswers({
 			questionId: after.questionId,
 			answerId: after.id,
 			userId: after.userId,
@@ -31,7 +29,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			amount: ScoreRewards.NewAnswer
 		})
 
-		const question = await FindQuestion.execute(after.questionId)
+		const question = await QuestionsUseCases.find(after.questionId)
 		if (question) {
 			await sendNotification(question.userId, {
 				title: 'New Answer',
@@ -52,7 +50,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitUpdated(`questions/answers/${after.id}`, after)
 
 		if (changes.best) {
-			const question = await FindQuestion.execute(after.questionId)
+			const question = await QuestionsUseCases.find(after.questionId)
 			await UsersUseCases.updateNerdScore({
 				userId: after.userId,
 				amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
@@ -75,9 +73,9 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 
 		if (!after.best && changes.votes && after.totalVotes >= 20) {
-			const question = await FindQuestion.execute(after.questionId)
+			const question = await QuestionsUseCases.find(after.questionId)
 			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
-			if (markBest) await UpdateBestAnswer.execute({
+			if (markBest) await QuestionsUseCases.updateBestAnswer({
 				id: question!.id,
 				answerId: after.id,
 				userId: question!.userId,
@@ -102,7 +100,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.answers })
-		await UpdateQuestionsAnswers.execute({
+		await QuestionsUseCases.updateAnswers({
 			questionId: before.questionId,
 			answerId: before.id,
 			userId: before.userId,
@@ -110,8 +108,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		await Promise.all([
-			DeleteAnswerComments.execute(before.id),
-			DeleteAnswerVotes.execute(before.id)
+			AnswerCommentsUseCases.deleteAnswerComments(before.id),
+			AnswerUpvotesUseCases.deleteAnswerVotes(before.id)
 		])
 
 		await Promise.all(
@@ -130,8 +128,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				amount: -ScoreRewards.BestAnswer
 			})
 			await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.bestAnswers })
-			const question = await FindQuestion.execute(before.questionId)
-			if (question) await UpdateBestAnswer.execute({
+			const question = await QuestionsUseCases.find(before.questionId)
+			if (question) await QuestionsUseCases.updateBestAnswer({
 				id: question.id,
 				userId: question.userId,
 				answerId: before.id,

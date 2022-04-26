@@ -4,7 +4,7 @@ import { DiscussionFromModel, DiscussionToModel } from '../models/discussions'
 import { Discussion } from '../mongooseModels/discussions'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
 import { UserBio, UserRoles } from '../../domain/types'
-import { Group } from '@modules/classes/data/mongooseModels/groups'
+import { Group } from '../mongooseModels/groups'
 
 export class DiscussionRepository implements IDiscussionRepository {
 	private static instance: DiscussionRepository

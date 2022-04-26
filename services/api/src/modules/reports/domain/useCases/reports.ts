@@ -1,7 +1,7 @@
 import { ReportToModel } from '../../data/models/reports'
 import { IReportRepository } from '../irepositories/reports'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { UserBio, UserRoles } from '../types'
 
 export class ReportsUseCase {
 	repository: IReportRepository
