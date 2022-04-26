@@ -1,5 +1,5 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
-import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
+import { ReportData, ReportsUseCases, ReportType } from '@modules/reports'
 import { UsersUseCases } from '@modules/users'
 import { FindPastQuestion } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
@@ -7,15 +7,15 @@ import { BadRequestError, QueryParams, Request, validate, Validation } from '@ut
 export class ReportController {
 	static async GetReports (req: Request) {
 		const query = req.query as QueryParams
-		return await GetReports.execute(query)
+		return await ReportsUseCases.get(query)
 	}
 
 	static async FindReport (req: Request) {
-		return await FindReport.execute(req.params.id)
+		return await ReportsUseCases.find(req.params.id)
 	}
 
 	static async DeleteReport (req: Request) {
-		return await DeleteReport.execute(req.params.id)
+		return await ReportsUseCases.delete(req.params.id)
 	}
 
 	static async CreateReport (req: Request) {
@@ -83,7 +83,7 @@ export class ReportController {
 
 		if (!reportedData) throw new BadRequestError('invalid report data')
 
-		return await CreateReport.execute({
+		return await ReportsUseCases.create({
 			message, reportedId, data: reportedData,
 			reporterId: reporter.id,
 			reporterBio: reporter.bio,

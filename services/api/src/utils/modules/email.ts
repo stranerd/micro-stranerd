@@ -2,7 +2,7 @@ import { createTransport } from 'nodemailer'
 import path from 'path'
 import { emails, isDev } from '@utils/environment'
 import { appInstance, EmailsList, TypedEmail } from '@utils/commons'
-import { AddError } from '@modules/emails'
+import { EmailErrorsUseCases } from '@modules/emails'
 
 export const sendMail = async (email: TypedEmail) => {
 	const { to, subject, content, from = EmailsList.NO_REPLY } = email
@@ -45,7 +45,7 @@ export const sendMailAndCatchError = async (email: TypedEmail) => {
 		if (isDev) await appInstance.logger.info(email.to, email.content)
 		await sendMail(email)
 	} catch (e) {
-		await AddError.execute({
+		await EmailErrorsUseCases.add({
 			...email,
 			error: (e as Error).message
 		})

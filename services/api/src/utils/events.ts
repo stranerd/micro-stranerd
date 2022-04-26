@@ -5,7 +5,7 @@ import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { UpdateTest } from '@modules/study'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
-import { GetAndDeleteAllErrors } from '@modules/emails'
+import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { UploaderUseCases } from '@modules/storage'
 
@@ -54,7 +54,7 @@ export const subscribers = {
 		if (type === CronTypes.monthly) await UsersUseCases.resetRankings(UserRankings.monthly)
 		if (type === CronTypes.halfHourly) await appInstance.job.retryAllFailedJobs()
 		if (type === CronTypes.hourly) {
-			const errors = await GetAndDeleteAllErrors.execute()
+			const errors = await EmailErrorsUseCases.getAndDeleteAll()
 			await Promise.all(
 				errors.map(async (error) => {
 					await sendMailAndCatchError(error)

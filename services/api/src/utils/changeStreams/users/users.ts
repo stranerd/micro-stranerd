@@ -11,7 +11,7 @@ import {
 	UpdateSetsUserBio,
 	UpdateVideosUserBio
 } from '@modules/study'
-import { UpdateReportsUserBio } from '@modules/reports'
+import { ReportsUseCases } from '@modules/reports'
 import {
 	UpdateAnnouncementsUserBio,
 	UpdateClassesUserBio,
@@ -39,7 +39,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			UpdateQuestionsUserBio.execute, UpdateAnswersUserBio.execute, UpdateAnswerCommentsUserBio.execute,
-			UpdateChatMetasUserBio.execute, UpdateSessionsUserBio.execute, UpdateReportsUserBio.execute, ReviewsUseCases.updateUserBio,
+			UpdateChatMetasUserBio.execute, UpdateSessionsUserBio.execute, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
 			UpdateVideosUserBio.execute, UpdateCommentsUserBio.execute, UpdateNotesUserBio.execute, UpdateFlashCardsUserBio.execute, UpdateSetsUserBio.execute,
 			UpdateClassesUserBio.execute, UpdateAnnouncementsUserBio.execute, UpdateGroupsUserBio.execute, UpdateDiscussionsUserBio.execute
 		].map(async (useCase) => await useCase({
