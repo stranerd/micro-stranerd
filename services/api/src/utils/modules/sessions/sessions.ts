@@ -1,9 +1,9 @@
 import { MarkSessionDone, SessionEntity, UpdateTaskIdsAndTimes } from '@modules/sessions'
 import { appInstance, DelayedJobs } from '@utils/commons'
-import { SetUsersCurrentSession } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 
 export const startSession = async (session: SessionEntity) => {
-	await SetUsersCurrentSession.execute({
+	await UsersUseCases.setCurrentSession({
 		studentId: session.studentId,
 		tutorId: session.tutorId,
 		sessionId: session.id,

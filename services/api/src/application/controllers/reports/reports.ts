@@ -1,6 +1,6 @@
 import { FindAnswer, FindQuestion } from '@modules/questions'
 import { CreateReport, DeleteReport, FindReport, GetReports, ReportData, ReportType } from '@modules/reports'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { FindPastQuestion } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -34,11 +34,11 @@ export class ReportController {
 
 		let reportedData: ReportData | null = null
 
-		const reporter = await FindUser.execute(req.authUser!.id)
+		const reporter = await UsersUseCases.find(req.authUser!.id)
 		if (!reporter) throw new BadRequestError('reporter not found')
 
 		if (type == ReportType.users) {
-			const user = await FindUser.execute(reportedId)
+			const user = await UsersUseCases.find(reportedId)
 			if (!user) throw new BadRequestError('user not found')
 			reportedData = {
 				type: ReportType.users,

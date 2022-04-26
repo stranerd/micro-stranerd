@@ -3,7 +3,7 @@ import { TestEntity, TestFromModel, TestType, UpdateTest, UpdateTestTaskIds } fr
 import { GetPastQuestions, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
-import { ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { ScoreRewards, UsersUseCases } from '@modules/users'
 
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
@@ -24,7 +24,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		await getSocketEmitter().emitUpdated(`study/tests/${after.id}/${after.userId}`, after)
 
 		if (changes.done && !before.done && after.done) {
-			if (after.data.type === TestType.timed) await UpdateUserNerdScore.execute({
+			if (after.data.type === TestType.timed) await UsersUseCases.updateNerdScore({
 				userId: after.userId,
 				amount: ScoreRewards.CompleteTest
 			})

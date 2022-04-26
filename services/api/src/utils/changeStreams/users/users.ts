@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { RecordRank, UpdateReviewsUserBio, UserEntity, UserFromModel } from '@modules/users'
+import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { UpdateAnswerCommentsUserBio, UpdateAnswersUserBio, UpdateQuestionsUserBio } from '@modules/questions'
 import { UpdateChatMetasUserBio, UpdateSessionsUserBio } from '@modules/sessions'
 import {
@@ -38,11 +38,11 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
-			UpdateQuestionsUserBio, UpdateAnswersUserBio, UpdateAnswerCommentsUserBio,
-			UpdateChatMetasUserBio, UpdateSessionsUserBio, UpdateReviewsUserBio, UpdateReportsUserBio,
-			UpdateVideosUserBio, UpdateCommentsUserBio, UpdateNotesUserBio, UpdateFlashCardsUserBio, UpdateSetsUserBio,
-			UpdateClassesUserBio, UpdateAnnouncementsUserBio, UpdateGroupsUserBio, UpdateDiscussionsUserBio
-		].map(async (useCase) => await useCase.execute({
+			UpdateQuestionsUserBio.execute, UpdateAnswersUserBio.execute, UpdateAnswerCommentsUserBio.execute,
+			UpdateChatMetasUserBio.execute, UpdateSessionsUserBio.execute, UpdateReportsUserBio.execute, ReviewsUseCases.updateUserBio,
+			UpdateVideosUserBio.execute, UpdateCommentsUserBio.execute, UpdateNotesUserBio.execute, UpdateFlashCardsUserBio.execute, UpdateSetsUserBio.execute,
+			UpdateClassesUserBio.execute, UpdateAnnouncementsUserBio.execute, UpdateGroupsUserBio.execute, UpdateDiscussionsUserBio.execute
+		].map(async (useCase) => await useCase({
 			userId: after.id,
 			userBio: after.bio,
 			userRoles: after.roles
@@ -58,7 +58,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 					action: 'account',
 					data: { profile: true }
 				})
-				await RecordRank.execute({
+				await BadgesUseCases.recordRank({
 					userId: after.id,
 					rank: after.rank.id,
 					add: true
@@ -70,12 +70,12 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 					action: 'account',
 					data: { profile: true }
 				})
-				await RecordRank.execute({
+				await BadgesUseCases.recordRank({
 					userId: after.id,
 					rank: before.rank.id,
 					add: false
 				})
-				await RecordRank.execute({
+				await BadgesUseCases.recordRank({
 					userId: after.id,
 					rank: after.rank.id,
 					add: true

@@ -2,7 +2,7 @@ import { AuthUsersUseCases } from '@modules/auth'
 import { NotFoundError, Request, SupportedAuthRoles, validate, Validation, verifyAccessToken } from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 const roles = Object.values<string>(SupportedAuthRoles).filter((key) => key !== SupportedAuthRoles.isSuperAdmin)
 
@@ -32,8 +32,8 @@ export class UserController {
 			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 		const { firstName, lastName, description } = data
-		if (uploadedPhoto) data.photo = await UploadFile.call('profiles/photos', uploadedPhoto)
-		if (uploadedCoverPhoto) data.coverPhoto = await UploadFile.call('profiles/coverPhotos', uploadedCoverPhoto)
+		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
+		if (uploadedCoverPhoto) data.coverPhoto = await UploaderUseCases.upload('profiles/coverPhotos', uploadedCoverPhoto)
 		const validateData = {
 			firstName, lastName, description,
 			...(changedPhoto ? { photo: data.photo } : {}),

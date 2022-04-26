@@ -1,4 +1,4 @@
-import { CreateNotification, FindUser, NotificationToModel } from '@modules/users'
+import { UsersUseCases, NotificationsUseCases, NotificationToModel } from '@modules/users'
 import { publishers } from '@utils/events'
 import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain } from '@utils/environment'
@@ -19,9 +19,9 @@ type NotificationData =
 	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData | ClassesData)
 
 export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
-	await CreateNotification.execute([{ ...data, userId }])
+	await NotificationsUseCases.create([{ ...data, userId }])
 	if (asEmail) {
-		const user = await FindUser.execute(userId)
+		const user = await UsersUseCases.find(userId)
 		if (user) {
 			const content = await readEmailFromPug('emails/newNotification.pug', {
 				notification: data,
@@ -41,5 +41,5 @@ export const sendNotification = async (userId: string, data: NotificationData & 
 }
 
 export const broadcastNotifications = async (userIds: string[], data: NotificationData & { title: string }) => {
-	await CreateNotification.execute(userIds.map((userId) => ({ ...data, userId })))
+	await NotificationsUseCases.create(userIds.map((userId) => ({ ...data, userId })))
 }

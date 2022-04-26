@@ -1,5 +1,5 @@
 import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, UpdateFlashCard } from '@modules/study'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class FlashCardController {
@@ -50,7 +50,7 @@ export class FlashCardController {
 			}
 		})
 
-		const user = await FindUser.execute(req.authUser!.id)
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		return await AddFlashCard.execute({
 			...data,

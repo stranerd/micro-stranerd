@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
-import { UpdateUserTokens } from '@modules/push'
+import { TokensUseCases } from '@modules/push'
 
 const subscribeDevice: Route = {
 	path: '/push/devices/subscribe',
@@ -12,7 +12,7 @@ const subscribeDevice: Route = {
 			}, {
 				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 			})
-			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, tokens: [token], add: true })
+			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: true })
 			return {
 				status: StatusCodes.Ok,
 				result: !!res
@@ -32,7 +32,7 @@ const unsubscribeDevice: Route = {
 			}, {
 				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 			})
-			const res = await UpdateUserTokens.execute({ userId: req.authUser!.id, tokens: [token], add: false })
+			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: false })
 			return {
 				status: StatusCodes.Ok,
 				result: !!res

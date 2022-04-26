@@ -7,7 +7,7 @@ import {
 	UpdateBestAnswer,
 	UpdateQuestion
 } from '@modules/questions'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassEntity, FindClass } from '@modules/classes'
 
@@ -47,7 +47,7 @@ export class QuestionController {
 
 	static async CreateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
+		const user = await UsersUseCases.find(authUserId)
 		const isUsers = req.body.data?.type === QuestionType.users
 		const isClasses = req.body.data?.type === QuestionType.classes
 

@@ -1,6 +1,6 @@
 import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, SetType, UpdateSet, UpdateSetProp } from '@modules/study'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { ClassEntity, FindClass } from '@modules/classes'
 
 export class SetController {
@@ -15,7 +15,7 @@ export class SetController {
 
 	static async CreateSet (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
+		const user = await UsersUseCases.find(authUserId)
 		const isUsers = req.body.data?.type === SetType.users
 		const isClasses = req.body.data?.type === SetType.classes
 		if (!user) throw new BadRequestError('user not found')

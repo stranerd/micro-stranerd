@@ -1,5 +1,5 @@
 import { AddAnswerComment, FindAnswer, FindAnswerComment, GetAnswerComments } from '@modules/questions'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class AnswerCommentController {
@@ -23,7 +23,7 @@ export class AnswerCommentController {
 
 		const answer = await FindAnswer.execute(data.answerId)
 		if (!answer) throw new BadRequestError('answer not found')
-		const user = await FindUser.execute(req.authUser!.id)
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		return await AddAnswerComment.execute({
 			...data,

@@ -1,14 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerCommentEntity, AnswerCommentFromModel, FindAnswer } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import {
-	CountStreakBadges,
-	IncrementUserMetaCount,
-	RecordCountStreak,
-	ScoreRewards,
-	UpdateUserNerdScore,
-	UserMeta
-} from '@modules/users'
+import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
@@ -16,8 +9,8 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitCreated('questions/answerComments', after)
 		await getSocketEmitter().emitCreated(`questions/answerComments/${after.answerId}`, after)
 
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answerComments })
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.answerComments })
+		await UsersUseCases.updateNerdScore({
 			userId: after.userId,
 			amount: ScoreRewards.NewComment
 		})
@@ -30,7 +23,7 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 			data: { questionId: answer.questionId, answerId: answer.id, commentId: after.id }
 		})
 
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: after.userId,
 			activity: CountStreakBadges.NewAnswerComment,
 			add: true
@@ -44,12 +37,12 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitDeleted('questions/answerComments', before)
 		await getSocketEmitter().emitDeleted(`questions/answerComments/${before.answerId}`, before)
 
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answerComments })
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.answerComments })
+		await UsersUseCases.updateNerdScore({
 			userId: before.userId,
 			amount: -ScoreRewards.NewComment
 		})
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: before.userId,
 			activity: CountStreakBadges.NewAnswerComment,
 			add: false

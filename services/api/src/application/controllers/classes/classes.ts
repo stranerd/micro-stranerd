@@ -10,10 +10,10 @@ import {
 	RequestToJoinClass,
 	UpdateClass
 } from '@modules/classes'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 export class ClassController {
 	static async FindClass (req: Request) {
@@ -44,8 +44,8 @@ export class ClassController {
 		})
 
 		const { name, description } = data
-		if (uploadedPhoto) data.photo = await UploadFile.call('classes/photos', uploadedPhoto)
-		if (uploadedCoverPhoto) data.coverPhoto = await UploadFile.call('classes/coverPhotos', uploadedCoverPhoto)
+		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
+		if (uploadedCoverPhoto) data.coverPhoto = await UploaderUseCases.upload('classes/coverPhotos', uploadedCoverPhoto)
 		const validateData = {
 			name, description,
 			...(changedPhoto ? { photo: data.photo } : {}),
@@ -60,7 +60,7 @@ export class ClassController {
 
 	static async CreateClass (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
+		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
 		const { name, description, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
@@ -75,8 +75,8 @@ export class ClassController {
 			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
 
-		const photo = classPhoto ? await UploadFile.call('classes/photos', classPhoto) : null
-		const coverPhoto = classCoverPhoto ? await UploadFile.call('classes/coverPhotos', classCoverPhoto) : null
+		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
+		const coverPhoto = classCoverPhoto ? await UploaderUseCases.upload('classes/coverPhotos', classCoverPhoto) : null
 
 		const data = {
 			name, description, photo, coverPhoto,

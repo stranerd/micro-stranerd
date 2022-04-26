@@ -1,15 +1,15 @@
-import { FindUser, GetUsers, UpdateUserSchoolData, UserSchoolType } from '@modules/users'
+import { UserSchoolType, UsersUseCases } from '@modules/users'
 import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { FindDepartment, GetCourses } from '@modules/school'
 
 export class UsersController {
 	static async getUsers (req: Request) {
 		const query = req.query as QueryParams
-		return await GetUsers.execute(query)
+		return await UsersUseCases.get(query)
 	}
 
 	static async findUser (req: Request) {
-		return await FindUser.execute(req.params.id)
+		return await UsersUseCases.find(req.params.id)
 	}
 
 	static async updateSchool (req: Request) {
@@ -45,7 +45,7 @@ export class UsersController {
 		if (isCollege) {
 			const department = await FindDepartment.execute(departmentId)
 			if (!department) throw new BadRequestError('department not found')
-			return await UpdateUserSchoolData.execute({
+			return await UsersUseCases.updateSchool({
 				userId: req.authUser!.id, data: {
 					type: UserSchoolType.college,
 					institutionId: department.institutionId,
@@ -62,7 +62,7 @@ export class UsersController {
 				if (courses.length !== exam.courseIds.length) throw new BadRequestError('courses not found')
 				if (courses.find((c) => c.institutionId !== exam.institutionId)) throw new BadRequestError('mismatched courses and institutions')
 			}
-			return await UpdateUserSchoolData.execute({ userId: req.authUser!.id, data: { type, exams } })
+			return await UsersUseCases.updateSchool({ userId: req.authUser!.id, data: { type, exams } })
 		}
 	}
 }

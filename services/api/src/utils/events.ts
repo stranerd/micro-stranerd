@@ -1,5 +1,5 @@
 import { appInstance, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
-import { DeleteOldSeenNotifications, ResetRankings, UserRankings } from '@modules/users'
+import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { FindSession } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -7,7 +7,7 @@ import { UpdateTest } from '@modules/study'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { GetAndDeleteAllErrors } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
-import { DeleteFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 const eventBus = appInstance.eventBus
 
@@ -44,14 +44,14 @@ export const subscribers = {
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {
-			await ResetRankings.execute(UserRankings.daily)
+			await UsersUseCases.resetRankings(UserRankings.daily)
 			await deleteUnverifiedUsers()
 		}
 		if (type === CronTypes.weekly) {
-			await ResetRankings.execute(UserRankings.weekly)
-			await DeleteOldSeenNotifications.execute()
+			await UsersUseCases.resetRankings(UserRankings.weekly)
+			await NotificationsUseCases.deleteOldSeen()
 		}
-		if (type === CronTypes.monthly) await ResetRankings.execute(UserRankings.monthly)
+		if (type === CronTypes.monthly) await UsersUseCases.resetRankings(UserRankings.monthly)
 		if (type === CronTypes.halfHourly) await appInstance.job.retryAllFailedJobs()
 		if (type === CronTypes.hourly) {
 			const errors = await GetAndDeleteAllErrors.execute()
@@ -66,7 +66,7 @@ export const subscribers = {
 		await sendMailAndCatchError(data)
 	}),
 	[EventTypes.DELETEFILE]: eventBus.createSubscriber<Events[EventTypes.DELETEFILE]>(EventTypes.DELETEFILE, async (data) => {
-		if (data?.path) await DeleteFile.call(data.path)
+		if (data?.path) await UploaderUseCases.delete(data.path)
 	})
 }
 

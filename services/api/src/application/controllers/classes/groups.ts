@@ -1,5 +1,5 @@
 import { AddGroup, DeleteGroup, FindClass, FindGroup, GetGroups, UpdateGroup } from '@modules/classes'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 
@@ -37,7 +37,7 @@ export class GroupController {
 
 	static async CreateGroup (req: Request) {
 		const authUserId = req.authUser!.id
-		const user = await FindUser.execute(authUserId)
+		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
 		const { name, classId } = validate({

@@ -1,13 +1,13 @@
-import { CreateReview, FindReview, FindUser, GetReviews } from '@modules/users'
+import { UsersUseCases, ReviewsUseCases } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {
-		return await GetReviews.execute(req.query as QueryParams)
+		return await ReviewsUseCases.get(req.query as QueryParams)
 	}
 
 	static async findReview (req: Request) {
-		return await FindReview.execute(req.params.id)
+		return await ReviewsUseCases.find(req.params.id)
 	}
 
 	static async createReview (req: Request) {
@@ -24,10 +24,10 @@ export class ReviewsController {
 			tutorId: { required: true, rules: [Validation.isString] }
 		})
 
-		const user = await FindUser.execute(req.authUser!.id)
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 
-		return await CreateReview.execute({
+		return await ReviewsUseCases.create({
 			...data,
 			userBio: user.bio,
 			userRoles: user.roles,

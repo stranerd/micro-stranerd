@@ -7,7 +7,7 @@ import {
 	GetAnswers,
 	UpdateAnswer
 } from '@modules/questions'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class AnswerController {
@@ -59,7 +59,7 @@ export class AnswerController {
 
 		const question = await FindQuestion.execute(req.body.questionId)
 		if (!question) throw new BadRequestError('question not found')
-		const user = await FindUser.execute(req.authUser!.id)
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		return await AddAnswer.execute({
 			...data,

@@ -1,7 +1,7 @@
 import { AddVideo, DeleteVideo, FindVideo, GetVideos, UpdateVideo } from '@modules/study'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 export class VideoController {
 	static async FindVideo (req: Request) {
@@ -32,7 +32,7 @@ export class VideoController {
 				rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isNotTruncated, Validation.isVideo]
 			}
 		})
-		if (uploadedMedia) data.media = await UploadFile.call('study/videos', uploadedMedia)
+		if (uploadedMedia) data.media = await UploaderUseCases.upload('study/videos', uploadedMedia)
 		const { title, description, isHosted, link, media } = data
 		const validateData = {
 			title, description, isHosted, link,
@@ -62,8 +62,8 @@ export class VideoController {
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
 		})
 
-		const media = data.media ? await UploadFile.call('study/videos', data.media) : null
-		const user = await FindUser.execute(req.authUser!.id)
+		const media = data.media ? await UploaderUseCases.upload('study/videos', data.media) : null
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		return await AddVideo.execute({
 			...data, media,

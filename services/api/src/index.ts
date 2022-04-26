@@ -2,18 +2,18 @@ import { appInstance, getNewServerInstance } from '@utils/commons'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
-import { ResetAllUsersStatus, UpdateUserStatus, UpdateUserStreak } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { registerSockets } from '@utils/sockets'
 
 const app = getNewServerInstance(routes, {
 	onConnect: async (userId, socketId) => {
-		await UpdateUserStatus.execute({
+		await UsersUseCases.updateStatus({
 			userId, socketId, add: true
 		})
-		await UpdateUserStreak.execute(userId)
+		await UsersUseCases.updateStreak(userId)
 	},
 	onDisconnect: async (userId, socketId) => {
-		await UpdateUserStatus.execute({
+		await UsersUseCases.updateStatus({
 			userId, socketId, add: false
 		})
 	}
@@ -31,7 +31,7 @@ const start = async () => {
 
 	await registerSockets()
 
-	await ResetAllUsersStatus.execute()
+	await UsersUseCases.resetAllUsersStatus()
 	await app.start(port)
 	await appInstance.logger.success(`${appId} api has started listening on port`, port)
 }

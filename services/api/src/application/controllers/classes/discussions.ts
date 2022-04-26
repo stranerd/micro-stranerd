@@ -1,7 +1,7 @@
 import { AddDiscussion, FindDiscussion, FindGroup, GetDiscussions } from '@modules/classes'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 export class DiscussionController {
 	static async FindDiscussion (req: Request) {
@@ -32,9 +32,9 @@ export class DiscussionController {
 		const group = await FindGroup.execute({ id: data.groupId, classId: req.params.classId })
 		if (!group) throw new BadRequestError('group not found')
 		if (!group.getAllUsers().includes(userId)) throw new BadRequestError('not a group member')
-		const user = await FindUser.execute(userId)
+		const user = await UsersUseCases.find(userId)
 		if (!user) throw new BadRequestError('user not found')
-		const media = data.media ? await UploadFile.call('classes/discussions', data.media) : null
+		const media = data.media ? await UploaderUseCases.upload('classes/discussions', data.media) : null
 
 		return await AddDiscussion.execute({
 			...data, media,

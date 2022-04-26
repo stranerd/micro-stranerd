@@ -1,16 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AddChat, CancelSession, DeleteSessionChats, SessionEntity, SessionFromModel } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import {
-	CountStreakBadges,
-	FindUser,
-	IncrementUsersSessionsCount,
-	RecordCountStreak,
-	ScoreRewards,
-	SetUsersCurrentSession,
-	UpdateUserNerdScore,
-	UpdateUserQueuedSessions
-} from '@modules/users'
+import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
 import { getSocketEmitter } from '@index'
 
@@ -21,7 +12,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await getSocketEmitter().emitCreated(`sessions/sessions/${after.id}/${after.studentId}`, after)
 		await getSocketEmitter().emitCreated(`sessions/sessions/${after.id}/${after.tutorId}`, after)
 
-		await UpdateUserQueuedSessions.execute({
+		await UsersUseCases.updateQueuedSessions({
 			studentId: after.studentId,
 			tutorId: after.tutorId,
 			sessionIds: [after.id],
@@ -53,12 +44,12 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
 			if (after.accepted) {
-				const tutor = await FindUser.execute(after.tutorId)
+				const tutor = await UsersUseCases.find(after.tutorId)
 				const tutorLobby = tutor?.session.lobby ?? []
 				const filteredLobbiedSessionIds = tutorLobby.filter((s) => s !== after.id)
 
 				// Delete current session key and other lobbied sessions from both users
-				await UpdateUserQueuedSessions.execute({
+				await UsersUseCases.updateQueuedSessions({
 					studentId: after.studentId,
 					tutorId: after.tutorId,
 					sessionIds: tutorLobby,
@@ -87,7 +78,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					})
 				}
 			} else {
-				await UpdateUserQueuedSessions.execute({
+				await UsersUseCases.updateQueuedSessions({
 					studentId: after.studentId,
 					tutorId: after.tutorId,
 					sessionIds: [after.id],
@@ -106,18 +97,18 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 		// Session was just concluded or cancelled, so cleanup
 		if (!before.done && after.done) {
-			if (after.accepted) await SetUsersCurrentSession.execute({
+			if (after.accepted) await UsersUseCases.setCurrentSession({
 				studentId: after.studentId,
 				tutorId: after.tutorId,
 				sessionId: after.id,
 				add: false
 			})
 			if (!after.wasCancelled) {
-				await UpdateUserNerdScore.execute({
+				await UsersUseCases.updateNerdScore({
 					userId: after.studentId,
 					amount: ScoreRewards.CompleteSession
 				})
-				await IncrementUsersSessionsCount.execute({
+				await UsersUseCases.incrementSessionCount({
 					tutorId: after.tutorId,
 					studentId: after.studentId,
 					value: 1
@@ -127,7 +118,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 
 		// Session was cancelled by the system cos the tutor accepted another session
 		if (!after.accepted && !before.cancelled.student && after.cancelled.tutor) {
-			await UpdateUserQueuedSessions.execute({
+			await UsersUseCases.updateQueuedSessions({
 				studentId: after.studentId,
 				tutorId: after.tutorId,
 				sessionIds: [after.id],
@@ -141,12 +132,12 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					media: null
 				}
 			})
-			await RecordCountStreak.execute({
+			await BadgesUseCases.recordCountStreak({
 				userId: after.studentId,
 				activity: CountStreakBadges.AttendSession,
 				add: true
 			})
-			await RecordCountStreak.execute({
+			await BadgesUseCases.recordCountStreak({
 				userId: after.tutorId,
 				activity: CountStreakBadges.HostSession,
 				add: true
@@ -160,7 +151,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.id}/${before.tutorId}`, before)
 		await DeleteSessionChats.execute(before.id)
 		if (before.done) {
-			await IncrementUsersSessionsCount.execute({
+			await UsersUseCases.incrementSessionCount({
 				tutorId: before.tutorId,
 				studentId: before.studentId,
 				value: -1

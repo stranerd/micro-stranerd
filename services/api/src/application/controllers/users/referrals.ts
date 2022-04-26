@@ -1,15 +1,15 @@
-import { FindReferral, GetReferrals } from '@modules/users'
+import { ReferralsUseCases } from '@modules/users'
 import { QueryParams, Request } from '@utils/commons'
 
 export class ReferralsController {
 	static async getReferrals (req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'userId', value: req.authUser!.id }]
-		return await GetReferrals.execute(query)
+		return await ReferralsUseCases.get(query)
 	}
 
 	static async findReferral (req: Request) {
-		return await FindReferral.execute({
+		return await ReferralsUseCases.find({
 			id: req.params.id,
 			userId: req.authUser!.id
 		})

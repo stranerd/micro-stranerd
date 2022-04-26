@@ -1,19 +1,19 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { AnswerUpvoteEntity, AnswerUpvoteFromModel } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { CountStreakBadges, RecordCountStreak, ScoreRewards, UpdateUserNerdScore } from '@modules/users'
+import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
 
 export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvoteFromModel, AnswerUpvoteEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/answerUpvotes', after)
 		await getSocketEmitter().emitCreated(`questions/answerUpvotes/${after.id}`, after)
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: after.userId,
 			amount: ScoreRewards.UpvoteAnswer
 		})
 
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: after.userId,
 			activity: CountStreakBadges.NewAnswerVote,
 			add: true
@@ -27,12 +27,12 @@ export const AnswerUpvoteChangeStreamCallbacks: ChangeStreamCallbacks<AnswerUpvo
 		await getSocketEmitter().emitDeleted('questions/answerUpvotes', before)
 		await getSocketEmitter().emitDeleted(`questions/answerUpvotes/${before.id}`, before)
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: before.userId,
 			amount: -ScoreRewards.UpvoteAnswer
 		})
 
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: before.userId,
 			activity: CountStreakBadges.NewAnswerVote,
 			add: false

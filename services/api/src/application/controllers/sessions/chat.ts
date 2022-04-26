@@ -1,6 +1,6 @@
 import { AddChat, FindChat, FindSession, GetChats, MarkChatRead } from '@modules/sessions'
 import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 export class ChatController {
 	static async getChats (req: Request) {
@@ -36,7 +36,7 @@ export class ChatController {
 			const session = await FindSession.execute(sessionId)
 			if (!session) throw new BadRequestError('session not found')
 		}
-		const media = mediaFile ? await UploadFile.call('sessions/chats', mediaFile) : null
+		const media = mediaFile ? await UploaderUseCases.upload('sessions/chats', mediaFile) : null
 
 		const authUserId = req.authUser!.id
 		return await AddChat.execute({

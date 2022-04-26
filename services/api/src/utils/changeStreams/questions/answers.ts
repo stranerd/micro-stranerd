@@ -9,14 +9,7 @@ import {
 	UpdateQuestionsAnswers
 } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import {
-	CountStreakBadges,
-	IncrementUserMetaCount,
-	RecordCountStreak,
-	ScoreRewards,
-	UpdateUserNerdScore,
-	UserMeta
-} from '@modules/users'
+import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
 
@@ -25,7 +18,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitCreated('questions/answers', after)
 		await getSocketEmitter().emitCreated(`questions/answers/${after.id}`, after)
 
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.answers })
+		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.answers })
 		await UpdateQuestionsAnswers.execute({
 			questionId: after.questionId,
 			answerId: after.id,
@@ -33,7 +26,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			add: true
 		})
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: after.userId,
 			amount: ScoreRewards.NewAnswer
 		})
@@ -48,7 +41,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			}, true)
 		}
 
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: after.userId,
 			activity: CountStreakBadges.NewAnswer,
 			add: true
@@ -60,21 +53,21 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		if (changes.best) {
 			const question = await FindQuestion.execute(after.questionId)
-			await UpdateUserNerdScore.execute({
+			await UsersUseCases.updateNerdScore({
 				userId: after.userId,
 				amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
 			})
-			await IncrementUserMetaCount.execute({
+			await UsersUseCases.incrementMeta({
 				id: before.userId,
 				value: after.best ? 1 : -1,
 				property: UserMeta.bestAnswers
 			})
-			await RecordCountStreak.execute({
+			await BadgesUseCases.recordCountStreak({
 				userId: after.userId,
 				activity: CountStreakBadges.GetBestAnswer,
 				add: true
 			})
-			if (question) await RecordCountStreak.execute({
+			if (question) await BadgesUseCases.recordCountStreak({
 				userId: question.userId,
 				activity: CountStreakBadges.GiveBestAnswer,
 				add: true
@@ -103,12 +96,12 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitDeleted('questions/answers', before)
 		await getSocketEmitter().emitDeleted(`questions/answers/${before.id}`, before)
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: before.userId,
 			amount: -ScoreRewards.NewAnswer
 		})
 
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.answers })
+		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.answers })
 		await UpdateQuestionsAnswers.execute({
 			questionId: before.questionId,
 			answerId: before.id,
@@ -125,18 +118,18 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
 		)
 
-		await RecordCountStreak.execute({
+		await BadgesUseCases.recordCountStreak({
 			userId: before.userId,
 			activity: CountStreakBadges.NewAnswer,
 			add: false
 		})
 
 		if (before.best) {
-			await UpdateUserNerdScore.execute({
+			await UsersUseCases.updateNerdScore({
 				userId: before.userId,
 				amount: -ScoreRewards.BestAnswer
 			})
-			await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.bestAnswers })
+			await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.bestAnswers })
 			const question = await FindQuestion.execute(before.questionId)
 			if (question) await UpdateBestAnswer.execute({
 				id: question.id,

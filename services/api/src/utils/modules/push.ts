@@ -1,5 +1,5 @@
 import { appInstance, PushNotification } from '@utils/commons'
-import { FindUserTokens, UpdateUserTokens } from '@modules/push'
+import { TokensUseCases } from '@modules/push'
 import { messaging } from 'firebase-admin'
 
 const chunkArray = <T> (arr: T[], size: number) => new Array(Math.ceil(arr.length / size))
@@ -11,7 +11,7 @@ export const sendPushNotification = async (notification: PushNotification) => {
 	try {
 		const { userIds, data, title, body } = notification
 		await Promise.all(userIds.map(async (userId) => {
-			const userTokens = await FindUserTokens.execute({ userId })
+			const userTokens = await TokensUseCases.find({ userId })
 			const chunks = chunkArray(userTokens.tokens, 500)
 			const invalidTokens = [] as string[]
 
@@ -34,7 +34,7 @@ export const sendPushNotification = async (notification: PushNotification) => {
 				})
 			}))
 
-			if (invalidTokens.length) await UpdateUserTokens.execute({
+			if (invalidTokens.length) await TokensUseCases.update({
 				userId, tokens: invalidTokens, add: false
 			})
 		}))

@@ -1,6 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { ChatMetaEntity, ChatMetaFromModel, UpdateChatMetaBio } from '@modules/sessions'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 
 export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
@@ -8,7 +8,7 @@ export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromMo
 		await getSocketEmitter().emitCreated(`sessions/chatMetas/${after.userId}`, after)
 		await getSocketEmitter().emitCreated(`sessions/chatMetas/${after.id}/${after.userId}`, after)
 		if ((!after.userBio || !after.userRoles) && after.userId) {
-			const user = await FindUser.execute(after.userId)
+			const user = await UsersUseCases.find(after.userId)
 			if (user) await UpdateChatMetaBio.execute({
 				id: after.id,
 				userBio: user.bio,

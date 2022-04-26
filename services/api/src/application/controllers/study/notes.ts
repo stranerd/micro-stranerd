@@ -1,7 +1,7 @@
 import { AddNote, DeleteNote, FindNote, GetNotes, UpdateNote } from '@modules/study'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 const isPdf = (file: any) => {
 	const isValid = Validation.isFile(file).valid && file.type === 'application/pdf'
@@ -37,7 +37,7 @@ export class NoteController {
 				rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isNotTruncated, isPdf]
 			}
 		})
-		if (uploadedMedia) data.media = await UploadFile.call('study/notes', uploadedMedia)
+		if (uploadedMedia) data.media = await UploaderUseCases.upload('study/notes', uploadedMedia)
 		const { title, description, isHosted, link, media } = data
 		const validateData = {
 			title, description, isHosted, link,
@@ -67,8 +67,8 @@ export class NoteController {
 			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), isPdf] }
 		})
 
-		const media = data.media ? await UploadFile.call('study/notes', data.media) : null
-		const user = await FindUser.execute(req.authUser!.id)
+		const media = data.media ? await UploaderUseCases.upload('study/notes', data.media) : null
+		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		return await AddNote.execute({
 			...data, media,

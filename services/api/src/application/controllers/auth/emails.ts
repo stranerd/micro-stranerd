@@ -1,7 +1,7 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/commons'
 import { generateAuthOutput } from '@utils/modules/auth'
-import { UploadFile } from '@modules/storage'
+import { UploaderUseCases } from '@modules/storage'
 
 export class EmailsController {
 	static async signup (req: Request) {
@@ -45,8 +45,8 @@ export class EmailsController {
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			referrer: { required: false, rules: [Validation.isString] }
 		})
-		const photo = userPhoto ? await UploadFile.call('profiles/photos', userPhoto) : null
-		const coverPhoto = userCoverPhoto ? await UploadFile.call('profiles/coverPhotos', userCoverPhoto) : null
+		const photo = userPhoto ? await UploaderUseCases.upload('profiles/photos', userPhoto) : null
+		const coverPhoto = userCoverPhoto ? await UploaderUseCases.upload('profiles/coverPhotos', userCoverPhoto) : null
 		const validateData = {
 			firstName, lastName, email, password, photo, coverPhoto, description, referrer
 		}

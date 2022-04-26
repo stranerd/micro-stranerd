@@ -1,5 +1,5 @@
 import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
-import { FindUser } from '@modules/users'
+import { UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class SessionController {
@@ -26,8 +26,8 @@ export class SessionController {
 			{ duration: 120, price: 80 }, { duration: 180, price: 120 }
 		]
 
-		const studentUser = await FindUser.execute(req.authUser!.id)
-		const tutorUser = await FindUser.execute(req.body.tutorId)
+		const studentUser = await UsersUseCases.find(req.authUser!.id)
+		const tutorUser = await UsersUseCases.find(req.body.tutorId)
 
 		if (!studentUser) throw new BadRequestError('student not found')
 		if (!studentUser || !tutorUser) throw new BadRequestError('tutor not found')

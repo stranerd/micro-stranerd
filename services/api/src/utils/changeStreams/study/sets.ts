@@ -1,18 +1,18 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { RemoveSetProp, SetEntity, SetFromModel, SetSaved } from '@modules/study'
 import { getSocketEmitter } from '@index'
-import { IncrementUserMetaCount, ScoreRewards, UpdateUserNerdScore, UserMeta } from '@modules/users'
+import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('study/sets', after)
 		await getSocketEmitter().emitCreated(`study/sets/${after.id}`, after)
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: after.userId,
 			amount: ScoreRewards.NewSet
 		})
-		await IncrementUserMetaCount.execute({ id: after.userId, value: 1, property: UserMeta.sets })
+		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.sets })
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated('study/sets', after)
@@ -23,10 +23,10 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await getSocketEmitter().emitDeleted(`study/sets/${before.id}`, before)
 		await RemoveSetProp.execute({ prop: SetSaved.sets, value: before.id })
 
-		await UpdateUserNerdScore.execute({
+		await UsersUseCases.updateNerdScore({
 			userId: before.userId,
 			amount: -ScoreRewards.NewSet
 		})
-		await IncrementUserMetaCount.execute({ id: before.userId, value: -1, property: UserMeta.sets })
+		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.sets })
 	}
 }
