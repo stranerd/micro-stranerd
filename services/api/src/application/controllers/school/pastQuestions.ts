@@ -54,34 +54,33 @@ export class PastQuestionController {
 			},
 
 			answer: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!isObjective), Validation.isString]
+				required: !isObjective,
+				rules: [Validation.isString]
 			},
 			answerMedia: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: !isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
+				required: isObjective,
+				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
 			},
 			options: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				required: isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			optionsMedia: {
-				required: false,
+				required: isObjective,
 				rules: [
-					Validation.isRequiredIfX(isObjective),
 					Validation.hasLessThanX((req.body.options?.length ?? 0) + 1), Validation.hasMoreThanX((req.body.options?.length ?? 0) - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
-			explanation: { required: false, rules: [Validation.isRequiredIfX(isObjective), Validation.isString] },
+			explanation: { required: isObjective, rules: [Validation.isString] },
 			explanationMedia: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
 		const course = await FindCourse.execute(courseId)
@@ -135,34 +134,33 @@ export class PastQuestionController {
 			},
 
 			answer: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!isObjective), Validation.isString]
+				required: !isObjective,
+				rules: [Validation.isString]
 			},
 			answerMedia: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: !isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			},
 
 			correctIndex: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
+				required: isObjective,
+				rules: [Validation.isNumber, Validation.isMoreThanX(-1), Validation.isLessThanX(req.body.options?.length ?? 0)]
 			},
 			options: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				required: isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
 			optionsMedia: {
-				required: false,
+				required: isObjective,
 				rules: [
-					Validation.isRequiredIfX(isObjective),
 					Validation.hasLessThanX((req.body.options?.length ?? 0) + 1), Validation.hasMoreThanX((req.body.options?.length ?? 0) - 1),
 					Validation.isArrayOfX((option: any) => Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')(option).valid, 'array of images')
 				]
 			},
-			explanation: { required: false, rules: [Validation.isRequiredIfX(isObjective), Validation.isString] },
+			explanation: { required: isObjective, rules: [Validation.isString] },
 			explanationMedia: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isObjective), Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
+				required: isObjective,
+				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
 		const course = await FindCourse.execute(courseId)

@@ -36,12 +36,12 @@ export class TestPrepController {
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
-				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isString, Validation.isLongerThanX(0)]
+				required: isPastQuestionsType,
+				rules: [Validation.isString, Validation.isLongerThanX(0)]
 			},
 			year: {
-				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isNumber, Validation.isMoreThanX(0)]
+				required: isPastQuestionsType,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
 			}
 		})
 
@@ -86,12 +86,12 @@ export class TestPrepController {
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
-				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isString, Validation.isLongerThanX(0)]
+				required: isPastQuestionsType,
+				rules: [Validation.isString, Validation.isLongerThanX(0)]
 			},
 			year: {
-				required: true,
-				rules: [Validation.isRequiredIfX(isPastQuestionsType), Validation.isNumber, Validation.isMoreThanX(0)]
+				required: isPastQuestionsType,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
 			}
 		})
 

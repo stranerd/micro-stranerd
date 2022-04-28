@@ -31,10 +31,10 @@ export class NoteController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
-			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
+			link: { required: !req.body.isHosted, rules: [Validation.isString] },
 			media: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isNotTruncated, isPdf]
+				required: !!req.body.isHosted,
+				rules: [Validation.isNotTruncated, isPdf]
 			}
 		})
 		if (uploadedMedia) data.media = await UploaderUseCases.upload('study/notes', uploadedMedia)
@@ -63,8 +63,8 @@ export class NoteController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
-			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), isPdf] }
+			link: { required: !req.body.isHosted, rules: [Validation.isString] },
+			media: { required: !!req.body.isHosted, rules: [Validation.isNotTruncated, isPdf] }
 		})
 
 		const media = data.media ? await UploaderUseCases.upload('study/notes', data.media) : null

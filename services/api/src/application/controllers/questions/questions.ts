@@ -62,7 +62,7 @@ export class QuestionController {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
 			},
-			classId: { required: false, rules: [Validation.isRequiredIfX(isClasses), Validation.isString] }
+			classId: { required: isClasses, rules: [Validation.isString] }
 		})
 
 		let classInst = null as ClassEntity | null

@@ -26,10 +26,10 @@ export class VideoController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
-			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
+			link: { required: !req.body.isHosted, rules: [Validation.isString] },
 			media: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isNotTruncated, Validation.isVideo]
+				required: !!req.body.isHosted,
+				rules: [Validation.isNotTruncated, Validation.isVideo]
 			}
 		})
 		if (uploadedMedia) data.media = await UploaderUseCases.upload('study/videos', uploadedMedia)
@@ -58,8 +58,8 @@ export class VideoController {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
-			link: { required: false, rules: [Validation.isRequiredIfX(!req.body.isHosted), Validation.isString] },
-			media: { required: false, rules: [Validation.isRequiredIfX(!!req.body.isHosted), Validation.isVideo] }
+			link: { required: !req.body.isHosted, rules: [Validation.isString] },
+			media: { required: !!req.body.isHosted, rules: [Validation.isVideo] }
 		})
 
 		const media = data.media ? await UploaderUseCases.upload('study/videos', data.media) : null

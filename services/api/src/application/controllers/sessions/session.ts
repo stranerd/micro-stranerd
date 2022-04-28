@@ -47,8 +47,8 @@ export class SessionController {
 			},
 			isScheduled: { required: true, rules: [Validation.isBoolean] },
 			scheduledAt: {
-				required: false,
-				rules: [Validation.isRequiredIfX(!!req.body.isScheduled), Validation.isNumberX('is not a valid date'), Validation.isMoreThanX(Date.now(), 'is less than the current date')]
+				required: !!req.body.isScheduled,
+				rules: [Validation.isNumberX('is not a valid date'), Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			}
 		})
 

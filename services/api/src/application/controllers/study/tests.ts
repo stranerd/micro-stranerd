@@ -31,8 +31,8 @@ export class TestController {
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TestType), (cur, val) => cur === val)]
 			},
 			time: {
-				required: false,
-				rules: [Validation.isRequiredIfX(isTimed), Validation.isNumber, Validation.isMoreThanX(0)]
+				required: isTimed,
+				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
 			}
 		})
 

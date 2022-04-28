@@ -25,7 +25,7 @@ export class CommentController {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(CommentType), (cur, val) => cur === val)]
 			},
-			videoId: { required: false, rules: [Validation.isRequiredIfX(isVideoType), Validation.isString] }
+			videoId: { required: isVideoType, rules: [Validation.isString] }
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)

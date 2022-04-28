@@ -26,11 +26,10 @@ export class UsersController {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(UserSchoolType), (cur, val) => cur === val)]
 			},
-			departmentId: { required: false, rules: [Validation.isRequiredIfX(isCollege), Validation.isString] },
+			departmentId: { required: isCollege, rules: [Validation.isString] },
 			exams: {
-				required: false,
+				required: isAspirant || isSecondary,
 				rules: [
-					Validation.isRequiredIfX(isAspirant || isSecondary),
 					Validation.isArrayOfX((exam: any) => {
 						const matches = [Validation.isString(exam?.institutionId).valid]
 						matches.push(Validation.isNumber(exam?.startDate).valid)
