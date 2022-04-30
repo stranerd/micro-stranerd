@@ -37,17 +37,8 @@ export class BullJob {
 		await Promise.all(failedJobs.map((job) => job.retry()))
 	}
 
-	async startProcessingQueues<DelayedJobEvent> (callbacks: { onDelayed: DelayedJobCallback<DelayedJobEvent>, onCron: CronCallback }) {
+	async startProcessingQueues<DelayedJobEvent> (crons: { name: CronTypes | string, cron: string }[], callbacks: { onDelayed: DelayedJobCallback<DelayedJobEvent>, onCron: CronCallback }) {
 		await this.cleanup()
-		const crons = [
-			{ name: CronTypes.halfHourly, cron: '*/30 * * * *' },
-			{ name: CronTypes.hourly, cron: '0 * * * *' },
-			{ name: CronTypes.daily, cron: '0 0 * * *' },
-			{ name: CronTypes.weekly, cron: '0 0 * * SUN' },
-			{ name: CronTypes.monthly, cron: '0 0 1 * *' },
-			{ name: CronTypes.quarterly, cron: '0 0 1 */3 *' },
-			{ name: CronTypes.yearly, cron: '0 0 1 1 *' }
-		]
 		await Promise.all(
 			crons.map(({ cron, name }) => this.addCronJob(name, cron))
 		)
@@ -57,7 +48,7 @@ export class BullJob {
 		])
 	}
 
-	private addCronJob = async (type: CronTypes, cron: string) => {
+	private async addCronJob (type: CronTypes | string, cron: string) {
 		const job = await this.queue.add(JobNames.CronJob, { type }, {
 			repeat: { cron },
 			removeOnComplete: true,

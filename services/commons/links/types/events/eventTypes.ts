@@ -53,7 +53,7 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	},
 	TASKSCRON: {
 		topic: typeof EventTypes.TASKSCRON,
-		data: { type: CronTypes }
+		data: { type: CronTypes | string }
 	},
 	TASKSDELAYED: {
 		topic: typeof EventTypes.TASKSDELAYED,

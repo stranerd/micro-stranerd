@@ -4,6 +4,8 @@ import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'
 import { UsersUseCases } from '@modules/users'
 import { registerSockets } from '@utils/sockets'
+import { initializeApp } from 'firebase-admin/app'
+import { startJobs } from '@utils/jobs'
 
 const app = getNewServerInstance(routes, {
 	onConnect: async (userId, socketId) => {
@@ -21,6 +23,7 @@ const app = getNewServerInstance(routes, {
 export const getSocketEmitter = () => app.socketEmitter
 
 const start = async () => {
+	initializeApp()
 	await appInstance.startDbConnection()
 	await Promise.all(
 		Object.values(subscribers)
@@ -30,6 +33,7 @@ const start = async () => {
 	)
 
 	await registerSockets()
+	await startJobs()
 
 	await UsersUseCases.resetAllUsersStatus()
 	await app.start(port)
