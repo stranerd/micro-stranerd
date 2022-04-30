@@ -3,6 +3,6 @@ import { NotFoundError } from '../../errors'
 
 export const notFoundHandler = makeMiddleware(
 	async (_) => {
-		throw new NotFoundError()
+		throw new NotFoundError('Route not found')
 	}
 )

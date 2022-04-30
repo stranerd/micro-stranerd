@@ -1,5 +1,5 @@
 import { UserAccount, UserBio, UserDates, UserRoles, UserSchoolData, UserSession, UserStatus } from '../types'
-import { BaseEntity, SupportedAuthRoles } from '@utils/commons'
+import { BaseEntity } from '@utils/commons'
 import { getNextRank, getRank } from './ranks'
 
 export class UserEntity extends BaseEntity {
@@ -30,14 +30,6 @@ export class UserEntity extends BaseEntity {
 
 	get nextRank () {
 		return getNextRank(this.rank.id)
-	}
-
-	isAdmin () {
-		return this.roles?.[SupportedAuthRoles.isStranerdAdmin] ?? false
-	}
-
-	isTutor () {
-		return this.roles?.[SupportedAuthRoles.isStranerdTutor] ?? false
 	}
 }
 
