@@ -33,11 +33,10 @@ const start = async () => {
 	)
 
 	await registerSockets()
-	await startJobs()
-
 	await UsersUseCases.resetAllUsersStatus()
 	await app.start(port)
 	await appInstance.logger.success(`${appId} api has started listening on port`, port)
+	await startJobs()
 }
 
 start().then()
