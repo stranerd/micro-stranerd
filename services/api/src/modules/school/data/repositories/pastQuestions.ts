@@ -37,7 +37,7 @@ export class PastQuestionRepository implements IPastQuestionRepository {
 		return this.mapper.mapFrom(pastQuestion)!
 	}
 
-	async update (id: string, data: PastQuestionToModel) {
+	async update (id: string, data: Partial<PastQuestionToModel>) {
 		const pastQuestion = await PastQuestion.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(pastQuestion)!
 	}

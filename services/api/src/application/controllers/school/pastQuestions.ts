@@ -1,22 +1,14 @@
-import {
-	AddPastQuestion,
-	DeletePastQuestion,
-	FindCourse,
-	FindPastQuestion,
-	GetPastQuestions,
-	PastQuestionType,
-	UpdatePastQuestion
-} from '@modules/school'
+import { CoursesUseCases, PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {
-		return await FindPastQuestion.execute(req.params.id)
+		return await PastQuestionsUseCases.find(req.params.id)
 	}
 
 	static async GetPastQuestion (req: Request) {
 		const query = req.query as QueryParams
-		return await GetPastQuestions.execute(query)
+		return await PastQuestionsUseCases.get(query)
 	}
 
 	static async UpdatePastQuestion (req: Request) {
@@ -83,7 +75,7 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
-		const course = await FindCourse.execute(courseId)
+		const course = await CoursesUseCases.find(courseId)
 		if (!course) throw new BadRequestError('course not found')
 
 		const data = {
@@ -93,7 +85,7 @@ export class PastQuestionController {
 			} : { type, answer, answerMedia }
 		}
 
-		const updatedPastQuestion = await UpdatePastQuestion.execute({ id: req.params.id, data })
+		const updatedPastQuestion = await PastQuestionsUseCases.update({ id: req.params.id, data })
 
 		if (updatedPastQuestion) return updatedPastQuestion
 		throw new BadRequestError('past question not found')
@@ -163,7 +155,7 @@ export class PastQuestionController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images')]
 			}
 		})
-		const course = await FindCourse.execute(courseId)
+		const course = await CoursesUseCases.find(courseId)
 		if (!course) throw new BadRequestError('course not found')
 
 		const data = {
@@ -173,11 +165,11 @@ export class PastQuestionController {
 			} : { type, answer, answerMedia }
 		}
 
-		return await AddPastQuestion.execute(data)
+		return await PastQuestionsUseCases.add(data)
 	}
 
 	static async DeletePastQuestion (req: Request) {
-		const isDeleted = await DeletePastQuestion.execute(req.params.id)
+		const isDeleted = await PastQuestionsUseCases.delete(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

@@ -1,6 +1,6 @@
 import { UserSchoolType, UsersUseCases } from '@modules/users'
 import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { FindDepartment, GetCourses } from '@modules/school'
+import { CoursesUseCases, DepartmentsUseCases } from '@modules/school'
 
 export class UsersController {
 	static async getUsers (req: Request) {
@@ -42,7 +42,7 @@ export class UsersController {
 		})
 
 		if (isCollege) {
-			const department = await FindDepartment.execute(departmentId)
+			const department = await DepartmentsUseCases.find(departmentId)
 			if (!department) throw new BadRequestError('department not found')
 			return await UsersUseCases.updateSchool({
 				userId: req.authUser!.id, data: {
@@ -54,7 +54,7 @@ export class UsersController {
 			})
 		} else {
 			for (const exam of exams) {
-				const { results: courses } = await GetCourses.execute({
+				const { results: courses } = await CoursesUseCases.get({
 					where: [{ field: 'id', condition: Conditions.in, value: exam.courseIds }],
 					all: true
 				})

@@ -1,14 +1,14 @@
-import { AddFaculty, DeleteFaculty, FindFaculty, FindInstitution, GetFaculties, UpdateFaculty } from '@modules/school'
+import { FacultiesUseCases, InstitutionsUseCases } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class FacultyController {
 	static async FindFaculty (req: Request) {
-		return await FindFaculty.execute(req.params.id)
+		return await FacultiesUseCases.find(req.params.id)
 	}
 
 	static async GetFaculties (req: Request) {
 		const query = req.query as QueryParams
-		return await GetFaculties.execute(query)
+		return await FacultiesUseCases.get(query)
 	}
 
 	static async CreateFaculty (req: Request) {
@@ -19,11 +19,11 @@ export class FacultyController {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			institutionId: { required: true, rules: [Validation.isString] }
 		})
-		const institution = await FindInstitution.execute(data.institutionId)
+		const institution = await InstitutionsUseCases.find(data.institutionId)
 		if (!institution) throw new BadRequestError('institution not found')
 		if (institution.isGateway) throw new BadRequestError('institution is a gateway body')
 
-		return await AddFaculty.execute(data)
+		return await FacultiesUseCases.add(data)
 	}
 
 	static async UpdateFaculty (req: Request) {
@@ -33,14 +33,13 @@ export class FacultyController {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
-		const updatedFaculty = await UpdateFaculty.execute({ id: req.params.id, data })
+		const updatedFaculty = await FacultiesUseCases.update({ id: req.params.id, data })
 		if (updatedFaculty) return updatedFaculty
 		throw new BadRequestError('faculty not found')
 	}
 
 	static async DeleteFaculty (req: Request) {
-		const isDeleted = await DeleteFaculty.execute(req.params.id)
-
+		const isDeleted = await FacultiesUseCases.delete(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new BadRequestError('faculty not found')
 	}

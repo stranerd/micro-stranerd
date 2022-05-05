@@ -1,10 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import {
-	DeleteInstitutionCourses,
-	DeleteInstitutionFaculties,
-	InstitutionEntity,
-	InstitutionFromModel
-} from '@modules/school'
+import { CoursesUseCases, FacultiesUseCases, InstitutionEntity, InstitutionFromModel } from '@modules/school'
 import { getSocketEmitter } from '@index'
 
 export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<InstitutionFromModel, InstitutionEntity> = {
@@ -20,7 +15,7 @@ export const InstitutionChangeStreamCallbacks: ChangeStreamCallbacks<Institution
 		await getSocketEmitter().emitDeleted('school/institutions', before)
 		await getSocketEmitter().emitDeleted(`school/institutions/${before.id}`, before)
 
-		await DeleteInstitutionCourses.execute(before.id)
-		await DeleteInstitutionFaculties.execute(before.id)
+		await CoursesUseCases.deleteInstitutionCourses(before.id)
+		await FacultiesUseCases.deleteInstitutionFaculties(before.id)
 	}
 }

@@ -1,6 +1,6 @@
 import { appInstance, ChangeStreamCallbacks, Conditions, DelayedJobs } from '@utils/commons'
-import { TestEntity, TestFromModel, TestType, TestsUseCases } from '@modules/study'
-import { GetPastQuestions, PastQuestionType } from '@modules/school'
+import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
+import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
 import { ScoreRewards, UsersUseCases } from '@modules/users'
@@ -30,7 +30,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 			})
 			if (after.questionType === PastQuestionType.objective) {
 				// calculate score
-				const { results: questions } = await GetPastQuestions.execute({
+				const { results: questions } = await PastQuestionsUseCases.get({
 					where: [{ field: 'id', condition: Conditions.in, value: after.questions }]
 				})
 

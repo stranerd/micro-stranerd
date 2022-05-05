@@ -1,14 +1,14 @@
-import { AddCourse, DeleteCourse, FindCourse, FindDepartment, GetCourses, UpdateCourse } from '@modules/school'
+import { CoursesUseCases, DepartmentsUseCases, InstitutionsUseCases } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class CourseController {
 	static async FindCourse (req: Request) {
-		return await FindCourse.execute(req.params.id)
+		return await CoursesUseCases.find(req.params.id)
 	}
 
 	static async GetCourses (req: Request) {
 		const query = req.query as QueryParams
-		return await GetCourses.execute(query)
+		return await CoursesUseCases.get(query)
 	}
 
 	static async CreateCourse (req: Request) {
@@ -21,13 +21,15 @@ export class CourseController {
 			institutionId: { required: true, rules: [Validation.isString] },
 			departmentId: { required: false, rules: [Validation.isString] }
 		})
-		const department = !data.departmentId ? null : await FindDepartment.execute(data.departmentId)
+		const institution = await InstitutionsUseCases.find(data.institutionId)
+		const department = !data.departmentId ? null : await DepartmentsUseCases.find(data.departmentId)
+		if (!institution) throw new BadRequestError('institution not found')
 		if (data.departmentId) {
 			if (!department) throw new BadRequestError('department not found')
-			if (department.institutionId !== data.institutionId) throw new BadRequestError('mismatched department and institution')
+			if (department.institutionId !== institution.id) throw new BadRequestError('mismatched department and institution')
 		}
 
-		return await AddCourse.execute({
+		return await CoursesUseCases.add({
 			...data,
 			departmentId: department?.id ?? null,
 			facultyId: department?.facultyId ?? null
@@ -41,14 +43,13 @@ export class CourseController {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
-		const updatedCourse = await UpdateCourse.execute({ id: req.params.id, data })
+		const updatedCourse = await CoursesUseCases.update({ id: req.params.id, data })
 		if (updatedCourse) return updatedCourse
 		throw new BadRequestError('course not found')
 	}
 
 	static async DeleteCourse (req: Request) {
-		const isDeleted = await DeleteCourse.execute(req.params.id)
-
+		const isDeleted = await CoursesUseCases.delete(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new BadRequestError('course not found')
 	}

@@ -37,7 +37,7 @@ export class InstitutionRepository implements IInstitutionRepository {
 		return this.mapper.mapFrom(institution)!
 	}
 
-	async update (id: string, data: InstitutionToModel) {
+	async update (id: string, data: Partial<InstitutionToModel>) {
 		const institution = await Institution.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(institution)
 	}

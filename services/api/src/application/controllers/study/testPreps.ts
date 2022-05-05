@@ -1,5 +1,5 @@
 import { PrepType, TestPrepsUseCases } from '@modules/study'
-import { FindCourse, PastQuestionType } from '@modules/school'
+import { CoursesUseCases, PastQuestionType } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class TestPrepController {
@@ -45,7 +45,7 @@ export class TestPrepController {
 			}
 		})
 
-		const course = await FindCourse.execute(courseId)
+		const course = await CoursesUseCases.find(courseId)
 		if (!course) throw new BadRequestError('course not found')
 
 		const data = {
@@ -95,7 +95,7 @@ export class TestPrepController {
 			}
 		})
 
-		const course = await FindCourse.execute(courseId)
+		const course = await CoursesUseCases.find(courseId)
 		if (!course) throw new BadRequestError('course not found')
 
 		const data = {

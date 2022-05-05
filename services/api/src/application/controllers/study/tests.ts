@@ -1,5 +1,5 @@
 import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
-import { GetPastQuestions } from '@modules/school'
+import { PastQuestionsUseCases } from '@modules/school'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { getRandomN } from '@utils/functions'
 
@@ -38,7 +38,7 @@ export class TestController {
 
 		const prep = await TestPrepsUseCases.find(prepId)
 		if (!prep) throw new BadRequestError('test prep not found')
-		const { results } = await GetPastQuestions.execute({
+		const { results } = await PastQuestionsUseCases.get({
 			where: [
 				{ field: 'data.type', value: prep.data.questionType },
 				{ field: 'institutionId', value: prep.data.institutionId },

@@ -1,7 +1,7 @@
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ReportData, ReportsUseCases, ReportType } from '@modules/reports'
 import { UsersUseCases } from '@modules/users'
-import { FindPastQuestion } from '@modules/school'
+import { PastQuestionsUseCases } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReportController {
@@ -70,7 +70,7 @@ export class ReportController {
 		}
 
 		if (type == ReportType.pastQuestions) {
-			const question = await FindPastQuestion.execute(reportedId)
+			const question = await PastQuestionsUseCases.find(reportedId)
 			if (!question) throw new BadRequestError('past question not found')
 			reportedData = {
 				type: ReportType.pastQuestions,
