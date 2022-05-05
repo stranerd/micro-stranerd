@@ -9,16 +9,8 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	reporterId: {
-		type: String,
-		required: true
-	},
-	reporterBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['reporterBio'],
-		required: true
-	},
-	reporterRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['reporterRoles'],
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['user'],
 		required: true
 	},
 	reportedId: {

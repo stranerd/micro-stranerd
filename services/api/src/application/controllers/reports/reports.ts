@@ -42,7 +42,7 @@ export class ReportController {
 			if (!user) throw new BadRequestError('user not found')
 			reportedData = {
 				type: ReportType.users,
-				reported: { userId: user.id, userBio: user.bio, userRoles: user.roles }
+				reported: user.getEmbedded()
 			}
 		}
 
@@ -51,7 +51,7 @@ export class ReportController {
 			if (!question) throw new BadRequestError('question not found')
 			reportedData = {
 				type: ReportType.questions,
-				reported: { userId: question.user.id, body: question.body }
+				reported: { user: question.user, body: question.body }
 			}
 		}
 
@@ -61,7 +61,7 @@ export class ReportController {
 			reportedData = {
 				type: ReportType.answers,
 				reported: {
-					userId: answer.user.id,
+					user: answer.user,
 					body: answer.body,
 					title: answer.title,
 					questionId: answer.questionId
@@ -85,9 +85,7 @@ export class ReportController {
 
 		return await ReportsUseCases.create({
 			message, reportedId, data: reportedData,
-			reporterId: reporter.id,
-			reporterBio: reporter.bio,
-			reporterRoles: reporter.roles
+			user: reporter.getEmbedded()
 		})
 	}
 }

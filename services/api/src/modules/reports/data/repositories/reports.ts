@@ -3,7 +3,7 @@ import { ReportMapper } from '../mappers/reports'
 import { Report } from '../mongooseModels/reports'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class ReportRepository implements IReportRepository {
 	private static instance: ReportRepository
@@ -37,8 +37,8 @@ export class ReportRepository implements IReportRepository {
 		return !!report
 	}
 
-	async updateReportsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const res = await Report.updateMany({ reporterId: userId }, { reporterBio: userBio, reporterRoles: userRoles })
+	async updateUserBio (user: EmbeddedUser) {
+		const res = await Report.updateMany({ 'user.id': user.id }, { user })
 		return !!res.acknowledged
 	}
 }

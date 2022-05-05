@@ -7,10 +7,8 @@ export class ReportMapper extends BaseMapper<ReportFromModel, ReportToModel, Rep
 		return !param ? null : new ReportEntity({
 			id: param._id.toString(),
 			data: param.data,
-			reporterId: param.reporterId,
+			user: param.user,
 			reportedId: param.reportedId,
-			reporterBio: param.reporterBio,
-			reporterRoles: param.reporterRoles,
 			message: param.message,
 			createdAt: param.createdAt,
 			updatedAt: param.updatedAt
@@ -20,10 +18,8 @@ export class ReportMapper extends BaseMapper<ReportFromModel, ReportToModel, Rep
 	mapTo (param: ReportEntity) {
 		return {
 			data: param.data,
-			reporterId: param.reporterId,
+			user: param.user,
 			reportedId: param.reportedId,
-			reporterBio: param.reporterBio,
-			reporterRoles: param.reporterRoles,
 			message: param.message
 		}
 	}

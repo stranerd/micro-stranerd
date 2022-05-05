@@ -1,7 +1,7 @@
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '@modules/users'
 import { MediaOutput } from '@utils/commons'
 
-export { UserBio, UserRoles }
+export { EmbeddedUser }
 export type Media = MediaOutput
 
 export enum ReportType {
@@ -11,21 +11,17 @@ export enum ReportType {
 	pastQuestions = 'pastQuestions'
 }
 
-type UserReportType = {
-	userRoles: UserRoles
-	userBio: UserBio
-	userId: string
-}
+type UserReportType = EmbeddedUser
 
 type QuestionReportType = {
 	body: string
-	userId: string
+	user: EmbeddedUser
 }
 type AnswerReportType = {
 	title: string
 	body: string
 	questionId: string
-	userId: string
+	user: EmbeddedUser
 }
 
 type PastQuestionType = {

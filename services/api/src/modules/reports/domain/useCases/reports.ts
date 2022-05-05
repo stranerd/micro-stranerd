@@ -1,7 +1,7 @@
 import { ReportToModel } from '../../data/models/reports'
 import { IReportRepository } from '../irepositories/reports'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class ReportsUseCase {
 	repository: IReportRepository
@@ -26,7 +26,7 @@ export class ReportsUseCase {
 		return await this.repository.get(query)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateReportsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }
