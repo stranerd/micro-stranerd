@@ -4,11 +4,13 @@ import { CronTypes } from './types'
 
 enum JobNames {
 	CronJob = 'CronJob',
+	CronLikeJob = 'CronLikeJob',
 	DelayedJob = 'DelayedJob'
 }
 
 type DelayedJobCallback<Event> = (data: Event) => Promise<void>
 type CronCallback = (name: CronTypes) => Promise<void>
+type CronLikeCallback<Event> = (data: Event) => Promise<void>
 
 export class BullJob {
 	private queue: Bull.Queue
@@ -27,6 +29,16 @@ export class BullJob {
 		return job.id
 	}
 
+	async addCronLikeJob<Event> (data: Event, cron: string) {
+		const job = await this.queue.add(JobNames.CronLikeJob, data, {
+			repeat: { cron },
+			removeOnComplete: true,
+			backoff: 1000,
+			attempts: 3
+		})
+		return job.id
+	}
+
 	async removeDelayedJob (jobId: string | number) {
 		const job = await this.queue.getJob(jobId)
 		if (job) await job.discard()
@@ -37,14 +49,15 @@ export class BullJob {
 		await Promise.all(failedJobs.map((job) => job.retry()))
 	}
 
-	async startProcessingQueues<DelayedJobEvent> (crons: { name: CronTypes | string, cron: string }[], callbacks: { onDelayed: DelayedJobCallback<DelayedJobEvent>, onCron: CronCallback }) {
+	async startProcessingQueues<DelayedJobEvent, CronLikeEvent> (crons: { name: CronTypes | string, cron: string }[], callbacks: { onDelayed?: DelayedJobCallback<DelayedJobEvent>, onCron?: CronCallback, onCronLike?: CronLikeCallback<CronLikeEvent> }) {
 		await this.cleanup()
 		await Promise.all(
 			crons.map(({ cron, name }) => this.addCronJob(name, cron))
 		)
 		await Promise.all([
-			this.queue.process(JobNames.DelayedJob, async (job) => await callbacks.onDelayed(job.data)),
-			this.queue.process(JobNames.CronJob, async (job) => await callbacks.onCron(job.data.type as CronTypes))
+			this.queue.process(JobNames.DelayedJob, async (job) => await callbacks.onDelayed?.(job.data)),
+			this.queue.process(JobNames.CronJob, async (job) => await callbacks.onCron?.(job.data.type as CronTypes)),
+			this.queue.process(JobNames.CronLikeJob, async (job) => await callbacks.onCronLike?.(job.data))
 		])
 	}
 
@@ -61,6 +74,8 @@ export class BullJob {
 	private async cleanup () {
 		await this.retryAllFailedJobs()
 		const repeatableJobs = await this.queue.getRepeatableJobs()
-		await Promise.all(repeatableJobs.map((job) => this.queue.removeRepeatableByKey(job.key)))
+		await Promise.all(repeatableJobs
+			.filter((job) => job.name === JobNames.CronJob)
+			.map((job) => this.queue.removeRepeatableByKey(job.key)))
 	}
 }

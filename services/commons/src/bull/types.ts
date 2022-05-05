@@ -1,7 +1,6 @@
 export enum CronTypes {
 	secondly = 'secondly',
 	minutely = 'minutely',
-	halfHourly = 'halfHourly',
 	hourly = 'hourly',
 	daily = 'daily',
 	weekly = 'weekly',

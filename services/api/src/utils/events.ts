@@ -52,7 +52,6 @@ export const subscribers = {
 			await NotificationsUseCases.deleteOldSeen()
 		}
 		if (type === CronTypes.monthly) await UsersUseCases.resetRankings(UserRankings.monthly)
-		if (type === CronTypes.halfHourly) await appInstance.job.retryAllFailedJobs()
 		if (type === CronTypes.hourly) {
 			const errors = await EmailErrorsUseCases.getAndDeleteAll()
 			await Promise.all(
@@ -60,6 +59,7 @@ export const subscribers = {
 					await sendMailAndCatchError(error)
 				})
 			)
+			await appInstance.job.retryAllFailedJobs()
 		}
 	}),
 	[EventTypes.SENDMAIL]: eventBus.createSubscriber<Events[EventTypes.SENDMAIL]>(EventTypes.SENDMAIL, async (data) => {
