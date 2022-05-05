@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AddChat, CancelSession, DeleteSessionChats, SessionEntity, SessionFromModel } from '@modules/sessions'
+import { ChatsUseCases, SessionEntity, SessionFromModel, SessionsUseCases } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
@@ -19,13 +19,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			add: true
 		})
 
-		await AddChat.execute({
-			path: [after.studentId, after.tutorId],
-			data: {
-				sessionId: after.id,
-				content: after.message,
-				media: null
-			}
+		await ChatsUseCases.add({
+			from: after.studentId, to: after.tutorId,
+			sessionId: after.id,
+			content: after.message,
+			media: null
 		})
 
 		await sendNotification(after.tutorId, {
@@ -57,13 +55,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				})
 
 				// Send accepted message
-				await AddChat.execute({
-					path: [after.tutorId, after.studentId],
-					data: {
-						sessionId: after.id,
-						content: 'Session accepted',
-						media: null
-					}
+				await ChatsUseCases.add({
+					from: after.tutorId, to: after.studentId,
+					sessionId: after.id,
+					content: 'Session accepted',
+					media: null
 				})
 
 				if (after.isScheduled) await scheduleSession(after)
@@ -71,7 +67,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					await startSession(after)
 
 					// Cancel All Other Lobbied Sessions
-					await CancelSession.execute({
+					await SessionsUseCases.cancel({
 						sessionIds: filteredLobbiedSessionIds,
 						userId: after.tutorId,
 						reason: 'tutor'
@@ -85,13 +81,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					add: false
 				})
 
-				await AddChat.execute({
-					path: [after.tutorId, after.studentId],
-					data: {
-						sessionId: after.id,
-						content: 'Session rejected',
-						media: null
-					}
+				await ChatsUseCases.add({
+					from: after.tutorId, to: after.studentId,
+					sessionId: after.id,
+					content: 'Session rejected',
+					media: null
 				})
 			}
 		}
@@ -124,13 +118,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				sessionIds: [after.id],
 				add: false
 			})
-			await AddChat.execute({
-				path: [after.tutorId, after.studentId],
-				data: {
-					sessionId: after.id,
-					content: 'Session rejected',
-					media: null
-				}
+			await ChatsUseCases.add({
+				from: after.tutorId, to: after.studentId,
+				sessionId: after.id,
+				content: 'Session rejected',
+				media: null
 			})
 			await BadgesUseCases.recordCountStreak({
 				userId: after.studentId,
@@ -149,7 +141,7 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.tutorId}`, before)
 		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.id}/${before.studentId}`, before)
 		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.id}/${before.tutorId}`, before)
-		await DeleteSessionChats.execute(before.id)
+		await ChatsUseCases.deleteSessionChats(before.id)
 		if (before.done) {
 			await UsersUseCases.incrementSessionCount({
 				tutorId: before.tutorId,

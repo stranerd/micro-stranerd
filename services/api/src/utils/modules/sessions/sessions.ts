@@ -1,4 +1,4 @@
-import { MarkSessionDone, SessionEntity, UpdateTaskIdsAndTimes } from '@modules/sessions'
+import { SessionEntity, SessionsUseCases } from '@modules/sessions'
 import { appInstance, DelayedJobs } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
 
@@ -19,7 +19,7 @@ export const startSessionTimer = async (session: SessionEntity) => {
 		type: DelayedJobs.SessionTimer,
 		data: { sessionId: session.id }
 	}, delay)
-	await UpdateTaskIdsAndTimes.execute({
+	await SessionsUseCases.updateTaskIdsAndTimes({
 		sessionId: session.id,
 		data: { delayInMs: delay, startedAt: Date.now(), taskIds: [taskId] }
 	})
@@ -40,7 +40,7 @@ export const scheduleSession = async (session: SessionEntity) => {
 			type: DelayedJobs.ScheduledSessionNotification,
 			data: { sessionId, studentId, tutorId, timeInSec: 0 }
 		}, delay))))
-	await UpdateTaskIdsAndTimes.execute({
+	await SessionsUseCases.updateTaskIdsAndTimes({
 		sessionId: session.id,
 		data: { taskIds }
 	})
@@ -59,12 +59,12 @@ export const extendSessionTime = async (session: SessionEntity, extensionInMinut
 		type: DelayedJobs.SessionTimer,
 		data: { sessionId: session.id }
 	}, delay)
-	await UpdateTaskIdsAndTimes.execute({
+	await SessionsUseCases.updateTaskIdsAndTimes({
 		sessionId: session.id,
 		data: { delayInMs: delay, taskIds: [taskId] }
 	})
 }
 
-export const endSession = async (sessionId: string) => await MarkSessionDone.execute(sessionId)
+export const endSession = async (sessionId: string) => await SessionsUseCases.markDone(sessionId)
 
 export const cancelSessionTask = async (session: SessionEntity) => await Promise.all(session.taskIds.map(appInstance.job.removeDelayedJob))

@@ -1,16 +1,17 @@
-import { AddChat, FindChat, FindSession, GetChats, MarkChatRead } from '@modules/sessions'
-import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { ChatsUseCases, SessionsUseCases } from '@modules/sessions'
+import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UploaderUseCases } from '@modules/storage'
 
 export class ChatController {
 	static async getChats (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'path', value: req.authUser!.id, condition: Conditions.in }]
-		return await GetChats.execute(query)
+		query.auth = [{ field: 'from', value: req.authUser!.id }, { field: 'to', value: req.authUser!.id }]
+		query.authType = QueryKeys.or
+		return await ChatsUseCases.get(query)
 	}
 
 	static async findChat (req: Request) {
-		return await FindChat.execute({ id: req.params.id, userId: req.authUser?.id! })
+		return await ChatsUseCases.find({ id: req.params.id, userId: req.authUser?.id! })
 	}
 
 	static async addChat (req: Request) {
@@ -33,16 +34,13 @@ export class ChatController {
 		})
 
 		if (sessionId) {
-			const session = await FindSession.execute(sessionId)
+			const session = await SessionsUseCases.find(sessionId)
 			if (!session) throw new BadRequestError('session not found')
 		}
 		const media = mediaFile ? await UploaderUseCases.upload('sessions/chats', mediaFile) : null
 
 		const authUserId = req.authUser!.id
-		return await AddChat.execute({
-			path: [authUserId, to],
-			data: { content, media, sessionId }
-		})
+		return await ChatsUseCases.add({ content, media, sessionId, from: authUserId, to })
 	}
 
 	static async markChatRead (req: Request) {
@@ -53,8 +51,8 @@ export class ChatController {
 		})
 
 		const authUserId = req.authUser!.id
-		return await MarkChatRead.execute({
-			path: [authUserId, data.to],
+		return await ChatsUseCases.markRead({
+			from: authUserId, to: data.to,
 			chatId: req.params.id
 		})
 	}

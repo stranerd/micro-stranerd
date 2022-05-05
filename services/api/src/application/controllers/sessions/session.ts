@@ -1,4 +1,4 @@
-import { AcceptSession, AddSession, CancelSession, EndSession, FindSession, GetSessions } from '@modules/sessions'
+import { SessionsUseCases } from '@modules/sessions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -10,11 +10,11 @@ export class SessionController {
 			{ field: 'tutorId', value: req.authUser!.id }
 		]
 		query.authType = QueryKeys.or
-		return await GetSessions.execute(query)
+		return await SessionsUseCases.get(query)
 	}
 
 	static async findSession (req: Request) {
-		return await FindSession.execute({
+		return await SessionsUseCases.find({
 			sessionId: req.params.id,
 			userId: req.authUser!.id
 		})
@@ -54,7 +54,7 @@ export class SessionController {
 
 		const requestedSession = sessions.find((s) => s.duration === data.duration)!
 
-		return await AddSession.execute({
+		return await SessionsUseCases.add({
 			...data,
 			price: requestedSession.price,
 			tutorBio: tutorUser.bio,
@@ -75,7 +75,7 @@ export class SessionController {
 			}
 		})
 
-		return await AcceptSession.execute({
+		return await SessionsUseCases.accept({
 			accepted,
 			id: req.params.id,
 			tutorId: req.authUser!.id
@@ -86,7 +86,7 @@ export class SessionController {
 		const sessionId = req.params.id
 		const userId = req.authUser!.id
 
-		return await CancelSession.execute({
+		return await SessionsUseCases.cancel({
 			sessionIds: [sessionId],
 			reason: 'student',
 			userId
@@ -97,7 +97,7 @@ export class SessionController {
 		const sessionId = req.params.id
 		const userId = req.authUser!.id
 
-		return await EndSession.execute({
+		return await SessionsUseCases.end({
 			sessionIds: [sessionId],
 			studentId: userId
 		})

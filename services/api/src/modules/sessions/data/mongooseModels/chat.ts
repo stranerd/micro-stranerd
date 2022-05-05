@@ -9,8 +9,12 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	path: {
-		type: [String],
+	from: {
+		type: String,
+		required: true
+	},
+	to: {
+		type: String,
 		required: true
 	},
 	content: {

@@ -18,23 +18,26 @@ export class ChatRepository implements IChatRepository {
 		return ChatRepository.instance
 	}
 
-	async add (data: ChatToModel, path: [string, string]) {
+	async add (data: ChatToModel) {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
-			const chat = await new Chat({ ...data, path }).save({ session })
+			const chat = await new Chat(data).save({ session })
 			await ChatMeta.findOneAndUpdate(
-				{ ownerId: path[0], userId: path[1] },
-				{ $set: { last: chat, ownerId: path[0], userId: path[1] } },
+				{ ownerId: data.from, userId: data.to },
+				{
+					$set: { last: chat },
+					$setOnInsert: { ownerId: data.from, userId: data.to }
+				},
 				{ upsert: true, session })
 			await ChatMeta.findOneAndUpdate(
-				{ ownerId: path[1], userId: path[0] },
+				{ ownerId: data.to, userId: data.from },
 				{
-					$set: { last: chat, ownerId: path[1], userId: path[0] },
+					$set: { last: chat },
+					$setOnInsert: { ownerId: data.to, userId: data.from },
 					$addToSet: { unRead: chat._id }
 				},
-				{ upsert: true, session }
-			)
+				{ upsert: true, session })
 			res = chat
 			return chat
 		})
@@ -52,25 +55,25 @@ export class ChatRepository implements IChatRepository {
 	}
 
 	async find (id: string, userId: string) {
-		const chat = await Chat.findOne({ _id: id, path: userId })
+		const chat = await Chat.findOne({ _id: id, $or: [{ from: userId }, { to: userId }] })
 		return this.mapper.mapFrom(chat)
 	}
 
-	async markRead (id: string, path: [string, string]) {
+	async markRead (id: string, from: string, to: string) {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
 			const readAt = Date.now()
 			const chat = await Chat.findOneAndUpdate(
-				{ _id: id, path, readAt: null },
+				{ _id: id, from, to, readAt: null },
 				{ $set: { readAt } },
 				{ new: true, session }
 			)
 			await ChatMeta.findOneAndUpdate({
-				ownerId: path[0], userId: path[1]
+				ownerId: from, userId: to
 			}, { $pull: { unRead: id } }, { session })
 			await ChatMeta.findOneAndUpdate({
-				ownerId: path[0], userId: path[1], 'last._id': id
+				ownerId: from, userId: to, 'last._id': id
 			}, { $set: { 'last.readAt': readAt } }, { session })
 
 			res = !!chat

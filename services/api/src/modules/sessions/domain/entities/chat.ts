@@ -3,7 +3,8 @@ import { BaseEntity } from '@utils/commons'
 
 export class ChatEntity extends BaseEntity {
 	public readonly id: string
-	public readonly path: [string, string]
+	public readonly from: string
+	public readonly to: string
 	public readonly content: string
 	public readonly media: Media | null
 	public readonly sessionId: string | null
@@ -11,10 +12,11 @@ export class ChatEntity extends BaseEntity {
 	public readonly updatedAt: number
 	public readonly readAt: number | null
 
-	constructor ({ id, path, content, media, sessionId, createdAt, updatedAt, readAt }: ChatConstructorArgs) {
+	constructor ({ id, from, to, content, media, sessionId, createdAt, updatedAt, readAt }: ChatConstructorArgs) {
 		super()
 		this.id = id
-		this.path = path
+		this.from = from
+		this.to = to
 		this.content = content
 		this.media = media
 		this.sessionId = sessionId
@@ -22,17 +24,14 @@ export class ChatEntity extends BaseEntity {
 		this.updatedAt = updatedAt
 		this.readAt = readAt
 	}
-
-	get from () {
-		return this.path[0]
-	}
 }
 
 type ChatConstructorArgs = {
-	id: string,
-	path: [string, string],
-	content: string,
-	media: Media | null,
+	id: string
+	from: string
+	to: string
+	content: string
+	media: Media | null
 	createdAt: number
 	updatedAt: number
 	readAt: number | null

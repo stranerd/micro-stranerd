@@ -1,7 +1,7 @@
 import { appInstance, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
-import { FindSession } from '@modules/sessions'
+import { SessionsUseCases } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { UpdateTest } from '@modules/study'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
@@ -16,7 +16,7 @@ export const subscribers = {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 		if (data.type === DelayedJobs.ScheduledSessionStart) {
 			const { sessionId, studentId: userId } = data.data
-			const session = await FindSession.execute({ sessionId, userId })
+			const session = await SessionsUseCases.find({ sessionId, userId })
 			if (session) await startSession(session)
 		}
 		if (data.type === DelayedJobs.ScheduledSessionNotification) {

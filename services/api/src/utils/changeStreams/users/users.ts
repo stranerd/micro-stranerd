@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@modules/questions'
-import { UpdateChatMetasUserBio, UpdateSessionsUserBio } from '@modules/sessions'
+import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
 import {
 	AddSet,
 	SetType,
@@ -34,7 +34,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
-			UpdateChatMetasUserBio.execute, UpdateSessionsUserBio.execute, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
+			ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
 			UpdateVideosUserBio.execute, UpdateCommentsUserBio.execute, UpdateNotesUserBio.execute, UpdateFlashCardsUserBio.execute, UpdateSetsUserBio.execute,
 			ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio
 		].map(async (useCase) => await useCase({
