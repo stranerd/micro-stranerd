@@ -3,7 +3,7 @@ import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { TaskID, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, TaskID } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
@@ -35,14 +35,14 @@ export class SessionRepository implements ISessionRepository {
 	async find (id: string, userId: string) {
 		const session = await Session.findOne({
 			_id: id,
-			$or: [{ studentId: userId }, { tutorId: userId }]
+			$or: [{ 'student.id': userId }, { 'tutor.id': userId }]
 		})
 		return this.mapper.mapFrom(session)
 	}
 
 	async accept (id: string, tutorId: string, accepted: boolean) {
 		const session = await Session.findOneAndUpdate({
-			_id: id, tutorId, accepted: null
+			_id: id, 'tutor.id': tutorId, accepted: null
 		}, { $set: { accepted } })
 
 		return !!session
@@ -50,22 +50,22 @@ export class SessionRepository implements ISessionRepository {
 
 	async cancel (ids: string[], userId: string, reason: keyof SessionFromModel['cancelled']) {
 		const result = await Session.updateMany({
-			_id: { $in: ids }, $or: [{ tutorId: userId }, { studentId: userId }]
+			_id: { $in: ids }, $or: [{ 'tutor.id': userId }, { 'student.id': userId }]
 		}, { $set: { [`cancelled.${reason}`]: true, done: true } })
 		return result.acknowledged
 	}
 
 	async end (ids: string[], userId: string) {
 		const result = await Session.updateMany({
-			_id: { $in: ids }, studentId: userId
+			_id: { $in: ids }, 'student.id': userId
 		}, { $set: { done: true } })
 		return result.acknowledged
 	}
 
-	async updateSessionsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
+	async updateUserBio (user: EmbeddedUser) {
 		const result = await Promise.all([
-			Session.updateMany({ studentId: userId }, { $set: { studentBio: userBio, studentRoles: userRoles } }),
-			Session.updateMany({ tutorId: userId }, { $set: { tutorBio: userBio, tutorRoles: userRoles } })
+			Session.updateMany({ 'student.id': user.id }, { $set: { student: user } }),
+			Session.updateMany({ 'tutor.id': user.id }, { $set: { tutor: user } })
 		])
 		return result[0].acknowledged && result[1].acknowledged
 	}
@@ -81,7 +81,7 @@ export class SessionRepository implements ISessionRepository {
 		})
 	}
 
-	async markSessionDone (id: string) {
+	async markDone (id: string) {
 		await Session.findByIdAndUpdate(id, { $set: { done: true, endedAt: Date.now() } })
 	}
 }

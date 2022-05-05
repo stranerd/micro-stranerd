@@ -1,8 +1,7 @@
 import { ISessionRepository } from '../irepositories/session'
 import { SessionFromModel, SessionToModel } from '../../data/models/session'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
-import { TaskID } from '../types'
+import { EmbeddedUser, TaskID } from '../types'
 
 export class SessionsUseCase {
 	private repository: ISessionRepository
@@ -36,11 +35,11 @@ export class SessionsUseCase {
 	}
 
 	async markDone (sessionId: string) {
-		return await this.repository.markSessionDone(sessionId)
+		return await this.repository.markDone(sessionId)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateSessionsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 
 	async updateTaskIdsAndTimes (input: {

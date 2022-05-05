@@ -1,4 +1,4 @@
-import { TaskID, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, TaskID } from '../../domain/types'
 
 export interface SessionFromModel extends SessionToModel {
 	_id: string
@@ -14,12 +14,8 @@ export interface SessionFromModel extends SessionToModel {
 
 export interface SessionToModel {
 	message: string
-	studentId: string
-	studentBio: UserBio
-	studentRoles: UserRoles
-	tutorId: string
-	tutorBio: UserBio
-	tutorRoles: UserRoles
+	student: EmbeddedUser
+	tutor: EmbeddedUser
 	duration: number
 	price: number
 	isScheduled: boolean

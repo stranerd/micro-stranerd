@@ -1,6 +1,6 @@
 import { IChatMetaRepository } from '../irepositories/chatMeta'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '../types'
 
 export class ChatMetasUseCase {
 	private repository: IChatMetaRepository
@@ -17,11 +17,11 @@ export class ChatMetasUseCase {
 		return await this.repository.get(query)
 	}
 
-	async updateMetaUser (input: { id: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateBio(input.id, input.userBio, input.userRoles)
+	async updateMetaUser (input: { id: string, user: EmbeddedUser }) {
+		return await this.repository.updateBio(input.id, input.user)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateUserBios(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

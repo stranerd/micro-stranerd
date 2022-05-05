@@ -1,7 +1,7 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { SessionEntity } from '../../domain/entities/session'
 import { SessionFromModel } from '../models/session'
-import { SessionChangeStreamCallbacks } from '@utils/changeStreams/sessions/session'
+import { SessionChangeStreamCallbacks } from '@utils/changeStreams/sessions/sessions'
 import { SessionMapper } from '../mappers/session'
 
 const Schema = new mongoose.Schema<SessionFromModel>({
@@ -13,28 +13,12 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		type: String,
 		required: true
 	},
-	studentId: {
-		type: String,
+	student: {
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['student'],
 		required: true
 	},
-	studentBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentBio'],
-		required: true
-	},
-	studentRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['studentRoles'],
-		required: true
-	},
-	tutorId: {
-		type: String,
-		required: true
-	},
-	tutorBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorBio'],
-		required: true
-	},
-	tutorRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutorRoles'],
+	tutor: {
+		type: mongoose.Schema.Types.Mixed as unknown as SessionFromModel['tutor'],
 		required: true
 	},
 	duration: {

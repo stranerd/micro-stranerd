@@ -14,7 +14,7 @@ export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, Cha
 		const session = await SessionsUseCases.find({ sessionId: after.sessionId, userId: after.from })
 		if (!session || session.startedAt || session.done) return
 		const sessionChats = await ChatsUseCases.get({
-			where: [{ field: 'sessionId', value: after.sessionId }, { field: 'from', value: session.studentId }],
+			where: [{ field: 'sessionId', value: after.sessionId }, { field: 'from', value: session.student.id }],
 			limit: 2
 		})
 		if (sessionChats.docs.total < 2) return

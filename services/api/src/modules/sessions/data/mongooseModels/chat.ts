@@ -1,7 +1,7 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ChatFromModel } from '../models/chat'
 import { ChatEntity } from '../../domain/entities/chat'
-import { ChatChangeStreamCallbacks } from '@utils/changeStreams/sessions/chat'
+import { ChatChangeStreamCallbacks } from '@utils/changeStreams/sessions/chats'
 import { ChatMapper } from '../mappers/chat'
 
 const Schema = new mongoose.Schema<ChatFromModel>({

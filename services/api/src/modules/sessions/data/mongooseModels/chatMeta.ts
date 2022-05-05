@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ChatMetaFromModel } from '../models/chatMeta'
-import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/sessions/chatMeta'
+import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/sessions/chatMetas'
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 
@@ -23,19 +23,9 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['userBio'],
-		required: false,
-		default: null as unknown as ChatMetaFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['userRoles'],
-		required: false,
-		default: null as unknown as ChatMetaFromModel['userRoles']
 	},
 	createdAt: {
 		type: Number,

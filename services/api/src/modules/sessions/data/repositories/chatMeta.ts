@@ -3,7 +3,7 @@ import { IChatMetaRepository } from '../../domain/irepositories/chatMeta'
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaFromModel } from '../models/chatMeta'
 import { ChatMeta } from '../mongooseModels/chatMeta'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class ChatMetaRepository implements IChatMetaRepository {
 	private static instance: ChatMetaRepository
@@ -32,13 +32,13 @@ export class ChatMetaRepository implements IChatMetaRepository {
 		}
 	}
 
-	async updateBio (id: string, userBio: UserBio, userRoles: UserRoles) {
-		const chatMeta = await ChatMeta.findOneAndUpdate({ _id: id }, { $set: { userBio, userRoles } })
+	async updateBio (id: string, user: EmbeddedUser) {
+		const chatMeta = await ChatMeta.findOneAndUpdate({ _id: id }, { $set: { user } })
 		return !!chatMeta
 	}
 
-	async updateUserBios (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const result = await ChatMeta.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const result = await ChatMeta.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return !!result.acknowledged
 	}
 }

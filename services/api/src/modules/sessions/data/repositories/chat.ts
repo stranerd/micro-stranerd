@@ -24,17 +24,17 @@ export class ChatRepository implements IChatRepository {
 		await session.withTransaction(async (session) => {
 			const chat = await new Chat(data).save({ session })
 			await ChatMeta.findOneAndUpdate(
-				{ ownerId: data.from, userId: data.to },
+				{ ownerId: data.from, 'user.id': data.to },
 				{
 					$set: { last: chat },
-					$setOnInsert: { ownerId: data.from, userId: data.to }
+					$setOnInsert: { ownerId: data.from, 'user.id': data.to }
 				},
 				{ upsert: true, session })
 			await ChatMeta.findOneAndUpdate(
-				{ ownerId: data.to, userId: data.from },
+				{ ownerId: data.to, 'user.id': data.from },
 				{
 					$set: { last: chat },
-					$setOnInsert: { ownerId: data.to, userId: data.from },
+					$setOnInsert: { ownerId: data.to, 'user.id': data.from },
 					$addToSet: { unRead: chat._id }
 				},
 				{ upsert: true, session })
@@ -70,10 +70,10 @@ export class ChatRepository implements IChatRepository {
 				{ new: true, session }
 			)
 			await ChatMeta.findOneAndUpdate({
-				ownerId: from, userId: to
+				ownerId: from, 'user.id': to
 			}, { $pull: { unRead: id } }, { session })
 			await ChatMeta.findOneAndUpdate({
-				ownerId: from, userId: to, 'last._id': id
+				ownerId: from, 'user.id': to, 'last._id': id
 			}, { $set: { 'last.readAt': readAt } }, { session })
 
 			res = !!chat

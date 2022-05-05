@@ -57,11 +57,8 @@ export class SessionController {
 		return await SessionsUseCases.add({
 			...data,
 			price: requestedSession.price,
-			tutorBio: tutorUser.bio,
-			tutorRoles: tutorUser.roles,
-			studentId: studentUser.id,
-			studentBio: studentUser.bio,
-			studentRoles: studentUser.roles
+			tutor: tutorUser.getEmbedded(),
+			student: studentUser.getEmbedded()
 		})
 	}
 

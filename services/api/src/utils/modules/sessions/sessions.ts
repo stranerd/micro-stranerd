@@ -4,8 +4,8 @@ import { UsersUseCases } from '@modules/users'
 
 export const startSession = async (session: SessionEntity) => {
 	await UsersUseCases.setCurrentSession({
-		studentId: session.studentId,
-		tutorId: session.tutorId,
+		studentId: session.student.id,
+		tutorId: session.tutor.id,
 		sessionId: session.id,
 		add: true
 	})
@@ -26,19 +26,19 @@ export const startSessionTimer = async (session: SessionEntity) => {
 }
 
 export const scheduleSession = async (session: SessionEntity) => {
-	const { id: sessionId, studentId, tutorId, isScheduled, scheduledAt } = session
+	const { id: sessionId, student, tutor, isScheduled, scheduledAt } = session
 	if (!isScheduled) return
 	const delayTillStart = scheduledAt! - Date.now()
 	const reminders = [0, 5, 15, 60].map((time) => delayTillStart - (time * 60 * 1000)).filter((delay) => delay >= 0)
 	const taskIds = [] as (string | number)[]
 	if (delayTillStart >= 0) taskIds.push(await appInstance.job.addDelayedJob({
 		type: DelayedJobs.ScheduledSessionStart,
-		data: { sessionId, studentId, tutorId }
+		data: { sessionId, studentId: student.id, tutorId: tutor.id }
 	}, delayTillStart))
 	await Promise.all(
 		reminders.map(async (delay) => taskIds.push(await appInstance.job.addDelayedJob({
 			type: DelayedJobs.ScheduledSessionNotification,
-			data: { sessionId, studentId, tutorId, timeInSec: 0 }
+			data: { sessionId, studentId: student.id, tutorId: tutor.id, timeInSec: 0 }
 		}, delay))))
 	await SessionsUseCases.updateTaskIdsAndTimes({
 		sessionId: session.id,
