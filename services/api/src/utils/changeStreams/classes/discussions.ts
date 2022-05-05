@@ -11,11 +11,11 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 
 		const group = await GroupsUseCases.find({ id: after.groupId, classId: after.classId })
 		if (!group) return
-		const users = group.getAllUsers().filter((userId) => userId !== after.userId)
+		const users = group.getAllUsers().filter((userId) => userId !== after.user.id)
 		const body = after.media ? 'Shared a file' : after.content
 		await sendPushNotification({
 			userIds: users,
-			title: group.name, body: `${after.userBio.firstName} ${after.userBio.lastName}: ${body}`,
+			title: group.name, body: `${after.user.bio.firstName} ${after.user.bio.lastName}: ${body}`,
 			data: {
 				type: 'classes-discussions',
 				data: { id: after.id, classId: group.classId, groupId: group.id }

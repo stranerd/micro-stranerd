@@ -1,8 +1,7 @@
 import { GroupToModel } from '../../data/models/groups'
 import { IGroupRepository } from '../irepositories/groups'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
-import { ClassUsers } from '../types'
+import { ClassUsers, EmbeddedUser } from '../types'
 
 export class GroupsUseCase {
 	private repository: IGroupRepository
@@ -35,11 +34,11 @@ export class GroupsUseCase {
 		return await this.repository.update(input.classId, input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateGroupsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 
 	async updateUsers (input: { classId: string, users: Record<ClassUsers, string[]> }) {
-		return await this.repository.updateGroupsUsers(input.classId, input.users)
+		return await this.repository.updateUsers(input.classId, input.users)
 	}
 }

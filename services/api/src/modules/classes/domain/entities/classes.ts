@@ -1,11 +1,9 @@
-import { ClassUsers, Media, UserBio, UserRoles } from '../types'
+import { ClassUsers, EmbeddedUser, Media } from '../types'
 import { BaseEntity } from '@utils/commons'
 
 export class ClassEntity extends BaseEntity {
 	public readonly id: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly name: string
 	public readonly description: string
 	public readonly photo: Media | null
@@ -17,9 +15,7 @@ export class ClassEntity extends BaseEntity {
 
 	constructor ({
 		             id,
-		             userId,
-		             userBio,
-		             userRoles,
+		             user,
 		             name,
 		             description,
 		             photo,
@@ -31,9 +27,7 @@ export class ClassEntity extends BaseEntity {
 	             }: ClassConstructorArgs) {
 		super()
 		this.id = id
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.name = name
 		this.description = description
 		this.photo = photo
@@ -51,9 +45,7 @@ export class ClassEntity extends BaseEntity {
 
 type ClassConstructorArgs = {
 	id: string,
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	name: string
 	description: string
 	photo: Media | null

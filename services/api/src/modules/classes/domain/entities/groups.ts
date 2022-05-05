@@ -1,14 +1,12 @@
 import { BaseEntity } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../types'
+import { ClassUsers, EmbeddedUser } from '../types'
 import { DiscussionEntity } from './discussions'
 
 export class GroupEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
 	public readonly classId: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly last: DiscussionEntity | null
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly createdAt: number
@@ -18,9 +16,7 @@ export class GroupEntity extends BaseEntity {
 		             id,
 		             name,
 		             classId,
-		             userId,
-		             userBio,
-		             userRoles,
+		             user,
 		             last,
 		             users,
 		             createdAt,
@@ -29,9 +25,7 @@ export class GroupEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.name = name
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.last = last
 		this.classId = classId
 		this.users = users
@@ -47,9 +41,7 @@ export class GroupEntity extends BaseEntity {
 type GroupConstructorArgs = {
 	id: string
 	name: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	users: Record<ClassUsers, string[]>
 	last: DiscussionEntity | null
 	classId: string

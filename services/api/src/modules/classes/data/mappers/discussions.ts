@@ -5,9 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class DiscussionMapper extends BaseMapper<DiscussionFromModel, DiscussionToModel, DiscussionEntity> {
 	mapFrom (model: DiscussionFromModel | null) {
 		if (!model) return null
-		const { _id, userId, userBio, userRoles, content, media, links, groupId, classId, createdAt, updatedAt } = model
+		const { _id, user, content, media, links, groupId, classId, createdAt, updatedAt } = model
 		return new DiscussionEntity({
-			id: _id.toString(), userId, userBio, userRoles,
+			id: _id.toString(), user,
 			content, media, links, groupId, classId,
 			createdAt, updatedAt
 		})
@@ -20,17 +20,7 @@ export class DiscussionMapper extends BaseMapper<DiscussionFromModel, Discussion
 			links: entity.links,
 			groupId: entity.groupId,
 			classId: entity.classId,
-			userId: entity.userId,
-			userBio: entity.userBio,
-			userRoles: entity.userRoles
-		}
-	}
-
-	mapForMeta (model: DiscussionFromModel): DiscussionFromModel {
-		const { _id, userId, userBio, userRoles, content, media, links, groupId, classId, createdAt, updatedAt } = model
-		return {
-			_id: _id.toString(), userId, userBio, userRoles,
-			content, media, links, groupId, classId, createdAt, updatedAt
+			user: entity.user
 		}
 	}
 }

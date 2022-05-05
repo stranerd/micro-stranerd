@@ -34,5 +34,5 @@ export { UserEntity } from './domain/entities/users'
 export { RankTypes } from './domain/entities/ranks'
 export {
 	ScoreRewards, UserBio, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta, UserRoles,
-	UserSchoolData, UserSchoolType
+	EmbeddedUser, UserSchoolData, UserSchoolType
 } from './domain/types'

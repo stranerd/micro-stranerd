@@ -1,8 +1,7 @@
 import { ClassToModel } from '../../data/models/classes'
 import { IClassRepository } from '../irepositories/classes'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
-import { ClassUsers } from '@modules/classes/domain/types'
+import { ClassUsers, EmbeddedUser } from '../types'
 
 export class ClassesUseCase {
 	private repository: IClassRepository
@@ -31,8 +30,8 @@ export class ClassesUseCase {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateClassesUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 
 	async acceptRequest (data: { classId: string, adminId: string, requestId: string, accept: boolean }) {

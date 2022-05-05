@@ -40,9 +40,7 @@ export class DiscussionController {
 			...data, media,
 			links: Validation.extractUrls(data.content),
 			classId: group.classId,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
+			user: user.getEmbedded()
 		})
 	}
 }

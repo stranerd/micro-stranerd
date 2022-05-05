@@ -1,13 +1,11 @@
 import { BaseEntity } from '@utils/commons'
-import { ClassUsers, EventDataType, UserBio, UserRoles } from '../types'
+import { ClassUsers, EmbeddedUser, EventDataType } from '../types'
 
 export class EventEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly classId: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly data: EventDataType
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly createdAt: number
@@ -17,9 +15,7 @@ export class EventEntity extends BaseEntity {
 		             id,
 		             title,
 		             classId,
-		             userId,
-		             userBio,
-		             userRoles,
+		             user,
 		             data,
 		             users,
 		             createdAt,
@@ -28,9 +24,7 @@ export class EventEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.title = title
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.data = data
 		this.classId = classId
 		this.users = users
@@ -46,9 +40,7 @@ export class EventEntity extends BaseEntity {
 type EventConstructorArgs = {
 	id: string
 	title: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	users: Record<ClassUsers, string[]>
 	data: EventDataType
 	classId: string

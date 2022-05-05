@@ -3,7 +3,7 @@ import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { Group } from '../mongooseModels/groups'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class GroupRepository implements IGroupRepository {
 	private static instance: GroupRepository
@@ -51,12 +51,12 @@ export class GroupRepository implements IGroupRepository {
 		return !!group
 	}
 
-	async updateGroupsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const groups = await Group.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const groups = await Group.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return groups.acknowledged
 	}
 
-	async updateGroupsUsers (classId: string, users: Record<ClassUsers, string[]>) {
+	async updateUsers (classId: string, users: Record<ClassUsers, string[]>) {
 		const groups = await Group.updateMany({ classId }, { $set: { users } })
 		return groups.acknowledged
 	}

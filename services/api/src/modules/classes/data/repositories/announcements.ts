@@ -3,7 +3,7 @@ import { AnnouncementMapper } from '../mappers/announcements'
 import { AnnouncementFromModel, AnnouncementToModel } from '../models/announcements'
 import { Announcement } from '../mongooseModels/announcements'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class AnnouncementRepository implements IAnnouncementRepository {
 	private static instance: AnnouncementRepository
@@ -45,8 +45,8 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		return this.mapper.mapFrom(announcement)
 	}
 
-	async updateAnnouncementsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const announcements = await Announcement.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const announcements = await Announcement.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return announcements.acknowledged
 	}
 
@@ -55,7 +55,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		return !!announcement
 	}
 
-	async updateAnnouncementsUsers (classId: string, users: Record<ClassUsers, string[]>) {
+	async updateUsers (classId: string, users: Record<ClassUsers, string[]>) {
 		const announcements = await Announcement.updateMany({ classId }, { $set: { users } })
 		return announcements.acknowledged
 	}

@@ -69,9 +69,7 @@ export class ClassController {
 
 		const data = {
 			name, description, photo, coverPhoto,
-			userId: user.id,
-			userBio: user.bio,
-			userRoles: user.roles
+			user: user.getEmbedded()
 		}
 
 		return await ClassesUseCases.add(data)

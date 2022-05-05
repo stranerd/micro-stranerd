@@ -1,11 +1,9 @@
-import { Media, UserBio, UserRoles } from '../types'
+import { EmbeddedUser, Media } from '../types'
 import { BaseEntity } from '@utils/commons'
 
 export class DiscussionEntity extends BaseEntity {
 	public readonly id: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly content: string
 	public readonly media: Media | null
 	public readonly links: { original: string, normalized: string }[]
@@ -16,9 +14,7 @@ export class DiscussionEntity extends BaseEntity {
 
 	constructor ({
 		             id,
-		             userId,
-		             userBio,
-		             userRoles,
+		             user,
 		             content,
 		             media,
 		             links,
@@ -29,9 +25,7 @@ export class DiscussionEntity extends BaseEntity {
 	             }: DiscussionConstructorArgs) {
 		super()
 		this.id = id
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.content = content
 		this.media = media
 		this.links = links
@@ -44,9 +38,7 @@ export class DiscussionEntity extends BaseEntity {
 
 type DiscussionConstructorArgs = {
 	id: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	content: string
 	media: Media | null
 	links: { original: string, normalized: string }[]

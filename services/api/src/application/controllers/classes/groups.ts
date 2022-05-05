@@ -53,10 +53,7 @@ export class GroupController {
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
 		const data = {
-			name, classId,
-			userId: authUserId,
-			userBio: user.bio,
-			userRoles: user.roles,
+			name, classId, user: user.getEmbedded(),
 			users: classInst.users
 		}
 

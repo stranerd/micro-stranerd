@@ -1,4 +1,4 @@
-import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 import { DiscussionFromModel } from './discussions'
 
 export interface GroupFromModel extends GroupToModel {
@@ -10,9 +10,7 @@ export interface GroupFromModel extends GroupToModel {
 
 export interface GroupToModel {
 	classId: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	name: string
 	users: Record<ClassUsers, string[]>
 }

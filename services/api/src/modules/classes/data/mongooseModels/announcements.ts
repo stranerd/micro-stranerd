@@ -19,19 +19,9 @@ const Schema = new mongoose.Schema<AnnouncementFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as AnnouncementFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnnouncementFromModel['userBio'],
-		required: false,
-		default: {} as unknown as AnnouncementFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnnouncementFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as AnnouncementFromModel['userRoles']
 	},
 	body: {
 		type: String,

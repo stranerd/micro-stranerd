@@ -1,4 +1,4 @@
-import { Media, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, Media } from '../../domain/types'
 
 export interface DiscussionFromModel extends DiscussionToModel {
 	_id: string
@@ -7,9 +7,7 @@ export interface DiscussionFromModel extends DiscussionToModel {
 }
 
 export interface DiscussionToModel {
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	content: string
 	media: Media | null
 	links: { original: string, normalized: string }[]

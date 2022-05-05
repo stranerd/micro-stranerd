@@ -1,4 +1,4 @@
-import { ClassUsers, EventDataType, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser, EventDataType } from '../../domain/types'
 
 export interface EventFromModel extends EventToModel {
 	_id: string
@@ -8,9 +8,7 @@ export interface EventFromModel extends EventToModel {
 
 export interface EventToModel {
 	classId: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	title: string
 	data: EventDataType
 	users: Record<ClassUsers, string[]>

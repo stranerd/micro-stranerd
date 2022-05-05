@@ -1,7 +1,7 @@
 import { DiscussionToModel } from '../../data/models/discussions'
 import { IDiscussionRepository } from '../irepositories/discussions'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '../types'
 
 export class DiscussionsUseCase {
 	private repository: IDiscussionRepository
@@ -34,7 +34,7 @@ export class DiscussionsUseCase {
 		return await this.repository.update(input.classId, input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateDiscussionsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

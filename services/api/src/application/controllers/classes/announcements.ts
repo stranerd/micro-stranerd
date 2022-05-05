@@ -53,10 +53,7 @@ export class AnnouncementController {
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
 		const data = {
-			body, classId,
-			userId: authUserId,
-			userBio: user.bio,
-			userRoles: user.roles,
+			body, classId, user: user.getEmbedded(),
 			users: classInst.users
 		}
 

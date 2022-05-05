@@ -3,7 +3,7 @@ import { EventMapper } from '../mappers/events'
 import { EventFromModel, EventToModel } from '../models/events'
 import { Event } from '../mongooseModels/events'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class EventRepository implements IEventRepository {
 	private static instance: EventRepository
@@ -51,12 +51,12 @@ export class EventRepository implements IEventRepository {
 		return !!event
 	}
 
-	async updateEventsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const events = await Event.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const events = await Event.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return events.acknowledged
 	}
 
-	async updateEventsUsers (classId: string, users: Record<ClassUsers, string[]>) {
+	async updateUsers (classId: string, users: Record<ClassUsers, string[]>) {
 		const events = await Event.updateMany({ classId }, { $set: { users } })
 		return events.acknowledged
 	}

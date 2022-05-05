@@ -9,19 +9,9 @@ const Schema = new mongoose.Schema<DiscussionFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as DiscussionFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as DiscussionFromModel['userBio'],
-		required: false,
-		default: {} as unknown as DiscussionFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as DiscussionFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as DiscussionFromModel['userRoles']
 	},
 	groupId: {
 		type: String,

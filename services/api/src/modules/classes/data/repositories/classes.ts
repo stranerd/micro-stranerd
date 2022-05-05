@@ -3,7 +3,7 @@ import { ClassMapper } from '../mappers/classes'
 import { ClassFromModel, ClassToModel } from '../models/classes'
 import { Class } from '../mongooseModels/classes'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class ClassRepository implements IClassRepository {
 	private static instance: ClassRepository
@@ -29,8 +29,8 @@ export class ClassRepository implements IClassRepository {
 
 	async add (data: ClassToModel) {
 		const classInstance = new Class(data)
-		classInstance.users[ClassUsers.admins] = [data.userId]
-		classInstance.users[ClassUsers.members] = [data.userId]
+		classInstance.users[ClassUsers.admins] = [data.user.id]
+		classInstance.users[ClassUsers.members] = [data.user.id]
 		return this.mapper.mapFrom(await classInstance.save())!
 	}
 
@@ -47,8 +47,8 @@ export class ClassRepository implements IClassRepository {
 		return this.mapper.mapFrom(classInstance)
 	}
 
-	async updateClassesUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const classes = await Class.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const classes = await Class.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return classes.acknowledged
 	}
 
@@ -108,7 +108,7 @@ export class ClassRepository implements IClassRepository {
 
 	async changeMemberRole (classId: string, adminId: string, userId: string, role: ClassUsers, add: boolean) {
 		const classInst = await Class.findByIdAndUpdate({
-			_id: classId, userId: adminId
+			_id: classId, 'user.id': adminId
 		}, {
 			[add ? '$addToSet' : '$pull']: {
 				[`users.${role}`]: userId

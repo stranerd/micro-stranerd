@@ -4,7 +4,13 @@ import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@mod
 import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
 import { FlashCardsUseCases, NotesUseCases, SetsUseCases, SetType, VideosUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
-import { AnnouncementsUseCases, ClassesUseCases, DiscussionsUseCases, GroupsUseCases } from '@modules/classes'
+import {
+	AnnouncementsUseCases,
+	ClassesUseCases,
+	DiscussionsUseCases,
+	EventsUseCases,
+	GroupsUseCases
+} from '@modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -28,8 +34,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			await Promise.all([
 				QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
 				ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio,
-				VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio,
-				ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio
+				VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio
 			].map(async (useCase) => await useCase({
 				userId: after.id,
 				userBio: after.bio,
@@ -37,7 +42,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			})))
 
 			await Promise.all([
-				ReviewsUseCases.updateUserBio
+				ReviewsUseCases.updateUserBio,
+				ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio, EventsUseCases.updateUserBio
 			].map(async (useCase) => await useCase(after.getEmbedded())))
 		}
 

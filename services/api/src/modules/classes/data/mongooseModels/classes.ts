@@ -10,19 +10,9 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['userBio'],
-		required: false,
-		default: {} as unknown as ClassFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as ClassFromModel['userRoles']
 	},
 	name: {
 		type: String,

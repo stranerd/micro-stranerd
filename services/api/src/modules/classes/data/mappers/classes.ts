@@ -7,9 +7,7 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 		if (!model) return null
 		const {
 			_id,
-			userId,
-			userBio,
-			userRoles,
+			user,
 			name,
 			description,
 			photo,
@@ -20,7 +18,7 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 			updatedAt
 		} = model
 		return new ClassEntity({
-			id: _id.toString(), userId, userBio, userRoles,
+			id: _id.toString(), user,
 			name, description, photo, coverPhoto, users, requests,
 			createdAt, updatedAt
 		})
@@ -33,9 +31,7 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 			photo: entity.photo,
 			coverPhoto: entity.coverPhoto,
 			users: entity.users,
-			userId: entity.userId,
-			userBio: entity.userBio,
-			userRoles: entity.userRoles
+			user: entity.user
 		}
 	}
 }

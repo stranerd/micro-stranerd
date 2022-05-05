@@ -1,8 +1,7 @@
 import { AnnouncementToModel } from '../../data/models/announcements'
 import { IAnnouncementRepository } from '../irepositories/announcements'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
-import { ClassUsers } from '../types'
+import { ClassUsers, EmbeddedUser } from '../types'
 
 export class AnnouncementsUseCase {
 	private repository: IAnnouncementRepository
@@ -35,11 +34,11 @@ export class AnnouncementsUseCase {
 		return await this.repository.update(input.classId, input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateAnnouncementsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 
 	async updateUsers (input: { classId: string, users: Record<ClassUsers, string[]> }) {
-		return await this.repository.updateAnnouncementsUsers(input.classId, input.users)
+		return await this.repository.updateUsers(input.classId, input.users)
 	}
 }

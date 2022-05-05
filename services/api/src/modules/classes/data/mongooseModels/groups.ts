@@ -23,19 +23,9 @@ const Schema = new mongoose.Schema<GroupFromModel>({
 		required: false,
 		default: null as unknown as GroupFromModel['last']
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as GroupFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as GroupFromModel['userBio'],
-		required: false,
-		default: {} as unknown as GroupFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as GroupFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as GroupFromModel['userRoles']
 	},
 	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],

@@ -1,7 +1,7 @@
 import { AnnouncementEntity } from '../entities/announcements'
 import { AnnouncementToModel } from '../../data/models/announcements'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { ClassUsers, UserBio, UserRoles } from '../types'
+import { ClassUsers, EmbeddedUser } from '../types'
 
 export interface IAnnouncementRepository {
 	add: (data: AnnouncementToModel) => Promise<AnnouncementEntity>
@@ -9,7 +9,7 @@ export interface IAnnouncementRepository {
 	find: (classId: string, id: string) => Promise<AnnouncementEntity | null>
 	update: (classId: string, id: string, userId: string, data: Partial<AnnouncementToModel>) => Promise<AnnouncementEntity | null>
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
-	updateAnnouncementsUserBio: (userId: string, userBio: UserBio, userRoles: UserRoles) => Promise<boolean>
-	updateAnnouncementsUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
+	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
+	updateUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassAnnouncements: (classId: string) => Promise<boolean>
 }

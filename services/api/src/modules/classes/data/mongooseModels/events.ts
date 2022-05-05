@@ -22,19 +22,9 @@ const Schema = new mongoose.Schema<EventFromModel>({
 		type: mongoose.Schema.Types.Mixed as unknown as EventFromModel['data'],
 		required: true
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as EventFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as EventFromModel['userBio'],
-		required: false,
-		default: {} as unknown as EventFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as EventFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as EventFromModel['userRoles']
 	},
 	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],

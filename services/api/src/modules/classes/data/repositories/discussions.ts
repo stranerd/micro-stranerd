@@ -3,7 +3,7 @@ import { DiscussionMapper } from '../mappers/discussions'
 import { DiscussionFromModel, DiscussionToModel } from '../models/discussions'
 import { Discussion } from '../mongooseModels/discussions'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 import { Group } from '../mongooseModels/groups'
 
 export class DiscussionRepository implements IDiscussionRepository {
@@ -33,8 +33,7 @@ export class DiscussionRepository implements IDiscussionRepository {
 		let res = null as any
 		await session.withTransaction(async (session) => {
 			const discussion = await new Discussion(data).save({ session })
-			const discussionData = this.mapper.mapForMeta(discussion)
-			await Group.findOneAndUpdate({ _id: data.groupId }, { $set: { last: discussionData } }, { session })
+			await Group.findOneAndUpdate({ _id: data.groupId }, { $set: { last: discussion } }, { session })
 			res = discussion
 			return discussion
 		})
@@ -50,14 +49,14 @@ export class DiscussionRepository implements IDiscussionRepository {
 	async update (classId: string, id: string, userId: string, data: Partial<DiscussionToModel>) {
 		const discussion = await Discussion.findOneAndUpdate({
 			_id: id,
-			userId,
+			'user.id': userId,
 			classId
 		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(discussion)
 	}
 
-	async updateDiscussionsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const discussions = await Discussion.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const discussions = await Discussion.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return discussions.acknowledged
 	}
 
@@ -65,7 +64,7 @@ export class DiscussionRepository implements IDiscussionRepository {
 		const session = await mongoose.startSession()
 		let res = false
 		await session.withTransaction(async (session) => {
-			const discussion = await Discussion.findOneAndDelete({ _id: id, userId, classId }, { session })
+			const discussion = await Discussion.findOneAndDelete({ _id: id, 'user.id': userId, classId }, { session })
 			if (discussion) await Group.findOneAndUpdate({ 'last._id': discussion.id }, { $set: { last: null } }, { session })
 			res = !!discussion
 			return discussion

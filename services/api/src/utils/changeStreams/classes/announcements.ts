@@ -10,7 +10,7 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 
 		const classInst = await ClassesUseCases.find(after.classId)
 		if (!classInst) return
-		const users = classInst.getAllUsers().filter((userId) => userId !== after.userId)
+		const users = classInst.getAllUsers().filter((userId) => userId !== after.user.id)
 		await broadcastNotifications(users, {
 			title: `New announcement in ${classInst.name}`,
 			body: after.body,

@@ -1,4 +1,4 @@
-import { ClassUsers, Media, UserBio, UserRoles } from '../../domain/types'
+import { ClassUsers, EmbeddedUser, Media } from '../../domain/types'
 
 export interface ClassFromModel extends ClassToModel {
 	_id: string
@@ -13,7 +13,5 @@ export interface ClassToModel {
 	description: string
 	photo: Media | null
 	coverPhoto: Media | null
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 }
