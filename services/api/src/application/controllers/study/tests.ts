@@ -1,17 +1,17 @@
-import { AddTest, FindTest, FindTestPrep, GetTests, TestType, UpdateTest, UpdateTestAnswer } from '@modules/study'
+import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
 import { GetPastQuestions } from '@modules/school'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { getRandomN } from '@utils/functions'
 
 export class TestController {
 	static async FindTest (req: Request) {
-		return await FindTest.execute({ id: req.params.id, userId: req.authUser!.id })
+		return await TestsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
 	}
 
 	static async GetTests (req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'userId', value: req.authUser!.id }]
-		return await GetTests.execute(query)
+		return await TestsUseCases.get(query)
 	}
 
 	static async CreateTest (req: Request) {
@@ -36,7 +36,7 @@ export class TestController {
 			}
 		})
 
-		const prep = await FindTestPrep.execute(prepId)
+		const prep = await TestPrepsUseCases.find(prepId)
 		if (!prep) throw new BadRequestError('test prep not found')
 		const { results } = await GetPastQuestions.execute({
 			where: [
@@ -56,7 +56,7 @@ export class TestController {
 			data: isTimed ? { type, time } : isUnTimed ? { type } : ({} as any)
 		}
 
-		return await AddTest.execute(data)
+		return await TestsUseCases.add(data)
 	}
 
 	static async UpdateAnswer (req: Request) {
@@ -68,7 +68,7 @@ export class TestController {
 			answer: { required: true, rules: [] }
 		})
 
-		const updated = await UpdateTestAnswer.execute({
+		const updated = await TestsUseCases.updateAnswer({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			questionId: data.questionId,
@@ -80,7 +80,7 @@ export class TestController {
 	}
 
 	static async MarkTestDone (req: Request) {
-		const updated = await UpdateTest.execute({
+		const updated = await TestsUseCases.update({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			data: { done: true }

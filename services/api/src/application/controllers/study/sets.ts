@@ -1,16 +1,16 @@
-import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, SetType, UpdateSet, UpdateSetProp } from '@modules/study'
+import { SetSaved, SetsUseCases, SetType } from '@modules/study'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
 import { ClassEntity, ClassesUseCases } from '@modules/classes'
 
 export class SetController {
 	static async FindSet (req: Request) {
-		return await FindSet.execute(req.params.id)
+		return await SetsUseCases.find(req.params.id)
 	}
 
 	static async GetSets (req: Request) {
 		const query = req.query as QueryParams
-		return await GetSets.execute(query)
+		return await SetsUseCases.get(query)
 	}
 
 	static async CreateSet (req: Request) {
@@ -44,7 +44,7 @@ export class SetController {
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
 
-		return await AddSet.execute(data)
+		return await SetsUseCases.add(data)
 	}
 
 	static async UpdateSet (req: Request) {
@@ -56,7 +56,7 @@ export class SetController {
 
 		const data = { name }
 
-		const updatedSet = await UpdateSet.execute({ id: req.params.id, userId: req.authUser!.id, data })
+		const updatedSet = await SetsUseCases.update({ id: req.params.id, userId: req.authUser!.id, data })
 		if (updatedSet) return updatedSet
 		throw new NotAuthorizedError()
 	}
@@ -76,7 +76,7 @@ export class SetController {
 			}
 		})
 
-		const updated = await UpdateSetProp.execute({
+		const updated = await SetsUseCases.updateSetProp({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			values: data.propIds,
@@ -103,7 +103,7 @@ export class SetController {
 			}
 		})
 
-		const updated = await UpdateSetProp.execute({
+		const updated = await SetsUseCases.updateSetProp({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			values: data.propIds,
@@ -116,7 +116,7 @@ export class SetController {
 	}
 
 	static async DeleteSet (req: Request) {
-		const isDeleted = await DeleteSet.execute({ id: req.params.id, userId: req.authUser!.id })
+		const isDeleted = await SetsUseCases.delete({ id: req.params.id, userId: req.authUser!.id })
 
 		if (isDeleted) return isDeleted
 		throw new BadRequestError('set not found')

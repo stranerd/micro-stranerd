@@ -2,15 +2,7 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
-import {
-	AddSet,
-	SetType,
-	UpdateCommentsUserBio,
-	UpdateFlashCardsUserBio,
-	UpdateNotesUserBio,
-	UpdateSetsUserBio,
-	UpdateVideosUserBio
-} from '@modules/study'
+import { FlashCardsUseCases, NotesUseCases, SetsUseCases, SetType, VideosUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
 import { AnnouncementsUseCases, ClassesUseCases, DiscussionsUseCases, GroupsUseCases } from '@modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -21,7 +13,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitCreated('users/users', after)
 		await getSocketEmitter().emitCreated(`users/users/${after.id}`, after)
 
-		await AddSet.execute({
+		await SetsUseCases.add({
 			name: '', data: { type: SetType.users },
 			userId: after.id,
 			userBio: after.bio,
@@ -35,7 +27,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBioOrRoles) await Promise.all([
 			QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
 			ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
-			UpdateVideosUserBio.execute, UpdateCommentsUserBio.execute, UpdateNotesUserBio.execute, UpdateFlashCardsUserBio.execute, UpdateSetsUserBio.execute,
+			VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio,
 			ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio
 		].map(async (useCase) => await useCase({
 			userId: after.id,

@@ -1,15 +1,15 @@
-import { AddFlashCard, DeleteFlashCard, FindFlashCard, GetFlashCards, UpdateFlashCard } from '@modules/study'
+import { FlashCardsUseCases } from '@modules/study'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class FlashCardController {
 	static async FindFlashCard (req: Request) {
-		return await FindFlashCard.execute(req.params.id)
+		return await FlashCardsUseCases.find(req.params.id)
 	}
 
 	static async GetFlashCard (req: Request) {
 		const query = req.query as QueryParams
-		return await GetFlashCards.execute(query)
+		return await FlashCardsUseCases.get(query)
 	}
 
 	static async UpdateFlashCard (req: Request) {
@@ -29,8 +29,7 @@ export class FlashCardController {
 
 		const authUserId = req.authUser!.id
 
-		const updatedFlashCard = await UpdateFlashCard.execute({ id: req.params.id, userId: authUserId, data })
-
+		const updatedFlashCard = await FlashCardsUseCases.update({ id: req.params.id, userId: authUserId, data })
 		if (updatedFlashCard) return updatedFlashCard
 		throw new NotAuthorizedError()
 	}
@@ -52,7 +51,7 @@ export class FlashCardController {
 
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AddFlashCard.execute({
+		return await FlashCardsUseCases.add({
 			...data,
 			userBio: user.bio,
 			userRoles: user.roles,
@@ -62,7 +61,7 @@ export class FlashCardController {
 
 	static async DeleteFlashCard (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteFlashCard.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await FlashCardsUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

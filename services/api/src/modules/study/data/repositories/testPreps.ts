@@ -45,7 +45,7 @@ export class TestPrepRepository implements ITestPrepRepository {
 		return this.mapper.mapFrom(testPrep)!
 	}
 
-	async update (id: string, data: TestPrepToModel) {
+	async update (id: string, data: Partial<TestPrepToModel>) {
 		const testPrep = await TestPrep.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(testPrep)
 	}

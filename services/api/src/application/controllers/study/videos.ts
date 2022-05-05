@@ -1,16 +1,16 @@
-import { AddVideo, DeleteVideo, FindVideo, GetVideos, UpdateVideo } from '@modules/study'
+import { VideosUseCases } from '@modules/study'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UploaderUseCases } from '@modules/storage'
 
 export class VideoController {
 	static async FindVideo (req: Request) {
-		return await FindVideo.execute(req.params.id)
+		return await VideosUseCases.find(req.params.id)
 	}
 
 	static async GetVideo (req: Request) {
 		const query = req.query as QueryParams
-		return await GetVideos.execute(query)
+		return await VideosUseCases.get(query)
 	}
 
 	static async UpdateVideo (req: Request) {
@@ -41,7 +41,7 @@ export class VideoController {
 
 		const authUserId = req.authUser!.id
 
-		const updatedVideo = await UpdateVideo.execute({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedVideo = await VideosUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
 
 		if (updatedVideo) return updatedVideo
 		throw new NotAuthorizedError()
@@ -65,7 +65,7 @@ export class VideoController {
 		const media = data.media ? await UploaderUseCases.upload('study/videos', data.media) : null
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AddVideo.execute({
+		return await VideosUseCases.add({
 			...data, media,
 			userBio: user.bio,
 			userRoles: user.roles,
@@ -75,7 +75,7 @@ export class VideoController {
 
 	static async DeleteVideo (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteVideo.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await VideosUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

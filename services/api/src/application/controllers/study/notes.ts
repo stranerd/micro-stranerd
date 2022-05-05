@@ -1,4 +1,4 @@
-import { AddNote, DeleteNote, FindNote, GetNotes, UpdateNote } from '@modules/study'
+import { NotesUseCases } from '@modules/study'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UploaderUseCases } from '@modules/storage'
@@ -10,12 +10,12 @@ const isPdf = (file: any) => {
 
 export class NoteController {
 	static async FindNote (req: Request) {
-		return await FindNote.execute(req.params.id)
+		return await NotesUseCases.find(req.params.id)
 	}
 
 	static async GetNote (req: Request) {
 		const query = req.query as QueryParams
-		return await GetNotes.execute(query)
+		return await NotesUseCases.get(query)
 	}
 
 	static async UpdateNote (req: Request) {
@@ -46,7 +46,7 @@ export class NoteController {
 
 		const authUserId = req.authUser!.id
 
-		const updatedNote = await UpdateNote.execute({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedNote = await NotesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
 
 		if (updatedNote) return updatedNote
 		throw new NotAuthorizedError()
@@ -70,7 +70,7 @@ export class NoteController {
 		const media = data.media ? await UploaderUseCases.upload('study/notes', data.media) : null
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AddNote.execute({
+		return await NotesUseCases.add({
 			...data, media,
 			userBio: user.bio,
 			userRoles: user.roles,
@@ -80,7 +80,7 @@ export class NoteController {
 
 	static async DeleteNote (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteNote.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await NotesUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

@@ -1,15 +1,15 @@
-import { AddTestPrep, DeleteTestPrep, FindTestPrep, GetTestPreps, PrepType, UpdateTestPrep } from '@modules/study'
+import { PrepType, TestPrepsUseCases } from '@modules/study'
 import { FindCourse, PastQuestionType } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class TestPrepController {
 	static async FindTestPrep (req: Request) {
-		return await FindTestPrep.execute(req.params.id)
+		return await TestPrepsUseCases.find(req.params.id)
 	}
 
 	static async GetTestPreps (req: Request) {
 		const query = req.query as QueryParams
-		return await GetTestPreps.execute(query)
+		return await TestPrepsUseCases.get(query)
 	}
 
 	static async CreateTestPrep (req: Request) {
@@ -59,7 +59,7 @@ export class TestPrepController {
 			} : ({} as any)
 		}
 
-		return await AddTestPrep.execute(data)
+		return await TestPrepsUseCases.add(data)
 	}
 
 	static async UpdateTestPrep (req: Request) {
@@ -109,14 +109,13 @@ export class TestPrepController {
 			} : ({} as any)
 		}
 
-		const updatedTestPrep = await UpdateTestPrep.execute({ id: req.params.id, data })
+		const updatedTestPrep = await TestPrepsUseCases.update({ id: req.params.id, data })
 		if (updatedTestPrep) return updatedTestPrep
 		throw new BadRequestError('test prep not found')
 	}
 
 	static async DeleteTestPrep (req: Request) {
-		const isDeleted = await DeleteTestPrep.execute(req.params.id)
-
+		const isDeleted = await TestPrepsUseCases.delete(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new BadRequestError('test prep not found')
 	}

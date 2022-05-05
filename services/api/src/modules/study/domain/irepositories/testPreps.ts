@@ -4,7 +4,7 @@ import { QueryParams, QueryResults } from '@utils/commons'
 
 export interface ITestPrepRepository {
 	add: (data: TestPrepToModel) => Promise<TestPrepEntity>
-	update: (id: string, data: TestPrepToModel) => Promise<TestPrepEntity | null>
+	update: (id: string, data: Partial<TestPrepToModel>) => Promise<TestPrepEntity | null>
 	get: (query: QueryParams) => Promise<QueryResults<TestPrepEntity>>
 	find: (id: string) => Promise<TestPrepEntity | null>
 	delete: (id: string) => Promise<boolean>

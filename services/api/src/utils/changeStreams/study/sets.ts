@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { RemoveSetProp, SetEntity, SetFromModel, SetSaved } from '@modules/study'
+import { SetEntity, SetFromModel, SetSaved, SetsUseCases } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 
@@ -21,7 +21,7 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('study/sets', before)
 		await getSocketEmitter().emitDeleted(`study/sets/${before.id}`, before)
-		await RemoveSetProp.execute({ prop: SetSaved.sets, value: before.id })
+		await SetsUseCases.removeSetProp({ prop: SetSaved.sets, value: before.id })
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.userId,

@@ -1,5 +1,5 @@
 import { appInstance, ChangeStreamCallbacks, Conditions, DelayedJobs } from '@utils/commons'
-import { TestEntity, TestFromModel, TestType, UpdateTest, UpdateTestTaskIds } from '@modules/study'
+import { TestEntity, TestFromModel, TestType, TestsUseCases } from '@modules/study'
 import { GetPastQuestions, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
 import { getPercentage } from '@utils/functions'
@@ -16,7 +16,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 				type: DelayedJobs.TestTimer,
 				data: { testId: after.id, userId: after.userId }
 			}, delay)
-			await UpdateTestTaskIds.execute({ testId: after.id, taskIds: [taskId] })
+			await TestsUseCases.updateTaskIds({ testId: after.id, taskIds: [taskId] })
 		}
 	},
 	updated: async ({ after, before, changes }) => {
@@ -39,7 +39,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 					.map((q) => q.data.type === PastQuestionType.objective && after.answers[q.id] === q.data.correctIndex)
 
 				const score = getPercentage(correct.filter((c) => c).length, correct.length)
-				await UpdateTest.execute({
+				await TestsUseCases.update({
 					id: after.id,
 					userId: after.userId,
 					data: { score }

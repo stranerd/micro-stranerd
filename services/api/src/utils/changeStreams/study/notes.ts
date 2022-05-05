@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { NoteEntity, NoteFromModel, RemoveSetProp, SetSaved } from '@modules/study'
+import { NoteEntity, NoteFromModel, SetSaved, SetsUseCases } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
@@ -25,7 +25,7 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitDeleted('study/notes', before)
 		await getSocketEmitter().emitDeleted(`study/notes/${before.id}`, before)
 
-		await RemoveSetProp.execute({ prop: SetSaved.notes, value: before.id })
+		await SetsUseCases.removeSetProp({ prop: SetSaved.notes, value: before.id })
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.userId,

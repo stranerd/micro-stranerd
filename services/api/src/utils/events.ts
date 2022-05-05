@@ -3,7 +3,7 @@ import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/use
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { SessionsUseCases } from '@modules/sessions'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { UpdateTest } from '@modules/study'
+import { TestsUseCases } from '@modules/study'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
@@ -36,7 +36,7 @@ export const subscribers = {
 				})
 			])
 		}
-		if (data.type === DelayedJobs.TestTimer) await UpdateTest.execute({
+		if (data.type === DelayedJobs.TestTimer) await TestsUseCases.update({
 			id: data.data.testId,
 			userId: data.data.userId,
 			data: { done: true }
