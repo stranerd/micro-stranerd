@@ -1,7 +1,6 @@
-import { SetSaved, SetsUseCases, SetType } from '@modules/study'
+import { SetSaved, SetsUseCases } from '@modules/study'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
-import { ClassEntity, ClassesUseCases } from '@modules/classes'
 
 export class SetController {
 	static async FindSet (req: Request) {
@@ -14,37 +13,17 @@ export class SetController {
 	}
 
 	static async CreateSet (req: Request) {
-		const authUserId = req.authUser!.id
-		const user = await UsersUseCases.find(authUserId)
-		const isUsers = req.body.data?.type === SetType.users
-		const isClasses = req.body.data?.type === SetType.classes
-		if (!user) throw new BadRequestError('user not found')
-
-		const { name, type, classId } = validate({
-			name: req.body.name,
-			type: req.body.data?.type,
-			classId: req.body.data?.classId
+		const { name } = validate({
+			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetType), (cur, val) => cur === val)]
-			},
-			classId: { required: isClasses, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
-		let classInst = null as ClassEntity | null
-		if (classId) classInst = await ClassesUseCases.find(classId)
-		if (isClasses && !classInst) throw new BadRequestError('class not found')
-		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
+		const authUserId = req.authUser!.id
+		const user = await UsersUseCases.find(authUserId)
+		if (!user) throw new BadRequestError('user not found')
 
-		const data = {
-			name,
-			userId: user.id, userBio: user.bio, userRoles: user.roles,
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
-		}
-
-		return await SetsUseCases.add(data)
+		return await SetsUseCases.add({ name, user: user.getEmbedded() })
 	}
 
 	static async UpdateSet (req: Request) {
@@ -76,7 +55,7 @@ export class SetController {
 			}
 		})
 
-		const updated = await SetsUseCases.updateSetProp({
+		const updated = await SetsUseCases.updateProp({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			values: data.propIds,
@@ -103,7 +82,7 @@ export class SetController {
 			}
 		})
 
-		const updated = await SetsUseCases.updateSetProp({
+		const updated = await SetsUseCases.updateProp({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			values: data.propIds,

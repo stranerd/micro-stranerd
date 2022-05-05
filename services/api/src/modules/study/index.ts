@@ -27,7 +27,7 @@ export const SetsUseCases = new SetsUseCase(setRepository)
 
 export { PrepType, PrepData } from './domain/types'
 export { TestData, TestType } from './domain/types'
-export { SetSaved, SetType } from './domain/types'
+export { SetSaved } from './domain/types'
 
 export { TestPrepFromModel } from './data/models/testPreps'
 export { SetFromModel } from './data/models/sets'

@@ -1,7 +1,7 @@
 import { VideoToModel } from '../../data/models/videos'
 import { IVideoRepository } from '../irepositories/videos'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '../types'
 
 export class VideosUseCase {
 	private repository: IVideoRepository
@@ -30,7 +30,7 @@ export class VideosUseCase {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateVideosUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

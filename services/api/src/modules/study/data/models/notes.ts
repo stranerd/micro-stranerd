@@ -1,4 +1,4 @@
-import { Media, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, Media } from '../../domain/types'
 
 export interface NoteFromModel extends NoteToModel {
 	_id: string
@@ -10,9 +10,7 @@ export interface NoteToModel {
 	isHosted: boolean
 	link: string | null
 	media: Media | null
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	title: string
 	description: string
 }

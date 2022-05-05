@@ -18,19 +18,9 @@ const Schema = new mongoose.Schema<VideoFromModel>({
 		required: false,
 		default: ''
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as VideoFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as VideoFromModel['userBio'],
-		required: false,
-		default: {} as unknown as VideoFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as VideoFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as VideoFromModel['userRoles']
 	},
 	isHosted: {
 		type: Boolean,

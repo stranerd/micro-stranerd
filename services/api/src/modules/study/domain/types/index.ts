@@ -1,4 +1,4 @@
-export { UserBio, UserRoles } from '@modules/users'
+export { EmbeddedUser } from '@modules/users'
 export * from './testPreps'
 export * from './tests'
 export * from './sets'

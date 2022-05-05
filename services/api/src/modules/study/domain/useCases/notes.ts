@@ -1,7 +1,7 @@
 import { NoteToModel } from '../../data/models/notes'
 import { INoteRepository } from '../irepositories/notes'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '../types'
 
 export class NotesUseCase {
 	private repository: INoteRepository
@@ -30,7 +30,7 @@ export class NotesUseCase {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateNotesUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

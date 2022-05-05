@@ -9,10 +9,10 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await getSocketEmitter().emitCreated(`study/sets/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewSet
 		})
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.sets })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.sets })
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated('study/sets', after)
@@ -21,12 +21,12 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('study/sets', before)
 		await getSocketEmitter().emitDeleted(`study/sets/${before.id}`, before)
-		await SetsUseCases.removeSetProp({ prop: SetSaved.sets, value: before.id })
+		await SetsUseCases.removeProp({ prop: SetSaved.sets, value: before.id })
 
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewSet
 		})
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.sets })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.sets })
 	}
 }

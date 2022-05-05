@@ -1,13 +1,11 @@
 import { BaseEntity } from '@utils/commons'
-import { Media, UserBio, UserRoles } from '../types'
+import { EmbeddedUser, Media } from '../types'
 
 export class VideoEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly description: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly isHosted: boolean
 	public readonly link: string | null
 	public readonly media: Media | null
@@ -18,9 +16,7 @@ export class VideoEntity extends BaseEntity {
 		             id,
 		             title,
 		             description,
-		             userId,
-		             userBio,
-		             userRoles,
+		             user,
 		             isHosted,
 		             link,
 		             media,
@@ -31,9 +27,7 @@ export class VideoEntity extends BaseEntity {
 		this.id = id
 		this.title = title
 		this.description = description
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.isHosted = isHosted
 		this.link = link
 		this.media = media
@@ -47,9 +41,7 @@ type VideoConstructorArgs = {
 	isHosted: boolean
 	link: string | null
 	media: Media | null
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	title: string
 	description: string
 	createdAt: number

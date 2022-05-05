@@ -15,7 +15,7 @@ export const TestPrepChangeStreamCallbacks: ChangeStreamCallbacks<TestPrepFromMo
 		await getSocketEmitter().emitDeleted('study/testPreps', before)
 		await getSocketEmitter().emitDeleted(`study/testPreps/${before.id}`, before)
 
-		await SetsUseCases.removeSetProp({ prop: SetSaved.testPreps, value: before.id })
+		await SetsUseCases.removeProp({ prop: SetSaved.testPreps, value: before.id })
 		await TestsUseCases.deletePrepTests(before.id)
 	}
 }

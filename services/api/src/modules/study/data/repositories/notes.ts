@@ -3,7 +3,7 @@ import { NoteMapper } from '../mappers/notes'
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { Note } from '../mongooseModels/notes'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class NoteRepository implements INoteRepository {
 	private static instance: NoteRepository
@@ -38,17 +38,17 @@ export class NoteRepository implements INoteRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<NoteToModel>) {
-		const note = await Note.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
+		const note = await Note.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(note)
 	}
 
-	async updateNotesUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const notes = await Note.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const notes = await Note.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return notes.acknowledged
 	}
 
 	async delete (id: string, userId: string) {
-		const note = await Note.findOneAndDelete({ _id: id, userId })
+		const note = await Note.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!note
 	}
 }

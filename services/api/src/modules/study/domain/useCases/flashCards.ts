@@ -1,7 +1,7 @@
 import { FlashCardToModel } from '../../data/models/flashCards'
 import { IFlashCardRepository } from '../irepositories/flashCards'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
+import { EmbeddedUser } from '../types'
 
 export class FlashCardsUseCase {
 	private repository: IFlashCardRepository
@@ -30,7 +30,7 @@ export class FlashCardsUseCase {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateFlashCardsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

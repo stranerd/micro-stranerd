@@ -5,19 +5,3 @@ export enum SetSaved {
 	videos = 'videos',
 	sets = 'sets'
 }
-
-export enum SetType {
-	users = 'users',
-	classes = 'classes'
-}
-
-type UserType = {
-	type: SetType.users
-}
-
-type ClassType = {
-	type: SetType.classes
-	classId: string
-}
-
-export type SetData = UserType | ClassType

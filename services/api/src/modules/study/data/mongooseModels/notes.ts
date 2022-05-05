@@ -18,19 +18,9 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 		required: false,
 		default: ''
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as NoteFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as NoteFromModel['userBio'],
-		required: false,
-		default: {} as unknown as NoteFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as NoteFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as NoteFromModel['userRoles']
 	},
 	isHosted: {
 		type: Boolean,

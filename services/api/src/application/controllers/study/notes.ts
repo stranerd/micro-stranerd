@@ -70,12 +70,7 @@ export class NoteController {
 		const media = data.media ? await UploaderUseCases.upload('study/notes', data.media) : null
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await NotesUseCases.add({
-			...data, media,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await NotesUseCases.add({ ...data, media, user: user.getEmbedded() })
 	}
 
 	static async DeleteNote (req: Request) {

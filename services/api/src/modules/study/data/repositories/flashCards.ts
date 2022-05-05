@@ -3,7 +3,7 @@ import { FlashCardMapper } from '../mappers/flashCards'
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCard } from '../mongooseModels/flashCards'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class FlashCardRepository implements IFlashCardRepository {
 	private static instance: FlashCardRepository
@@ -38,17 +38,20 @@ export class FlashCardRepository implements IFlashCardRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<FlashCardToModel>) {
-		const flashCard = await FlashCard.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
+		const flashCard = await FlashCard.findOneAndUpdate({
+			_id: id,
+			'user.id': userId
+		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(flashCard)
 	}
 
-	async updateFlashCardsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const flashCards = await FlashCard.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const flashCards = await FlashCard.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return flashCards.acknowledged
 	}
 
 	async delete (id: string, userId: string) {
-		const flashCard = await FlashCard.findOneAndDelete({ _id: id, userId })
+		const flashCard = await FlashCard.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!flashCard
 	}
 }

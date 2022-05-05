@@ -1,4 +1,4 @@
-import { SetData, SetSaved, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, SetSaved } from '../../domain/types'
 
 export interface SetFromModel extends SetToModel {
 	_id: string
@@ -9,8 +9,5 @@ export interface SetFromModel extends SetToModel {
 
 export interface SetToModel {
 	name: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
-	data: SetData
+	user: EmbeddedUser
 }

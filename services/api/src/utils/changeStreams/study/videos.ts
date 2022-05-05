@@ -10,10 +10,10 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await getSocketEmitter().emitCreated(`study/videos/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewVideo
 		})
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.videos })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.videos })
 	},
 	updated: async ({ before, changes, after }) => {
 		await getSocketEmitter().emitUpdated('study/videos', after)
@@ -25,12 +25,12 @@ export const VideoChangeStreamCallbacks: ChangeStreamCallbacks<VideoFromModel, V
 		await getSocketEmitter().emitDeleted('study/videos', before)
 		await getSocketEmitter().emitDeleted(`study/videos/${before.id}`, before)
 
-		await SetsUseCases.removeSetProp({ prop: SetSaved.videos, value: before.id })
+		await SetsUseCases.removeProp({ prop: SetSaved.videos, value: before.id })
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewVideo
 		})
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.videos })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.videos })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}

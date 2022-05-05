@@ -65,12 +65,7 @@ export class VideoController {
 		const media = data.media ? await UploaderUseCases.upload('study/videos', data.media) : null
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await VideosUseCases.add({
-			...data, media,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await VideosUseCases.add({ ...data, media, user: user.getEmbedded() })
 	}
 
 	static async DeleteVideo (req: Request) {

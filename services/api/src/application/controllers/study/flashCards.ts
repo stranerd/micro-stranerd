@@ -51,12 +51,7 @@ export class FlashCardController {
 
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await FlashCardsUseCases.add({
-			...data,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await FlashCardsUseCases.add({ ...data, user: user.getEmbedded() })
 	}
 
 	static async DeleteFlashCard (req: Request) {

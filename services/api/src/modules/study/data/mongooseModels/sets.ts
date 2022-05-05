@@ -22,24 +22,9 @@ const Schema = new mongoose.Schema<SetFromModel>({
 			default: []
 		}])
 	),
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['userBio'],
-		required: false,
-		default: {} as unknown as SetFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as SetFromModel['userRoles']
-	},
-	data: {
-		type: mongoose.Schema.Types.Mixed as unknown as SetFromModel['data'],
-		required: false,
-		default: {} as unknown as SetFromModel['data']
 	},
 	createdAt: {
 		type: Number,

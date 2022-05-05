@@ -5,13 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class FlashCardMapper extends BaseMapper<FlashCardFromModel, FlashCardToModel, FlashCardEntity> {
 	mapFrom (model: FlashCardFromModel | null) {
 		if (!model) return null
-		const {
-			_id, title, set, userId, userBio, userRoles,
-			createdAt, updatedAt
-		} = model
+		const { _id, title, set, user, createdAt, updatedAt } = model
 		return new FlashCardEntity({
-			id: _id.toString(), title, set, userId, userBio, userRoles,
-			createdAt, updatedAt
+			id: _id.toString(), title, set, user, createdAt, updatedAt
 		})
 	}
 
@@ -19,9 +15,7 @@ export class FlashCardMapper extends BaseMapper<FlashCardFromModel, FlashCardToM
 		return {
 			title: entity.title,
 			set: entity.set,
-			userId: entity.userId,
-			userBio: entity.userBio,
-			userRoles: entity.userRoles
+			user: entity.user
 		}
 	}
 }

@@ -1,14 +1,11 @@
 import { BaseEntity } from '@utils/commons'
-import { SetData, SetSaved, UserBio, UserRoles } from '../types'
+import { EmbeddedUser, SetSaved } from '../types'
 
 export class SetEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
 	public readonly saved: Record<SetSaved, string[]>
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
-	public readonly data: SetData
+	public readonly user: EmbeddedUser
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -16,10 +13,7 @@ export class SetEntity extends BaseEntity {
 		             id,
 		             name,
 		             saved,
-		             userId,
-		             userBio,
-		             userRoles,
-		             data,
+		             user,
 		             createdAt,
 		             updatedAt
 	             }: SetConstructorArgs) {
@@ -27,10 +21,7 @@ export class SetEntity extends BaseEntity {
 		this.id = id
 		this.name = name
 		this.saved = saved
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
-		this.data = data
+		this.user = user
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -40,10 +31,7 @@ type SetConstructorArgs = {
 	id: string
 	name: string
 	saved: Record<SetSaved, string[]>
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
-	data: SetData
+	user: EmbeddedUser
 	createdAt: number
 	updatedAt: number
 }

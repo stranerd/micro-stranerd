@@ -10,10 +10,10 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitCreated(`study/notes/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewNote
 		})
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.notes })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.notes })
 	},
 	updated: async ({ after, before, changes }) => {
 		await getSocketEmitter().emitUpdated('study/notes', after)
@@ -25,13 +25,13 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await getSocketEmitter().emitDeleted('study/notes', before)
 		await getSocketEmitter().emitDeleted(`study/notes/${before.id}`, before)
 
-		await SetsUseCases.removeSetProp({ prop: SetSaved.notes, value: before.id })
+		await SetsUseCases.removeProp({ prop: SetSaved.notes, value: before.id })
 
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewNote
 		})
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.notes })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.notes })
 
 		if (before.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
 	}

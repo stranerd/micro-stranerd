@@ -1,8 +1,7 @@
 import { SetToModel } from '../../data/models/sets'
 import { ISetRepository } from '../irepositories/sets'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '@modules/users'
-import { SetSaved } from '@modules/study'
+import { EmbeddedUser, SetSaved } from '../types'
 
 export class SetsUseCase {
 	private repository: ISetRepository
@@ -31,15 +30,15 @@ export class SetsUseCase {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateSetsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 
-	async updateSetProp (input: { id: string, userId: string, prop: SetSaved, add: boolean, values: string[] }) {
-		return await this.repository.updateSetProp(input.id, input.userId, input.prop, input.add, input.values)
+	async updateProp (input: { id: string, userId: string, prop: SetSaved, add: boolean, values: string[] }) {
+		return await this.repository.updateProp(input.id, input.userId, input.prop, input.add, input.values)
 	}
 
-	async removeSetProp (input: { prop: SetSaved, value: string }) {
-		return await this.repository.removeSetProp(input.prop, input.value)
+	async removeProp (input: { prop: SetSaved, value: string }) {
+		return await this.repository.removeProp(input.prop, input.value)
 	}
 }

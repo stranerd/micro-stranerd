@@ -1,4 +1,4 @@
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export interface FlashCardFromModel extends FlashCardToModel {
 	_id: string
@@ -8,9 +8,7 @@ export interface FlashCardFromModel extends FlashCardToModel {
 
 export interface FlashCardToModel {
 	title: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	set: {
 		question: string,
 		answer: string

@@ -3,7 +3,7 @@ import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { SetSaved, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, SetSaved } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {
 	private static instance: SetRepository
@@ -38,22 +38,22 @@ export class SetRepository implements ISetRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<SetToModel>) {
-		const set = await Set.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
+		const set = await Set.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(set)
 	}
 
-	async updateSetsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const sets = await Set.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const sets = await Set.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return sets.acknowledged
 	}
 
 	async delete (id: string, userId: string) {
-		const set = await Set.findOneAndDelete({ _id: id, userId })
+		const set = await Set.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!set
 	}
 
-	async updateSetProp (id: string, userId: string, prop: SetSaved, add: boolean, values: string[]) {
-		const set = await Set.findOneAndUpdate({ _id: id, userId }, {
+	async updateProp (id: string, userId: string, prop: SetSaved, add: boolean, values: string[]) {
+		const set = await Set.findOneAndUpdate({ _id: id, 'user.id': userId }, {
 			[add ? '$addToSet' : '$pull']: {
 				[`saved.${prop}`]: {
 					[add ? '$each' : '$in']: values
@@ -63,7 +63,7 @@ export class SetRepository implements ISetRepository {
 		return !!set
 	}
 
-	async removeSetProp (prop: SetSaved, value: string) {
+	async removeProp (prop: SetSaved, value: string) {
 		const sets = await Set.updateMany({ [`saved.${prop}`]: value }, {
 			$pull: { [`saved.${prop}`]: value }
 		})

@@ -9,10 +9,10 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		await getSocketEmitter().emitCreated(`study/flashCards/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewFlashCard
 		})
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.flashCards })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.flashCards })
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated('study/flashCards', after)
@@ -22,11 +22,11 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		await getSocketEmitter().emitDeleted('flashCards', before)
 		await getSocketEmitter().emitDeleted(`flashCards/${before.id}`, before)
 
-		await SetsUseCases.removeSetProp({ prop: SetSaved.flashCards, value: before.id })
+		await SetsUseCases.removeProp({ prop: SetSaved.flashCards, value: before.id })
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewFlashCard
 		})
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.flashCards })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.flashCards })
 	}
 }

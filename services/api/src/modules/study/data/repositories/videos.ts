@@ -3,7 +3,7 @@ import { VideoMapper } from '../mappers/videos'
 import { VideoFromModel, VideoToModel } from '../models/videos'
 import { Video } from '../mongooseModels/videos'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class VideoRepository implements IVideoRepository {
 	private static instance: VideoRepository
@@ -38,17 +38,17 @@ export class VideoRepository implements IVideoRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<VideoToModel>) {
-		const video = await Video.findOneAndUpdate({ _id: id, userId }, { $set: data }, { new: true })
+		const video = await Video.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(video)
 	}
 
-	async updateVideosUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const videos = await Video.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const videos = await Video.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return videos.acknowledged
 	}
 
 	async delete (id: string, userId: string) {
-		const video = await Video.findOneAndDelete({ _id: id, userId })
+		const video = await Video.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!video
 	}
 }

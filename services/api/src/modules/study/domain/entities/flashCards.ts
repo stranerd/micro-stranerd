@@ -1,33 +1,20 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class FlashCardEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly set: { question: string, answer: string }[]
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({
-		             id,
-		             title,
-		             set,
-		             userId,
-		             userBio,
-		             userRoles,
-		             createdAt,
-		             updatedAt
-	             }: FlashCardConstructorArgs) {
+	constructor ({ id, title, set, user, createdAt, updatedAt }: FlashCardConstructorArgs) {
 		super()
 		this.id = id
 		this.title = title
 		this.set = set
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -37,9 +24,7 @@ type FlashCardConstructorArgs = {
 	id: string
 	title: string
 	set: { question: string, answer: string }[]
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	createdAt: number
 	updatedAt: number
 }
