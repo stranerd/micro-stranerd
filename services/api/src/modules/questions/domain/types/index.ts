@@ -1,4 +1,4 @@
-export { UserBio, UserRoles } from '@modules/users'
+export { EmbeddedUser, UserBio, UserRoles } from '@modules/users'
 export * from './questions'
 
 import { MediaOutput } from '@utils/commons'

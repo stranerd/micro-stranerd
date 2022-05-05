@@ -7,12 +7,12 @@ export class AnswerMapper extends BaseMapper<AnswerFromModel, AnswerToModel, Ans
 		if (!model) return null
 		const {
 			_id, title, body, questionId, attachments,
-			userId, userBio, userRoles, best, votes,
+			user, best, votes,
 			createdAt, updatedAt
 		} = model
 		return new AnswerEntity({
 			id: _id.toString(), title, body, questionId,
-			userId, userBio, userRoles, best, votes, attachments,
+			user, best, votes, attachments,
 			createdAt, updatedAt
 		})
 	}
@@ -23,9 +23,7 @@ export class AnswerMapper extends BaseMapper<AnswerFromModel, AnswerToModel, Ans
 			body: entity.body,
 			attachments: entity.attachments,
 			questionId: entity.questionId,
-			userId: entity.userId,
-			userBio: entity.userBio,
-			userRoles: entity.userRoles
+			user: entity.user
 		}
 	}
 }

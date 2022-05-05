@@ -1,7 +1,7 @@
 import { IAnswerCommentRepository } from '../irepositories/answerComments'
 import { AnswerCommentToModel } from '../../data/models/answerComments'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class AnswerCommentsUseCase {
 	private repository: IAnswerCommentRepository
@@ -26,7 +26,7 @@ export class AnswerCommentsUseCase {
 		return await this.repository.get(query)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateAnswerCommentsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

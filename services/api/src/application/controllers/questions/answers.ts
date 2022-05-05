@@ -54,12 +54,7 @@ export class AnswerController {
 		if (question.isAnswered) throw new BadRequestError('question already answered')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AnswersUseCases.add({
-			...data,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await AnswersUseCases.add({ ...data, user: user.getEmbedded() })
 	}
 
 	static async DeleteAnswer (req: Request) {

@@ -17,19 +17,9 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['userBio'],
-		required: false,
-		default: {} as unknown as QuestionFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as QuestionFromModel['userRoles']
 	},
 	data: {
 		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['data'],

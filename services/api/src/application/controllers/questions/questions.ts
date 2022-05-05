@@ -71,10 +71,7 @@ export class QuestionController {
 		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
 
 		const data = {
-			body, subject, attachments,
-			userId: authUserId,
-			userBio: user.bio,
-			userRoles: user.roles,
+			body, subject, attachments, user: user.getEmbedded(),
 			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
 		}
 
@@ -92,7 +89,7 @@ export class QuestionController {
 
 		const question = await QuestionsUseCases.find(req.params.id)
 		if (!question) throw new BadRequestError('question not found')
-		if (question.userId !== authUserId) throw new NotAuthorizedError()
+		if (question.user.id !== authUserId) throw new NotAuthorizedError()
 		if (question.isAnswered) throw new BadRequestError('question is already answered')
 		if (question.bestAnswers.find((a) => a === answerId)) throw new BadRequestError('answer is already marked best answer')
 

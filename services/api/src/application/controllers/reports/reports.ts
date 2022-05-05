@@ -51,7 +51,7 @@ export class ReportController {
 			if (!question) throw new BadRequestError('question not found')
 			reportedData = {
 				type: ReportType.questions,
-				reported: { userId: question.userId, body: question.body }
+				reported: { userId: question.user.id, body: question.body }
 			}
 		}
 
@@ -61,7 +61,7 @@ export class ReportController {
 			reportedData = {
 				type: ReportType.answers,
 				reported: {
-					userId: answer.userId,
+					userId: answer.user.id,
 					body: answer.body,
 					title: answer.title,
 					questionId: answer.questionId

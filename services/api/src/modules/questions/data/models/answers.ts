@@ -1,4 +1,4 @@
-import { Media, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, Media } from '../../domain/types'
 
 export interface AnswerFromModel extends AnswerToModel {
 	_id: string
@@ -13,7 +13,5 @@ export interface AnswerToModel {
 	body: string
 	attachments: Media[]
 	questionId: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 }

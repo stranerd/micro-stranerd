@@ -32,7 +32,6 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) {
 			await Promise.all([
-				QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
 				ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio,
 				VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio
 			].map(async (useCase) => await useCase({
@@ -43,6 +42,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 
 			await Promise.all([
 				ReviewsUseCases.updateUserBio,
+				QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
 				ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio, EventsUseCases.updateUserBio
 			].map(async (useCase) => await useCase(after.getEmbedded())))
 		}

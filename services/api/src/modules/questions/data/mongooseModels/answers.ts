@@ -22,19 +22,9 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['user'],
 		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['userBio'],
-		required: false,
-		default: {} as unknown as AnswerFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as AnswerFromModel['userRoles']
 	},
 	attachments: {
 		type: [mongoose.Schema.Types.Mixed] as unknown as AnswerFromModel['attachments'],

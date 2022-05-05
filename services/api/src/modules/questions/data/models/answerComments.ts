@@ -1,4 +1,4 @@
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export interface AnswerCommentFromModel extends AnswerCommentToModel {
 	_id: string
@@ -8,8 +8,6 @@ export interface AnswerCommentFromModel extends AnswerCommentToModel {
 
 export interface AnswerCommentToModel {
 	body: string
-	userId: string
 	answerId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 }

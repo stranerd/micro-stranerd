@@ -9,14 +9,14 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitCreated('questions/answerComments', after)
 		await getSocketEmitter().emitCreated(`questions/answerComments/${after.answerId}`, after)
 
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.answerComments })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.answerComments })
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewComment
 		})
 
 		const answer = await AnswersUseCases.find(after.answerId)
-		if (answer && answer.userId !== after.userId) await sendNotification(answer.userId, {
+		if (answer && answer.user.id !== after.user.id) await sendNotification(answer.user.id, {
 			title: 'New comment to your answer',
 			body: 'Your answer has a new comment. Go have a look',
 			action: 'answerComments',
@@ -24,7 +24,7 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		})
 
 		await BadgesUseCases.recordCountStreak({
-			userId: after.userId,
+			userId: after.user.id,
 			activity: CountStreakBadges.NewAnswerComment,
 			add: true
 		})
@@ -37,13 +37,13 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		await getSocketEmitter().emitDeleted('questions/answerComments', before)
 		await getSocketEmitter().emitDeleted(`questions/answerComments/${before.answerId}`, before)
 
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.answerComments })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.answerComments })
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewComment
 		})
 		await BadgesUseCases.recordCountStreak({
-			userId: before.userId,
+			userId: before.user.id,
 			activity: CountStreakBadges.NewAnswerComment,
 			add: false
 		})

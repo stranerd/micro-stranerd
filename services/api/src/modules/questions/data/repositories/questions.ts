@@ -4,7 +4,7 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
@@ -40,7 +40,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
-		const question = await Question.findOneAndUpdate({ _id: id, userId }, { $set: data })
+		const question = await Question.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data })
 		return this.mapper.mapFrom(question)
 	}
 
@@ -49,7 +49,7 @@ export class QuestionRepository implements IQuestionRepository {
 		let res = null as any
 		await session.withTransaction(async (session) => {
 			const question = await Question.findOneAndUpdate({
-				_id: id, userId,
+				_id: id, 'user.id': userId,
 				...(add ? { [`bestAnswers.${BEST_ANSWERS_COUNT}`]: { $exists: false } } : { 'bestAnswers': answerId })
 			}, {
 				[add ? '$addToSet' : 'pull']: { bestAnswers: answerId }
@@ -67,18 +67,18 @@ export class QuestionRepository implements IQuestionRepository {
 
 	async updateAnswers (id: string, answerId: string, userId: string, add: boolean) {
 		const question = await Question.findByIdAndUpdate(id, {
-			[add ? '$addToSet' : '$pull']: { answers: { id: answerId, userId } }
+			[add ? '$addToSet' : '$pull']: { answers: { id: answerId, 'user.id': userId } }
 		}, { new: true })
 		return !!question
 	}
 
-	async updateQuestionsUserBio (userId: string, userBio: UserBio, userRoles: UserRoles) {
-		const questions = await Question.updateMany({ userId }, { $set: { userBio, userRoles } })
+	async updateUserBio (user: EmbeddedUser) {
+		const questions = await Question.updateMany({ 'user.id': user.id }, { $set: { user } })
 		return questions.acknowledged
 	}
 
 	async delete (id: string, userId: string) {
-		const question = await Question.findOneAndDelete({ _id: id, userId })
+		const question = await Question.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!question
 	}
 }

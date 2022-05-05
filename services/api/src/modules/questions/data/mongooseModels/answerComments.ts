@@ -13,23 +13,13 @@ const Schema = new mongoose.Schema<AnswerCommentFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
-		required: true
-	},
 	answerId: {
 		type: String,
 		required: true
 	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnswerCommentFromModel['userBio'],
-		required: false,
-		default: {} as unknown as AnswerCommentFromModel['userBio']
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as AnswerCommentFromModel['userRoles'],
-		required: false,
-		default: {} as unknown as AnswerCommentFromModel['userRoles']
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as AnswerCommentFromModel['user'],
+		required: true
 	},
 	createdAt: {
 		type: Number,

@@ -9,15 +9,15 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await getSocketEmitter().emitCreated('questions/questions', after)
 		await getSocketEmitter().emitCreated(`questions/questions/${after.id}`, after)
 
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.questions })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.questions })
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewQuestion
 		})
 
 		await BadgesUseCases.recordCountStreak({
-			userId: after.userId,
+			userId: after.user.id,
 			activity: CountStreakBadges.NewQuestion,
 			add: true
 		})
@@ -40,18 +40,18 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await AnswersUseCases.deleteQuestionAnswers(before.id)
 
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewQuestion
 		})
 
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.questions })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.questions })
 
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
 		)
 
 		await BadgesUseCases.recordCountStreak({
-			userId: before.userId,
+			userId: before.user.id,
 			activity: CountStreakBadges.NewQuestion,
 			add: false
 		})

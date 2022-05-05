@@ -1,4 +1,4 @@
-import { Media, QuestionData, UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser, Media, QuestionData } from '../../domain/types'
 
 export interface QuestionFromModel extends QuestionToModel {
 	_id: string
@@ -12,8 +12,6 @@ export interface QuestionToModel {
 	body: string
 	attachments: Media[]
 	subject: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 	data: QuestionData
 }

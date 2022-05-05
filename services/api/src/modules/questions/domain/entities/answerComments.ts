@@ -1,24 +1,20 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class AnswerCommentEntity extends BaseEntity {
 	public readonly id: string
 	public readonly body: string
 	public readonly answerId: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, body, createdAt, userId, userBio, userRoles, answerId, updatedAt }: CommentConstructorArgs) {
+	constructor ({ id, body, createdAt, user, answerId, updatedAt }: CommentConstructorArgs) {
 		super()
 		this.id = id
 		this.body = body
-		this.userId = userId
+		this.user = user
 		this.answerId = answerId
-		this.userBio = userBio
-		this.userRoles = userRoles
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -27,10 +23,8 @@ export class AnswerCommentEntity extends BaseEntity {
 type CommentConstructorArgs = {
 	id: string
 	body: string
-	userId: string
+	user: EmbeddedUser
 	answerId: string
-	userBio: UserBio
-	userRoles: UserRoles
 	createdAt: number
 	updatedAt: number
 }

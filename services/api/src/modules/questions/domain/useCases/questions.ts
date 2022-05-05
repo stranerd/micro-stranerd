@@ -1,7 +1,7 @@
 import { IQuestionRepository } from '../irepositories/questions'
 import { QuestionToModel } from '../../data/models/questions'
 import { QueryParams } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class QuestionsUseCase {
 	private repository: IQuestionRepository
@@ -38,7 +38,7 @@ export class QuestionsUseCase {
 		return await this.repository.updateAnswers(input.questionId, input.answerId, input.userId, input.add)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateQuestionsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateUserBio(user)
 	}
 }

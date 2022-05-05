@@ -25,11 +25,6 @@ export class AnswerCommentController {
 		if (!answer) throw new BadRequestError('answer not found')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
-		return await AnswerCommentsUseCases.add({
-			...data,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await AnswerCommentsUseCases.add({ ...data, user: user.getEmbedded() })
 	}
 }

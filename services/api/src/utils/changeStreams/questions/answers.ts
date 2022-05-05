@@ -16,22 +16,22 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitCreated('questions/answers', after)
 		await getSocketEmitter().emitCreated(`questions/answers/${after.id}`, after)
 
-		await UsersUseCases.incrementMeta({ id: after.userId, value: 1, property: UserMeta.answers })
+		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.answers })
 		await QuestionsUseCases.updateAnswers({
 			questionId: after.questionId,
 			answerId: after.id,
-			userId: after.userId,
+			userId: after.user.id,
 			add: true
 		})
 
 		await UsersUseCases.updateNerdScore({
-			userId: after.userId,
+			userId: after.user.id,
 			amount: ScoreRewards.NewAnswer
 		})
 
 		const question = await QuestionsUseCases.find(after.questionId)
 		if (question) {
-			await sendNotification(question.userId, {
+			await sendNotification(question.user.id, {
 				title: 'New Answer',
 				body: 'Your question has been answered. Go have a look',
 				action: 'answers',
@@ -40,7 +40,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 
 		await BadgesUseCases.recordCountStreak({
-			userId: after.userId,
+			userId: after.user.id,
 			activity: CountStreakBadges.NewAnswer,
 			add: true
 		})
@@ -52,21 +52,21 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		if (changes.best) {
 			const question = await QuestionsUseCases.find(after.questionId)
 			await UsersUseCases.updateNerdScore({
-				userId: after.userId,
+				userId: after.user.id,
 				amount: after.best ? ScoreRewards.NewAnswer : -ScoreRewards.NewAnswer
 			})
 			await UsersUseCases.incrementMeta({
-				id: before.userId,
+				id: before.user.id,
 				value: after.best ? 1 : -1,
 				property: UserMeta.bestAnswers
 			})
 			await BadgesUseCases.recordCountStreak({
-				userId: after.userId,
+				userId: after.user.id,
 				activity: CountStreakBadges.GetBestAnswer,
 				add: true
 			})
 			if (question) await BadgesUseCases.recordCountStreak({
-				userId: question.userId,
+				userId: question.user.id,
 				activity: CountStreakBadges.GiveBestAnswer,
 				add: true
 			})
@@ -78,7 +78,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			if (markBest) await QuestionsUseCases.updateBestAnswer({
 				id: question!.id,
 				answerId: after.id,
-				userId: question!.userId,
+				userId: question!.user.id,
 				add: true
 			})
 		}
@@ -95,15 +95,15 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		await getSocketEmitter().emitDeleted(`questions/answers/${before.id}`, before)
 
 		await UsersUseCases.updateNerdScore({
-			userId: before.userId,
+			userId: before.user.id,
 			amount: -ScoreRewards.NewAnswer
 		})
 
-		await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.answers })
+		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.answers })
 		await QuestionsUseCases.updateAnswers({
 			questionId: before.questionId,
 			answerId: before.id,
-			userId: before.userId,
+			userId: before.user.id,
 			add: false
 		})
 
@@ -117,21 +117,21 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		)
 
 		await BadgesUseCases.recordCountStreak({
-			userId: before.userId,
+			userId: before.user.id,
 			activity: CountStreakBadges.NewAnswer,
 			add: false
 		})
 
 		if (before.best) {
 			await UsersUseCases.updateNerdScore({
-				userId: before.userId,
+				userId: before.user.id,
 				amount: -ScoreRewards.BestAnswer
 			})
-			await UsersUseCases.incrementMeta({ id: before.userId, value: -1, property: UserMeta.bestAnswers })
+			await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.bestAnswers })
 			const question = await QuestionsUseCases.find(before.questionId)
 			if (question) await QuestionsUseCases.updateBestAnswer({
 				id: question.id,
-				userId: question.userId,
+				userId: question.user.id,
 				answerId: before.id,
 				add: false
 			})
