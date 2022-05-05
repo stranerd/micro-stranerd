@@ -1,4 +1,4 @@
-import { AddDiscussion, FindDiscussion, FindGroup, GetDiscussions } from '@modules/classes'
+import { AddDiscussion, FindDiscussion, GetDiscussions, GroupsUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UploaderUseCases } from '@modules/storage'
@@ -29,7 +29,7 @@ export class DiscussionController {
 		})
 
 		const userId = req.authUser!.id
-		const group = await FindGroup.execute({ id: data.groupId, classId: req.params.classId })
+		const group = await GroupsUseCases.find({ id: data.groupId, classId: req.params.classId })
 		if (!group) throw new BadRequestError('group not found')
 		if (!group.getAllUsers().includes(userId)) throw new BadRequestError('not a group member')
 		const user = await UsersUseCases.find(userId)

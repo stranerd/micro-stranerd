@@ -1,6 +1,7 @@
 import { MediaOutput } from '@utils/commons'
 
 export { UserBio, UserRoles } from '@modules/users'
+export * from './events'
 
 export type Media = MediaOutput
 

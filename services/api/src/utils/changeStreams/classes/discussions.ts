@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { DiscussionEntity, DiscussionFromModel, FindGroup } from '@modules/classes'
+import { DiscussionEntity, DiscussionFromModel, GroupsUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { sendPushNotification } from '@utils/modules/push'
@@ -9,7 +9,7 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}`, after)
 		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}/${after.id}`, after)
 
-		const group = await FindGroup.execute({ id: after.groupId, classId: after.classId })
+		const group = await GroupsUseCases.find({ id: after.groupId, classId: after.classId })
 		if (!group) return
 		const users = group.getAllUsers().filter((userId) => userId !== after.userId)
 		const body = after.media ? 'Shared a file' : after.content

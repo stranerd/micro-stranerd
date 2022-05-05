@@ -3,9 +3,8 @@ import {
 	ClassEntity,
 	ClassFromModel,
 	DeleteClassAnnouncements,
-	DeleteClassGroups,
-	UpdateAnnouncementsUsers,
-	UpdateGroupsUsers
+	GroupsUseCases,
+	UpdateAnnouncementsUsers
 } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
@@ -21,7 +20,7 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitUpdated(`classes/classes/${after.id}`, after)
 
 		if (changes.users) {
-			await Promise.all([UpdateAnnouncementsUsers, UpdateGroupsUsers].map((u) => u.execute({
+			await Promise.all([UpdateAnnouncementsUsers.execute, GroupsUseCases.updateUsers].map((u) => u({
 				classId: after.id,
 				users: after.users
 			})))
@@ -49,6 +48,6 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
-		await Promise.all([DeleteClassGroups, DeleteClassAnnouncements].map((useCase) => useCase.execute(before.id)))
+		await Promise.all([GroupsUseCases.deleteClassGroups, DeleteClassAnnouncements.execute].map((useCase) => useCase(before.id)))
 	}
 }

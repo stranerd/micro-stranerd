@@ -2,6 +2,7 @@ import { ClassRepository } from './data/repositories/classes'
 import { AnnouncementRepository } from './data/repositories/announcements'
 import { GroupRepository } from './data/repositories/groups'
 import { DiscussionRepository } from './data/repositories/discussions'
+import { EventRepository } from './data/repositories/events'
 import { GetClassesUseCase } from './domain/useCases/classes/getClasses'
 import { FindClassUseCase } from './domain/useCases/classes/findClass'
 import { AddClassUseCase } from './domain/useCases/classes/addClass'
@@ -15,13 +16,8 @@ import { UpdateAnnouncementUseCase } from './domain/useCases/announcements/updat
 import { DeleteAnnouncementUseCase } from './domain/useCases/announcements/deleteAnnouncement'
 import { UpdateAnnouncementsUserBioUseCase } from './domain/useCases/announcements/updateAnnouncementsUserBio'
 import { UpdateAnnouncementsUsersUseCase } from './domain/useCases/announcements/updateAnnouncementsUsers'
-import { GetGroupsUseCase } from './domain/useCases/groups/getGroups'
-import { FindGroupUseCase } from './domain/useCases/groups/findGroup'
-import { AddGroupUseCase } from './domain/useCases/groups/addGroup'
-import { UpdateGroupUseCase } from './domain/useCases/groups/updateGroup'
-import { DeleteGroupUseCase } from './domain/useCases/groups/deleteGroup'
-import { UpdateGroupsUserBioUseCase } from './domain/useCases/groups/updateGroupsUserBio'
-import { UpdateGroupsUsersUseCase } from './domain/useCases/groups/updateGroupsUsers'
+import { GroupsUseCase } from './domain/useCases/groups'
+import { EventsUseCase } from './domain/useCases/events'
 import { GetDiscussionsUseCase } from './domain/useCases/discussions/getDiscussions'
 import { FindDiscussionUseCase } from './domain/useCases/discussions/findDiscussion'
 import { AddDiscussionUseCase } from './domain/useCases/discussions/addDiscussion'
@@ -34,13 +30,13 @@ import { AcceptRequestUseCase } from './domain/useCases/classes/acceptRequest'
 import { AddMembersUseCase } from './domain/useCases/classes/addMembers'
 import { ChangeMemberRoleUseCase } from './domain/useCases/classes/changeMemberRole'
 import { DeleteClassAnnouncementsUseCase } from './domain/useCases/announcements/deleteClassAnnouncements'
-import { DeleteClassGroupsUseCase } from './domain/useCases/groups/deleteClassGroups'
 import { DeleteGroupDiscussionsUseCase } from './domain/useCases/discussions/deleteGroupDiscussions'
 
 const classRepository = ClassRepository.getInstance()
 const announcementRepository = AnnouncementRepository.getInstance()
 const groupRepository = GroupRepository.getInstance()
 const discussionRepository = DiscussionRepository.getInstance()
+const eventRepository = EventRepository.getInstance()
 
 export const GetClasses = new GetClassesUseCase(classRepository)
 export const FindClass = new FindClassUseCase(classRepository)
@@ -63,14 +59,8 @@ export const UpdateAnnouncementsUserBio = new UpdateAnnouncementsUserBioUseCase(
 export const UpdateAnnouncementsUsers = new UpdateAnnouncementsUsersUseCase(announcementRepository)
 export const DeleteClassAnnouncements = new DeleteClassAnnouncementsUseCase(announcementRepository)
 
-export const GetGroups = new GetGroupsUseCase(groupRepository)
-export const FindGroup = new FindGroupUseCase(groupRepository)
-export const AddGroup = new AddGroupUseCase(groupRepository)
-export const UpdateGroup = new UpdateGroupUseCase(groupRepository)
-export const DeleteGroup = new DeleteGroupUseCase(groupRepository)
-export const UpdateGroupsUserBio = new UpdateGroupsUserBioUseCase(groupRepository)
-export const UpdateGroupsUsers = new UpdateGroupsUsersUseCase(groupRepository)
-export const DeleteClassGroups = new DeleteClassGroupsUseCase(groupRepository)
+export const GroupsUseCases = new GroupsUseCase(groupRepository)
+export const EventsUseCases = new EventsUseCase(eventRepository)
 
 export const GetDiscussions = new GetDiscussionsUseCase(discussionRepository)
 export const FindDiscussion = new FindDiscussionUseCase(discussionRepository)
@@ -84,8 +74,10 @@ export { AnnouncementFromModel } from './data/models/announcements'
 export { ClassFromModel } from './data/models/classes'
 export { DiscussionFromModel } from './data/models/discussions'
 export { GroupFromModel } from './data/models/groups'
+export { EventFromModel } from './data/models/events'
 
 export { AnnouncementEntity } from './domain/entities/announcements'
 export { ClassEntity } from './domain/entities/classes'
 export { DiscussionEntity } from './domain/entities/discussions'
 export { GroupEntity } from './domain/entities/groups'
+export { EventEntity } from './domain/entities/events'

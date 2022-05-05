@@ -1,17 +1,17 @@
-import { AddGroup, DeleteGroup, FindClass, FindGroup, GetGroups, UpdateGroup } from '@modules/classes'
+import { FindClass, GroupsUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 
 export class GroupController {
 	static async FindGroup (req: Request) {
-		return await FindGroup.execute({ id: req.params.id, classId: req.params.classId })
+		return await GroupsUseCases.find({ id: req.params.id, classId: req.params.classId })
 	}
 
 	static async GetGroup (req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'classId', value: req.params.classId }]
-		return await GetGroups.execute(query)
+		return await GroupsUseCases.get(query)
 	}
 
 	static async UpdateGroup (req: Request) {
@@ -24,7 +24,7 @@ export class GroupController {
 
 		const data = { name }
 
-		const updatedGroup = await UpdateGroup.execute({
+		const updatedGroup = await GroupsUseCases.update({
 			id: req.params.id,
 			classId: req.params.classId,
 			userId: authUserId,
@@ -60,12 +60,12 @@ export class GroupController {
 			users: classInst.users
 		}
 
-		return await AddGroup.execute(data)
+		return await GroupsUseCases.add(data)
 	}
 
 	static async DeleteGroup (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteGroup.execute({
+		const isDeleted = await GroupsUseCases.delete({
 			id: req.params.id,
 			classId: req.params.classId,
 			userId: authUserId
