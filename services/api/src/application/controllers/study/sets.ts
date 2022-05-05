@@ -1,7 +1,7 @@
 import { AddSet, DeleteSet, FindSet, GetSets, SetSaved, SetType, UpdateSet, UpdateSetProp } from '@modules/study'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
-import { ClassEntity, FindClass } from '@modules/classes'
+import { ClassEntity, ClassesUseCases } from '@modules/classes'
 
 export class SetController {
 	static async FindSet (req: Request) {
@@ -34,7 +34,7 @@ export class SetController {
 		})
 
 		let classInst = null as ClassEntity | null
-		if (classId) classInst = await FindClass.execute(classId)
+		if (classId) classInst = await ClassesUseCases.find(classId)
 		if (isClasses && !classInst) throw new BadRequestError('class not found')
 		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
 

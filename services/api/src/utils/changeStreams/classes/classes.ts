@@ -1,11 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import {
-	ClassEntity,
-	ClassFromModel,
-	DeleteClassAnnouncements,
-	GroupsUseCases,
-	UpdateAnnouncementsUsers
-} from '@modules/classes'
+import { AnnouncementsUseCases, ClassEntity, ClassFromModel, GroupsUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
@@ -20,7 +14,7 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitUpdated(`classes/classes/${after.id}`, after)
 
 		if (changes.users) {
-			await Promise.all([UpdateAnnouncementsUsers.execute, GroupsUseCases.updateUsers].map((u) => u({
+			await Promise.all([AnnouncementsUseCases.updateUsers, GroupsUseCases.updateUsers].map((u) => u({
 				classId: after.id,
 				users: after.users
 			})))
@@ -48,6 +42,6 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
 		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
-		await Promise.all([GroupsUseCases.deleteClassGroups, DeleteClassAnnouncements.execute].map((useCase) => useCase(before.id)))
+		await Promise.all([GroupsUseCases.deleteClassGroups, AnnouncementsUseCases.deleteClassAnnouncements].map((useCase) => useCase(before.id)))
 	}
 }

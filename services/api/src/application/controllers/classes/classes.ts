@@ -1,15 +1,4 @@
-import {
-	AcceptClassRequest,
-	AddClass,
-	AddClassMembers,
-	ChangeClassMemberRole,
-	DeleteClass,
-	FindClass,
-	GetClasses,
-	LeaveClass,
-	RequestToJoinClass,
-	UpdateClass
-} from '@modules/classes'
+import { ClassesUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
@@ -17,12 +6,12 @@ import { UploaderUseCases } from '@modules/storage'
 
 export class ClassController {
 	static async FindClass (req: Request) {
-		return await FindClass.execute(req.params.id)
+		return await ClassesUseCases.find(req.params.id)
 	}
 
 	static async GetClass (req: Request) {
 		const query = req.query as QueryParams
-		return await GetClasses.execute(query)
+		return await ClassesUseCases.get(query)
 	}
 
 	static async UpdateClass (req: Request) {
@@ -52,7 +41,7 @@ export class ClassController {
 			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
 		}
 
-		const updatedClass = await UpdateClass.execute({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedClass = await ClassesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
 
 		if (updatedClass) return updatedClass
 		throw new NotAuthorizedError()
@@ -85,12 +74,12 @@ export class ClassController {
 			userRoles: user.roles
 		}
 
-		return await AddClass.execute(data)
+		return await ClassesUseCases.add(data)
 	}
 
 	static async DeleteClass (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteClass.execute({ id: req.params.id, userId: authUserId })
+		const isDeleted = await ClassesUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
@@ -102,7 +91,7 @@ export class ClassController {
 			request: { required: true, rules: [Validation.isBoolean] }
 		})
 
-		const requested = await RequestToJoinClass.execute({
+		const requested = await ClassesUseCases.requestClass({
 			classId: req.params.id,
 			userId: req.authUser!.id,
 			request
@@ -112,7 +101,7 @@ export class ClassController {
 	}
 
 	static async LeaveClass (req: Request) {
-		const left = await LeaveClass.execute({
+		const left = await ClassesUseCases.leaveClass({
 			classId: req.params.id,
 			userId: req.authUser!.id
 		})
@@ -129,7 +118,7 @@ export class ClassController {
 			userId: { required: true, rules: [Validation.isString] }
 		})
 
-		const accepted = await AcceptClassRequest.execute({
+		const accepted = await ClassesUseCases.acceptRequest({
 			classId: req.params.id,
 			adminId: req.authUser!.id,
 			requestId: userId, accept
@@ -150,7 +139,7 @@ export class ClassController {
 			}
 		})
 
-		const added = await AddClassMembers.execute({
+		const added = await ClassesUseCases.addMembers({
 			classId: req.params.id,
 			adminId: req.authUser!.id,
 			userIds, add
@@ -173,7 +162,7 @@ export class ClassController {
 			}
 		})
 
-		const added = await ChangeClassMemberRole.execute({
+		const added = await ClassesUseCases.changeMemberRole({
 			classId: req.params.id,
 			adminId: req.authUser!.id,
 			userId, add, role

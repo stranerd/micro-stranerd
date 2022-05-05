@@ -1,5 +1,5 @@
 import { OnJoinFn, SupportedAuthRoles } from '@utils/commons'
-import { FindClass } from '@modules/classes'
+import { ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 
 export const registerSockets = () => {
@@ -12,7 +12,7 @@ export const registerSockets = () => {
 	const classJoinCb: OnJoinFn = async (data, params) => {
 		const { classId = null } = params
 		if (!classId || !data.user) return null
-		const classInst = await FindClass.execute(classId)
+		const classInst = await ClassesUseCases.find(classId)
 		if (!classInst?.getAllUsers().includes(data.user.id)) return null
 		return await isOpen(data, params)
 	}

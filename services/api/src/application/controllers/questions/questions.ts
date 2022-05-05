@@ -1,7 +1,7 @@
 import { QuestionsUseCases, QuestionType } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ClassEntity, FindClass } from '@modules/classes'
+import { ClassEntity, ClassesUseCases } from '@modules/classes'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -66,7 +66,7 @@ export class QuestionController {
 		})
 
 		let classInst = null as ClassEntity | null
-		if (classId) classInst = await FindClass.execute(classId)
+		if (classId) classInst = await ClassesUseCases.find(classId)
 		if (isClasses && !classInst) throw new BadRequestError('class not found')
 		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
 

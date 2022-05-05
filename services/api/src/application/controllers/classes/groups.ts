@@ -1,4 +1,4 @@
-import { FindClass, GroupsUseCases } from '@modules/classes'
+import { ClassesUseCases, GroupsUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
@@ -48,7 +48,7 @@ export class GroupController {
 			classId: { required: true, rules: [Validation.isString] }
 		})
 
-		const classInst = await FindClass.execute(classId)
+		const classInst = await ClassesUseCases.find(classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 

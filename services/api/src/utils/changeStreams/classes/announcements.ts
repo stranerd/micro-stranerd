@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnnouncementEntity, AnnouncementFromModel, FindClass } from '@modules/classes'
+import { AnnouncementEntity, AnnouncementFromModel, ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { broadcastNotifications } from '@utils/modules/users/notifications'
 
@@ -8,7 +8,7 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}`, after)
 		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}/${after.id}`, after)
 
-		const classInst = await FindClass.execute(after.classId)
+		const classInst = await ClassesUseCases.find(after.classId)
 		if (!classInst) return
 		const users = classInst.getAllUsers().filter((userId) => userId !== after.userId)
 		await broadcastNotifications(users, {

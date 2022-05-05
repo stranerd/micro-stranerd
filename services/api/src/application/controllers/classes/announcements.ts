@@ -1,24 +1,17 @@
-import {
-	AddAnnouncement,
-	DeleteAnnouncement,
-	FindAnnouncement,
-	FindClass,
-	GetAnnouncements,
-	UpdateAnnouncement
-} from '@modules/classes'
+import { AnnouncementsUseCases, ClassesUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {
-		return await FindAnnouncement.execute({ id: req.params.id, classId: req.params.classId })
+		return await AnnouncementsUseCases.find({ id: req.params.id, classId: req.params.classId })
 	}
 
 	static async GetAnnouncement (req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'classId', value: req.params.classId }]
-		return await GetAnnouncements.execute(query)
+		return await AnnouncementsUseCases.get(query)
 	}
 
 	static async UpdateAnnouncement (req: Request) {
@@ -31,7 +24,7 @@ export class AnnouncementController {
 
 		const data = { body }
 
-		const updatedAnnouncement = await UpdateAnnouncement.execute({
+		const updatedAnnouncement = await AnnouncementsUseCases.update({
 			id: req.params.id,
 			classId: req.params.classId,
 			userId: authUserId,
@@ -55,7 +48,7 @@ export class AnnouncementController {
 			classId: { required: true, rules: [Validation.isString] }
 		})
 
-		const classInst = await FindClass.execute(classId)
+		const classInst = await ClassesUseCases.find(classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
@@ -67,12 +60,12 @@ export class AnnouncementController {
 			users: classInst.users
 		}
 
-		return await AddAnnouncement.execute(data)
+		return await AnnouncementsUseCases.add(data)
 	}
 
 	static async DeleteAnnouncement (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await DeleteAnnouncement.execute({
+		const isDeleted = await AnnouncementsUseCases.delete({
 			id: req.params.id,
 			userId: authUserId,
 			classId: req.params.classId
