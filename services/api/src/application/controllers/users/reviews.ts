@@ -1,4 +1,4 @@
-import { UsersUseCases, ReviewsUseCases } from '@modules/users'
+import { ReviewsUseCases, UsersUseCases } from '@modules/users'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
 export class ReviewsController {
@@ -27,11 +27,6 @@ export class ReviewsController {
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 
-		return await ReviewsUseCases.create({
-			...data,
-			userBio: user.bio,
-			userRoles: user.roles,
-			userId: user.id
-		})
+		return await ReviewsUseCases.create({ ...data, user: user.getEmbedded() })
 	}
 }

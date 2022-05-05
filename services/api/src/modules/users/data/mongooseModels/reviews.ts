@@ -21,16 +21,8 @@ const ReviewSchema = new mongoose.Schema<ReviewFromModel>({
 		type: String,
 		required: true
 	},
-	userId: {
-		type: String,
-		required: true
-	},
-	userBio: {
-		type: mongoose.Schema.Types.Mixed as unknown as ReviewFromModel['userBio'],
-		required: true
-	},
-	userRoles: {
-		type: mongoose.Schema.Types.Mixed as unknown as ReviewFromModel['userRoles'],
+	user: {
+		type: mongoose.Schema.Types.Mixed as unknown as ReviewFromModel['user'],
 		required: true
 	},
 	updatedAt: {

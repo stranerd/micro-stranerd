@@ -1,7 +1,7 @@
 import { QueryParams } from '@utils/commons'
 import { IReviewRepository } from '../i-repositories/reviews'
 import { ReviewToModel } from '../../data/models/reviews'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class ReviewsUseCase {
 	repository: IReviewRepository
@@ -22,7 +22,7 @@ export class ReviewsUseCase {
 		return await this.repository.getReviews(input)
 	}
 
-	async updateUserBio (input: { userId: string, userBio: UserBio, userRoles: UserRoles }) {
-		return await this.repository.updateReviewsUserBio(input.userId, input.userBio, input.userRoles)
+	async updateUserBio (user: EmbeddedUser) {
+		return await this.repository.updateReviewsUserBio(user)
 	}
 }

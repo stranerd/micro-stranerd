@@ -7,7 +7,7 @@ export const ReviewChangeStreamCallbacks: ChangeStreamCallbacks<ReviewFromModel,
 		await getSocketEmitter().emitCreated('users/reviews', after)
 		await getSocketEmitter().emitCreated(`users/reviews/${after.id}`, after)
 		await UsersUseCases.updateRatings({
-			userId: after.userId,
+			userId: after.user.id,
 			ratings: after.rating,
 			add: true
 		})
@@ -17,12 +17,12 @@ export const ReviewChangeStreamCallbacks: ChangeStreamCallbacks<ReviewFromModel,
 		await getSocketEmitter().emitUpdated(`users/reviews/${after.id}`, after)
 		if (changes.rating) {
 			await UsersUseCases.updateRatings({
-				userId: before.userId,
+				userId: before.user.id,
 				ratings: before.rating,
 				add: false
 			})
 			await UsersUseCases.updateRatings({
-				userId: after.userId,
+				userId: after.user.id,
 				ratings: after.rating,
 				add: true
 			})
@@ -32,7 +32,7 @@ export const ReviewChangeStreamCallbacks: ChangeStreamCallbacks<ReviewFromModel,
 		await getSocketEmitter().emitDeleted('users/reviews', before)
 		await getSocketEmitter().emitDeleted(`users/reviews/${before.id}`, before)
 		await UsersUseCases.updateRatings({
-			userId: before.userId,
+			userId: before.user.id,
 			ratings: before.rating,
 			add: false
 		})

@@ -24,16 +24,22 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated('users/users', after)
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
-		if (updatedBioOrRoles) await Promise.all([
-			QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
-			ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio, ReviewsUseCases.updateUserBio,
-			VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio,
-			ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio
-		].map(async (useCase) => await useCase({
-			userId: after.id,
-			userBio: after.bio,
-			userRoles: after.roles
-		})))
+		if (updatedBioOrRoles) {
+			await Promise.all([
+				QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
+				ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio, ReportsUseCases.updateUserBio,
+				VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio,
+				ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio
+			].map(async (useCase) => await useCase({
+				userId: after.id,
+				userBio: after.bio,
+				userRoles: after.roles
+			})))
+
+			await Promise.all([
+				ReviewsUseCases.updateUserBio
+			].map(async (useCase) => await useCase(after.getEmbedded())))
+		}
 
 		const updatedScore = !!changes.account?.score
 		if (updatedScore && after.rank.id !== before.rank.id) {

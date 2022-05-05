@@ -40,6 +40,12 @@ export type UserAccount = {
 	}
 }
 
+export type EmbeddedUser = {
+	id: string
+	bio: UserBio
+	roles: UserRoles
+}
+
 export enum UserMeta {
 	questions = 'questions',
 	answers = 'answers',

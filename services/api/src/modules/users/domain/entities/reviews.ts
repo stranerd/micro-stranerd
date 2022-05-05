@@ -1,14 +1,12 @@
 import { BaseEntity } from '@utils/commons'
-import { UserBio, UserRoles } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class ReviewEntity extends BaseEntity {
 	public readonly id: string
 	public readonly review: string
 	public readonly rating: number
 	public readonly tutorId: string
-	public readonly userId: string
-	public readonly userBio: UserBio
-	public readonly userRoles: UserRoles
+	public readonly user: EmbeddedUser
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -19,18 +17,14 @@ export class ReviewEntity extends BaseEntity {
 		             tutorId,
 		             createdAt,
 		             updatedAt,
-		             userId,
-		             userBio,
-		             userRoles
+		             user
 	             }: ReviewConstructorArgs) {
 		super()
 		this.id = id
 		this.review = review
 		this.rating = rating
 		this.tutorId = tutorId
-		this.userId = userId
-		this.userBio = userBio
-		this.userRoles = userRoles
+		this.user = user
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -38,6 +32,5 @@ export class ReviewEntity extends BaseEntity {
 
 type ReviewConstructorArgs = {
 	id: string, review: string, rating: number
-	tutorId: string, userId: string, userBio: UserBio, userRoles: UserRoles
-	createdAt: number, updatedAt: number,
+	tutorId: string, user: EmbeddedUser, createdAt: number, updatedAt: number,
 }

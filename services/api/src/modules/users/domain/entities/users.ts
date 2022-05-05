@@ -1,4 +1,13 @@
-import { UserAccount, UserBio, UserDates, UserRoles, UserSchoolData, UserSession, UserStatus } from '../types'
+import {
+	EmbeddedUser,
+	UserAccount,
+	UserBio,
+	UserDates,
+	UserRoles,
+	UserSchoolData,
+	UserSession,
+	UserStatus
+} from '../types'
 import { BaseEntity } from '@utils/commons'
 import { getNextRank, getRank } from './ranks'
 
@@ -30,6 +39,14 @@ export class UserEntity extends BaseEntity {
 
 	get nextRank () {
 		return getNextRank(this.rank.id)
+	}
+
+	getEmbedded (): EmbeddedUser {
+		return {
+			id: this.id,
+			bio: this.bio,
+			roles: this.roles
+		}
 	}
 }
 

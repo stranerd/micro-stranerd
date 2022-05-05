@@ -1,4 +1,4 @@
-import { UserBio, UserRoles } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export interface ReviewFromModel extends ReviewToModel {
 	_id: string
@@ -10,7 +10,5 @@ export interface ReviewToModel {
 	review: string
 	rating: number
 	tutorId: string
-	userId: string
-	userBio: UserBio
-	userRoles: UserRoles
+	user: EmbeddedUser
 }
