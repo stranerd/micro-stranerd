@@ -30,7 +30,7 @@ export const scheduleSession = async (session: SessionEntity) => {
 	if (!isScheduled) return
 	const delayTillStart = scheduledAt! - Date.now()
 	const reminders = [0, 5, 15, 60].map((time) => delayTillStart - (time * 60 * 1000)).filter((delay) => delay >= 0)
-	const taskIds = [] as (string | number)[]
+	const taskIds: string[] = []
 	if (delayTillStart >= 0) taskIds.push(await appInstance.job.addDelayedJob({
 		type: DelayedJobs.ScheduledSessionStart,
 		data: { sessionId, studentId: student.id, tutorId: tutor.id }

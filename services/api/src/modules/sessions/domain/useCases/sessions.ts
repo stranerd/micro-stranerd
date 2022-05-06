@@ -1,7 +1,7 @@
 import { ISessionRepository } from '../irepositories/session'
 import { SessionFromModel, SessionToModel } from '../../data/models/session'
 import { QueryParams } from '@utils/commons'
-import { EmbeddedUser, TaskID } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class SessionsUseCase {
 	private repository: ISessionRepository
@@ -45,7 +45,7 @@ export class SessionsUseCase {
 	async updateTaskIdsAndTimes (input: {
 		sessionId: string
 		data: {
-			taskIds: TaskID[]
+			taskIds: string[]
 			startedAt?: number
 			delayInMs?: number
 		}

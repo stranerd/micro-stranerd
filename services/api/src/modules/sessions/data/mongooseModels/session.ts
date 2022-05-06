@@ -41,7 +41,7 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 		required: true
 	},
 	taskIds: {
-		type: [mongoose.Schema.Types.Mixed],
+		type: [String],
 		required: false,
 		default: []
 	},

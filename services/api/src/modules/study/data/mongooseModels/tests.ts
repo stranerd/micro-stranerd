@@ -50,7 +50,7 @@ const Schema = new mongoose.Schema<TestFromModel>({
 		default: false
 	},
 	taskIds: {
-		type: [mongoose.Schema.Types.Mixed],
+		type: [String],
 		required: false,
 		default: []
 	},

@@ -19,29 +19,33 @@ export class BullJob {
 		this.queue = new Bull(Instance.getInstance().settings.bullQueueName, Instance.getInstance().settings.redisURI)
 	}
 
-	async addDelayedJob<Event> (data: Event, delayInMs: number): Promise<string | number> {
+	async addDelayedJob<Event> (data: Event, delayInMs: number): Promise<string> {
 		const job = await this.queue.add(JobNames.DelayedJob, data, {
 			delay: delayInMs,
 			removeOnComplete: true,
 			backoff: 1000,
 			attempts: 3
 		})
-		return job.id
+		return job.id.toString()
 	}
 
-	async addCronLikeJob<Event> (data: Event, cron: string) {
+	async addCronLikeJob<Event> (data: Event, cron: string): Promise<string> {
 		const job = await this.queue.add(JobNames.CronLikeJob, data, {
 			repeat: { cron },
 			removeOnComplete: true,
 			backoff: 1000,
 			attempts: 3
 		})
-		return job.id
+		return job.id.toString()
 	}
 
 	async removeDelayedJob (jobId: string | number) {
 		const job = await this.queue.getJob(jobId)
 		if (job) await job.discard()
+	}
+
+	async removeCronLikeJob (jobId: string | number, cron: string) {
+		await this.queue.removeRepeatable({ cron, jobId }).catch()
 	}
 
 	async retryAllFailedJobs () {
@@ -61,14 +65,14 @@ export class BullJob {
 		])
 	}
 
-	private async addCronJob (type: CronTypes | string, cron: string) {
+	private async addCronJob (type: CronTypes | string, cron: string): Promise<string> {
 		const job = await this.queue.add(JobNames.CronJob, { type }, {
 			repeat: { cron },
 			removeOnComplete: true,
 			backoff: 1000,
 			attempts: 3
 		})
-		return job.id
+		return job.id.toString()
 	}
 
 	private async cleanup () {

@@ -1,7 +1,7 @@
 import { SessionFromModel, SessionToModel } from '../../data/models/session'
 import { SessionEntity } from '../entities/session'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { EmbeddedUser, TaskID } from '../types'
+import { EmbeddedUser } from '../types'
 
 export interface ISessionRepository {
 	add: (data: SessionToModel) => Promise<SessionEntity>,
@@ -11,6 +11,6 @@ export interface ISessionRepository {
 	cancel: (ids: string[], userId: string, reason: keyof SessionFromModel['cancelled']) => Promise<boolean>
 	end: (ids: string[], userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
-	updateTaskIdsAndTimes: (id: string, data: { taskIds: TaskID[], startedAt?: number, delayInMs?: number }) => Promise<void>
+	updateTaskIdsAndTimes: (id: string, data: { taskIds: string[], startedAt?: number, delayInMs?: number }) => Promise<void>
 	markDone: (id: string) => Promise<void>
 }

@@ -1,7 +1,6 @@
 import { TestToModel } from '../../data/models/tests'
 import { ITestRepository } from '../irepositories/tests'
 import { QueryParams } from '@utils/commons'
-import { TaskID } from '../types'
 
 export class TestsUseCase {
 	private repository: ITestRepository
@@ -38,7 +37,7 @@ export class TestsUseCase {
 		return await this.repository.updateAnswer(input.id, input.userId, input.questionId, input.answer)
 	}
 
-	async updateTaskIds (input: { testId: string, taskIds: TaskID[] }) {
+	async updateTaskIds (input: { testId: string, taskIds: string[] }) {
 		return await this.repository.updateTaskIds(input.testId, input.taskIds)
 	}
 }

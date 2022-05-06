@@ -3,7 +3,7 @@ import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { EmbeddedUser, TaskID } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {
 	private static instance: SessionRepository
@@ -70,7 +70,7 @@ export class SessionRepository implements ISessionRepository {
 		return result[0].acknowledged && result[1].acknowledged
 	}
 
-	async updateTaskIdsAndTimes (id: string, data: { taskIds: TaskID[], delayInMs?: number, startedAt?: number }) {
+	async updateTaskIdsAndTimes (id: string, data: { taskIds: string[], delayInMs?: number, startedAt?: number }) {
 		const { taskIds, startedAt, delayInMs } = data
 		await Session.findByIdAndUpdate(id, {
 			$set: {

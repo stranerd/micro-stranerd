@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { EmbeddedUser, TaskID } from '../types'
+import { EmbeddedUser } from '../types'
 
 export class SessionEntity extends BaseEntity {
 	public readonly id: string
@@ -10,7 +10,7 @@ export class SessionEntity extends BaseEntity {
 	public readonly price: number
 	public readonly accepted: boolean | null
 	public readonly done: boolean
-	public readonly taskIds: TaskID[]
+	public readonly taskIds: string[]
 	public readonly cancelled: { student: boolean, tutor: boolean }
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -58,7 +58,7 @@ type SessionConstructorArgs = {
 	updatedAt: number,
 	startedAt: number | null
 	endedAt: number | null
-	taskIds: TaskID[]
+	taskIds: string[]
 	isScheduled: boolean
 	scheduledAt: number | null
 }

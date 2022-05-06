@@ -1,10 +1,10 @@
-import { ClassUsers, EmbeddedUser, EventDataType, TaskID } from '../../domain/types'
+import { ClassUsers, EmbeddedUser, EventDataType } from '../../domain/types'
 
 export interface EventFromModel extends EventToModel {
 	_id: string
 	createdAt: number
 	updatedAt: number
-	taskIds: TaskID[]
+	taskIds: string[]
 }
 
 export interface EventToModel {

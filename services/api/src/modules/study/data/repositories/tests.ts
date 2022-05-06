@@ -3,7 +3,7 @@ import { TestMapper } from '../mappers/tests'
 import { TestFromModel, TestToModel } from '../models/tests'
 import { Test } from '../mongooseModels/tests'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { AnswerType, TaskID } from '../../domain/types'
+import { AnswerType } from '../../domain/types'
 
 export class TestRepository implements ITestRepository {
 	private static instance: TestRepository
@@ -63,7 +63,7 @@ export class TestRepository implements ITestRepository {
 		return !!test
 	}
 
-	async updateTaskIds (id: string, taskIds: TaskID[]) {
+	async updateTaskIds (id: string, taskIds: string[]) {
 		await Test.findByIdAndUpdate(id, {
 			$addToSet: { taskIds: { $each: taskIds } }
 		})

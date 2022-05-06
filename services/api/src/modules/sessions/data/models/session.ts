@@ -1,4 +1,4 @@
-import { EmbeddedUser, TaskID } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
 export interface SessionFromModel extends SessionToModel {
 	_id: string
@@ -7,7 +7,7 @@ export interface SessionFromModel extends SessionToModel {
 	createdAt: number,
 	updatedAt: number,
 	accepted: boolean | null
-	taskIds: TaskID[]
+	taskIds: string[]
 	done: boolean
 	cancelled: { tutor: boolean, student: boolean }
 }
