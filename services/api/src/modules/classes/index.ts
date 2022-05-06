@@ -33,4 +33,4 @@ export { DiscussionEntity } from './domain/entities/discussions'
 export { GroupEntity } from './domain/entities/groups'
 export { EventEntity } from './domain/entities/events'
 
-export { EventType, ClassUsers } from './domain/types'
+export { EventType, ClassUsers, Cron } from './domain/types'

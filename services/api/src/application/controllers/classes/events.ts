@@ -1,9 +1,23 @@
 import { ClassesUseCases, ClassUsers, EventsUseCases, EventType } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { isValidCron } from 'cron-validator'
 
-const isCronValid = (val: string) => isValidCron(val) ? Validation.isValid() : Validation.isInvalid('not a valid cron string')
+const isValidTimeZone = (tz: string) => {
+	try {
+		Intl.DateTimeFormat(undefined, { timeZone: tz })
+		return true
+	} catch (ex) {
+		return false
+	}
+}
+
+const isCronValid = (val: any) => {
+	const isDayValid = Validation.isNumber(val?.day).valid && Validation.isMoreThanOrEqualTo(val?.day, 0).valid && Validation.isLessThan(val?.day, 7).valid
+	const isHourValid = Validation.isNumber(val?.hour).valid && Validation.isMoreThanOrEqualTo(val?.hour, 0).valid && Validation.isLessThan(val?.hour, 24).valid
+	const isMinuteValid = Validation.isNumber(val?.minute).valid && Validation.isMoreThanOrEqualTo(val?.minute, 0).valid && Validation.isLessThan(val?.minute, 60).valid
+	const isValidTz = isValidTimeZone(val?.tz)
+	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid() : Validation.isInvalid('not a valid cron object')
+}
 
 export class EventController {
 	static async FindEvent (req: Request) {
@@ -21,13 +35,14 @@ export class EventController {
 
 	static async UpdateEvent (req: Request) {
 		const authUserId = req.authUser!.id
-		const isRepeatable = req.body.data?.type === EventType.repeatable
+		const isTimetable = req.body.data?.type === EventType.timetable
 		const isOneOff = req.body.data?.type === EventType.oneOff
-		const { title, type, scheduledAt, cron } = validate({
+		const { title, type, scheduledAt, start, end } = validate({
 			title: req.body.title,
 			type: req.body.data?.type,
 			scheduledAt: req.body.data?.scheduledAt,
-			cron: req.body.data?.cron
+			start: req.body.data?.start,
+			end: req.body.data?.end
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			type: {
@@ -38,7 +53,8 @@ export class EventController {
 				required: isOneOff,
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
-			cron: { required: isRepeatable, rules: [Validation.isString, isCronValid] }
+			start: { required: isTimetable, rules: [Validation.isString, isCronValid] },
+			end: { required: isTimetable, rules: [Validation.isString, isCronValid] }
 		})
 
 		const updatedEvent = await EventsUseCases.update({
@@ -47,7 +63,7 @@ export class EventController {
 			userId: authUserId,
 			data: {
 				title,
-				data: isOneOff ? { type, scheduledAt } : isRepeatable ? { type, cron } : ({} as any)
+				data: isTimetable ? { type, start, end } : { type, scheduledAt }
 			}
 		})
 
@@ -60,15 +76,15 @@ export class EventController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const isRepeatable = req.body.data?.type === EventType.repeatable
+		const isTimetable = req.body.data?.type === EventType.timetable
 		const isOneOff = req.body.data?.type === EventType.oneOff
-
-		const { title, classId, type, scheduledAt, cron } = validate({
+		const { title, classId, type, scheduledAt, start, end } = validate({
 			title: req.body.title,
 			classId: req.params.classId,
 			type: req.body.data?.type,
 			scheduledAt: req.body.data?.scheduledAt,
-			cron: req.body.data?.cron
+			start: req.body.data?.start,
+			end: req.body.data?.end
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] },
@@ -80,7 +96,8 @@ export class EventController {
 				required: isOneOff,
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
-			cron: { required: isRepeatable, rules: [Validation.isString, isCronValid] }
+			start: { required: isTimetable, rules: [Validation.isString, isCronValid] },
+			end: { required: isTimetable, rules: [Validation.isString, isCronValid] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)
@@ -89,7 +106,7 @@ export class EventController {
 
 		return await EventsUseCases.add({
 			title, classId, users: classInst.users, user: user.getEmbedded(),
-			data: isOneOff ? { type, scheduledAt } : isRepeatable ? { type, cron } : ({} as any)
+			data: isTimetable ? { type, start, end } : { type, scheduledAt }
 		})
 	}
 

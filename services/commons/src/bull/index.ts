@@ -1,6 +1,7 @@
 import Bull from 'bull'
 import { Instance } from '../instance'
 import { CronTypes } from './types'
+import { getRandomValue } from '../utils/utils'
 
 enum JobNames {
 	CronJob = 'CronJob',
@@ -19,8 +20,13 @@ export class BullJob {
 		this.queue = new Bull(Instance.getInstance().settings.bullQueueName, Instance.getInstance().settings.redisURI)
 	}
 
+	private static getNewId () {
+		return [Date.now(), getRandomValue(20)].join(':')
+	}
+
 	async addDelayedJob<Event> (data: Event, delayInMs: number): Promise<string> {
 		const job = await this.queue.add(JobNames.DelayedJob, data, {
+			jobId: BullJob.getNewId(),
 			delay: delayInMs,
 			removeOnComplete: true,
 			backoff: 1000,
@@ -29,23 +35,24 @@ export class BullJob {
 		return job.id.toString()
 	}
 
-	async addCronLikeJob<Event> (data: Event, cron: string): Promise<string> {
+	async addCronLikeJob<Event> (data: Event, cron: string, tz?: string): Promise<string> {
 		const job = await this.queue.add(JobNames.CronLikeJob, data, {
-			repeat: { cron },
+			jobId: BullJob.getNewId(),
+			repeat: { cron, ...(tz ? { tz } : {}) },
 			removeOnComplete: true,
 			backoff: 1000,
 			attempts: 3
 		})
-		return job.id.toString()
+		return (job.opts?.repeat as any)?.key ?? ''
 	}
 
-	async removeDelayedJob (jobId: string | number) {
+	async removeDelayedJob (jobId: string) {
 		const job = await this.queue.getJob(jobId)
 		if (job) await job.discard()
 	}
 
-	async removeCronLikeJob (jobId: string | number, cron: string) {
-		await this.queue.removeRepeatable({ cron, jobId }).catch()
+	async removeCronLikeJob (jobKey: string) {
+		await this.queue.removeRepeatableByKey(jobKey)
 	}
 
 	async retryAllFailedJobs () {

@@ -1,11 +1,19 @@
 export enum EventType {
-	repeatable = 'repeatable',
+	timetable = 'timetable',
 	oneOff = 'oneOff'
 }
 
-type EventRepeatableType = {
-	type: EventType.repeatable
-	cron: string
+export type Cron = {
+	day: number
+	hour: number
+	minute: number
+	tz: string
+}
+
+type EventTimetableType = {
+	type: EventType.timetable
+	start: Cron
+	end: Cron
 }
 
 type EventOneOffType = {
@@ -13,4 +21,4 @@ type EventOneOffType = {
 	scheduledAt: number
 }
 
-export type EventDataType = EventRepeatableType | EventOneOffType
+export type EventDataType = EventTimetableType | EventOneOffType

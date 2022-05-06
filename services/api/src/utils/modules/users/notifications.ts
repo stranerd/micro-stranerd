@@ -1,4 +1,4 @@
-import { UsersUseCases, NotificationsUseCases, NotificationToModel } from '@modules/users'
+import { NotificationsUseCases, NotificationToModel, UsersUseCases } from '@modules/users'
 import { publishers } from '@utils/events'
 import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
 import { clientDomain } from '@utils/environment'
@@ -13,10 +13,11 @@ type AccountData = { action: 'account', data: { profile?: true, wallet?: true } 
 type RoleData = { action: 'roles', data: { admin?: true, tutor?: true } }
 type AnnouncementData = { action: 'announcements', data: { classId: string, announcementId: string } }
 type ClassesData = { action: 'classes', data: { classId: string } }
+type ClassEventsData = { action: 'classEvents', data: { classId: string, eventId: string } }
 
 type NotificationData =
 	Omit<NotificationToModel, 'userId'>
-	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData | ClassesData)
+	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData | ClassesData | ClassEventsData)
 
 export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
 	await NotificationsUseCases.create([{ ...data, userId }])

@@ -1,4 +1,4 @@
-import { appInstance, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
+import { appInstance, CronTypes, DelayedEvent, DelayedJobs, Events, EventTypes } from '@utils/commons'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { SessionsUseCases } from '@modules/sessions'
@@ -8,11 +8,12 @@ import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { UploaderUseCases } from '@modules/storage'
+import { broadcastEvent } from '@utils/modules/classes/events'
 
 const eventBus = appInstance.eventBus
 
 export const subscribers = {
-	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED, async (data) => {
+	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED, async (data: DelayedEvent) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 		if (data.type === DelayedJobs.ScheduledSessionStart) {
 			const { sessionId, studentId: userId } = data.data
@@ -20,17 +21,17 @@ export const subscribers = {
 			if (session) await startSession(session)
 		}
 		if (data.type === DelayedJobs.ScheduledSessionNotification) {
-			const { sessionId, studentId, tutorId, timeInSec } = data.data
+			const { sessionId, studentId, tutorId, timeInMin } = data.data
 			await Promise.all([
 				await sendNotification(tutorId, {
 					title: 'Session Timer',
-					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
 					action: 'sessions',
 					data: { userId: studentId, sessionId }
 				}),
 				await sendNotification(studentId, {
 					title: 'Session Timer',
-					body: timeInSec > 0 ? `Your session will start in ${timeInSec / 60} minutes` : 'Your session is starting now',
+					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
 					action: 'sessions',
 					data: { userId: tutorId, sessionId }
 				})
@@ -41,6 +42,7 @@ export const subscribers = {
 			userId: data.data.userId,
 			data: { done: true }
 		})
+		if (data.type === DelayedJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {

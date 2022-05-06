@@ -18,16 +18,16 @@ export type DelayedEvent = {
 	data: { sessionId: string, studentId: string, tutorId: string }
 } | {
 	type: typeof DelayedJobs.ScheduledSessionNotification,
-	data: { sessionId: string, studentId: string, tutorId: string, timeInSec: number }
+	data: { sessionId: string, studentId: string, tutorId: string, timeInMin: number }
 } | {
 	type: typeof DelayedJobs.TestTimer,
 	data: { testId: string, userId: string }
 } | {
 	type: DelayedJobs.ClassEvent,
-	data: { eventId: string }
+	data: { eventId: string, timeInMin: number }
 }
 
 export type CronLikeEvent = {
 	type: CronLikeJobs.ClassEvent,
-	data: { eventId: string }
+	data: { eventId: string, timeInMin: number }
 }
