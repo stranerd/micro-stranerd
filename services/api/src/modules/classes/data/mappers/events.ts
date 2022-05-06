@@ -5,9 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class EventMapper extends BaseMapper<EventFromModel, EventToModel, EventEntity> {
 	mapFrom (model: EventFromModel | null) {
 		if (!model) return null
-		const { _id, title, data, classId, user, users, createdAt, updatedAt } = model
+		const { _id, title, data, classId, user, users, taskIds, createdAt, updatedAt } = model
 		return new EventEntity({
-			id: _id.toString(), title, data, classId, user, users, createdAt, updatedAt
+			id: _id.toString(), title, data, classId, user, users, taskIds, createdAt, updatedAt
 		})
 	}
 

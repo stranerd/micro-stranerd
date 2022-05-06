@@ -26,6 +26,11 @@ const Schema = new mongoose.Schema<EventFromModel>({
 		type: mongoose.Schema.Types.Mixed as unknown as EventFromModel['user'],
 		required: true
 	},
+	taskIds: {
+		type: [mongoose.Schema.Types.Mixed],
+		required: false,
+		default: []
+	},
 	users: Object.fromEntries(Object.keys(ClassUsers).map((key) => [key, {
 		type: [String],
 		required: false,

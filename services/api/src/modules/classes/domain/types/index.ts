@@ -1,5 +1,7 @@
 import { MediaOutput } from '@utils/commons'
 
+export type TaskID = string | number
+
 export { EmbeddedUser } from '@modules/users'
 export * from './events'
 

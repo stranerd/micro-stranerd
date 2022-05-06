@@ -3,7 +3,7 @@ import { EventMapper } from '../mappers/events'
 import { EventFromModel, EventToModel } from '../models/events'
 import { Event } from '../mongooseModels/events'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
+import { ClassUsers, EmbeddedUser, TaskID } from '../../domain/types'
 
 export class EventRepository implements IEventRepository {
 	private static instance: EventRepository
@@ -32,8 +32,8 @@ export class EventRepository implements IEventRepository {
 		return this.mapper.mapFrom(event)!
 	}
 
-	async find (classId: string, id: string) {
-		const event = await Event.findOne({ _id: id, classId })
+	async find (classId: string, id: string, userId: string) {
+		const event = await Event.findOne({ _id: id, classId, 'users.members': userId })
 		return this.mapper.mapFrom(event)
 	}
 
@@ -64,5 +64,12 @@ export class EventRepository implements IEventRepository {
 	async deleteClassEvents (classId: string) {
 		const events = await Event.deleteMany({ classId })
 		return events.acknowledged
+	}
+
+	async updateTaskIds (id: string, data: { taskIds: TaskID[], add: boolean }) {
+		const { taskIds, add } = data
+		await Event.findByIdAndUpdate(id, {
+			[add ? '$addToSet' : '$pull']: { taskIds: { [add ? '$each' : '$in']: taskIds } }
+		})
 	}
 }

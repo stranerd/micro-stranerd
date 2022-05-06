@@ -1,7 +1,6 @@
-import { AnnouncementsUseCases, ClassesUseCases } from '@modules/classes'
+import { AnnouncementsUseCases, ClassesUseCases, ClassUsers } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ClassUsers } from '@modules/classes/domain/types'
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {

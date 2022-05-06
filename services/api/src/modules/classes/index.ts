@@ -32,3 +32,5 @@ export { ClassEntity } from './domain/entities/classes'
 export { DiscussionEntity } from './domain/entities/discussions'
 export { GroupEntity } from './domain/entities/groups'
 export { EventEntity } from './domain/entities/events'
+
+export { EventType, ClassUsers } from './domain/types'

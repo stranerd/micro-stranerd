@@ -1,7 +1,6 @@
-import { ClassesUseCases, GroupsUseCases } from '@modules/classes'
+import { ClassesUseCases, ClassUsers, GroupsUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ClassUsers } from '@modules/classes/domain/types'
 
 export class GroupController {
 	static async FindGroup (req: Request) {

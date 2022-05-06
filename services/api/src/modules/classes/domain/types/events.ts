@@ -10,7 +10,7 @@ type EventRepeatableType = {
 
 type EventOneOffType = {
 	type: EventType.oneOff
-	occurredAt: number
+	scheduledAt: number
 }
 
 export type EventDataType = EventRepeatableType | EventOneOffType
