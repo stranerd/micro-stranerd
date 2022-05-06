@@ -2,7 +2,12 @@ export enum DelayedJobs {
 	SessionTimer = 'SessionTimer',
 	ScheduledSessionStart = 'ScheduledSessionStart',
 	ScheduledSessionNotification = 'ScheduledSessionNotification',
-	TestTimer = 'TestTimer'
+	TestTimer = 'TestTimer',
+	ClassEvent = 'ClassEvent'
+}
+
+export enum CronLikeJobs {
+	ClassEvent = 'ClassEvent'
 }
 
 export type DelayedEvent = {
@@ -17,4 +22,12 @@ export type DelayedEvent = {
 } | {
 	type: typeof DelayedJobs.TestTimer,
 	data: { testId: string, userId: string }
+} | {
+	type: DelayedJobs.ClassEvent,
+	data: { eventId: string }
+}
+
+export type CronLikeEvent = {
+	type: CronLikeJobs.ClassEvent,
+	data: { eventId: string }
 }

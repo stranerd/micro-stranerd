@@ -1,4 +1,4 @@
-import { appInstance, ChangeStreamCallbacks, Conditions, DelayedJobs } from '@utils/commons'
+import { appInstance, ChangeStreamCallbacks, Conditions, DelayedEvent, DelayedJobs } from '@utils/commons'
 import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
@@ -12,7 +12,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 
 		if (after.data.type === TestType.timed) {
 			const delay = after.data.time * 60 * 1000
-			const taskId = await appInstance.job.addDelayedJob({
+			const taskId = await appInstance.job.addDelayedJob<DelayedEvent>({
 				type: DelayedJobs.TestTimer,
 				data: { testId: after.id, userId: after.userId }
 			}, delay)

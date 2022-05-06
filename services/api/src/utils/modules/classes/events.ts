@@ -1,18 +1,22 @@
 import { EventEntity, EventsUseCases, EventType } from '@modules/classes'
-import { appInstance } from '@utils/commons'
+import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/commons'
 
 const TASK_ID_SEPARATOR = '---'
-
-// TODO: add data to save
 
 export const scheduleEvent = async (event: EventEntity) => {
 	const taskIds: string[] = []
 	if (event.data.type === EventType.repeatable) {
-		const id = await appInstance.job.addCronLikeJob({}, event.data.cron)
+		const id = await appInstance.job.addCronLikeJob<CronLikeEvent>({
+			type: CronLikeJobs.ClassEvent,
+			data: { eventId: event.id }
+		}, event.data.cron)
 		taskIds.push(`${EventType.repeatable}${TASK_ID_SEPARATOR}${event.data.cron}${TASK_ID_SEPARATOR}${id}`)
 	} else {
 		const delay = event.data.scheduledAt - Date.now()
-		const id = await appInstance.job.addDelayedJob({}, delay)
+		const id = await appInstance.job.addDelayedJob<DelayedEvent>({
+			type: DelayedJobs.ClassEvent,
+			data: { eventId: event.id }
+		}, delay)
 		taskIds.push(`${EventType.oneOff}${TASK_ID_SEPARATOR}${id}`)
 	}
 	await EventsUseCases.updateTaskIds({
