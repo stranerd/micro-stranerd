@@ -32,15 +32,15 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		return this.mapper.mapFrom(announcement)!
 	}
 
-	async find (classId: string, id: string) {
-		const announcement = await Announcement.findOne({ _id: id, classId })
+	async find (classId: string, id: string, userId: string) {
+		const announcement = await Announcement.findOne({ _id: id, classId, 'users.members': userId })
 		return this.mapper.mapFrom(announcement)
 	}
 
 	async update (classId: string, id: string, userId: string, data: Partial<AnnouncementToModel>) {
 		const announcement = await Announcement.findOneAndUpdate({
 			_id: id,
-			admins: userId, classId
+			'user.admins': userId, classId
 		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(announcement)
 	}
@@ -51,7 +51,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 	}
 
 	async delete (classId: string, id: string, userId: string) {
-		const announcement = await Announcement.findOneAndDelete({ _id: id, admins: userId, classId })
+		const announcement = await Announcement.findOneAndDelete({ _id: id, 'users.admins': userId, classId })
 		return !!announcement
 	}
 

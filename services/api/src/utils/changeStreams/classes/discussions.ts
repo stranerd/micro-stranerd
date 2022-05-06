@@ -9,7 +9,7 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}`, after)
 		await getSocketEmitter().emitCreated(`classes/discussions/${after.classId}/${after.id}`, after)
 
-		const group = await GroupsUseCases.find({ id: after.groupId, classId: after.classId })
+		const group = await GroupsUseCases.find({ id: after.groupId, classId: after.classId, userId: after.user.id })
 		if (!group) return
 		const users = group.getAllUsers().filter((userId) => userId !== after.user.id)
 		const body = after.media ? 'Shared a file' : after.content

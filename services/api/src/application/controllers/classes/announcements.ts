@@ -5,12 +5,19 @@ import { ClassUsers } from '@modules/classes/domain/types'
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {
-		return await AnnouncementsUseCases.find({ id: req.params.id, classId: req.params.classId })
+		return await AnnouncementsUseCases.find({
+			id: req.params.id,
+			classId: req.params.classId,
+			userId: req.authUser!.id
+		})
 	}
 
 	static async GetAnnouncement (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'classId', value: req.params.classId }]
+		query.auth = [{ field: 'classId', value: req.params.classId }, {
+			field: 'users.members',
+			value: req.authUser!.id
+		}]
 		return await AnnouncementsUseCases.get(query)
 	}
 

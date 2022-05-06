@@ -6,6 +6,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -18,6 +19,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId/:id',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
