@@ -1,7 +1,7 @@
 import { EventEntity, EventsUseCases, EventType } from '@modules/classes'
 import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/commons'
 import { addCron, getCronString } from '@utils/modules/classes'
-import { broadcastNotifications } from '@utils/modules/users/notifications'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 export const scheduleEvent = async (event: EventEntity) => {
 	const taskIds: string[] = []
@@ -45,8 +45,8 @@ export const broadcastEvent = async (eventId: string, timeInMin: number) => {
 	let body = ''
 	if (event.data.type === EventType.timetable) body = timeInMin > 0 ? `Reminder: ${event.title} will start in ${timeInMin} minutes` : `Reminder: ${event.title} is starting now`
 	else body = timeInMin > 0 ? `Reminder: ${event.title} ends in ${timeInMin} minutes` : `Reminder: ${event.title} is ending now`
-	await broadcastNotifications(event.getAllUsers(), {
-		title: 'Class Event', body, action: 'classEvents',
+	await sendNotification(event.getAllUsers(), {
+		title: 'Class Event', body, action: 'classEvents', sendEmail: false,
 		data: { eventId: event.id, classId: event.classId }
 	})
 }

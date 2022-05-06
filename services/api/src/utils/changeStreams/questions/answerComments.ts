@@ -16,11 +16,12 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 		})
 
 		const answer = await AnswersUseCases.find(after.answerId)
-		if (answer && answer.user.id !== after.user.id) await sendNotification(answer.user.id, {
+		if (answer && answer.user.id !== after.user.id) await sendNotification([answer.user.id], {
 			title: 'New comment to your answer',
 			body: 'Your answer has a new comment. Go have a look',
 			action: 'answerComments',
-			data: { questionId: answer.questionId, answerId: answer.id, commentId: after.id }
+			data: { questionId: answer.questionId, answerId: answer.id, commentId: after.id },
+			sendEmail: false
 		})
 
 		await BadgesUseCases.recordCountStreak({

@@ -1,7 +1,4 @@
-import { NotificationsUseCases, NotificationToModel, UsersUseCases } from '@modules/users'
-import { publishers } from '@utils/events'
-import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
-import { clientDomain } from '@utils/environment'
+import { NotificationsUseCases, NotificationToModel } from '@modules/users'
 
 type QuestionData = { action: 'questions', data: { questionId: string } }
 type AnswerData = { action: 'answers', data: { questionId: string, answerId: string } }
@@ -19,28 +16,6 @@ type NotificationData =
 	Omit<NotificationToModel, 'userId'>
 	& (QuestionData | AnswerData | QuestionCommentData | AnswerCommentData | SessionData | UserData | AccountData | RoleData | AnnouncementData | ClassesData | ClassEventsData)
 
-export const sendNotification = async (userId: string, data: NotificationData & { title: string }, asEmail = false) => {
-	await NotificationsUseCases.create([{ ...data, userId }])
-	if (asEmail) {
-		const user = await UsersUseCases.find(userId)
-		if (user) {
-			const content = await readEmailFromPug('emails/newNotification.pug', {
-				notification: data,
-				meta: { link: clientDomain }
-			})
-			await publishers[EventTypes.SENDMAIL].publish({
-				from: EmailsList.NO_REPLY,
-				to: user.bio.email,
-				subject: data.title,
-				content,
-				data: {
-					attachments: { logoWhite: true }
-				}
-			})
-		}
-	}
-}
-
-export const broadcastNotifications = async (userIds: string[], data: NotificationData & { title: string }) => {
+export const sendNotification = async (userIds: string[], data: NotificationData) => {
 	await NotificationsUseCases.create(userIds.map((userId) => ({ ...data, userId })))
 }

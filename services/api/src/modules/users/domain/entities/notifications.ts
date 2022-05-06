@@ -8,10 +8,22 @@ export class NotificationEntity extends BaseEntity {
 	public readonly data: Record<string, any>
 	public readonly userId: string
 	public readonly seen: boolean
+	public readonly sendEmail: boolean
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
-	constructor ({ id, title, body, action, data, userId, createdAt, seen, updatedAt }: NotificationConstructorArgs) {
+	constructor ({
+		             id,
+		             title,
+		             body,
+		             action,
+		             data,
+		             userId,
+		             sendEmail,
+		             createdAt,
+		             seen,
+		             updatedAt
+	             }: NotificationConstructorArgs) {
 		super()
 		this.id = id
 		this.title = title
@@ -20,6 +32,7 @@ export class NotificationEntity extends BaseEntity {
 		this.data = data ?? {}
 		this.userId = userId
 		this.seen = seen
+		this.sendEmail = sendEmail
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -27,5 +40,5 @@ export class NotificationEntity extends BaseEntity {
 
 type NotificationConstructorArgs = {
 	id: string, title: string, body: string, action: string, userId: string, data: Record<string, any>
-	createdAt: number, seen: boolean, updatedAt: number
+	createdAt: number, seen: boolean, updatedAt: number, sendEmail: boolean
 }

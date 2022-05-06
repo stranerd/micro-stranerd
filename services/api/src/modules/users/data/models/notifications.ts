@@ -10,5 +10,6 @@ export interface NotificationToModel {
 	body: string
 	userId: string
 	action: string
+	sendEmail: boolean
 	data: Record<string, any>
 }

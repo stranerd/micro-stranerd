@@ -37,10 +37,10 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedScore && after.rank.id !== before.rank.id) {
 			const increased = after.account.score > before.account.score
 			if (increased) {
-				await sendNotification(after.id, {
+				await sendNotification([after.id], {
 					title: 'Ranking Up',
 					body: `Congrats, you just got promoted to ${after.rank.id}`,
-					action: 'account',
+					action: 'account', sendEmail: false,
 					data: { profile: true }
 				})
 				await BadgesUseCases.recordRank({
@@ -49,10 +49,10 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 					add: true
 				})
 			} else {
-				await sendNotification(after.id, {
+				await sendNotification([after.id], {
 					title: 'Ranking Down',
 					body: `Oops, you just got demoted to ${after.rank.id}`,
-					action: 'account',
+					action: 'account', sendEmail: false,
 					data: { profile: true }
 				})
 				await BadgesUseCases.recordRank({

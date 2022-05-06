@@ -27,6 +27,11 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		required: false,
 		default: false
 	},
+	sendEmail: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
 	data: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true,

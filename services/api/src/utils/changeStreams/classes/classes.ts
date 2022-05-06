@@ -2,7 +2,7 @@ import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { AnnouncementsUseCases, ClassEntity, ClassFromModel, GroupsUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
-import { broadcastNotifications } from '@utils/modules/users/notifications'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
@@ -20,17 +20,17 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 			})))
 			const removedUsers = before.getAllUsers().filter((userId) => !after.getAllUsers().includes(userId))
 			const addedUsers = after.getAllUsers().filter((userId) => !before.getAllUsers().includes(userId))
-			await broadcastNotifications(removedUsers, {
+			await sendNotification(removedUsers, {
 				action: 'classes',
 				body: `You either left or were removed from the class: ${after.name}`,
 				data: { classId: after.id },
-				title: after.name
+				title: after.name, sendEmail: false
 			})
-			await broadcastNotifications(addedUsers, {
+			await sendNotification(addedUsers, {
 				action: 'classes',
 				body: `You just got added to the class: ${after.name}`,
 				data: { classId: after.id },
-				title: after.name
+				title: after.name, sendEmail: false
 			})
 		}
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)

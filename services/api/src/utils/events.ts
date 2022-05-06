@@ -22,20 +22,13 @@ export const subscribers = {
 		}
 		if (data.type === DelayedJobs.ScheduledSessionNotification) {
 			const { sessionId, studentId, tutorId, timeInMin } = data.data
-			await Promise.all([
-				await sendNotification(tutorId, {
-					title: 'Session Timer',
-					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
-					action: 'sessions',
-					data: { userId: studentId, sessionId }
-				}),
-				await sendNotification(studentId, {
-					title: 'Session Timer',
-					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
-					action: 'sessions',
-					data: { userId: tutorId, sessionId }
-				})
-			])
+			await sendNotification([tutorId, studentId], {
+				title: 'Session Timer',
+				body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
+				action: 'sessions',
+				data: { userId: studentId, sessionId },
+				sendEmail: false
+			})
 		}
 		if (data.type === DelayedJobs.TestTimer) await TestsUseCases.update({
 			id: data.data.testId,

@@ -31,12 +31,13 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		const question = await QuestionsUseCases.find(after.questionId)
 		if (question) {
-			await sendNotification(question.user.id, {
+			await sendNotification([question.user.id], {
 				title: 'New Answer',
 				body: 'Your question has been answered. Go have a look',
 				action: 'answers',
-				data: { questionId: after.questionId, answerId: after.id }
-			}, true)
+				data: { questionId: after.questionId, answerId: after.id },
+				sendEmail: true
+			})
 		}
 
 		await BadgesUseCases.recordCountStreak({
