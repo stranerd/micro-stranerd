@@ -53,8 +53,8 @@ export class EventController {
 				required: isOneOff,
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
-			start: { required: isTimetable, rules: [Validation.isString, isCronValid] },
-			end: { required: isTimetable, rules: [Validation.isString, isCronValid] }
+			start: { required: isTimetable, rules: [isCronValid] },
+			end: { required: isTimetable, rules: [isCronValid] }
 		})
 
 		const updatedEvent = await EventsUseCases.update({
@@ -96,8 +96,8 @@ export class EventController {
 				required: isOneOff,
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
-			start: { required: isTimetable, rules: [Validation.isString, isCronValid] },
-			end: { required: isTimetable, rules: [Validation.isString, isCronValid] }
+			start: { required: isTimetable, rules: [isCronValid] },
+			end: { required: isTimetable, rules: [isCronValid] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)

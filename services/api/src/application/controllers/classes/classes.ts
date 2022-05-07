@@ -23,20 +23,25 @@ export class ClassController {
 		const data = validate({
 			name: req.body.name,
 			description: req.body.description,
+			courses: req.body.courses,
 			photo: uploadedPhoto as any,
 			coverPhoto: uploadedCoverPhoto as any
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			courses: {
+				required: false,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+			},
 			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
 			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 
-		const { name, description } = data
+		const { name, description, courses } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
 		if (uploadedCoverPhoto) data.coverPhoto = await UploaderUseCases.upload('classes/coverPhotos', uploadedCoverPhoto)
 		const validateData = {
-			name, description,
+			name, description, courses: [...new Set<string>(courses)],
 			...(changedPhoto ? { photo: data.photo } : {}),
 			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
 		}
@@ -52,14 +57,19 @@ export class ClassController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { name, description, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
+		const { name, description, courses, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
 			name: req.body.name,
 			description: req.body.description,
+			courses: req.body.courses,
 			photo: req.files.photo?.[0] ?? null,
 			coverPhoto: req.files.coverPhoto?.[0] ?? null
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			courses: {
+				required: false,
+				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+			},
 			photo: { required: false, rules: [Validation.isImage] },
 			coverPhoto: { required: false, rules: [Validation.isImage] }
 		})
@@ -67,12 +77,10 @@ export class ClassController {
 		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
 		const coverPhoto = classCoverPhoto ? await UploaderUseCases.upload('classes/coverPhotos', classCoverPhoto) : null
 
-		const data = {
+		return await ClassesUseCases.add({
 			name, description, photo, coverPhoto,
-			user: user.getEmbedded()
-		}
-
-		return await ClassesUseCases.add(data)
+			user: user.getEmbedded(), courses: [...new Set<string>(courses)]
+		})
 	}
 
 	static async DeleteClass (req: Request) {

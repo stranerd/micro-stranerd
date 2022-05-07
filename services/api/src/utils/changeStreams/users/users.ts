@@ -26,12 +26,11 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
-			ChatMetasUseCases.updateUserBio, SessionsUseCases.updateUserBio,
-			ReviewsUseCases.updateUserBio, ReportsUseCases.updateUserBio,
-			QuestionsUseCases.updateUserBio, AnswersUseCases.updateUserBio, AnswerCommentsUseCases.updateUserBio,
-			ClassesUseCases.updateUserBio, AnnouncementsUseCases.updateUserBio, GroupsUseCases.updateUserBio, DiscussionsUseCases.updateUserBio, EventsUseCases.updateUserBio,
-			VideosUseCases.updateUserBio, NotesUseCases.updateUserBio, FlashCardsUseCases.updateUserBio, SetsUseCases.updateUserBio
-		].map(async (useCase) => await useCase(after.getEmbedded())))
+			ChatMetasUseCases, SessionsUseCases, ReviewsUseCases, ReportsUseCases,
+			QuestionsUseCases, AnswersUseCases, AnswerCommentsUseCases,
+			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases,
+			VideosUseCases, NotesUseCases, FlashCardsUseCases, SetsUseCases
+		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
 		const updatedScore = !!changes.account?.score
 		if (updatedScore && after.rank.id !== before.rank.id) {
