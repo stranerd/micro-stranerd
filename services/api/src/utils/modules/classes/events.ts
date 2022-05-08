@@ -3,6 +3,11 @@ import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } f
 import { addCron, getCronString } from '@utils/modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 
+export const getCronOrder = (val: any) => {
+	const { day = 0, hour = 0, minute = 0 } = val ?? {}
+	return `${day.toString().padStart(2, '0')}${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}`
+}
+
 export const scheduleEvent = async (event: EventEntity) => {
 	const taskIds: string[] = []
 	if (event.data.type === EventType.timetable) {

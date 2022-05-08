@@ -1,6 +1,7 @@
 import { ClassesUseCases, ClassUsers, EventsUseCases, EventType } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { getCronOrder } from '@utils/modules/classes/events'
 
 const isValidTimeZone = (tz: string) => {
 	try {
@@ -18,6 +19,8 @@ const isCronValid = (val: any) => {
 	const isValidTz = isValidTimeZone(val?.tz)
 	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid() : Validation.isInvalid('not a valid cron object')
 }
+
+const isCronMore = (start: any) => (val: any) => getCronOrder(val) >= getCronOrder(start) ? Validation.isValid() : Validation.isInvalid('must be after start')
 
 export class EventController {
 	static async FindEvent (req: Request) {
@@ -54,7 +57,7 @@ export class EventController {
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid] }
+			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] }
 		})
 
 		const updatedEvent = await EventsUseCases.update({
@@ -97,7 +100,7 @@ export class EventController {
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid] }
+			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)
