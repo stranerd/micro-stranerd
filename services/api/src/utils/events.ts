@@ -1,4 +1,4 @@
-import { appInstance, CronTypes, DelayedEvent, DelayedJobs, Events, EventTypes } from '@utils/commons'
+import { appInstance, CronLikeJobs, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { endSession, startSession } from '@utils/modules/sessions/sessions'
 import { SessionsUseCases } from '@modules/sessions'
@@ -13,7 +13,7 @@ import { broadcastEvent } from '@utils/modules/classes/events'
 const eventBus = appInstance.eventBus
 
 export const subscribers = {
-	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED, async (data: DelayedEvent) => {
+	[EventTypes.TASKSDELAYED]: eventBus.createSubscriber<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED, async (data) => {
 		if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
 		if (data.type === DelayedJobs.ScheduledSessionStart) {
 			const { sessionId, studentId: userId } = data.data
@@ -36,6 +36,9 @@ export const subscribers = {
 			data: { done: true }
 		})
 		if (data.type === DelayedJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
+	}),
+	[EventTypes.TASKSCRONLIKE]: eventBus.createSubscriber<Events[EventTypes.TASKSCRONLIKE]>(EventTypes.TASKSCRONLIKE, async (data) => {
+		if (data.type === CronLikeJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
 	}),
 	[EventTypes.TASKSCRON]: eventBus.createSubscriber<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON, async ({ type }) => {
 		if (type === CronTypes.daily) {
@@ -69,5 +72,6 @@ export const publishers = {
 	[EventTypes.SENDMAIL]: eventBus.createPublisher<Events[EventTypes.SENDMAIL]>(EventTypes.SENDMAIL),
 	[EventTypes.DELETEFILE]: eventBus.createPublisher<Events[EventTypes.DELETEFILE]>(EventTypes.DELETEFILE),
 	[EventTypes.TASKSCRON]: eventBus.createPublisher<Events[EventTypes.TASKSCRON]>(EventTypes.TASKSCRON),
+	[EventTypes.TASKSCRONLIKE]: eventBus.createPublisher<Events[EventTypes.TASKSCRONLIKE]>(EventTypes.TASKSCRONLIKE),
 	[EventTypes.TASKSDELAYED]: eventBus.createPublisher<Events[EventTypes.TASKSDELAYED]>(EventTypes.TASKSDELAYED)
 }

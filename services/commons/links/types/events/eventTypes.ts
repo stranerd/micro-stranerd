@@ -3,6 +3,7 @@ import { TypedEmail } from '../emails'
 import { CronTypes, MediaOutput } from '../../commons'
 import { AuthRoleChange, AuthUserChange, AuthUserDeleted } from './types/auth'
 import { PushNotification } from './types/push'
+import { CronLikeEvent, DelayedEvent } from '@utils/common/types'
 
 export enum EventTypes {
 	SENDMAIL = 'SENDMAIL',
@@ -13,6 +14,7 @@ export enum EventTypes {
 	AUTHROLESUPDATED = 'AUTHROLESUPDATED',
 	AUTHUSERDELETED = 'AUTHUSERDELETED',
 	TASKSCRON = 'TASKSCRON',
+	TASKSCRONLIKE = 'TASKSCRONLIKE',
 	TASKSDELAYED = 'TASKSDELAYED',
 	PUSHNOTIFICATION = 'PUSHNOTIFICATION'
 }
@@ -57,7 +59,11 @@ export interface Events extends Record<EventTypes, Event<any>> {
 	},
 	TASKSDELAYED: {
 		topic: typeof EventTypes.TASKSDELAYED,
-		data: any
+		data: DelayedEvent
+	},
+	TASKSCRONLIKE: {
+		topic: typeof EventTypes.TASKSCRONLIKE,
+		data: CronLikeEvent
 	},
 	PUSHNOTIFICATION: {
 		topic: typeof EventTypes.PUSHNOTIFICATION,
