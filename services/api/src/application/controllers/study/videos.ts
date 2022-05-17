@@ -23,7 +23,7 @@ export class VideoController {
 			link: req.body.link,
 			media: uploadedMedia as any
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: !req.body.isHosted, rules: [Validation.isString] },
@@ -55,7 +55,7 @@ export class VideoController {
 			link: req.body.link,
 			media: req.files.media?.[0] ?? null
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
 			isHosted: { required: false, rules: [Validation.isBoolean] },
 			link: { required: !req.body.isHosted, rules: [Validation.isString] },

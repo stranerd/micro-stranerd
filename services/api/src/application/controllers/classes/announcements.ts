@@ -25,7 +25,7 @@ export class AnnouncementController {
 		const { body } = validate({
 			body: req.body.body
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] }
+			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
 
 		const data = { body }
@@ -50,7 +50,7 @@ export class AnnouncementController {
 			body: req.body.body,
 			classId: req.params.classId
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] }
 		})
 

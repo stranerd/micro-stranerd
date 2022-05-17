@@ -5,6 +5,11 @@ export class ClassEntity extends BaseEntity {
 	public readonly id: string
 	public readonly user: EmbeddedUser
 	public readonly name: string
+	public readonly school: {
+		institutionId: string
+		facultyId: string
+		departmentId: string
+	}
 	public readonly description: string
 	public readonly photo: Media | null
 	public readonly coverPhoto: Media | null
@@ -18,6 +23,7 @@ export class ClassEntity extends BaseEntity {
 		             id,
 		             user,
 		             name,
+		             school,
 		             description,
 		             photo,
 		             coverPhoto,
@@ -31,6 +37,7 @@ export class ClassEntity extends BaseEntity {
 		this.id = id
 		this.user = user
 		this.name = name
+		this.school = school
 		this.description = description
 		this.photo = photo
 		this.coverPhoto = coverPhoto
@@ -50,6 +57,11 @@ type ClassConstructorArgs = {
 	id: string,
 	user: EmbeddedUser
 	name: string
+	school: {
+		institutionId: string
+		facultyId: string
+		departmentId: string
+	}
 	description: string
 	photo: Media | null
 	coverPhoto: Media | null

@@ -40,14 +40,15 @@ export class EventController {
 		const authUserId = req.authUser!.id
 		const isTimetable = req.body.data?.type === EventType.timetable
 		const isOneOff = req.body.data?.type === EventType.oneOff
-		const { title, type, scheduledAt, start, end } = validate({
+		const { title, type, scheduledAt, start, end, lecturer } = validate({
 			title: req.body.title,
 			type: req.body.data?.type,
 			scheduledAt: req.body.data?.scheduledAt,
 			start: req.body.data?.start,
-			end: req.body.data?.end
+			end: req.body.data?.end,
+			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(EventType), (cur, val) => cur === val)]
@@ -57,7 +58,8 @@ export class EventController {
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] }
+			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
+			lecturer: { required: isTimetable, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
 		const updatedEvent = await EventsUseCases.update({
@@ -66,7 +68,7 @@ export class EventController {
 			userId: authUserId,
 			data: {
 				title,
-				data: isTimetable ? { type, start, end } : { type, scheduledAt }
+				data: isTimetable ? { type, start, end, lecturer } : { type, scheduledAt }
 			}
 		})
 
@@ -81,15 +83,16 @@ export class EventController {
 
 		const isTimetable = req.body.data?.type === EventType.timetable
 		const isOneOff = req.body.data?.type === EventType.oneOff
-		const { title, classId, type, scheduledAt, start, end } = validate({
+		const { title, classId, type, scheduledAt, start, end, lecturer } = validate({
 			title: req.body.title,
 			classId: req.params.classId,
 			type: req.body.data?.type,
 			scheduledAt: req.body.data?.scheduledAt,
 			start: req.body.data?.start,
-			end: req.body.data?.end
+			end: req.body.data?.end,
+			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			classId: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true,
@@ -100,7 +103,8 @@ export class EventController {
 				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] }
+			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
+			lecturer: { required: isTimetable, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)
@@ -109,7 +113,7 @@ export class EventController {
 
 		return await EventsUseCases.add({
 			title, classId, users: classInst.users, user: user.getEmbedded(),
-			data: isTimetable ? { type, start, end } : { type, scheduledAt }
+			data: isTimetable ? { type, start, end, lecturer } : { type, scheduledAt }
 		})
 	}
 

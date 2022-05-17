@@ -18,6 +18,11 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		type: String,
 		required: true
 	},
+	school: {
+		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['school'],
+		required: true,
+		default: {} as any
+	},
 	description: {
 		type: String,
 		required: true
