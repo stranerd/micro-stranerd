@@ -3,6 +3,7 @@ import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 import { UploaderUseCases } from '@modules/storage'
+import { DepartmentsUseCases } from '@modules/school'
 
 export class ClassController {
 	static async FindClass (req: Request) {
@@ -27,14 +28,14 @@ export class ClassController {
 			photo: uploadedPhoto as any,
 			coverPhoto: uploadedCoverPhoto as any
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courses: {
-				required: false,
+				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 
 		const { name, description, courses } = data
@@ -57,28 +58,37 @@ export class ClassController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { name, description, courses, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
+		const { name, departmentId, description, courses, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
 			name: req.body.name,
+			departmentId: req.body.school?.departmentId,
 			description: req.body.description,
 			courses: req.body.courses,
 			photo: req.files.photo?.[0] ?? null,
 			coverPhoto: req.files.coverPhoto?.[0] ?? null
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			departmentId: { required: true, rules: [Validation.isString] },
+			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courses: {
-				required: false,
+				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: false, rules: [Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isImage] }
 		})
 
 		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
 		const coverPhoto = classCoverPhoto ? await UploaderUseCases.upload('classes/coverPhotos', classCoverPhoto) : null
+		const department = await DepartmentsUseCases.find(departmentId)
+		if (!department) throw new BadRequestError('department not found')
 
 		return await ClassesUseCases.add({
 			name, description, photo, coverPhoto,
+			school: {
+				departmentId: department.id,
+				facultyId: department.facultyId,
+				institutionId: department.institutionId
+			},
 			user: user.getEmbedded(), courses: [...new Set<string>(courses)]
 		})
 	}

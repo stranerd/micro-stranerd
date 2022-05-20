@@ -11,6 +11,7 @@ export type Cron = {
 }
 
 type EventTimetableType = {
+	lecturer: string
 	type: EventType.timetable
 	start: Cron
 	end: Cron
@@ -19,6 +20,7 @@ type EventTimetableType = {
 type EventOneOffType = {
 	type: EventType.oneOff
 	scheduledAt: number
+	announcementId: string
 }
 
 export type EventDataType = EventTimetableType | EventOneOffType

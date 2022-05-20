@@ -22,7 +22,7 @@ export class DiscussionController {
 		}, {
 			content: { required: true, rules: [Validation.isString] },
 			media: {
-				required: false,
+				required: true, nullable: true,
 				rules: [Validation.isNotTruncated, Validation.isFile]
 			},
 			groupId: { required: true, rules: [Validation.isString] }

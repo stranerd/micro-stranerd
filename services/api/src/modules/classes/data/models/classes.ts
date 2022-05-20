@@ -10,6 +10,11 @@ export interface ClassFromModel extends ClassToModel {
 
 export interface ClassToModel {
 	name: string
+	school: {
+		institutionId: string
+		facultyId: string
+		departmentId: string
+	}
 	description: string
 	photo: Media | null
 	coverPhoto: Media | null

@@ -39,8 +39,8 @@ export class EmailsController {
 				required: true,
 				rules: [Validation.isString]
 			},
-			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			referrer: { required: false, rules: [Validation.isString] }
