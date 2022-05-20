@@ -5,9 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class AnnouncementMapper extends BaseMapper<AnnouncementFromModel, AnnouncementToModel, AnnouncementEntity> {
 	mapFrom (model: AnnouncementFromModel | null) {
 		if (!model) return null
-		const { _id, users, classId, user, body, createdAt, updatedAt } = model
+		const { _id, users, classId, reminder, user, body, createdAt, updatedAt } = model
 		return new AnnouncementEntity({
-			id: _id.toString(), users, classId, user,
+			id: _id.toString(), users, classId, reminder, user,
 			body, createdAt, updatedAt
 		})
 	}
@@ -16,6 +16,7 @@ export class AnnouncementMapper extends BaseMapper<AnnouncementFromModel, Announ
 		return {
 			body: entity.body,
 			classId: entity.classId,
+			reminder: entity.reminder,
 			users: entity.users,
 			user: entity.user
 		}

@@ -11,4 +11,5 @@ export interface AnnouncementToModel {
 	users: Record<ClassUsers, string[]>
 	user: EmbeddedUser
 	body: string
+	reminder: number | null
 }

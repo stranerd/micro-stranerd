@@ -19,6 +19,11 @@ const Schema = new mongoose.Schema<AnnouncementFromModel>({
 		type: String,
 		required: true
 	},
+	reminder: {
+		type: Number,
+		required: false,
+		default: null
+	},
 	user: {
 		type: mongoose.Schema.Types.Mixed as unknown as AnnouncementFromModel['user'],
 		required: true

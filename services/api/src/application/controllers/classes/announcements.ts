@@ -46,12 +46,18 @@ export class AnnouncementController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { body, classId } = validate({
+		const { body, classId, reminder } = validate({
 			body: req.body.body,
-			classId: req.params.classId
+			classId: req.params.classId,
+			reminder: req.body.reminder
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			classId: { required: true, rules: [Validation.isString] }
+			classId: { required: true, rules: [Validation.isString] },
+			reminder: {
+				required: true,
+				nullable: true,
+				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
+			}
 		})
 
 		const classInst = await ClassesUseCases.find(classId)
@@ -60,7 +66,7 @@ export class AnnouncementController {
 
 		const data = {
 			body, classId, user: user.getEmbedded(),
-			users: classInst.users
+			users: classInst.users, reminder
 		}
 
 		return await AnnouncementsUseCases.add(data)
