@@ -31,11 +31,11 @@ export class ClassController {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courses: {
-				required: false,
+				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 
 		const { name, description, courses } = data
@@ -70,11 +70,11 @@ export class ClassController {
 			departmentId: { required: true, rules: [Validation.isString] },
 			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courses: {
-				required: false,
+				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: false, rules: [Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isImage] }
 		})
 
 		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null

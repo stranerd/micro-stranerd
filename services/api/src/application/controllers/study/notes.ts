@@ -30,7 +30,7 @@ export class NoteController {
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			isHosted: { required: false, rules: [Validation.isBoolean] },
+			isHosted: { required: true, rules: [Validation.isBoolean] },
 			link: { required: !req.body.isHosted, rules: [Validation.isString] },
 			media: {
 				required: !!req.body.isHosted,
@@ -62,7 +62,7 @@ export class NoteController {
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			isHosted: { required: false, rules: [Validation.isBoolean] },
+			isHosted: { required: true, rules: [Validation.isBoolean] },
 			link: { required: !req.body.isHosted, rules: [Validation.isString] },
 			media: { required: !!req.body.isHosted, rules: [Validation.isNotTruncated, isPdf] }
 		})

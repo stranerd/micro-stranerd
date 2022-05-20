@@ -15,7 +15,8 @@ const isNotTruncatedX = (error?: string) => (val: any) => isNotTruncated(val, er
 export const Validation = { ...Validate, isNotTruncated, isNotTruncatedX }
 
 type Rules = {
-	required: boolean
+	required?: boolean | (() => boolean)
+	nullable?: boolean
 	rules: Validate.Rule[]
 }
 
@@ -23,7 +24,10 @@ export function validate<Keys extends Record<string, any>> (data: Keys, rules: R
 	const errors = Object.entries(data)
 		.map(([key, value]) => ({
 			key,
-			valid: Validation.Validator.single(value, rules[key].rules, rules[key].required)
+			valid: Validation.Validator.single(value, rules[key].rules, {
+				required: rules[key].required,
+				nullable: rules[key].nullable
+			})
 		}))
 
 	const failed = errors.some(({ valid }) => !valid.isValid)

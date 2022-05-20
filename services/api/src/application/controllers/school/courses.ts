@@ -19,7 +19,7 @@ export class CourseController {
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			institutionId: { required: true, rules: [Validation.isString] },
-			departmentId: { required: false, rules: [Validation.isString] }
+			departmentId: { required: true, nullable: true, rules: [Validation.isString] }
 		})
 		const institution = await InstitutionsUseCases.find(data.institutionId)
 		const department = !data.departmentId ? null : await DepartmentsUseCases.find(data.departmentId)

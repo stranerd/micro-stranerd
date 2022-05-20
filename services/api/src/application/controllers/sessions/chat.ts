@@ -26,10 +26,10 @@ export class ChatController {
 				rules: [Validation.isString, Validation.isLongerThanX(0)]
 			},
 			media: {
-				required: false,
+				required: true, nullable: true,
 				rules: [Validation.isNotTruncated, Validation.isFile]
 			},
-			sessionId: { required: false, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			sessionId: { required: true, nullable: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			to: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 

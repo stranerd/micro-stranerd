@@ -28,8 +28,8 @@ export class UserController {
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			photo: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: false, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
+			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 		const { firstName, lastName, description } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
