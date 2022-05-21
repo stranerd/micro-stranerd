@@ -322,10 +322,10 @@
   resolved "https://registry.yarnpkg.com/@socket.io/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz#568d9beae00b0d835f4f8c53fd55714986492e61"
   integrity sha512-dOlCBKnDw4iShaIsH/bxujKTM18+2TOAsYz+KSc11Am38H4q5Xw8Bbz97ZYdrVNM+um3p7w86Bvvmcn9q+5+eQ==
 
-"@stranerd/api-commons@^3.13.0":
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-3.13.0.tgz#2bfc91c1f4062551058b689449383ee5d5f3325c"
-  integrity sha512-7ET3iD/lluKUYMaXb7hMDKXADNTANMq7W3NRj0ETRyJ3KdY5WIIvcARWbacWDem2bNCkoK2KIiTU73/qnNqxWQ==
+"@stranerd/api-commons@^3.14.0":
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/@stranerd/api-commons/-/api-commons-3.14.0.tgz#3e894a2e4fe22e3690411ef9f565f721aa9379b0"
+  integrity sha512-pTsZTiCynIbH4epqQC8PusdGsCm8Huk7JzIbTU0h4m4qKvZA7SKt36pnhiihMIrSMALZ06IaXfBz8CBx4WnLRg==
   dependencies:
     "@stranerd/validate" "^3.1.0"
     amqplib "^0.9.0"
@@ -341,6 +341,7 @@
     jsonwebtoken "^8.5.1"
     mongoose "^6.3.4"
     morgan "^1.10.0"
+    music-metadata "^7.12.3"
     path-to-regexp "^6.2.1"
     pug "^3.0.2"
     redis "^4.1.0"

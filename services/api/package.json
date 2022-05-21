@@ -14,10 +14,9 @@
 	"license": "ISC",
 	"dependencies": {
 		"@google-cloud/storage": "^5.20.5",
-		"@stranerd/api-commons": "^3.13.0",
+		"@stranerd/api-commons": "^3.14.0",
 		"axios": "^0.27.2",
 		"firebase-admin": "^10.2.0",
-		"music-metadata": "^7.12.3",
 		"nodemailer": "^6.7.5",
 		"stripe": "^9.2.0"
 	},
