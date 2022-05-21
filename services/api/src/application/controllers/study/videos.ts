@@ -14,7 +14,7 @@ export class VideoController {
 	}
 
 	static async UpdateVideo (req: Request) {
-		const uploadedMedia = req.files.media?.[0]
+		const uploadedMedia = req.files.media?.[0] ?? null
 		const changedMedia = !!uploadedMedia || req.body.media === null
 		const data = validate({
 			title: req.body.title,
