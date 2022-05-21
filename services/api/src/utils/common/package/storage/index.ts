@@ -4,6 +4,7 @@ export interface StorageFile {
 	size: number
 	isTruncated: boolean
 	data: Buffer
+	duration: number
 }
 
 export interface MediaOutput {
@@ -13,4 +14,5 @@ export interface MediaOutput {
 	path: string
 	timestamp: number
 	link: string
+	duration: number
 }
