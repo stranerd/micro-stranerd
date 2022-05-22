@@ -8,6 +8,7 @@ export class GroupEntity extends BaseEntity {
 	public readonly classId: string
 	public readonly user: EmbeddedUser
 	public readonly last: DiscussionEntity | null
+	public readonly readAt: Record<string, number>
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -19,6 +20,7 @@ export class GroupEntity extends BaseEntity {
 		             user,
 		             last,
 		             users,
+		             readAt,
 		             createdAt,
 		             updatedAt
 	             }: GroupConstructorArgs) {
@@ -29,6 +31,7 @@ export class GroupEntity extends BaseEntity {
 		this.last = last
 		this.classId = classId
 		this.users = users
+		this.readAt = readAt
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -45,6 +48,7 @@ type GroupConstructorArgs = {
 	users: Record<ClassUsers, string[]>
 	last: DiscussionEntity | null
 	classId: string
+	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 }

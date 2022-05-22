@@ -2,6 +2,7 @@ import { EmbeddedUser, Media } from '../../domain/types'
 
 export interface DiscussionFromModel extends DiscussionToModel {
 	_id: string
+	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 }

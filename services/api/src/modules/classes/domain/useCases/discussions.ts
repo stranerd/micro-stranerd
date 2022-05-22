@@ -37,4 +37,8 @@ export class DiscussionsUseCase {
 	async updateUserBio (user: EmbeddedUser) {
 		return await this.repository.updateUserBio(user)
 	}
+
+	async markRead (input: { classId: string, groupId: string, userId: string }) {
+		return await this.repository.markRead(input.classId, input.groupId, input.userId)
+	}
 }

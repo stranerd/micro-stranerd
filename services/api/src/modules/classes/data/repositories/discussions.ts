@@ -32,13 +32,39 @@ export class DiscussionRepository implements IDiscussionRepository {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
-			const discussion = await new Discussion(data).save({ session })
+			const discussion = await new Discussion({
+				...data,
+				readAt: { [data.user.id]: Date.now() }
+			}).save({ session })
 			await Group.findOneAndUpdate({ _id: data.groupId }, { $set: { last: discussion } }, { session })
 			res = discussion
 			return discussion
 		})
 		await session.endSession()
 		return this.mapper.mapFrom(res)!
+	}
+
+	async markRead (classId: string, groupId: string, userId: string) {
+		const readAt = Date.now()
+		const session = await mongoose.startSession()
+		let res = false
+		await session.withTransaction(async (session) => {
+			const group = await Group.findOneAndUpdate(
+				{ _id: groupId, classId, 'users.members': userId, [`readAt.${userId}`]: { $lt: readAt } },
+				{ $set: { [`readAt.${userId}`]: readAt } },
+				{ session }
+			)
+			if (!group) return false
+			await Discussion.updateMany(
+				{ groupId, classId, [`readAt.${userId}`]: null },
+				{ $set: { [`readAt.${userId}`]: readAt } },
+				{ session }
+			)
+			res = true
+			return true
+		})
+		await session.endSession()
+		return res
 	}
 
 	async find (classId: string, id: string) {

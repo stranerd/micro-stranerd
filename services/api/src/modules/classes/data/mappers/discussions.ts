@@ -5,11 +5,11 @@ import { BaseMapper } from '@utils/commons'
 export class DiscussionMapper extends BaseMapper<DiscussionFromModel, DiscussionToModel, DiscussionEntity> {
 	mapFrom (model: DiscussionFromModel | null) {
 		if (!model) return null
-		const { _id, user, content, media, links, groupId, classId, createdAt, updatedAt } = model
+		const { _id, user, content, media, links, groupId, classId, readAt, createdAt, updatedAt } = model
 		return new DiscussionEntity({
 			id: _id.toString(), user,
 			content, media, links, groupId, classId,
-			createdAt, updatedAt
+			readAt, createdAt, updatedAt
 		})
 	}
 

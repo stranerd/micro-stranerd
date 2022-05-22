@@ -40,5 +40,18 @@ export const discussionRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/classes/discussions/:classId/:groupId/read',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await DiscussionController.MarkRead(req)
+				}
+			})
+		]
 	}
 ]

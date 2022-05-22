@@ -43,4 +43,12 @@ export class DiscussionController {
 			user: user.getEmbedded()
 		})
 	}
+
+	static async MarkRead (req: Request) {
+		return await DiscussionsUseCases.markRead({
+			groupId: req.params.groupId,
+			classId: req.params.classId,
+			userId: req.authUser!.id
+		})
+	}
 }

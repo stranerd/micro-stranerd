@@ -36,6 +36,11 @@ const Schema = new mongoose.Schema<DiscussionFromModel>({
 		required: false,
 		default: null
 	},
+	readAt: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: {}
+	},
 	createdAt: {
 		type: Number,
 		required: false,

@@ -11,4 +11,5 @@ export interface IDiscussionRepository {
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	deleteGroupDiscussions: (groupId: string) => Promise<boolean>
+	markRead: (classId: string, groupId: string, userId: string) => Promise<boolean>
 }
