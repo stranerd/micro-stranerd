@@ -25,6 +25,12 @@ export const DiscussionChangeStreamCallbacks: ChangeStreamCallbacks<DiscussionFr
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated(`classes/discussions/${after.classId}`, after)
 		await getSocketEmitter().emitUpdated(`classes/discussions/${after.classId}/${after.id}`, after)
+
+		const { content, media, groupId, classId, readAt, createdAt, updatedAt, user, links } = after
+		await GroupsUseCases.updateLastDiscussion({
+			_id: after.id, groupId, classId, content, media, links, user,
+			readAt, createdAt, updatedAt
+		})
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`classes/discussions/${before.classId}`, before)
