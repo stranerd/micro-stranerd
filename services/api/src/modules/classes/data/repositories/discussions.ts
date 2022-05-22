@@ -32,11 +32,15 @@ export class DiscussionRepository implements IDiscussionRepository {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
+			const createdAt = Date.now()
 			const discussion = await new Discussion({
-				...data,
-				readAt: { [data.user.id]: Date.now() }
+				...data, createdAt, updatedAt: createdAt,
+				readAt: { [data.user.id]: createdAt }
 			}).save({ session })
-			await Group.findOneAndUpdate({ _id: data.groupId }, { $set: { last: discussion } }, { session })
+			await Group.findOneAndUpdate(
+				{ _id: data.groupId },
+				{ $set: { last: discussion }, $max: { [`readAt.${data.user.id}`]: createdAt } },
+				{ session })
 			res = discussion
 			return discussion
 		})
@@ -50,8 +54,8 @@ export class DiscussionRepository implements IDiscussionRepository {
 		let res = false
 		await session.withTransaction(async (session) => {
 			const group = await Group.findOneAndUpdate(
-				{ _id: groupId, classId, 'users.members': userId, [`readAt.${userId}`]: { $lt: readAt } },
-				{ $set: { [`readAt.${userId}`]: readAt } },
+				{ _id: groupId, classId, 'users.members': userId },
+				{ $max: { [`readAt.${userId}`]: readAt } },
 				{ session }
 			)
 			if (!group) return false
