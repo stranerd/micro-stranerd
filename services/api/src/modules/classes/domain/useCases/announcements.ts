@@ -41,4 +41,8 @@ export class AnnouncementsUseCase {
 	async updateUsers (input: { classId: string, users: Record<ClassUsers, string[]> }) {
 		return await this.repository.updateUsers(input.classId, input.users)
 	}
+
+	async markRead (input: { classId: string, userId: string }) {
+		return await this.repository.markRead(input.classId, input.userId)
+	}
 }

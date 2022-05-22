@@ -66,5 +66,18 @@ export const announcementsRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/classes/announcements/:classId/read',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnnouncementController.MarkRead(req)
+				}
+			})
+		]
 	}
 ]

@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema<AnnouncementFromModel>({
 		type: String,
 		required: true
 	},
+	readAt: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: {}
+	},
 	createdAt: {
 		type: Number,
 		required: false,

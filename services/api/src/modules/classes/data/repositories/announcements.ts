@@ -64,4 +64,13 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		const announcements = await Announcement.deleteMany({ classId })
 		return announcements.acknowledged
 	}
+
+	async markRead (classId: string, userId: string) {
+		const readAt = Date.now()
+		const announcements = await Announcement.updateMany(
+			{ classId, [`readAt.${userId}`]: null },
+			{ $set: { [`readAt.${userId}`]: readAt } }
+		)
+		return announcements.acknowledged
+	}
 }

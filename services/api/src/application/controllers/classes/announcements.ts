@@ -82,4 +82,11 @@ export class AnnouncementController {
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
+
+	static async MarkRead (req: Request) {
+		return await AnnouncementsUseCases.markRead({
+			classId: req.params.classId,
+			userId: req.authUser!.id
+		})
+	}
 }

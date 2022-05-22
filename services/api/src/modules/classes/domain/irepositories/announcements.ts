@@ -12,4 +12,5 @@ export interface IAnnouncementRepository {
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassAnnouncements: (classId: string) => Promise<boolean>
+	markRead: (classId: string, userId: string) => Promise<boolean>
 }

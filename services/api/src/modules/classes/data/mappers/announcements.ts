@@ -5,10 +5,10 @@ import { BaseMapper } from '@utils/commons'
 export class AnnouncementMapper extends BaseMapper<AnnouncementFromModel, AnnouncementToModel, AnnouncementEntity> {
 	mapFrom (model: AnnouncementFromModel | null) {
 		if (!model) return null
-		const { _id, users, classId, reminder, user, body, createdAt, updatedAt } = model
+		const { _id, users, classId, reminder, user, body, readAt, createdAt, updatedAt } = model
 		return new AnnouncementEntity({
 			id: _id.toString(), users, classId, reminder, user,
-			body, createdAt, updatedAt
+			body, readAt, createdAt, updatedAt
 		})
 	}
 
