@@ -13,4 +13,5 @@ export interface IEventRepository {
 	updateUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassEvents: (classId: string) => Promise<boolean>
 	updateTaskIds: (id: string, data: { taskIds: string[], add: boolean }) => Promise<void>
+	markRead: (classId: string, userId: string) => Promise<boolean>
 }

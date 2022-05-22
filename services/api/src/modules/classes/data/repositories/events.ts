@@ -28,7 +28,11 @@ export class EventRepository implements IEventRepository {
 	}
 
 	async add (data: EventToModel) {
-		const event = await new Event(data).save()
+		const createdAt = Date.now()
+		const event = await new Event({
+			...data, createdAt, updatedAt: createdAt,
+			readAt: { [data.user.id]: createdAt }
+		}).save()
 		return this.mapper.mapFrom(event)!
 	}
 
@@ -71,5 +75,14 @@ export class EventRepository implements IEventRepository {
 		await Event.findByIdAndUpdate(id, {
 			[add ? '$addToSet' : '$pull']: { taskIds: { [add ? '$each' : '$in']: taskIds } }
 		})
+	}
+
+	async markRead (classId: string, userId: string) {
+		const readAt = Date.now()
+		const events = await Event.updateMany(
+			{ classId, [`readAt.${userId}`]: null },
+			{ $set: { [`readAt.${userId}`]: readAt } }
+		)
+		return events.acknowledged
 	}
 }

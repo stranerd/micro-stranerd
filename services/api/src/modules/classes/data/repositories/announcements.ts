@@ -28,7 +28,11 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 	}
 
 	async add (data: AnnouncementToModel) {
-		const announcement = await new Announcement(data).save()
+		const createdAt = Date.now()
+		const announcement = await new Announcement({
+			...data, createdAt, updatedAt: createdAt,
+			readAt: { [data.user.id]: createdAt }
+		}).save()
 		return this.mapper.mapFrom(announcement)!
 	}
 

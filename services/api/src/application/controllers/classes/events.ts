@@ -110,4 +110,11 @@ export class EventController {
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
+
+	static async MarkRead (req: Request) {
+		return await EventsUseCases.markRead({
+			classId: req.params.classId,
+			userId: req.authUser!.id
+		})
+	}
 }

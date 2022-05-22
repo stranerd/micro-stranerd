@@ -36,6 +36,11 @@ const Schema = new mongoose.Schema<EventFromModel>({
 		required: false,
 		default: []
 	}])),
+	readAt: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: {}
+	},
 	createdAt: {
 		type: Number,
 		required: false,

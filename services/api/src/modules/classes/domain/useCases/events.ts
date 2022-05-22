@@ -45,4 +45,8 @@ export class EventsUseCase {
 	async updateTaskIds (input: { id: string, data: { taskIds: string[], add: boolean } }) {
 		return await this.repository.updateTaskIds(input.id, input.data)
 	}
+
+	async markRead (input: { classId: string, userId: string }) {
+		return await this.repository.markRead(input.classId, input.userId)
+	}
 }

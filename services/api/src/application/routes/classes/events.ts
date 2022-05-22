@@ -1,5 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { EventController } from '../../controllers/classes/events'
+import { AnnouncementController } from '@application/controllers/classes/announcements'
 
 export const eventsRoutes: Route[] = [
 	{
@@ -63,6 +64,19 @@ export const eventsRoutes: Route[] = [
 				return {
 					status: StatusCodes.Ok,
 					result: await EventController.DeleteEvent(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/classes/events/:classId/read',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AnnouncementController.MarkRead(req)
 				}
 			})
 		]

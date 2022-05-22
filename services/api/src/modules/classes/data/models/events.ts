@@ -2,6 +2,7 @@ import { ClassUsers, EmbeddedUser, EventDataType } from '../../domain/types'
 
 export interface EventFromModel extends EventToModel {
 	_id: string
+	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 	taskIds: string[]
