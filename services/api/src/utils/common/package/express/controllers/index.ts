@@ -55,7 +55,7 @@ const extractRequest = async (req: Request) => {
 		UserAgent: req.get('User-Agent') ?? null
 	}
 	// @ts-ignore
-	const files = Object.fromEntries(Object.entries(req.files ?? {}).map(async ([key, file]) => {
+	const files = Object.fromEntries(await Promise.all(Object.entries(req.files ?? {}).map(async ([key, file]) => {
 		const fileArray: StorageFile[] = []
 		if (file) await Promise.all((Array.isArray(file) ? file : [file]).map(async (f) => fileArray.push({
 			name: f.name,
@@ -66,7 +66,7 @@ const extractRequest = async (req: Request) => {
 			duration: await getMediaDuration(f.data)
 		})))
 		return [key, fileArray]
-	}))
+	})))
 
 	// @ts-ignore
 	const request = req.savedReq ?? new CustomRequest({
