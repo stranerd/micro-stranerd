@@ -1,6 +1,14 @@
 import { AnnouncementsUseCases, ClassesUseCases, ClassUsers } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import {
+	BadRequestError,
+	NotAuthorizedError,
+	QueryKeys,
+	QueryParams,
+	Request,
+	validate,
+	Validation
+} from '@utils/commons'
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {
@@ -13,10 +21,9 @@ export class AnnouncementController {
 
 	static async GetAnnouncement (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'classId', value: req.params.classId }, {
-			field: 'users.members',
-			value: req.authUser!.id
-		}]
+		query.authType = QueryKeys.and
+		query.auth = [{ field: 'classId', value: req.params.classId },
+			{ field: 'users.members', value: req.authUser!.id }]
 		return await AnnouncementsUseCases.get(query)
 	}
 

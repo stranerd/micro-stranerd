@@ -5,10 +5,7 @@ import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation 
 export class SessionController {
 	static async getSessions (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [
-			{ field: 'studentId', value: req.authUser!.id },
-			{ field: 'tutorId', value: req.authUser!.id }
-		]
+		query.auth = [{ field: 'studentId', value: req.authUser!.id }, { field: 'tutorId', value: req.authUser!.id }]
 		query.authType = QueryKeys.or
 		return await SessionsUseCases.get(query)
 	}

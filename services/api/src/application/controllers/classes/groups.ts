@@ -1,6 +1,14 @@
 import { ClassesUseCases, ClassUsers, GroupsUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import {
+	BadRequestError,
+	NotAuthorizedError,
+	QueryKeys,
+	QueryParams,
+	Request,
+	validate,
+	Validation
+} from '@utils/commons'
 
 export class GroupController {
 	static async FindGroup (req: Request) {
@@ -9,10 +17,9 @@ export class GroupController {
 
 	static async GetGroup (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'classId', value: req.params.classId }, {
-			field: 'users.members',
-			value: req.authUser!.id
-		}]
+		query.authType = QueryKeys.and
+		query.auth = [{ field: 'classId', value: req.params.classId },
+			{ field: 'users.members', value: req.authUser!.id }]
 		return await GroupsUseCases.get(query)
 	}
 

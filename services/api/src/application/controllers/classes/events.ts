@@ -1,6 +1,14 @@
 import { ClassesUseCases, ClassUsers, EventsUseCases, EventType } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import {
+	BadRequestError,
+	NotAuthorizedError,
+	QueryKeys,
+	QueryParams,
+	Request,
+	validate,
+	Validation
+} from '@utils/commons'
 import { getCronOrder } from '@utils/modules/classes/events'
 
 const isValidTimeZone = (tz: string) => {
@@ -29,10 +37,9 @@ export class EventController {
 
 	static async GetEvent (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'classId', value: req.params.classId }, {
-			field: 'users.members',
-			value: req.authUser!.id
-		}]
+		query.authType = QueryKeys.and
+		query.auth = [{ field: 'classId', value: req.params.classId },
+			{ field: 'users.members', value: req.authUser!.id }]
 		return await EventsUseCases.get(query)
 	}
 
