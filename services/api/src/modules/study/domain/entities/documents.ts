@@ -1,7 +1,7 @@
 import { BaseEntity } from '@utils/commons'
 import { EmbeddedUser, Media } from '../types'
 
-export class FileEntity extends BaseEntity {
+export class DocumentEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly content: string
@@ -22,7 +22,7 @@ export class FileEntity extends BaseEntity {
 		             media,
 		             createdAt,
 		             updatedAt
-	             }: FileConstructorArgs) {
+	             }: DocumentConstructorArgs) {
 		super()
 		this.id = id
 		this.title = title
@@ -36,7 +36,7 @@ export class FileEntity extends BaseEntity {
 	}
 }
 
-type FileConstructorArgs = {
+type DocumentConstructorArgs = {
 	id: string,
 	isPrivate: boolean
 	user: EmbeddedUser

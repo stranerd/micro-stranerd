@@ -1,11 +1,10 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
-import { FileFromModel } from '../models/files'
-import { FileChangeStreamCallbacks } from '@utils/changeStreams/study/files'
-import { FileEntity } from '../../domain/entities/files'
-import { FileMapper } from '../mappers/files'
-import { DiscussionFromModel } from '@modules/classes'
+import { DocumentFromModel } from '../models/documents'
+import { DocumentChangeStreamCallbacks } from '@utils/changeStreams/study/documents'
+import { DocumentEntity } from '../../domain/entities/documents'
+import { DocumentMapper } from '../mappers/documents'
 
-const Schema = new mongoose.Schema<FileFromModel>({
+const Schema = new mongoose.Schema<DocumentFromModel>({
 	_id: {
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
@@ -20,7 +19,7 @@ const Schema = new mongoose.Schema<FileFromModel>({
 		default: ''
 	},
 	user: {
-		type: mongoose.Schema.Types.Mixed as unknown as FileFromModel['user'],
+		type: mongoose.Schema.Types.Mixed as unknown as DocumentFromModel['user'],
 		required: true
 	},
 	isPrivate: {
@@ -29,7 +28,7 @@ const Schema = new mongoose.Schema<FileFromModel>({
 		default: true
 	},
 	links: {
-		type: [mongoose.Schema.Types.Mixed] as unknown as DiscussionFromModel['links'],
+		type: [mongoose.Schema.Types.Mixed] as unknown as DocumentFromModel['links'],
 		required: false,
 		default: []
 	},
@@ -50,6 +49,6 @@ const Schema = new mongoose.Schema<FileFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const File = mongoose.model<FileFromModel>('StranerdStudyFile', Schema)
+export const Document = mongoose.model<DocumentFromModel>('StranerdStudyDocument', Schema)
 
-generateChangeStreams<FileFromModel, FileEntity>(File, FileChangeStreamCallbacks, new FileMapper().mapFrom).then()
+generateChangeStreams<DocumentFromModel, DocumentEntity>(Document, DocumentChangeStreamCallbacks, new DocumentMapper().mapFrom).then()

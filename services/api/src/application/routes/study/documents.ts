@@ -1,66 +1,66 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { FileController } from '../../controllers/study/files'
+import { DocumentController } from '../../controllers/study/documents'
 
-export const filesRoutes: Route[] = [
+export const documentsRoutes: Route[] = [
 	{
-		path: '/study/files',
+		path: '/study/documents',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.GetFile(req)
+					result: await DocumentController.GetDocument(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/files/:id',
+		path: '/study/documents/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.FindFile(req)
+					result: await DocumentController.FindDocument(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/files/:id',
+		path: '/study/documents/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.UpdateFile(req)
+					result: await DocumentController.UpdateDocument(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/files',
+		path: '/study/documents',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.CreateFile(req)
+					result: await DocumentController.CreateDocument(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/files/:id',
+		path: '/study/documents/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.DeleteFile(req)
+					result: await DocumentController.DeleteDocument(req)
 				}
 			})
 		]

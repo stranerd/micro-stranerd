@@ -1,18 +1,18 @@
-import { FileFromModel, FileToModel } from '../models/files'
-import { FileEntity } from '../../domain/entities/files'
+import { DocumentFromModel, DocumentToModel } from '../models/documents'
+import { DocumentEntity } from '../../domain/entities/documents'
 import { BaseMapper } from '@utils/commons'
 
-export class FileMapper extends BaseMapper<FileFromModel, FileToModel, FileEntity> {
-	mapFrom (model: FileFromModel | null) {
+export class DocumentMapper extends BaseMapper<DocumentFromModel, DocumentToModel, DocumentEntity> {
+	mapFrom (model: DocumentFromModel | null) {
 		if (!model) return null
 		const { _id, title, content, user, isPrivate, links, media, createdAt, updatedAt } = model
-		return new FileEntity({
+		return new DocumentEntity({
 			id: _id.toString(), title, content, user,
 			isPrivate, links, media, createdAt, updatedAt
 		})
 	}
 
-	mapTo (entity: FileEntity) {
+	mapTo (entity: DocumentEntity) {
 		return {
 			title: entity.title,
 			content: entity.content,

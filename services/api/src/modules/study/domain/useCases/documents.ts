@@ -1,16 +1,16 @@
-import { FileToModel } from '../../data/models/files'
-import { IFileRepository } from '../irepositories/files'
+import { DocumentToModel } from '../../data/models/documents'
+import { IDocumentRepository } from '../irepositories/documents'
 import { QueryParams } from '@utils/commons'
 import { EmbeddedUser } from '../types'
 
-export class FilesUseCase {
-	private repository: IFileRepository
+export class DocumentsUseCase {
+	private repository: IDocumentRepository
 
-	constructor (repository: IFileRepository) {
+	constructor (repository: IDocumentRepository) {
 		this.repository = repository
 	}
 
-	async add (data: FileToModel) {
+	async add (data: DocumentToModel) {
 		return await this.repository.add(data)
 	}
 
@@ -26,7 +26,7 @@ export class FilesUseCase {
 		return await this.repository.get(query)
 	}
 
-	async update (input: { id: string, userId: string, data: Partial<FileToModel> }) {
+	async update (input: { id: string, userId: string, data: Partial<DocumentToModel> }) {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 

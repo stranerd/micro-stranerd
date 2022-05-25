@@ -2,7 +2,7 @@ import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
-import { FilesUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
+import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
 import {
 	AnnouncementsUseCases,
@@ -29,7 +29,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			ChatMetasUseCases, SessionsUseCases, ReviewsUseCases, ReportsUseCases,
 			QuestionsUseCases, AnswersUseCases, AnswerCommentsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases,
-			FilesUseCases, FlashCardsUseCases, SetsUseCases
+			DocumentsUseCases, FlashCardsUseCases, SetsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
 		const updatedScore = !!changes.account?.score

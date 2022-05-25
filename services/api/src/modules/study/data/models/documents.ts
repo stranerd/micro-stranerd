@@ -1,12 +1,12 @@
 import { EmbeddedUser, Media } from '../../domain/types'
 
-export interface FileFromModel extends FileToModel {
+export interface DocumentFromModel extends DocumentToModel {
 	_id: string
 	createdAt: number
 	updatedAt: number
 }
 
-export interface FileToModel {
+export interface DocumentToModel {
 	isPrivate: boolean
 	user: EmbeddedUser
 	media: Media | null
