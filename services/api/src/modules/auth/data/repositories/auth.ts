@@ -157,7 +157,7 @@ export class AuthRepository implements IAuthRepository {
 				isVerified: true,
 				roles: {},
 				password: '',
-				photo, coverPhoto: null
+				photo
 			}
 			return await this.addNewUser(userData, AuthTypes.google)
 		}

@@ -10,7 +10,6 @@ export type UserBio = {
 	fullName: string
 	description: string
 	photo: MediaOutput | null
-	coverPhoto: MediaOutput | null
 }
 
 export type UserRoles = AuthRoles

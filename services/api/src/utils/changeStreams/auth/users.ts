@@ -17,8 +17,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
-				photo: after.photo,
-				coverPhoto: after.coverPhoto
+				photo: after.photo
 			}
 		})
 		await UsersUseCases.updateRoles({ id: after.id, data: after.roles, timestamp: Date.now() })
@@ -37,7 +36,6 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 	},
 	updated: async ({ before, after, changes }) => {
 		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
-		if (changes.coverPhoto && before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 
 		const updatedBio = AuthUserEntity.bioKeys().some((key) => changes[key])
 		if (updatedBio) await UsersUseCases.updateWithBio({
@@ -49,8 +47,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
-				photo: after.photo,
-				coverPhoto: after.coverPhoto
+				photo: after.photo
 			}
 		})
 
@@ -63,7 +60,6 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 	},
 	deleted: async ({ before }) => {
 		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
-		if (before.coverPhoto) await publishers[EventTypes.DELETEFILE].publish(before.coverPhoto)
 		await UsersUseCases.markDeleted({ id: before.id, timestamp: Date.now() })
 		await TokensUseCases.delete(before.id)
 	}

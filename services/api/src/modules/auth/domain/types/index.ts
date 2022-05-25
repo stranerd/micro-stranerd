@@ -5,7 +5,6 @@ export interface UserUpdateInput {
 	lastName: string
 	description: string
 	photo: MediaOutput | null
-	coverPhoto: MediaOutput | null
 }
 
 export interface RoleInput {

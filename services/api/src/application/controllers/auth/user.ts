@@ -15,29 +15,23 @@ export class UserController {
 	static async updateUser (req: Request) {
 		const userId = req.authUser!.id
 		const uploadedPhoto = req.files.photo?.[0] ?? null
-		const uploadedCoverPhoto = req.files.coverPhoto?.[0] ?? null
 		const changedPhoto = !!uploadedPhoto || req.body.photo === null
-		const changedCoverPhoto = !!uploadedCoverPhoto || req.body.coverPhoto === null
 		const data = validate({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			description: req.body.description,
-			photo: uploadedPhoto as any,
-			coverPhoto: uploadedCoverPhoto as any
+			photo: uploadedPhoto as any
 		}, {
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString] },
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 		const { firstName, lastName, description } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
-		if (uploadedCoverPhoto) data.coverPhoto = await UploaderUseCases.upload('profiles/coverPhotos', uploadedCoverPhoto)
 		const validateData = {
 			firstName, lastName, description,
-			...(changedPhoto ? { photo: data.photo } : {}),
-			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
+			...(changedPhoto ? { photo: data.photo } : {})
 		}
 
 		return await AuthUsersUseCases.updateUserProfile({ userId, data: validateData as any })

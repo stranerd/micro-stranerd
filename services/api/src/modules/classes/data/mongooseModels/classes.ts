@@ -32,11 +32,6 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 		required: false,
 		default: null as unknown as ClassFromModel['photo']
 	},
-	coverPhoto: {
-		type: mongoose.Schema.Types.Mixed as unknown as ClassFromModel['coverPhoto'],
-		required: false,
-		default: null as unknown as ClassFromModel['coverPhoto']
-	},
 	courses: {
 		type: [String],
 		required: true,

@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/commons'
 import { TagController } from '../../controllers/questions/tags'
+import { isAdmin } from '@application/middlewares'
 
 export const tagsRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const tagsRoutes: Route[] = [
 		path: '/questions/tags/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +44,7 @@ export const tagsRoutes: Route[] = [
 		path: '/questions/tags',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -56,7 +57,7 @@ export const tagsRoutes: Route[] = [
 		path: '/questions/tags/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

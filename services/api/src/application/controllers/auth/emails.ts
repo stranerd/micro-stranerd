@@ -11,7 +11,6 @@ export class EmailsController {
 			lastName: req.body.lastName,
 			password: req.body.password,
 			photo: req.files.photo?.[0] ?? null,
-			coverPhoto: req.files.coverPhoto?.[0] ?? null,
 			referrer: req.body.referrer,
 			description: req.body.description
 		}
@@ -27,8 +26,7 @@ export class EmailsController {
 
 		const {
 			email, firstName, lastName,
-			password, description, referrer,
-			photo: userPhoto, coverPhoto: userCoverPhoto
+			password, description, referrer, photo: userPhoto
 		} = validate(userCredential, {
 			email: { required: true, rules: [Validation.isEmail, isUniqueInDb] },
 			password: {
@@ -40,15 +38,13 @@ export class EmailsController {
 				rules: [Validation.isString]
 			},
 			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			referrer: { required: false, rules: [Validation.isString] }
 		})
 		const photo = userPhoto ? await UploaderUseCases.upload('profiles/photos', userPhoto) : null
-		const coverPhoto = userCoverPhoto ? await UploaderUseCases.upload('profiles/coverPhotos', userCoverPhoto) : null
 		const validateData = {
-			firstName, lastName, email, password, photo, coverPhoto, description, referrer
+			firstName, lastName, email, password, photo, description, referrer
 		}
 
 		const updatedUser = user

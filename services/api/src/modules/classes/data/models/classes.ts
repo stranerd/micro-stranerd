@@ -17,7 +17,6 @@ export interface ClassToModel {
 	}
 	description: string
 	photo: Media | null
-	coverPhoto: Media | null
 	courses: string[]
 	user: EmbeddedUser
 }

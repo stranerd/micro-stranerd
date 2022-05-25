@@ -18,15 +18,12 @@ export class ClassController {
 	static async UpdateClass (req: Request) {
 		const authUserId = req.authUser!.id
 		const uploadedPhoto = req.files.photo?.[0] ?? null
-		const uploadedCoverPhoto = req.files.coverPhoto?.[0] ?? null
 		const changedPhoto = !!uploadedPhoto || req.body.photo === null
-		const changedCoverPhoto = !!uploadedCoverPhoto || req.body.coverPhoto === null
 		const data = validate({
 			name: req.body.name,
 			description: req.body.description,
 			courses: req.body.courses,
-			photo: uploadedPhoto as any,
-			coverPhoto: uploadedCoverPhoto as any
+			photo: uploadedPhoto as any
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -34,17 +31,14 @@ export class ClassController {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
-			coverPhoto: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
 		})
 
 		const { name, description, courses } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
-		if (uploadedCoverPhoto) data.coverPhoto = await UploaderUseCases.upload('classes/coverPhotos', uploadedCoverPhoto)
 		const validateData = {
 			name, description, courses: [...new Set<string>(courses)],
-			...(changedPhoto ? { photo: data.photo } : {}),
-			...(changedCoverPhoto ? { coverPhoto: data.coverPhoto } : {})
+			...(changedPhoto ? { photo: data.photo } : {})
 		}
 
 		const updatedClass = await ClassesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
@@ -58,13 +52,12 @@ export class ClassController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { name, departmentId, description, courses, photo: classPhoto, coverPhoto: classCoverPhoto } = validate({
+		const { name, departmentId, description, courses, photo: classPhoto } = validate({
 			name: req.body.name,
 			departmentId: req.body.school?.departmentId,
 			description: req.body.description,
 			courses: req.body.courses,
-			photo: req.files.photo?.[0] ?? null,
-			coverPhoto: req.files.coverPhoto?.[0] ?? null
+			photo: req.files.photo?.[0] ?? null
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			departmentId: { required: true, rules: [Validation.isString] },
@@ -73,17 +66,15 @@ export class ClassController {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
 			},
-			photo: { required: true, nullable: true, rules: [Validation.isImage] },
-			coverPhoto: { required: true, nullable: true, rules: [Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isImage] }
 		})
 
 		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
-		const coverPhoto = classCoverPhoto ? await UploaderUseCases.upload('classes/coverPhotos', classCoverPhoto) : null
 		const department = await DepartmentsUseCases.find(departmentId)
 		if (!department) throw new BadRequestError('department not found')
 
 		return await ClassesUseCases.add({
-			name, description, photo, coverPhoto,
+			name, description, photo,
 			school: {
 				departmentId: department.id,
 				facultyId: department.facultyId,

@@ -12,7 +12,6 @@ export class ClassEntity extends BaseEntity {
 	}
 	public readonly description: string
 	public readonly photo: Media | null
-	public readonly coverPhoto: Media | null
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly requests: string[]
 	public readonly courses: string[]
@@ -26,7 +25,6 @@ export class ClassEntity extends BaseEntity {
 		             school,
 		             description,
 		             photo,
-		             coverPhoto,
 		             users,
 		             requests,
 		             courses,
@@ -40,7 +38,6 @@ export class ClassEntity extends BaseEntity {
 		this.school = school
 		this.description = description
 		this.photo = photo
-		this.coverPhoto = coverPhoto
 		this.users = users
 		this.requests = requests
 		this.courses = courses
@@ -64,7 +61,6 @@ type ClassConstructorArgs = {
 	}
 	description: string
 	photo: Media | null
-	coverPhoto: Media | null
 	users: Record<ClassUsers, string[]>
 	courses: string[]
 	requests: string[]

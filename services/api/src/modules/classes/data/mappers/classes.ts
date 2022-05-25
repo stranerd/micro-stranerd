@@ -11,7 +11,6 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 			name, school,
 			description,
 			photo,
-			coverPhoto,
 			users,
 			courses,
 			requests,
@@ -20,7 +19,7 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 		} = model
 		return new ClassEntity({
 			id: _id.toString(), user, courses,
-			name, school, description, photo, coverPhoto, users, requests,
+			name, school, description, photo, users, requests,
 			createdAt, updatedAt
 		})
 	}
@@ -31,7 +30,6 @@ export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassE
 			school: entity.school,
 			description: entity.description,
 			photo: entity.photo,
-			coverPhoto: entity.coverPhoto,
 			users: entity.users,
 			courses: entity.courses,
 			user: entity.user

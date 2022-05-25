@@ -26,7 +26,6 @@ export class AuthUseCase {
 			email: params.email,
 			description: params.description,
 			photo: params.photo,
-			coverPhoto: params.coverPhoto,
 			referrer: params.referrer,
 			isVerified: false,
 			authTypes: [AuthTypes.email]
