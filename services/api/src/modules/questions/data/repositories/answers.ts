@@ -37,7 +37,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return this.mapper.mapFrom(answer)
 	}
 
-	async update (id: string, userId, data: Partial<AnswerToModel>) {
+	async update (id: string, userId: string, data: Partial<AnswerToModel>) {
 		const answer = await Answer.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(answer)
 	}
