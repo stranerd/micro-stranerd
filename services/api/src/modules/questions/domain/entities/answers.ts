@@ -7,6 +7,7 @@ export class AnswerEntity extends BaseEntity {
 	public readonly body: string
 	public readonly best: boolean
 	public readonly questionId: string
+	public readonly tagId: string
 	public readonly attachments: Media[]
 	public readonly user: EmbeddedUser
 	public readonly votes: { userId: string, vote: 1 | -1 }[]
@@ -14,7 +15,7 @@ export class AnswerEntity extends BaseEntity {
 	public readonly updatedAt: number
 
 	constructor ({
-		             id, title, body, questionId,
+		             id, title, body, questionId, tagId,
 		             createdAt, user, attachments,
 		             best, votes, updatedAt
 	             }: AnswerConstructorArgs) {
@@ -23,6 +24,7 @@ export class AnswerEntity extends BaseEntity {
 		this.title = title
 		this.body = body
 		this.questionId = questionId
+		this.tagId = tagId
 		this.user = user
 		this.attachments = attachments
 		this.best = best ?? false
@@ -42,6 +44,7 @@ type AnswerConstructorArgs = {
 	title: string
 	body: string
 	questionId: string
+	tagId: string
 	attachments: Media[]
 	createdAt: number
 	updatedAt: number

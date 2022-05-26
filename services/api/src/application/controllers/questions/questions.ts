@@ -1,7 +1,6 @@
-import { QuestionsUseCases, QuestionType } from '@modules/questions'
+import { QuestionsUseCases, TagsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
-import { ClassEntity, ClassesUseCases } from '@modules/classes'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -16,20 +15,16 @@ export class QuestionController {
 	static async UpdateQuestion (req: Request) {
 		const authUserId = req.authUser!.id
 
-		const { body, subject, attachments } = validate({
+		const data = validate({
 			body: req.body.body,
-			subject: req.body.subject,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			subject: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
 			}
 		})
-
-		const data = { body, subject, attachments }
 
 		const updatedQuestion = await QuestionsUseCases.update({ id: req.params.id, userId: authUserId, data })
 
@@ -38,44 +33,25 @@ export class QuestionController {
 	}
 
 	static async CreateQuestion (req: Request) {
-		const authUserId = req.authUser!.id
-		const user = await UsersUseCases.find(authUserId)
-		const isUsers = req.body.data?.type === QuestionType.users
-		const isClasses = req.body.data?.type === QuestionType.classes
-
-		if (!user) throw new BadRequestError('user not found')
-
-		const { body, subject, attachments, type, classId } = validate({
+		const data = validate({
 			body: req.body.body,
-			subject: req.body.subject,
-			attachments: req.body.attachments,
-			type: req.body.data?.type,
-			classId: req.body.data?.classId
+			tagId: req.body.tagId,
+			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			subject: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			tagId: { required: true, rules: [Validation.isString] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
-			},
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(QuestionType), (cur, val) => cur === val)]
-			},
-			classId: { required: isClasses, rules: [Validation.isString] }
+			}
 		})
 
-		let classInst = null as ClassEntity | null
-		if (classId) classInst = await ClassesUseCases.find(classId)
-		if (isClasses && !classInst) throw new BadRequestError('class not found')
-		if (isClasses && !classInst!.getAllUsers().includes(authUserId)) throw new BadRequestError('not a class member')
+		const user = await UsersUseCases.find(req.authUser!.id)
+		if (!user) throw new BadRequestError('user not found')
+		const tag = await TagsUseCases.find(data.tagId)
+		if (!tag || !!tag.parent) throw new BadRequestError('invalid tagId')
 
-		const data = {
-			body, subject, attachments, user: user.getEmbedded(),
-			data: isClasses ? { type, classId } : isUsers ? { type } : ({} as any)
-		}
-
-		return await QuestionsUseCases.add(data)
+		return await QuestionsUseCases.add({ ...data, user: user.getEmbedded() })
 	}
 
 	static async MarkBestAnswer (req: Request) {

@@ -55,8 +55,7 @@ export class QuestionRepository implements IQuestionRepository {
 				[add ? '$addToSet' : 'pull']: { bestAnswers: answerId }
 			}, { session, new: true })
 			const answer = question ? await Answer.findByIdAndUpdate(answerId, { $set: { best: add } }, {
-				session,
-				new: true
+				session, new: true
 			}) : null
 			res = !!question && !!answer
 			return res

@@ -32,5 +32,3 @@ export { AnswerEntity } from './domain/entities/answers'
 export { AnswerUpvoteEntity } from './domain/entities/answerUpvotes'
 export { QuestionEntity } from './domain/entities/questions'
 export { TagEntity } from './domain/entities/tags'
-
-export { QuestionType } from './domain/types'

@@ -13,5 +13,6 @@ export interface AnswerToModel {
 	body: string
 	attachments: Media[]
 	questionId: string
+	tagId: string
 	user: EmbeddedUser
 }

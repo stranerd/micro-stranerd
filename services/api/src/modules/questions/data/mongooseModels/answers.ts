@@ -22,6 +22,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: String,
 		required: true
 	},
+	tagId: {
+		type: String,
+		required: true,
+		default: ''
+	},
 	user: {
 		type: mongoose.Schema.Types.Mixed as unknown as AnswerFromModel['user'],
 		required: true

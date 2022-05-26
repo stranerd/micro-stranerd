@@ -13,18 +13,14 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		type: String,
 		required: true
 	},
-	subject: {
+	tagId: {
 		type: String,
-		required: true
+		required: true,
+		default: ''
 	},
 	user: {
 		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['user'],
 		required: true
-	},
-	data: {
-		type: mongoose.Schema.Types.Mixed as unknown as QuestionFromModel['data'],
-		required: false,
-		default: {} as unknown as QuestionFromModel['data']
 	},
 	bestAnswers: {
 		type: [String],

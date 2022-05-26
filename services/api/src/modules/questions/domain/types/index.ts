@@ -1,5 +1,4 @@
 export { EmbeddedUser } from '@modules/users'
-export * from './questions'
 
 import { MediaOutput } from '@utils/commons'
 
