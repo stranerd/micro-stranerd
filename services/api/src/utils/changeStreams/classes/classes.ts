@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import { AnnouncementsUseCases, ClassEntity, ClassFromModel, GroupsUseCases } from '@modules/classes'
+import { AnnouncementsUseCases, ClassEntity, ClassFromModel, EventsUseCases, GroupsUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -14,7 +14,7 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		await getSocketEmitter().emitUpdated(`classes/classes/${after.id}`, after)
 
 		if (changes.users) {
-			await Promise.all([AnnouncementsUseCases.updateUsers, GroupsUseCases.updateUsers].map((u) => u({
+			await Promise.all([AnnouncementsUseCases, EventsUseCases, GroupsUseCases, EventsUseCases].map((u) => u.updateUsers({
 				classId: after.id,
 				users: after.users
 			})))
