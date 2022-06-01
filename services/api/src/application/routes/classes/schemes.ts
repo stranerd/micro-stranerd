@@ -1,81 +1,81 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { EventController } from '../../controllers/classes/events'
+import { SchemeController } from '../../controllers/classes/schemes'
 
-export const eventsRoutes: Route[] = [
+export const schemesRoutes: Route[] = [
 	{
-		path: '/classes/events/:classId',
+		path: '/classes/schemes/:classId',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.GetEvent(req)
+					result: await SchemeController.GetScheme(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/classes/events/:classId/:id',
+		path: '/classes/schemes/:classId/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.FindEvent(req)
+					result: await SchemeController.FindScheme(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/classes/events/:classId/:id',
+		path: '/classes/schemes/:classId/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.UpdateEvent(req)
+					result: await SchemeController.UpdateScheme(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/classes/events/:classId/',
+		path: '/classes/schemes/:classId/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.CreateEvent(req)
+					result: await SchemeController.CreateScheme(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/classes/events/:classId/:id',
+		path: '/classes/schemes/:classId/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.DeleteEvent(req)
+					result: await SchemeController.DeleteScheme(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/classes/events/:classId/read',
+		path: '/classes/schemes/:classId/read',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await EventController.MarkRead(req)
+					result: await SchemeController.MarkRead(req)
 				}
 			})
 		]

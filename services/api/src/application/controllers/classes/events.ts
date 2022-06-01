@@ -53,7 +53,7 @@ export class EventController {
 			end: req.body.data?.end,
 			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			type: {
 				required: true, rules: [Validation.isString, Validation.isShallowEqualToX(EventType.timetable)]
 			},
@@ -87,7 +87,7 @@ export class EventController {
 			end: req.body.data?.end,
 			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			classId: { required: true, rules: [Validation.isString] },
 			type: {
 				required: true, rules: [Validation.isString, Validation.isShallowEqualToX(EventType.timetable)]

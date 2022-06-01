@@ -1,6 +1,14 @@
 import { ClassesUseCases } from '@modules/classes'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import {
+	BadRequestError,
+	Conditions,
+	NotAuthorizedError,
+	QueryParams,
+	Request,
+	validate,
+	Validation
+} from '@utils/commons'
 import { ClassUsers } from '@modules/classes/domain/types'
 import { UploaderUseCases } from '@modules/storage'
 import { DepartmentsUseCases } from '@modules/school'
@@ -145,6 +153,15 @@ export class ClassController {
 				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0)]
 			}
 		})
+
+		if (add) {
+			const { results: users } = await UsersUseCases.get({
+				where: [{ field: 'id', value: userIds, condition: Conditions.in }],
+				all: true
+			})
+			const allUserIds = users.map((user) => user.id)
+			if (allUserIds.length !== userIds) throw new BadRequestError('user profiles not found')
+		}
 
 		const added = await ClassesUseCases.addMembers({
 			classId: req.params.id,

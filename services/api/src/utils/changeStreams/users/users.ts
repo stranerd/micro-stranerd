@@ -9,7 +9,8 @@ import {
 	ClassesUseCases,
 	DiscussionsUseCases,
 	EventsUseCases,
-	GroupsUseCases
+	GroupsUseCases,
+	SchemesUseCases
 } from '@modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
@@ -28,7 +29,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBioOrRoles) await Promise.all([
 			ChatMetasUseCases, SessionsUseCases, ReviewsUseCases, ReportsUseCases,
 			QuestionsUseCases, AnswersUseCases, AnswerCommentsUseCases,
-			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases,
+			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases, SchemesUseCases,
 			DocumentsUseCases, FlashCardsUseCases, SetsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
