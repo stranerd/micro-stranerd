@@ -24,7 +24,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 		if (isProd) await subscribeToMailingList(after.email)
 		if (after.referrer) await ReferralsUseCases.create({ userId: after.referrer, referred: after.id })
 
-		const emailContent = await readEmailFromPug('emails/new-user.pug', {})
+		const emailContent = await readEmailFromPug('emails/newUser.pug', {})
 
 		await publishers[EventTypes.SENDMAIL].publish({
 			to: after.email,
