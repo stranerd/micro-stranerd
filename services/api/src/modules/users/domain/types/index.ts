@@ -49,7 +49,6 @@ export enum UserMeta {
 	questions = 'questions',
 	answers = 'answers',
 	bestAnswers = 'bestAnswers',
-	answerComments = 'answerComments',
 
 	sessions = 'sessions',
 	tutorSessions = 'tutorSessions',

@@ -1,7 +1,7 @@
 import { IAnswerRepository } from '../irepositories/answers'
 import { AnswerToModel } from '../../data/models/answers'
 import { QueryParams } from '@utils/commons'
-import { EmbeddedUser } from '../types'
+import { AnswerMetaType, EmbeddedUser } from '../types'
 
 export class AnswersUseCase {
 	private repository: IAnswerRepository
@@ -38,7 +38,7 @@ export class AnswersUseCase {
 		return await this.repository.deleteQuestionAnswers(questionId)
 	}
 
-	async updateComments (data: { answerId: string, value: 1 | -1 }) {
-		return this.repository.updateComments(data.answerId, data.value)
+	async updateAnswerMeta (data: { id: string, property: AnswerMetaType, value: 1 | -1 }) {
+		return this.repository.updateAnswerMeta(data.id, data.property, data.value)
 	}
 }

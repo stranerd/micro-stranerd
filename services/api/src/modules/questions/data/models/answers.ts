@@ -1,10 +1,10 @@
-import { EmbeddedUser, Media } from '../../domain/types'
+import { AnswerMeta, EmbeddedUser, Media } from '../../domain/types'
 
 export interface AnswerFromModel extends AnswerToModel {
 	_id: string
 	best: boolean
 	votes: { userId: string, vote: 1 | -1 }[]
-	comments: number
+	meta: AnswerMeta
 	createdAt: number
 	updatedAt: number
 }

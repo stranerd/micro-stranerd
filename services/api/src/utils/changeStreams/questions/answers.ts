@@ -10,6 +10,7 @@ import { getSocketEmitter } from '@index'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
+import { CommentsUseCases, InteractionEntities, LikesUseCases } from '@modules/interactions'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
@@ -110,7 +111,9 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 
 		await Promise.all([
 			AnswerCommentsUseCases.deleteAnswerComments(before.id),
-			AnswerUpvotesUseCases.deleteAnswerVotes(before.id)
+			AnswerUpvotesUseCases.deleteAnswerVotes(before.id),
+			CommentsUseCases.deleteEntityComments({ type: InteractionEntities.answers, id: before.id }),
+			LikesUseCases.deleteEntityLikes({ type: InteractionEntities.answers, id: before.id })
 		])
 
 		await Promise.all(

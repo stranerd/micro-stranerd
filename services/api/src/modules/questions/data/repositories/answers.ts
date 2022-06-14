@@ -3,7 +3,7 @@ import { AnswerMapper } from '../mappers/answers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels/answers'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { EmbeddedUser } from '../../domain/types'
+import { AnswerMetaType, EmbeddedUser } from '../../domain/types'
 
 export class AnswerRepository implements IAnswerRepository {
 	private static instance: AnswerRepository
@@ -57,9 +57,9 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answers.acknowledged
 	}
 
-	async updateComments (answerId: string, value: 1 | -1) {
-		const answer = await Answer.findByIdAndUpdate(answerId, {
-			$inc: { comments: value }
+	async updateAnswerMeta (id: string, property: AnswerMetaType, value: 1 | -1) {
+		const answer = await Answer.findByIdAndUpdate(id, {
+			$inc: { [`meta.${property}`]: value }
 		})
 		return !!answer
 	}

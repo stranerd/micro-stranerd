@@ -3,6 +3,7 @@ import { AnswerFromModel } from '../models/answers'
 import { AnswerChangeStreamCallbacks } from '@utils/changeStreams/questions/answers'
 import { AnswerEntity } from '../../domain/entities/answers'
 import { AnswerMapper } from '../mappers/answers'
+import { AnswerMetaType } from '../../domain/types'
 
 const Schema = new mongoose.Schema<AnswerFromModel>({
 	_id: {
@@ -41,11 +42,13 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: []
 	},
-	comments: {
-		type: Number,
-		required: false,
-		default: 0
-	},
+	meta: Object.fromEntries(
+		Object.keys(AnswerMetaType).map((key) => [key, {
+			type: Number,
+			required: false,
+			default: 0
+		}])
+	),
 	createdAt: {
 		type: Number,
 		required: false,

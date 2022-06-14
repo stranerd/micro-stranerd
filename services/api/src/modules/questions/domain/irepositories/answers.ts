@@ -1,7 +1,7 @@
 import { QueryParams, QueryResults } from '@utils/commons'
 import { AnswerToModel } from '../../data/models/answers'
 import { AnswerEntity } from '../entities/answers'
-import { EmbeddedUser } from '../types'
+import { AnswerMetaType, EmbeddedUser } from '../types'
 
 export interface IAnswerRepository {
 	add: (data: AnswerToModel) => Promise<AnswerEntity>
@@ -11,5 +11,5 @@ export interface IAnswerRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	deleteQuestionAnswers: (questionId: string) => Promise<boolean>
-	updateComments: (answerId: string, value: 1 | -1) => Promise<boolean>
+	updateAnswerMeta: (id: string, property: AnswerMetaType, value: 1 | -1) => Promise<boolean>
 }
