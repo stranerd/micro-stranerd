@@ -6,8 +6,8 @@ export type Media = MediaOutput
 
 export enum AnswerMetaType {
 	comments = 'comments',
-	upvotes = 'upvotes',
-	downvotes = 'downvotes'
+	likes = 'likes',
+	dislikes = 'dislikes'
 }
 
 export type AnswerMeta = Record<AnswerMetaType, number>

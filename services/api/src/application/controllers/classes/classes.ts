@@ -30,7 +30,7 @@ export class ClassController {
 		const data = validate({
 			name: req.body.name,
 			description: req.body.description,
-			courses: req.body.courses,
+			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: uploadedPhoto as any
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -45,7 +45,7 @@ export class ClassController {
 		const { name, description, courses } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
 		const validateData = {
-			name, description, courses: [...new Set<string>(courses)],
+			name, description, courses,
 			...(changedPhoto ? { photo: data.photo } : {})
 		}
 
@@ -64,7 +64,7 @@ export class ClassController {
 			name: req.body.name,
 			departmentId: req.body.school?.departmentId,
 			description: req.body.description,
-			courses: req.body.courses,
+			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: req.files.photo?.[0] ?? null
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
@@ -88,7 +88,7 @@ export class ClassController {
 				facultyId: department.facultyId,
 				institutionId: department.institutionId
 			},
-			user: user.getEmbedded(), courses: [...new Set<string>(courses)]
+			user: user.getEmbedded(), courses
 		})
 	}
 

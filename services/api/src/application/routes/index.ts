@@ -11,6 +11,7 @@ import { schoolRoutes } from './school'
 import { sessionsRoutes } from './sessions'
 import { studyRoutes } from './study'
 import { userRoutes } from './users'
+import { interactionRoutes } from './interactions'
 
 export const routes: Route[] = [
 	...authRoutes,
@@ -24,6 +25,7 @@ export const routes: Route[] = [
 	...sessionsRoutes,
 	...studyRoutes,
 	...userRoutes,
+	...interactionRoutes,
 	{
 		path: '/',
 		method: 'get',

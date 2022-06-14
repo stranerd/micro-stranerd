@@ -68,7 +68,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			})
 		}
 
-		if (!after.best && changes.meta?.upvotes && after.meta.upvotes >= 20) {
+		if (!after.best && changes.meta?.likes && after.meta.likes >= 20) {
 			const question = await QuestionsUseCases.find(after.questionId)
 			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
 			if (markBest) await QuestionsUseCases.updateBestAnswer({

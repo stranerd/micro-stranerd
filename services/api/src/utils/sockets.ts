@@ -1,7 +1,6 @@
 import { OnJoinFn, SupportedAuthRoles } from '@utils/commons'
 import { ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
-import { InteractionEntities } from '@modules/interactions'
 
 export const registerSockets = () => {
 	const isAdmin: OnJoinFn = async ({
@@ -17,7 +16,6 @@ export const registerSockets = () => {
 		if (!classInst?.getAllUsers().includes(data.user.id)) return null
 		return await isOpen(data, params)
 	}
-	const isInteractionOpen: OnJoinFn = async ({ channel }, params) => Object.values(InteractionEntities).includes(params.entityType) ? channel : null
 
 	getSocketEmitter().register('classes/classes', isOpen)
 	getSocketEmitter().register('classes/announcements/:classId', classJoinCb)
@@ -47,7 +45,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('users/referrals', isMine)
 	getSocketEmitter().register('users/reviews', isOpen)
 	getSocketEmitter().register('users/users', isOpen)
-	getSocketEmitter().register('interactions/likes/:entityType/:entityId', isInteractionOpen)
-	getSocketEmitter().register('interactions/comments/:entityType/:entityId', isInteractionOpen)
-	getSocketEmitter().register('interactions/views/:entityType/:entityId', isInteractionOpen)
+	getSocketEmitter().register('interactions/likes', isOpen)
+	getSocketEmitter().register('interactions/comments', isOpen)
+	getSocketEmitter().register('interactions/views', isOpen)
 }
