@@ -14,12 +14,10 @@ export class AnswerController {
 
 	static async UpdateAnswer (req: Request) {
 		const data = validate({
-			title: req.body.title,
 			body: req.body.body,
 			attachments: req.body.attachments
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			body: { required: true, rules: [Validation.isString] },
+			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
@@ -35,13 +33,11 @@ export class AnswerController {
 
 	static async CreateAnswer (req: Request) {
 		const data = validate({
-			title: req.body.title,
 			body: req.body.body,
 			questionId: req.body.questionId,
 			attachments: req.body.attachments
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			body: { required: true, rules: [Validation.isString] },
+			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			questionId: { required: true, rules: [Validation.isString] },
 			attachments: {
 				required: true,

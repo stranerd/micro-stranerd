@@ -7,7 +7,9 @@ import { sendNotification } from '@utils/modules/users/notifications'
 export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCommentFromModel, AnswerCommentEntity> = {
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('questions/answerComments', after)
-		await getSocketEmitter().emitCreated(`questions/answerComments/${after.answerId}`, after)
+		await getSocketEmitter().emitCreated(`questions/answerComments/${after.id}`, after)
+
+		await AnswersUseCases.updateComments({ answerId: after.answerId, value: 1 })
 
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.answerComments })
 		await UsersUseCases.updateNerdScore({
@@ -32,11 +34,13 @@ export const AnswerCommentChangeStreamCallbacks: ChangeStreamCallbacks<AnswerCom
 	},
 	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated('questions/answerComments', after)
-		await getSocketEmitter().emitUpdated(`questions/answerComments/${after.answerId}`, after)
+		await getSocketEmitter().emitUpdated(`questions/answerComments/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('questions/answerComments', before)
-		await getSocketEmitter().emitDeleted(`questions/answerComments/${before.answerId}`, before)
+		await getSocketEmitter().emitDeleted(`questions/answerComments/${before.id}`, before)
+
+		await AnswersUseCases.updateComments({ answerId: before.answerId, value: -1 })
 
 		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.answerComments })
 		await UsersUseCases.updateNerdScore({

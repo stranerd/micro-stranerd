@@ -56,4 +56,11 @@ export class AnswerRepository implements IAnswerRepository {
 		const answers = await Answer.deleteMany({ questionId })
 		return !!answers.acknowledged
 	}
+
+	async updateComments (answerId: string, value: 1 | -1) {
+		const answer = await Answer.findByIdAndUpdate(answerId, {
+			$inc: { comments: value }
+		})
+		return !!answer
+	}
 }

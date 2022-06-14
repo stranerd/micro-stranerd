@@ -37,4 +37,8 @@ export class AnswersUseCase {
 	async deleteQuestionAnswers (questionId: string) {
 		return await this.repository.deleteQuestionAnswers(questionId)
 	}
+
+	async updateComments (data: { answerId: string, value: 1 | -1 }) {
+		return this.repository.updateComments(data.answerId, data.value)
+	}
 }

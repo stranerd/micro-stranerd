@@ -18,7 +18,6 @@ type QuestionReportType = {
 	user: EmbeddedUser
 }
 type AnswerReportType = {
-	title: string
 	body: string
 	questionId: string
 	user: EmbeddedUser

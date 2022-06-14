@@ -63,7 +63,6 @@ export class ReportController {
 				reported: {
 					user: answer.user,
 					body: answer.body,
-					title: answer.title,
 					questionId: answer.questionId
 				}
 			}

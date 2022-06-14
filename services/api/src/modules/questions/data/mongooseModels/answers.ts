@@ -9,14 +9,9 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	title: {
-		type: String,
-		required: true
-	},
 	body: {
 		type: String,
-		required: false,
-		default: ''
+		required: true
 	},
 	questionId: {
 		type: String,
@@ -45,6 +40,11 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		type: [Object as unknown as any],
 		required: false,
 		default: []
+	},
+	comments: {
+		type: Number,
+		required: false,
+		default: 0
 	},
 	createdAt: {
 		type: Number,
