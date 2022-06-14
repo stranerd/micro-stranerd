@@ -1,6 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
-import { AnswerCommentsUseCases, AnswersUseCases, QuestionsUseCases } from '@modules/questions'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
 import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
@@ -29,9 +29,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			ChatMetasUseCases, SessionsUseCases, ReviewsUseCases, ReportsUseCases,
-			QuestionsUseCases, AnswersUseCases, AnswerCommentsUseCases,
+			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases, SchemesUseCases,
-			CommentsUseCases, LikesUseCases, ViewsUseCases,
 			DocumentsUseCases, FlashCardsUseCases, SetsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 

@@ -1,11 +1,5 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
-import {
-	AnswerCommentsUseCases,
-	AnswerEntity,
-	AnswerFromModel,
-	AnswerUpvotesUseCases,
-	QuestionsUseCases
-} from '@modules/questions'
+import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
@@ -74,7 +68,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			})
 		}
 
-		if (!after.best && changes.votes && after.totalVotes >= 20) {
+		if (!after.best && changes.meta?.upvotes && after.meta.upvotes >= 20) {
 			const question = await QuestionsUseCases.find(after.questionId)
 			const markBest = question && !question.isAnswered && !question.answers.find((a) => a.id === after.id)
 			if (markBest) await QuestionsUseCases.updateBestAnswer({
@@ -110,8 +104,6 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 
 		await Promise.all([
-			AnswerCommentsUseCases.deleteAnswerComments(before.id),
-			AnswerUpvotesUseCases.deleteAnswerVotes(before.id),
 			CommentsUseCases.deleteEntityComments({ type: InteractionEntities.answers, id: before.id }),
 			LikesUseCases.deleteEntityLikes({ type: InteractionEntities.answers, id: before.id })
 		])

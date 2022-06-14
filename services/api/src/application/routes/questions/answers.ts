@@ -64,18 +64,5 @@ export const answersRoutes: Route[] = [
 				}
 			})
 		]
-	},
-	{
-		path: '/questions/answers/:id/vote',
-		method: 'post',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await AnswerController.VoteAnswer(req)
-				}
-			})
-		]
 	}
 ]

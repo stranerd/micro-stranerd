@@ -9,7 +9,6 @@ export class AnswerEntity extends BaseEntity {
 	public readonly tagId: string
 	public readonly attachments: Media[]
 	public readonly user: EmbeddedUser
-	public readonly votes: { userId: string, vote: 1 | -1 }[]
 	public readonly meta: AnswerMeta
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -17,7 +16,7 @@ export class AnswerEntity extends BaseEntity {
 	constructor ({
 		             id, body, questionId, tagId,
 		             createdAt, user, attachments, meta,
-		             best, votes, updatedAt
+		             best, updatedAt
 	             }: AnswerConstructorArgs) {
 		super()
 		this.id = id
@@ -27,15 +26,9 @@ export class AnswerEntity extends BaseEntity {
 		this.user = user
 		this.attachments = attachments
 		this.best = best ?? false
-		this.votes = votes
 		this.meta = meta
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
-	}
-
-	get totalVotes () {
-		return this.votes.map((v) => v.vote)
-			.reduce((acc, val) => acc + val, 0)
 	}
 }
 
@@ -49,6 +42,5 @@ type AnswerConstructorArgs = {
 	updatedAt: number
 	user: EmbeddedUser
 	best: boolean
-	votes: { userId: string, vote: 1 | -1 }[]
 	meta: AnswerMeta
 }

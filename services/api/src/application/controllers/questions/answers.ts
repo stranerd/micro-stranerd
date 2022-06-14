@@ -1,4 +1,4 @@
-import { AnswersUseCases, AnswerUpvotesUseCases, QuestionsUseCases } from '@modules/questions'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 
@@ -57,16 +57,5 @@ export class AnswerController {
 		const isDeleted = await AnswersUseCases.delete({ id: req.params.id, userId: req.authUser!.id })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
-	}
-
-	static async VoteAnswer (req: Request) {
-		const vote = !!req.body.vote
-		const answer = await AnswersUseCases.find(req.params.id)
-		if (!answer) throw new BadRequestError('answer not found')
-		return await AnswerUpvotesUseCases.add({
-			answerId: req.params.id,
-			userId: req.authUser!.id,
-			vote: vote ? 1 : -1
-		})
 	}
 }

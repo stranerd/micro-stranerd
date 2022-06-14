@@ -37,11 +37,6 @@ const Schema = new mongoose.Schema<AnswerFromModel>({
 		required: false,
 		default: false
 	},
-	votes: {
-		type: [Object as unknown as any],
-		required: false,
-		default: []
-	},
 	meta: Object.fromEntries(
 		Object.keys(AnswerMetaType).map((key) => [key, {
 			type: Number,

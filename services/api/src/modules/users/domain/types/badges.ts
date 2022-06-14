@@ -1,8 +1,6 @@
 export enum CountStreakBadges {
 	NewQuestion = 'NewQuestion',
 	NewAnswer = 'NewAnswer',
-	NewAnswerComment = 'NewAnswerComment',
-	NewAnswerVote = 'NewAnswerVote',
 	GiveBestAnswer = 'GiveBestAnswer',
 	GetBestAnswer = 'GetBestAnswer',
 	AttendSession = 'AttendSession',
@@ -12,8 +10,6 @@ export enum CountStreakBadges {
 export const CountStreakBadgeNames = {
 	[CountStreakBadges.NewQuestion]: 'Inquisitor',
 	[CountStreakBadges.NewAnswer]: 'Aide',
-	[CountStreakBadges.NewAnswerComment]: 'Watcher',
-	[CountStreakBadges.NewAnswerVote]: 'Patriot',
 	[CountStreakBadges.GiveBestAnswer]: 'Believer',
 	[CountStreakBadges.GetBestAnswer]: 'Aristocrat',
 	[CountStreakBadges.AttendSession]: 'Learner',
