@@ -34,6 +34,7 @@ export class UsersController {
 						const matches = [Validation.isString(exam?.institutionId).valid]
 						matches.push(Validation.isNumber(exam?.startDate).valid)
 						matches.push(Validation.isNumber(exam?.endDate).valid)
+						matches.push(Validation.isMoreThanOrEqualTo(exam?.endDate, exam?.startDate).valid)
 						matches.push(Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'courses')(exam?.courseIds).valid)
 						return matches.every((m) => m)
 					}, 'array of exams')

@@ -7,11 +7,11 @@ export class IdentitiesController {
 		const validatedData = validate({
 			idToken: req.body.idToken,
 			accessToken: req.body.accessToken,
-			referrer: req.body.referrer
+			referrer: req.body.referrer ?? null
 		}, {
 			idToken: { required: true, rules: [Validation.isString] },
 			accessToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: false, rules: [Validation.isString] }
+			referrer: { required: true, nullable: true, rules: [Validation.isString] }
 		})
 
 		const data = await AuthUseCases.googleSignIn(validatedData)

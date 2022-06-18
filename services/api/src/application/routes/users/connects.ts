@@ -1,66 +1,68 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { CommentsController } from '../../controllers/interactions/comments'
+import { ConnectsController } from '../../controllers/users/connects'
 
-export const commentsRoutes: Route[] = [
+export const connectsRoutes: Route[] = [
 	{
-		path: '/interactions/comments/',
+		path: '/users/connects/',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CommentsController.getComments(req)
+					result: await ConnectsController.get(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/interactions/comments/:id',
+		path: '/users/connects/:id',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CommentsController.findComment(req)
+					result: await ConnectsController.find(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/interactions/comments/',
+		path: '/users/connects/',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CommentsController.createComment(req)
+					result: await ConnectsController.create(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/interactions/comments/:id',
+		path: '/users/connects/:id/accept',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CommentsController.updateComment(req)
+					result: await ConnectsController.accept(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/interactions/comments/:id',
+		path: '/users/connects/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CommentsController.deleteComment(req)
+					result: await ConnectsController.delete(req)
 				}
 			})
 		]

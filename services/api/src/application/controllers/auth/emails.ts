@@ -11,7 +11,7 @@ export class EmailsController {
 			lastName: req.body.lastName,
 			password: req.body.password,
 			photo: req.files.photo?.[0] ?? null,
-			referrer: req.body.referrer,
+			referrer: req.body.referrer ?? null,
 			description: req.body.description
 		}
 
@@ -40,7 +40,7 @@ export class EmailsController {
 			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] },
 			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			referrer: { required: false, rules: [Validation.isString] }
+			referrer: { required: true, nullable: true, rules: [Validation.isString] }
 		})
 		const photo = userPhoto ? await UploaderUseCases.upload('profiles/photos', userPhoto) : null
 		const validateData = {

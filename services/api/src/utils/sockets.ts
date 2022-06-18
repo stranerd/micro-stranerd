@@ -41,6 +41,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('study/testPreps', isOpen)
 	getSocketEmitter().register('study/tests', isMine)
 	getSocketEmitter().register('users/badges', isMine)
+	getSocketEmitter().register('users/connects', isMine)
 	getSocketEmitter().register('users/notifications', isMine)
 	getSocketEmitter().register('users/referrals', isMine)
 	getSocketEmitter().register('users/reviews', isOpen)

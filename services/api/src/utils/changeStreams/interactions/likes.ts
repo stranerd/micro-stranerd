@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@stranerd/api-commons'
+import { ChangeStreamCallbacks } from '@utils/commons'
 import { InteractionEntities, LikeEntity, LikeFromModel } from '@modules/interactions'
 import { getSocketEmitter } from '@index'
 import { AnswerMetaType, AnswersUseCases } from '@modules/questions'

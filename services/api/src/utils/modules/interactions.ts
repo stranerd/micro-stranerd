@@ -1,5 +1,5 @@
 import { CommentsUseCases, InteractionEntities } from '@modules/interactions'
-import { BadRequestError } from '@stranerd/api-commons'
+import { BadRequestError } from '@utils/commons'
 import { AnswersUseCases } from '@modules/questions'
 
 type Interactions = 'comments' | 'likes' | 'dislikes' | 'views'

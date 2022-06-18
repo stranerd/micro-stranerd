@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@stranerd/api-commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { LikesController } from '../../controllers/interactions/likes'
 
 export const likesRoutes: Route[] = [

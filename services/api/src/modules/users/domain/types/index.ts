@@ -46,6 +46,8 @@ export type EmbeddedUser = {
 }
 
 export enum UserMeta {
+	connects = 'connects',
+
 	questions = 'questions',
 	answers = 'answers',
 	bestAnswers = 'bestAnswers',

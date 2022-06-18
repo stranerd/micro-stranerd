@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@stranerd/api-commons'
+import { ChangeStreamCallbacks } from '@utils/commons'
 import { ViewEntity, ViewFromModel } from '@modules/interactions'
 import { getSocketEmitter } from '@index'
 
