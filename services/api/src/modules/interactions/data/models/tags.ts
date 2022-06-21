@@ -1,3 +1,5 @@
+import { TagTypes } from '../../domain/types'
+
 export interface TagFromModel extends TagToModel {
 	_id: string
 	createdAt: number
@@ -5,6 +7,7 @@ export interface TagFromModel extends TagToModel {
 }
 
 export interface TagToModel {
+	type: TagTypes
 	title: string
 	parent: string | null
 }

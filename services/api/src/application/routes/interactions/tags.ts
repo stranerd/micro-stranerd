@@ -1,10 +1,10 @@
 import { makeController, Route, StatusCodes } from '@utils/commons'
-import { TagController } from '../../controllers/questions/tags'
+import { TagController } from '../../controllers/interactions/tags'
 import { isAdmin } from '@application/middlewares'
 
 export const tagsRoutes: Route[] = [
 	{
-		path: '/questions/tags',
+		path: '/interactions/tags',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const tagsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/tags/:id',
+		path: '/interactions/tags/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const tagsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/tags/:id',
+		path: '/interactions/tags/:id',
 		method: 'put',
 		controllers: [
 			isAdmin,
@@ -41,7 +41,7 @@ export const tagsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/tags',
+		path: '/interactions/tags',
 		method: 'post',
 		controllers: [
 			isAdmin,
@@ -54,7 +54,7 @@ export const tagsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/questions/tags/:id',
+		path: '/interactions/tags/:id',
 		method: 'delete',
 		controllers: [
 			isAdmin,

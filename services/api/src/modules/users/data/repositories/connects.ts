@@ -1,4 +1,4 @@
-import { IConnectRepository } from '../../domain/i-repositories/connects'
+import { IConnectRepository } from '../../domain/irepositories/connects'
 import { ConnectMapper } from '../mappers/connects'
 import { Connect } from '../mongooseModels/connects'
 import { parseQueryParams } from '@utils/commons'
@@ -28,13 +28,14 @@ export class ConnectRepository implements IConnectRepository {
 	}
 
 	async create (data: ConnectToModel) {
+		const id = [data.from.id, data.to.id].sort().join('---')
 		const connect = await Connect.findOneAndUpdate({
 			$or: [
 				{ 'from.id': data.from.id, 'to.id': data.to.id },
 				{ 'from.id': data.to.id, 'to.id': data.from.id }
 			]
 		}, {
-			$setOnInsert: data
+			$setOnInsert: { ...data, _id: id }
 		}, { upsert: true, new: true })
 		return this.mapper.mapFrom(connect)!
 	}

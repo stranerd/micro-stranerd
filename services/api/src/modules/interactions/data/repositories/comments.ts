@@ -1,4 +1,4 @@
-import { ICommentRepository } from '../../domain/i-repositories/comments'
+import { ICommentRepository } from '../../domain/irepositories/comments'
 import { CommentMapper } from '../mappers/comments'
 import { CommentFromModel, CommentToModel } from '../models/comments'
 import { parseQueryParams, QueryParams } from '@utils/commons'

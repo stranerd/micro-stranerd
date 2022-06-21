@@ -1,4 +1,4 @@
-import { IAuthRepository } from '../../domain/i-repositories/auth'
+import { IAuthRepository } from '../../domain/irepositories/auth'
 import { Credential, PasswordResetInput } from '../../domain/types'
 import { publishers } from '@utils/events'
 import User from '../mongooseModels/users'

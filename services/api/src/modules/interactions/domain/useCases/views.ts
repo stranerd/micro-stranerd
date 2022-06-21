@@ -1,5 +1,5 @@
 import { QueryParams } from '@utils/commons'
-import { IViewRepository } from '../i-repositories/views'
+import { IViewRepository } from '../irepositories/views'
 import { ViewToModel } from '../../data/models/views'
 
 export class ViewsUseCase {

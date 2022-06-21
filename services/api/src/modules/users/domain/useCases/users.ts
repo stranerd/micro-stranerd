@@ -1,4 +1,4 @@
-import { IUserRepository } from '../i-repositories/users'
+import { IUserRepository } from '../irepositories/users'
 import { UserAccount, UserBio, UserMeta, UserRoles, UserSchoolData } from '../types'
 import { QueryParams } from '@utils/commons'
 

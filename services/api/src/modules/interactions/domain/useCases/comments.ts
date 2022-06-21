@@ -1,5 +1,5 @@
 import { QueryParams } from '@utils/commons'
-import { ICommentRepository } from '../i-repositories/comments'
+import { ICommentRepository } from '../irepositories/comments'
 import { CommentToModel } from '../../data/models/comments'
 import { CommentMetaType } from '../types'
 

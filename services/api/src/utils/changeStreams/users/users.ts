@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { BadgesUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
+import { BadgesUseCases, ConnectsUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, SessionsUseCases } from '@modules/sessions'
 import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
@@ -28,10 +28,10 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
-			ChatMetasUseCases, SessionsUseCases, ReviewsUseCases, ReportsUseCases,
+			ChatMetasUseCases, SessionsUseCases, ConnectsUseCases, ReviewsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases, SchemesUseCases,
-			DocumentsUseCases, FlashCardsUseCases, SetsUseCases
+			DocumentsUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
 		const updatedScore = !!changes.account?.score

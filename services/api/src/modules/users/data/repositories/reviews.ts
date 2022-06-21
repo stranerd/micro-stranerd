@@ -1,4 +1,4 @@
-import { IReviewRepository } from '../../domain/i-repositories/reviews'
+import { IReviewRepository } from '../../domain/irepositories/reviews'
 import { ReviewMapper } from '../mappers/reviews'
 import { Review } from '../mongooseModels/reviews'
 import { parseQueryParams, QueryParams } from '@utils/commons'

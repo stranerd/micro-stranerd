@@ -24,7 +24,6 @@ export const registerSockets = () => {
 	getSocketEmitter().register('classes/events/:classId', classJoinCb)
 	getSocketEmitter().register('classes/schemes/:classId', classJoinCb)
 	getSocketEmitter().register('questions/answers', isOpen)
-	getSocketEmitter().register('questions/tags', isOpen)
 	getSocketEmitter().register('questions/questions', isOpen)
 	getSocketEmitter().register('reports/reports', isAdmin)
 	getSocketEmitter().register('school/courses', isOpen)
@@ -46,7 +45,8 @@ export const registerSockets = () => {
 	getSocketEmitter().register('users/referrals', isMine)
 	getSocketEmitter().register('users/reviews', isOpen)
 	getSocketEmitter().register('users/users', isOpen)
-	getSocketEmitter().register('interactions/likes', isOpen)
 	getSocketEmitter().register('interactions/comments', isOpen)
+	getSocketEmitter().register('interactions/likes', isOpen)
+	getSocketEmitter().register('interactions/tags', isOpen)
 	getSocketEmitter().register('interactions/views', isOpen)
 }

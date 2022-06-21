@@ -1,4 +1,4 @@
-import { IReferralRepository } from '../i-repositories/referrals'
+import { IReferralRepository } from '../irepositories/referrals'
 import { ReferralToModel } from '../../data/models/referrals'
 import { QueryParams } from '@utils/commons'
 

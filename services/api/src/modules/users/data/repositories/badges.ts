@@ -1,4 +1,4 @@
-import { IBadgeRepository } from '../../domain/i-repositories/badges'
+import { IBadgeRepository } from '../../domain/irepositories/badges'
 import { BadgeMapper } from '../mappers/badges'
 import { Badge } from '../mongooseModels/badges'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'

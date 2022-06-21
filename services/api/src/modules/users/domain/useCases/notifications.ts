@@ -1,4 +1,4 @@
-import { INotificationRepository } from '../i-repositories/notifications'
+import { INotificationRepository } from '../irepositories/notifications'
 import { NotificationToModel } from '../../data/models/notifications'
 import { QueryParams } from '@utils/commons'
 

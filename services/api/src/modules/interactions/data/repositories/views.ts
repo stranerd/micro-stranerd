@@ -1,4 +1,4 @@
-import { IViewRepository } from '../../domain/i-repositories/views'
+import { IViewRepository } from '../../domain/irepositories/views'
 import { ViewMapper } from '../mappers/views'
 import { ViewFromModel, ViewToModel } from '../models/views'
 import { parseQueryParams, QueryParams } from '@utils/commons'

@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { TagFromModel } from '../models/tags'
-import { TagChangeStreamCallbacks } from '@utils/changeStreams/questions/tags'
+import { TagChangeStreamCallbacks } from '@utils/changeStreams/interactions/tags'
 import { TagEntity } from '../../domain/entities/tags'
 import { TagMapper } from '../mappers/tags'
 
@@ -8,6 +8,10 @@ const Schema = new mongoose.Schema<TagFromModel>({
 	_id: {
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
+	},
+	type: {
+		type: String,
+		required: true
 	},
 	title: {
 		type: String,
@@ -30,7 +34,7 @@ const Schema = new mongoose.Schema<TagFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Tag = mongoose.model<TagFromModel>('StranerdQuestionsTag', Schema)
+export const Tag = mongoose.model<TagFromModel>('StranerdInteractionsTag', Schema)
 
 generateChangeStreams<TagFromModel, TagEntity>(Tag, TagChangeStreamCallbacks, new TagMapper().mapFrom).then()
 

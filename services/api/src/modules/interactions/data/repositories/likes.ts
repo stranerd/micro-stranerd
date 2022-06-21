@@ -1,4 +1,4 @@
-import { ILikeRepository } from '../../domain/i-repositories/likes'
+import { ILikeRepository } from '../../domain/irepositories/likes'
 import { LikeMapper } from '../mappers/likes'
 import { LikeFromModel, LikeToModel } from '../models/likes'
 import { parseQueryParams, QueryParams } from '@utils/commons'

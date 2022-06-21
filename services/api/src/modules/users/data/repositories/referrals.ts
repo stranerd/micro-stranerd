@@ -1,4 +1,4 @@
-import { IReferralRepository } from '../../domain/i-repositories/referrals'
+import { IReferralRepository } from '../../domain/irepositories/referrals'
 import { ReferralMapper } from '../mappers/referrals'
 import { Referral } from '../mongooseModels/referrals'
 import { parseQueryParams, QueryParams } from '@utils/commons'

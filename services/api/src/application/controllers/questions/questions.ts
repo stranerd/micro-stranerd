@@ -1,6 +1,7 @@
-import { QuestionsUseCases, TagsUseCases } from '@modules/questions'
+import { QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { TagsUseCases, TagTypes } from '@modules/interactions'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -49,7 +50,7 @@ export class QuestionController {
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
 		const tag = await TagsUseCases.find(data.tagId)
-		if (!tag || !!tag.parent) throw new BadRequestError('invalid tagId')
+		if (!tag || !tag.parent || tag.type !== TagTypes.questions) throw new BadRequestError('invalid tagId')
 
 		return await QuestionsUseCases.add({ ...data, user: user.getEmbedded() })
 	}

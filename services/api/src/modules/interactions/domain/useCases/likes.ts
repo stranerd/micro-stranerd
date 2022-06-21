@@ -1,5 +1,5 @@
 import { QueryParams } from '@utils/commons'
-import { ILikeRepository } from '../i-repositories/likes'
+import { ILikeRepository } from '../irepositories/likes'
 import { LikeToModel } from '../../data/models/likes'
 
 export class LikesUseCase {

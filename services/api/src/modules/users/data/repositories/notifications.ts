@@ -1,4 +1,4 @@
-import { INotificationRepository } from '../../domain/i-repositories/notifications'
+import { INotificationRepository } from '../../domain/irepositories/notifications'
 import { NotificationMapper } from '../mappers/notifications'
 import { Notification } from '../mongooseModels/notifications'
 import { parseQueryParams, QueryParams } from '@utils/commons'

@@ -1,5 +1,5 @@
 import { QueryParams } from '@utils/commons'
-import { IReviewRepository } from '../i-repositories/reviews'
+import { IReviewRepository } from '../irepositories/reviews'
 import { ReviewToModel } from '../../data/models/reviews'
 import { EmbeddedUser } from '../types'
 

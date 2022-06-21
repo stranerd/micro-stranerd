@@ -1,5 +1,5 @@
 import { QueryParams } from '@utils/commons'
-import { IConnectRepository } from '../i-repositories/connects'
+import { IConnectRepository } from '../irepositories/connects'
 import { ConnectToModel } from '../../data/models/connects'
 import { EmbeddedUser } from '../types'
 

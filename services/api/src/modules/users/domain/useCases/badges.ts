@@ -1,4 +1,4 @@
-import { IBadgeRepository } from '../i-repositories/badges'
+import { IBadgeRepository } from '../irepositories/badges'
 import { QueryParams } from '@utils/commons'
 import { CountStreakBadges } from '../types/badges'
 import { RankTypes } from '../entities/ranks'
