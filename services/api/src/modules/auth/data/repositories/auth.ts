@@ -123,7 +123,7 @@ export class AuthRepository implements IAuthRepository {
 	async googleSignIn (idToken: string, referrer: string | null) {
 		const authUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
 		const { data } = await axios.get(authUrl).catch((err) => {
-			const message = err?.response?.data?.error?.message
+			const message = err?.response?.data?.error
 			throw new BadRequestError(message ? 'Invalid id token' : 'Something unexpected happened')
 		})
 

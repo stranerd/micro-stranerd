@@ -32,4 +32,8 @@ export class DepartmentsUseCase {
 	async deleteFacultyDepartments (facultyId: string) {
 		return await this.repository.deleteFacultyDepartments(facultyId)
 	}
+
+	async deleteTagDepartments (tagId: string) {
+		return await this.repository.deleteTagDepartments(tagId)
+	}
 }

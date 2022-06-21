@@ -80,4 +80,9 @@ export class QuestionRepository implements IQuestionRepository {
 		const question = await Question.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!question
 	}
+
+	async deleteTagQuestions (tagId: string) {
+		const questions = await Question.deleteMany({ tagId })
+		return questions.acknowledged
+	}
 }

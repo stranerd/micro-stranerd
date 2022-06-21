@@ -12,4 +12,5 @@ export interface IQuestionRepository {
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateAnswers: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	updateBestAnswer: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
+	deleteTagQuestions: (tagId: string) => Promise<boolean>
 }

@@ -37,6 +37,11 @@ export class DepartmentRepository implements IDepartmentRepository {
 		return deleteData.acknowledged
 	}
 
+	async deleteTagDepartments (tagId: string): Promise<boolean> {
+		const deleteData = await Department.deleteMany({ tagId })
+		return deleteData.acknowledged
+	}
+
 	async add (data: DepartmentToModel) {
 		const department = await new Department(data).save()
 		return this.mapper.mapFrom(department)!

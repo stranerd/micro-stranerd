@@ -41,4 +41,8 @@ export class QuestionsUseCase {
 	async updateUserBio (user: EmbeddedUser) {
 		return await this.repository.updateUserBio(user)
 	}
+
+	async deleteTagQuestions (tagId: string) {
+		return await this.repository.deleteTagQuestions(tagId)
+	}
 }

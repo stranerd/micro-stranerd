@@ -8,4 +8,5 @@ export interface DepartmentToModel {
 	name: string
 	institutionId: string
 	facultyId: string
+	tagId: string
 }
