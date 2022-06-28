@@ -1,9 +1,9 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { SessionController } from '../../controllers/sessions'
+import { SessionController } from '../../controllers/messaging'
 
 export const sessionRoutes: Route[] = [
 	{
-		path: '/sessions/sessions',
+		path: '/messaging/sessions',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/sessions/:id',
+		path: '/messaging/sessions/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/sessions',
+		path: '/messaging/sessions',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/sessions/:id/accept',
+		path: '/messaging/sessions/:id/accept',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -55,7 +55,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/sessions/:id/cancel',
+		path: '/messaging/sessions/:id/cancel',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
@@ -68,7 +68,7 @@ export const sessionRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/sessions/:id/end',
+		path: '/messaging/sessions/:id/end',
 		method: 'put',
 		controllers: [
 			requireAuthUser,

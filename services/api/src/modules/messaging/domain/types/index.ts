@@ -21,7 +21,9 @@ export type ChatMetaData = {
 
 export type ChatData = {
 	type: ChatType.personal
+	members: string[]
 } | {
 	type: ChatType.discussions
+	members: string[]
 	classId: string
 }

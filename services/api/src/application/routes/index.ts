@@ -8,7 +8,7 @@ import { metaRoutes } from './meta'
 import { reportsRoutes } from './reports'
 import { questionRoutes } from './questions'
 import { schoolRoutes } from './school'
-import { sessionsRoutes } from './sessions'
+import { messagingRoutes } from './messaging'
 import { studyRoutes } from './study'
 import { userRoutes } from './users'
 import { interactionRoutes } from './interactions'
@@ -22,7 +22,7 @@ export const routes: Route[] = [
 	...reportsRoutes,
 	...questionRoutes,
 	...schoolRoutes,
-	...sessionsRoutes,
+	...messagingRoutes,
 	...studyRoutes,
 	...userRoutes,
 	...interactionRoutes,

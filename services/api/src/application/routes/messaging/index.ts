@@ -3,7 +3,7 @@ import { sessionRoutes } from './session'
 import { chatMetaRoutes } from './chatMeta'
 import { chatRoutes } from './chat'
 
-export const sessionsRoutes: Route[] = [
+export const messagingRoutes: Route[] = [
 	...sessionRoutes,
 	...chatMetaRoutes,
 	...chatRoutes

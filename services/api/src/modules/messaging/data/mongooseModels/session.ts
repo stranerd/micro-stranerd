@@ -1,7 +1,7 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { SessionEntity } from '../../domain/entities/session'
 import { SessionFromModel } from '../models/session'
-import { SessionChangeStreamCallbacks } from '@utils/changeStreams/sessions/sessions'
+import { SessionChangeStreamCallbacks } from '@utils/changeStreams/messaging/sessions'
 import { SessionMapper } from '../mappers/session'
 
 const Schema = new mongoose.Schema<SessionFromModel>({
@@ -79,6 +79,6 @@ const Schema = new mongoose.Schema<SessionFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Session = mongoose.model<SessionFromModel>('StranerdSession', Schema)
+export const Session = mongoose.model<SessionFromModel>('StranerdMessagingSession', Schema)
 
 generateChangeStreams<SessionFromModel, SessionEntity>(Session, SessionChangeStreamCallbacks, new SessionMapper().mapFrom).then()

@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { BadgesUseCases, ConnectsUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
-import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/sessions'
+import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/messaging'
 import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
 import {

@@ -1,4 +1,4 @@
-import { SessionEntity, SessionsUseCases } from '@modules/sessions'
+import { SessionEntity, SessionsUseCases } from '@modules/messaging'
 import { appInstance, DelayedEvent, DelayedJobs } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
 

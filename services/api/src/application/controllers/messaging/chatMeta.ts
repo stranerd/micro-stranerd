@@ -1,4 +1,4 @@
-import { ChatMetasUseCases } from '@modules/sessions'
+import { ChatMetasUseCases } from '@modules/messaging'
 import { Conditions, QueryParams, Request } from '@utils/commons'
 
 export class ChatMetaController {

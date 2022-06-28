@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { DiscussionsUseCases, GroupEntity, GroupFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
-import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/sessions'
+import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
 
 export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, GroupEntity> = {
 	created: async ({ after }) => {

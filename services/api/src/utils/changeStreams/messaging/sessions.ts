@@ -1,16 +1,16 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ChatsUseCases, SessionEntity, SessionFromModel, SessionsUseCases } from '@modules/sessions'
+import { SessionEntity, SessionFromModel, SessionsUseCases } from '@modules/messaging'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
-import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/sessions/sessions'
+import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/messaging/sessions'
 import { getSocketEmitter } from '@index'
 
 export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromModel, SessionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`sessions/sessions/${after.student.id}`, after)
-		await getSocketEmitter().emitCreated(`sessions/sessions/${after.tutor.id}`, after)
-		await getSocketEmitter().emitCreated(`sessions/sessions/${after.id}/${after.student.id}`, after)
-		await getSocketEmitter().emitCreated(`sessions/sessions/${after.id}/${after.tutor.id}`, after)
+		await getSocketEmitter().emitCreated(`messaging/sessions/${after.student.id}`, after)
+		await getSocketEmitter().emitCreated(`messaging/sessions/${after.tutor.id}`, after)
+		await getSocketEmitter().emitCreated(`messaging/sessions/${after.id}/${after.student.id}`, after)
+		await getSocketEmitter().emitCreated(`messaging/sessions/${after.id}/${after.tutor.id}`, after)
 
 		await UsersUseCases.updateQueuedSessions({
 			studentId: after.student.id,
@@ -19,12 +19,12 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 			add: true
 		})
 
-		await ChatsUseCases.add({
-			from: after.student.id, to: after.tutor.id,
-			sessionId: after.id,
-			content: after.message,
-			media: null
-		})
+		/*await ChatsUseCases.add({
+		 from: after.student.id, to: after.tutor.id,
+		 sessionId: after.id,
+		 content: after.message,
+		 media: null
+		 })*/
 
 		await sendNotification([after.tutor.id], {
 			title: 'New Session Request',
@@ -34,10 +34,10 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated(`sessions/sessions/${after.student.id}`, after)
-		await getSocketEmitter().emitUpdated(`sessions/sessions/${after.tutor.id}`, after)
-		await getSocketEmitter().emitUpdated(`sessions/sessions/${after.id}/${after.student.id}`, after)
-		await getSocketEmitter().emitUpdated(`sessions/sessions/${after.id}/${after.tutor.id}`, after)
+		await getSocketEmitter().emitUpdated(`messaging/sessions/${after.student.id}`, after)
+		await getSocketEmitter().emitUpdated(`messaging/sessions/${after.tutor.id}`, after)
+		await getSocketEmitter().emitUpdated(`messaging/sessions/${after.id}/${after.student.id}`, after)
+		await getSocketEmitter().emitUpdated(`messaging/sessions/${after.id}/${after.tutor.id}`, after)
 
 		// Tutor just accepted or rejected the session
 		if (before.accepted === null && changes.accepted) {
@@ -55,12 +55,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				})
 
 				// Send accepted message
-				await ChatsUseCases.add({
-					from: after.tutor.id, to: after.student.id,
-					sessionId: after.id,
-					content: 'Session accepted',
-					media: null
-				})
+				/*await ChatsUseCases.add({
+				 from: after.tutor, to: after.student.id,
+				 body: 'Session accepted',
+				 media: null
+				 })*/
 
 				if (after.isScheduled) await scheduleSession(after)
 				else {
@@ -81,12 +80,12 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 					add: false
 				})
 
-				await ChatsUseCases.add({
-					from: after.tutor.id, to: after.student.id,
-					sessionId: after.id,
-					content: 'Session rejected',
-					media: null
-				})
+				/*await ChatsUseCases.add({
+				 from: after.tutor.id, to: after.student.id,
+				 sessionId: after.id,
+				 content: 'Session rejected',
+				 media: null
+				 })*/
 			}
 		}
 		// Session was just concluded or cancelled, so cleanup
@@ -118,12 +117,12 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 				sessionIds: [after.id],
 				add: false
 			})
-			await ChatsUseCases.add({
-				from: after.tutor.id, to: after.student.id,
-				sessionId: after.id,
-				content: 'Session rejected',
-				media: null
-			})
+			/*await ChatsUseCases.add({
+			 from: after.tutor.id, to: after.student.id,
+			 sessionId: after.id,
+			 content: 'Session rejected',
+			 media: null
+			 })*/
 			await BadgesUseCases.recordCountStreak({
 				userId: after.student.id,
 				activity: CountStreakBadges.AttendSession,
@@ -137,11 +136,11 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.student.id}`, before)
-		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.tutor.id}`, before)
-		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.id}/${before.student.id}`, before)
-		await getSocketEmitter().emitDeleted(`sessions/sessions/${before.id}/${before.tutor.id}`, before)
-		await ChatsUseCases.deleteSessionChats(before.id)
+		await getSocketEmitter().emitDeleted(`messaging/sessions/${before.student.id}`, before)
+		await getSocketEmitter().emitDeleted(`messaging/sessions/${before.tutor.id}`, before)
+		await getSocketEmitter().emitDeleted(`messaging/sessions/${before.id}/${before.student.id}`, before)
+		await getSocketEmitter().emitDeleted(`messaging/sessions/${before.id}/${before.tutor.id}`, before)
+		/*await ChatsUseCases.deleteSessionChats(before.id)*/
 		if (before.done) {
 			await UsersUseCases.incrementSessionCount({
 				tutorId: before.tutor.id,

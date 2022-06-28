@@ -11,8 +11,7 @@ const getChatMetaCondition = (from: string, to: string) => ({
 	$or: [
 		{
 			'data.type': ChatType.personal,
-			[`data.users.${from}`]: { $exists: true },
-			[`data.users.${to}`]: { $exists: true }
+			$and: [{ members: from }, { members: to }]
 		},
 		{ 'data.type': ChatType.discussions, 'group.id': to }
 	]
@@ -61,7 +60,7 @@ export class ChatRepository implements IChatRepository {
 	}
 
 	async find (id: string, userId: string) {
-		const chat = await Chat.findOne({ _id: id, $or: [{ 'from.id': userId }, { to: userId }] })
+		const chat = await Chat.findOne({ _id: id, 'data.members': userId })
 		return this.mapper.mapFrom(chat)
 	}
 

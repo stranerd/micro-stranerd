@@ -1,9 +1,9 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { ChatController } from '../../controllers/sessions'
+import { ChatController } from '../../controllers/messaging'
 
 export const chatRoutes: Route[] = [
 	{
-		path: '/sessions/chats',
+		path: '/messaging/chats',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -16,7 +16,7 @@ export const chatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/chats/:id',
+		path: '/messaging/chats/:id',
 		method: 'get',
 		controllers: [
 			requireAuthUser,
@@ -29,7 +29,7 @@ export const chatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/chats',
+		path: '/messaging/chats',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
@@ -42,7 +42,7 @@ export const chatRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/sessions/chats/:id/read',
+		path: '/messaging/chats/:id/read',
 		method: 'put',
 		controllers: [
 			requireAuthUser,

@@ -1,6 +1,6 @@
 import { BaseEntity } from '@utils/commons'
 import { ChatEntity } from './chat'
-import { ChatMetaData } from '../types'
+import { ChatData, ChatMetaData, ChatType } from '../types'
 
 export class ChatMetaEntity extends BaseEntity {
 	public readonly id: string
@@ -22,6 +22,15 @@ export class ChatMetaEntity extends BaseEntity {
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 		this.readAt = readAt
+	}
+
+	getEmbedded (): ChatData {
+		if (this.data.type === ChatType.personal) return { type: ChatType.personal, members: this.members }
+		else return {
+			type: ChatType.discussions,
+			classId: this.data.group.classId,
+			members: this.members
+		}
 	}
 }
 

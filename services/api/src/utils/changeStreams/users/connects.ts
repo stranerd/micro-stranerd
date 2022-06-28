@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { ConnectEntity, ConnectFromModel, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
-import { ChatMetasUseCases, ChatType } from '@modules/sessions'
+import { ChatMetasUseCases, ChatType } from '@modules/messaging'
 
 export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromModel, ConnectEntity> = {
 	created: async ({ after }) => {

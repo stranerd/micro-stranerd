@@ -1,6 +1,6 @@
 import { generateChangeStreams, mongoose } from '@utils/commons'
 import { ChatMetaFromModel } from '../models/chatMeta'
-import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/sessions/chatMetas'
+import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/messaging/chatMetas'
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 
@@ -39,6 +39,6 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdSessionsChatMeta', Schema)
+export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdMessagingChatMeta', Schema)
 
 generateChangeStreams<ChatMetaFromModel, ChatMetaEntity>(ChatMeta, ChatMetaChangeStreamCallbacks, new ChatMetaMapper().mapFrom).then()
