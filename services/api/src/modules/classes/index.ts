@@ -39,4 +39,4 @@ export { GroupEntity } from './domain/entities/groups'
 export { EventEntity } from './domain/entities/events'
 export { SchemeEntity } from './domain/entities/schemes'
 
-export { EventType, ClassUsers, Cron } from './domain/types'
+export { EventType, ClassUsers, Cron, EmbeddedGroup } from './domain/types'

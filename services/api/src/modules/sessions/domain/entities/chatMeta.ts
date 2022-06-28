@@ -1,36 +1,36 @@
 import { BaseEntity } from '@utils/commons'
 import { ChatEntity } from './chat'
-import { EmbeddedUser } from '../types'
+import { ChatMetaData } from '../types'
 
 export class ChatMetaEntity extends BaseEntity {
 	public readonly id: string
-	public readonly unRead: string[]
-	public readonly ownerId: string
-	public readonly user: EmbeddedUser
-	public readonly last: ChatEntity
+	public readonly members: string[]
+	public readonly data: ChatMetaData
+	public readonly last: ChatEntity | null
 	public readonly createdAt: number
 	public readonly updatedAt: number
+	public readonly readAt: Record<string, number>
 
 	constructor ({
-		             id, unRead, user, ownerId, last, createdAt, updatedAt
+		             id, data, members, last, createdAt, updatedAt, readAt
 	             }: ChatMetaConstructorArgs) {
 		super()
 		this.id = id
-		this.unRead = unRead
-		this.ownerId = ownerId
-		this.user = user
+		this.members = members
+		this.data = data
 		this.last = last
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
+		this.readAt = readAt
 	}
 }
 
 type ChatMetaConstructorArgs = {
 	id: string,
-	unRead: string[],
-	ownerId: string,
-	user: EmbeddedUser
-	last: ChatEntity,
-	createdAt: number,
+	members: string[]
+	data: ChatMetaData
+	last: ChatEntity | null
+	createdAt: number
 	updatedAt: number
+	readAt: Record<string, number>
 }

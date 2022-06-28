@@ -10,32 +10,36 @@ const Schema = new mongoose.Schema<ChatFromModel>({
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
 	from: {
-		type: String,
+		type: mongoose.Schema.Types.Mixed as unknown as ChatFromModel['from'],
 		required: true
 	},
 	to: {
 		type: String,
 		required: true
 	},
-	content: {
+	body: {
 		type: String,
 		required: false,
 		default: ''
+	},
+	links: {
+		type: [mongoose.Schema.Types.Mixed] as unknown as ChatFromModel['links'],
+		required: false,
+		default: []
 	},
 	media: {
 		type: mongoose.Schema.Types.Mixed,
 		required: false,
 		default: null
 	},
-	sessionId: {
-		type: String,
-		required: false,
-		default: null as unknown as string
+	data: {
+		type: mongoose.Schema.Types.Mixed,
+		required: true
 	},
 	readAt: {
-		type: Number,
+		type: mongoose.Schema.Types.Mixed as unknown as ChatFromModel['readAt'],
 		required: false,
-		default: null as unknown as number
+		default: {}
 	},
 	createdAt: {
 		type: Number,

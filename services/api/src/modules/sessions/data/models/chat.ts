@@ -1,16 +1,17 @@
-import { Media } from '../../domain/types'
+import { ChatData, EmbeddedUser, Media } from '../../domain/types'
 
 export interface ChatFromModel extends ChatToModel {
 	_id: string
-	readAt: number | null,
+	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 }
 
 export interface ChatToModel {
-	from: string
+	from: EmbeddedUser
 	to: string
-	content: string
 	media: Media | null
-	sessionId: string | null
+	body: string
+	links: { original: string, normalized: string }[]
+	data: ChatData
 }

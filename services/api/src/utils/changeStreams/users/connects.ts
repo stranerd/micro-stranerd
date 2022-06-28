@@ -1,6 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { ConnectEntity, ConnectFromModel, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
+import { ChatMetasUseCases, ChatType } from '@modules/sessions'
 
 export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromModel, ConnectEntity> = {
 	created: async ({ after }) => {
@@ -16,6 +17,16 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 		await getSocketEmitter().emitUpdated(`users/connects/${after.id}/${after.to.id}`, after)
 
 		if (changes.accepted) await Promise.all([
+			await ChatMetasUseCases.add({
+				members: [after.from.id, after.to.id],
+				data: {
+					type: ChatType.personal,
+					users: {
+						[after.from.id]: after.from,
+						[after.to.id]: after.to
+					}
+				}
+			}),
 			UsersUseCases.incrementMeta({
 				id: after.from.id, property: UserMeta.connects, value: after.accepted ? 1 : -1
 			}),

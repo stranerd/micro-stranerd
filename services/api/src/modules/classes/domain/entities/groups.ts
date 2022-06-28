@@ -39,6 +39,14 @@ export class GroupEntity extends BaseEntity {
 	getAllUsers () {
 		return Array.from(new Set(Object.values(this.users).flat()))
 	}
+
+	getEmbedded () {
+		return {
+			id: this.id,
+			classId: this.classId,
+			name: this.name
+		}
+	}
 }
 
 type GroupConstructorArgs = {

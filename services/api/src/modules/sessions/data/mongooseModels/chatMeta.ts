@@ -9,22 +9,22 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 		type: String,
 		default: () => new mongoose.Types.ObjectId().toString()
 	},
-	unRead: {
-		type: [String],
+	readAt: {
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['readAt'],
 		required: false,
-		default: []
+		default: {}
 	},
 	last: {
 		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['last'],
 		required: false,
 		default: null as unknown as ChatMetaFromModel['last']
 	},
-	ownerId: {
-		type: String,
+	members: {
+		type: [String],
 		required: true
 	},
-	user: {
-		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['user'],
+	data: {
+		type: mongoose.Schema.Types.Mixed as unknown as ChatMetaFromModel['data'],
 		required: true
 	},
 	createdAt: {
