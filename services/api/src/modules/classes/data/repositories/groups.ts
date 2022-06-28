@@ -1,7 +1,6 @@
 import { IGroupRepository } from '../../domain/irepositories/groups'
 import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
-import { DiscussionFromModel } from '../models/discussions'
 import { Group } from '../mongooseModels/groups'
 import { parseQueryParams, QueryParams } from '@utils/commons'
 import { ClassUsers, EmbeddedUser } from '../../domain/types'
@@ -65,9 +64,5 @@ export class GroupRepository implements IGroupRepository {
 	async deleteClassGroups (classId: string) {
 		const groups = await Group.deleteMany({ classId })
 		return groups.acknowledged
-	}
-
-	async updateLastDiscussion (discussion: DiscussionFromModel) {
-		await Group.updateMany({ 'last._id': discussion._id }, { $set: { last: discussion } })
 	}
 }

@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { DiscussionsUseCases, GroupEntity, GroupFromModel } from '@modules/classes'
+import { GroupEntity, GroupFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
 
@@ -10,7 +10,7 @@ export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, G
 		await ChatMetasUseCases.add({
 			members: after.getAllUsers(),
 			data: {
-				type: ChatType.discussions,
+				type: ChatType.classes,
 				group: after.getEmbedded()
 			}
 		})
@@ -25,7 +25,7 @@ export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, G
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`classes/groups/${before.classId}`, before)
 		await getSocketEmitter().emitDeleted(`classes/groups/${before.classId}/${before.id}`, before)
-		await DiscussionsUseCases.deleteGroupDiscussions(before.id)
-		await ChatsUseCases.deleteClassGroupDiscussions(before.id)
+		await ChatMetasUseCases.deleteGroupMeta(before.id)
+		await ChatsUseCases.deleteClassGroupChats(before.id)
 	}
 }

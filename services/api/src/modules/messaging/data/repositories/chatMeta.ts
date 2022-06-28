@@ -26,8 +26,8 @@ export class ChatMetaRepository implements IChatMetaRepository {
 			[`data.users.${data.members[0]}`]: { $exists: true },
 			[`data.users.${data.members[1]}`]: { $exists: true }
 		})
-		if (data.data.type === ChatType.discussions) conditions.push({
-			'data.type': ChatType.discussions,
+		if (data.data.type === ChatType.classes) conditions.push({
+			'data.type': ChatType.classes,
 			'data.group.id': data.data.group.id
 		})
 		const chatMeta = await ChatMeta.findOneAndUpdate({
@@ -74,6 +74,11 @@ export class ChatMetaRepository implements IChatMetaRepository {
 		const result = await ChatMeta.updateMany(
 			{ 'data.group.id': groupId },
 			{ $set: { members } })
+		return !!result.acknowledged
+	}
+
+	async deleteGroupMeta (groupId: string) {
+		const result = await ChatMeta.deleteMany({ 'data.group.id': groupId })
 		return !!result.acknowledged
 	}
 }

@@ -8,14 +8,14 @@ export type Media = MediaOutput
 
 export enum ChatType {
 	personal = 'personal',
-	discussions = 'discussions'
+	classes = 'classes'
 }
 
 export type ChatMetaData = {
 	type: ChatType.personal
 	users: Record<string, EmbeddedUser>
 } | {
-	type: ChatType.discussions
+	type: ChatType.classes
 	group: EmbeddedGroup
 }
 
@@ -23,7 +23,7 @@ export type ChatData = {
 	type: ChatType.personal
 	members: string[]
 } | {
-	type: ChatType.discussions
+	type: ChatType.classes
 	members: string[]
 	classId: string
 }

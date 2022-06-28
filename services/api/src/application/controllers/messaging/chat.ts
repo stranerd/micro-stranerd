@@ -61,7 +61,7 @@ export class ChatController {
 						{
 							condition: QueryKeys.and,
 							value: [
-								{ field: 'data.type', value: ChatType.discussions },
+								{ field: 'data.type', value: ChatType.classes },
 								{ field: 'data.group.id', value: to }
 							]
 						}

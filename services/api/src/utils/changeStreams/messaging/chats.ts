@@ -2,6 +2,7 @@ import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { ChatEntity, ChatFromModel, ChatMetasUseCases } from '@modules/messaging'
 import { publishers } from '@utils/events'
 import { getSocketEmitter } from '@index'
+import { sendPushNotification } from '@utils/modules/push'
 
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
@@ -9,6 +10,15 @@ export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, Cha
 			await getSocketEmitter().emitCreated(`messaging/chats/${userId}`, after)
 			await getSocketEmitter().emitCreated(`messaging/chats/${after.id}/${userId}`, after)
 		}))
+		const body = after.media ? 'Shared a file' : after.body
+		await sendPushNotification({
+			userIds: after.data.members.filter((u) => u !== after.from.id),
+			title: 'New message', body: `${after.from.bio.firstName} ${after.from.bio.lastName}: ${body}`,
+			data: {
+				type: 'chats',
+				data: { id: after.id, to: after.to, data: after.data }
+			}
+		})
 	},
 	updated: async ({ after, before, changes }) => {
 		await Promise.all(after.data.members.map(async (userId) => {

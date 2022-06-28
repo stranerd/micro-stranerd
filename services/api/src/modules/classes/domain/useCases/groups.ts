@@ -2,7 +2,6 @@ import { GroupToModel } from '../../data/models/groups'
 import { IGroupRepository } from '../irepositories/groups'
 import { QueryParams } from '@utils/commons'
 import { ClassUsers, EmbeddedUser } from '../types'
-import { DiscussionFromModel } from '../../data/models/discussions'
 
 export class GroupsUseCase {
 	private repository: IGroupRepository
@@ -41,9 +40,5 @@ export class GroupsUseCase {
 
 	async updateUsers (input: { classId: string, users: Record<ClassUsers, string[]> }) {
 		return await this.repository.updateUsers(input.classId, input.users)
-	}
-
-	async updateLastDiscussion (discussion: DiscussionFromModel) {
-		return await this.repository.updateLastDiscussion(discussion)
 	}
 }

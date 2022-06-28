@@ -38,7 +38,7 @@ export class ChatsUseCase {
 		return await this.repository.markRead(input.from, input.to)
 	}
 
-	async deleteClassGroupDiscussions (groupId: string) {
-		return await this.repository.deleteClassGroupDiscussions(groupId)
+	async deleteClassGroupChats (groupId: string) {
+		return await this.repository.deleteClassGroupChats(groupId)
 	}
 }

@@ -1,4 +1,4 @@
-type NotificationData = {
+type NotificationPushData = {
 	type: 'notifications'
 	data: {
 		id: string
@@ -7,12 +7,12 @@ type NotificationData = {
 	}
 }
 
-type ClassDiscussionData = {
-	type: 'classes-discussions'
+type ChatPushData = {
+	type: 'chats'
 	data: {
 		id: string
-		classId: string
-		groupId: string
+		to: string
+		data: Record<string, any>
 	}
 }
 
@@ -20,5 +20,5 @@ export type PushNotification = {
 	userIds: string[],
 	title: string
 	body: string
-	data: NotificationData | ClassDiscussionData
+	data: NotificationPushData | ChatPushData
 }

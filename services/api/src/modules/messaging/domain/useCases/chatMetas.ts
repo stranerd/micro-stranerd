@@ -35,6 +35,10 @@ export class ChatMetasUseCase {
 		return await this.repository.updateClassGroupMembers(groupId, members)
 	}
 
+	async deleteGroupMeta (groupId: string) {
+		return await this.repository.deleteGroupMeta(groupId)
+	}
+
 	async updateLastChat (chat: ChatFromModel) {
 		return await this.repository.updateLastChat(chat)
 	}

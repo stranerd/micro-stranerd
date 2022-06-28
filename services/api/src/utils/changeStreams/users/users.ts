@@ -7,7 +7,6 @@ import { ReportsUseCases } from '@modules/reports'
 import {
 	AnnouncementsUseCases,
 	ClassesUseCases,
-	DiscussionsUseCases,
 	EventsUseCases,
 	GroupsUseCases,
 	SchemesUseCases
@@ -30,7 +29,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		if (updatedBioOrRoles) await Promise.all([
 			ChatMetasUseCases, ChatsUseCases, SessionsUseCases, ConnectsUseCases, ReviewsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
-			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, DiscussionsUseCases, EventsUseCases, SchemesUseCases,
+			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
 			DocumentsUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 

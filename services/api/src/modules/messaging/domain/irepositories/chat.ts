@@ -11,5 +11,5 @@ export interface IChatRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	markRead: (from: string, to: string) => Promise<boolean>
-	deleteClassGroupDiscussions: (groupId: string) => Promise<boolean>
+	deleteClassGroupChats: (groupId: string) => Promise<boolean>
 }

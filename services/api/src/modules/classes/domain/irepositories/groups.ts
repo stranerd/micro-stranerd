@@ -2,7 +2,6 @@ import { GroupEntity } from '../entities/groups'
 import { GroupToModel } from '../../data/models/groups'
 import { QueryParams, QueryResults } from '@utils/commons'
 import { ClassUsers, EmbeddedUser } from '../types'
-import { DiscussionFromModel } from '../../data/models/discussions'
 
 export interface IGroupRepository {
 	add: (data: GroupToModel) => Promise<GroupEntity>
@@ -13,5 +12,4 @@ export interface IGroupRepository {
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassGroups: (classId: string) => Promise<boolean>
-	updateLastDiscussion: (discussion: DiscussionFromModel) => Promise<void>
 }

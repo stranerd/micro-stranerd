@@ -18,11 +18,6 @@ const Schema = new mongoose.Schema<GroupFromModel>({
 		type: String,
 		required: true
 	},
-	last: {
-		type: mongoose.Schema.Types.Mixed as unknown as GroupFromModel['last'],
-		required: false,
-		default: null as unknown as GroupFromModel['last']
-	},
 	user: {
 		type: mongoose.Schema.Types.Mixed as unknown as GroupFromModel['user'],
 		required: true

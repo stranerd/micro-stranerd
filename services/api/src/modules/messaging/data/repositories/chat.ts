@@ -13,7 +13,7 @@ const getChatMetaCondition = (from: string, to: string) => ({
 			'data.type': ChatType.personal,
 			$and: [{ members: from }, { members: to }]
 		},
-		{ 'data.type': ChatType.discussions, 'group.id': to }
+		{ 'data.type': ChatType.classes, 'group.id': to }
 	]
 })
 
@@ -104,8 +104,8 @@ export class ChatRepository implements IChatRepository {
 		return chats.acknowledged
 	}
 
-	async deleteClassGroupDiscussions (groupId: string) {
-		const chats = await Chat.deleteMany({ 'data.type': ChatType.discussions, 'data.group.id': groupId })
+	async deleteClassGroupChats (groupId: string) {
+		const chats = await Chat.deleteMany({ 'data.type': ChatType.classes, 'data.group.id': groupId })
 		return chats.acknowledged
 	}
 }

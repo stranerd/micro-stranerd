@@ -27,7 +27,7 @@ export class ChatMetaEntity extends BaseEntity {
 	getEmbedded (): ChatData {
 		if (this.data.type === ChatType.personal) return { type: ChatType.personal, members: this.members }
 		else return {
-			type: ChatType.discussions,
+			type: ChatType.classes,
 			classId: this.data.group.classId,
 			members: this.members
 		}

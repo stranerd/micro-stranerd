@@ -19,7 +19,6 @@ export const registerSockets = () => {
 
 	getSocketEmitter().register('classes/classes', isOpen)
 	getSocketEmitter().register('classes/announcements/:classId', classJoinCb)
-	getSocketEmitter().register('classes/discussions/:classId', classJoinCb)
 	getSocketEmitter().register('classes/groups/:classId', classJoinCb)
 	getSocketEmitter().register('classes/events/:classId', classJoinCb)
 	getSocketEmitter().register('classes/schemes/:classId', classJoinCb)

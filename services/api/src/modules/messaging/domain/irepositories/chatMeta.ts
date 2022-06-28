@@ -11,5 +11,6 @@ export interface IChatMetaRepository {
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateClassGroup: (group: EmbeddedGroup) => Promise<boolean>
 	updateClassGroupMembers: (groupId: string, members: string[]) => Promise<boolean>
-	updateLastChat: (discussion: ChatFromModel) => Promise<void>
+	updateLastChat: (chat: ChatFromModel) => Promise<void>
+	deleteGroupMeta: (groupId: string) => Promise<boolean>
 }
