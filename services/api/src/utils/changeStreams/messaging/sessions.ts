@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
 import { SessionEntity, SessionFromModel, SessionsUseCases } from '@modules/messaging'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
+import { BadgesUseCases, CountStreakBadges, NotificationType, ScoreRewards, UsersUseCases } from '@modules/users'
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/messaging/sessions'
 import { getSocketEmitter } from '@index'
 
@@ -29,8 +29,8 @@ export const SessionChangeStreamCallbacks: ChangeStreamCallbacks<SessionFromMode
 		await sendNotification([after.tutor.id], {
 			title: 'New Session Request',
 			body: `${after.student.bio.firstName ?? 'Anon'} is requesting a new ${after.duration} minutes session with you!`,
-			action: 'sessions', sendEmail: true,
-			data: { userId: after.student.id, sessionId: after.id }
+			sendEmail: true,
+			data: { type: NotificationType.sessions, userId: after.student.id, sessionId: after.id }
 		})
 	},
 	updated: async ({ before, after, changes }) => {

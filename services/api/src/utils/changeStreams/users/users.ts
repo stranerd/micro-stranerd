@@ -1,5 +1,12 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { BadgesUseCases, ConnectsUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
+import {
+	BadgesUseCases,
+	ConnectsUseCases,
+	NotificationType,
+	ReviewsUseCases,
+	UserEntity,
+	UserFromModel
+} from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/messaging'
 import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
@@ -40,8 +47,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				await sendNotification([after.id], {
 					title: 'Ranking Up',
 					body: `Congrats, you just got promoted to ${after.rank.id}`,
-					action: 'account', sendEmail: false,
-					data: { profile: true }
+					sendEmail: false,
+					data: { type: NotificationType.account, profile: true }
 				})
 				await BadgesUseCases.recordRank({
 					userId: after.id,
@@ -52,8 +59,8 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 				await sendNotification([after.id], {
 					title: 'Ranking Down',
 					body: `Oops, you just got demoted to ${after.rank.id}`,
-					action: 'account', sendEmail: false,
-					data: { profile: true }
+					sendEmail: false,
+					data: { type: NotificationType.account, profile: true }
 				})
 				await BadgesUseCases.recordRank({
 					userId: after.id,

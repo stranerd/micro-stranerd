@@ -1,7 +1,14 @@
 import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
 import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
-import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
+import {
+	BadgesUseCases,
+	CountStreakBadges,
+	NotificationType,
+	ScoreRewards,
+	UserMeta,
+	UsersUseCases
+} from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
 import { CommentsUseCases, InteractionEntities, LikesUseCases } from '@modules/interactions'
@@ -29,8 +36,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 			await sendNotification([question.user.id], {
 				title: 'New Answer',
 				body: 'Your question has been answered. Go have a look',
-				action: 'answers',
-				data: { questionId: after.questionId, answerId: after.id },
+				data: { type: NotificationType.answers, questionId: after.questionId, answerId: after.id },
 				sendEmail: true
 			})
 		}

@@ -6,7 +6,6 @@ export class GroupEntity extends BaseEntity {
 	public readonly name: string
 	public readonly classId: string
 	public readonly user: EmbeddedUser
-	public readonly readAt: Record<string, number>
 	public readonly users: Record<ClassUsers, string[]>
 	public readonly createdAt: number
 	public readonly updatedAt: number
@@ -17,7 +16,6 @@ export class GroupEntity extends BaseEntity {
 		             classId,
 		             user,
 		             users,
-		             readAt,
 		             createdAt,
 		             updatedAt
 	             }: GroupConstructorArgs) {
@@ -27,7 +25,6 @@ export class GroupEntity extends BaseEntity {
 		this.user = user
 		this.classId = classId
 		this.users = users
-		this.readAt = readAt
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -51,7 +48,6 @@ type GroupConstructorArgs = {
 	user: EmbeddedUser
 	users: Record<ClassUsers, string[]>
 	classId: string
-	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 }

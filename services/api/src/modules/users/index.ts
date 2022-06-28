@@ -40,5 +40,5 @@ export { ConnectEntity } from './domain/entities/connects'
 export { RankTypes } from './domain/entities/ranks'
 export {
 	ScoreRewards, CountStreakBadges, CountValues, StreakValues, UserRankings, UserMeta,
-	EmbeddedUser, UserSchoolData, UserSchoolType
+	EmbeddedUser, UserSchoolData, UserSchoolType, NotificationType
 } from './domain/types'

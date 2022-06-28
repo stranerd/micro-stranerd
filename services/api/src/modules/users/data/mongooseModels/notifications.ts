@@ -18,10 +18,6 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 		type: String,
 		required: true
 	},
-	action: {
-		type: String,
-		required: true
-	},
 	seen: {
 		type: Boolean,
 		required: false,

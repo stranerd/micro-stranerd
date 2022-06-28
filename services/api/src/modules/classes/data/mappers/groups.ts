@@ -5,9 +5,9 @@ import { BaseMapper } from '@utils/commons'
 export class GroupMapper extends BaseMapper<GroupFromModel, GroupToModel, GroupEntity> {
 	mapFrom (model: GroupFromModel | null) {
 		if (!model) return null
-		const { _id, name, classId, user, users, readAt, createdAt, updatedAt } = model
+		const { _id, name, classId, user, users, createdAt, updatedAt } = model
 		return new GroupEntity({
-			id: _id.toString(), name, classId, user, users, readAt, createdAt, updatedAt
+			id: _id.toString(), name, classId, user, users, createdAt, updatedAt
 		})
 	}
 

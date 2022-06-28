@@ -10,6 +10,7 @@ import {
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { NotificationType } from '@modules/users'
 
 export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
@@ -28,15 +29,13 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 			const removedUsers = before.getAllUsers().filter((userId) => !after.getAllUsers().includes(userId))
 			const addedUsers = after.getAllUsers().filter((userId) => !before.getAllUsers().includes(userId))
 			await sendNotification(removedUsers, {
-				action: 'classes',
-				body: `You either left or were removed from the class: ${after.name}`,
-				data: { classId: after.id },
+				body: `You got removed from the class: ${after.name}`,
+				data: { type: NotificationType.classes, classId: after.id },
 				title: after.name, sendEmail: false
 			})
 			await sendNotification(addedUsers, {
-				action: 'classes',
 				body: `You just got added to the class: ${after.name}`,
-				data: { classId: after.id },
+				data: { type: NotificationType.classes, classId: after.id },
 				title: after.name, sendEmail: false
 			})
 		}

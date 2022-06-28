@@ -1,3 +1,5 @@
+import { NotificationData } from '../../domain/types'
+
 export interface NotificationFromModel extends NotificationToModel {
 	_id: string
 	createdAt: number
@@ -9,7 +11,6 @@ export interface NotificationToModel {
 	title: string
 	body: string
 	userId: string
-	action: string
 	sendEmail: boolean
-	data: Record<string, any>
+	data: NotificationData
 }

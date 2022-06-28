@@ -2,7 +2,6 @@ type NotificationPushData = {
 	type: 'notifications'
 	data: {
 		id: string
-		action: string
 		data: Record<string, any>
 	}
 }

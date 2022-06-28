@@ -2,7 +2,6 @@ import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export interface GroupFromModel extends GroupToModel {
 	_id: string
-	readAt: Record<string, number>
 	createdAt: number
 	updatedAt: number
 }

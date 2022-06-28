@@ -9,11 +9,8 @@ import { ChatType, EmbeddedUser } from '../../domain/types'
 const getChatMetaCondition = (from: string, to: string) => ({
 	members: from,
 	$or: [
-		{
-			'data.type': ChatType.personal,
-			$and: [{ members: from }, { members: to }]
-		},
-		{ 'data.type': ChatType.classes, 'group.id': to }
+		{ 'data.type': ChatType.personal, members: to },
+		{ 'data.type': ChatType.classes, 'data.group.id': to }
 	]
 })
 

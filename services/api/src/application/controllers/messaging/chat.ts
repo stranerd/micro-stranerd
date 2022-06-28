@@ -1,7 +1,6 @@
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
 import {
 	BadRequestError,
-	Conditions,
 	NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
@@ -15,7 +14,7 @@ import { UsersUseCases } from '@modules/users'
 export class ChatController {
 	static async getChats (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'data.members', condition: Conditions.in, value: req.authUser!.id }]
+		query.auth = [{ field: 'data.members', value: req.authUser!.id }]
 		return await ChatsUseCases.get(query)
 	}
 
@@ -30,7 +29,7 @@ export class ChatController {
 			to: req.body.to
 		}, {
 			body: {
-				required: true, rules: [Validation.isString, Validation.isLongerThanX(0)]
+				required: true, rules: [Validation.isString]
 			},
 			media: {
 				required: true, nullable: true,
@@ -47,7 +46,7 @@ export class ChatController {
 
 		const { results } = await ChatMetasUseCases.get({
 			where: [
-				{ field: 'members', condition: Conditions.in, value: authUserId },
+				{ field: 'members', value: authUserId },
 				{
 					condition: QueryKeys.or,
 					value: [
@@ -55,7 +54,7 @@ export class ChatController {
 							condition: QueryKeys.and,
 							value: [
 								{ field: 'data.type', value: ChatType.personal },
-								{ field: 'members', condition: Conditions.in, value: to }
+								{ field: 'members', value: to }
 							]
 						},
 						{
@@ -72,7 +71,7 @@ export class ChatController {
 		if (!results[0]) throw new NotAuthorizedError()
 
 		return await ChatsUseCases.add({
-			body, media, from: user, to, data: results[0].getEmbedded(),
+			body, media, from: user.getEmbedded(), to, data: results[0].getEmbedded(),
 			links: Validation.extractUrls(body)
 		})
 	}

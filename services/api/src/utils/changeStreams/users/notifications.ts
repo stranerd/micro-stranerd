@@ -15,7 +15,7 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 			title: after.title, body: after.body,
 			data: {
 				type: 'notifications',
-				data: { id: after.id, action: after.action, data: after.data }
+				data: { id: after.id, data: after.data }
 			}
 		})
 

@@ -1,7 +1,7 @@
 import { AuthRoles, MediaOutput } from '@utils/commons'
 
 export * from './badges'
-export * from './badges'
+export * from './notifications'
 
 export type UserBio = {
 	email: string

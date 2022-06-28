@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ReferralEntity, ReferralFromModel, UsersUseCases } from '@modules/users'
+import { NotificationType, ReferralEntity, ReferralFromModel, UsersUseCases } from '@modules/users'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { getSocketEmitter } from '@index'
 
@@ -11,8 +11,8 @@ export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromMo
 		if (user) await sendNotification([after.userId], {
 			title: 'New Referral Signup',
 			body: `${user.bio.email} just signed up with your referral link. Checkout his/her profile`,
-			action: 'users', sendEmail: false,
-			data: { userId: user.id }
+			sendEmail: false,
+			data: { type: NotificationType.users, userId: user.id }
 		})
 	},
 	updated: async ({ after }) => {
