@@ -39,7 +39,7 @@ export class NoteController {
 		const authUserId = req.authUser!.id
 		const updatedNote = await NotesUseCases.update({
 			id: req.params.id, userId: authUserId, data: {
-				...data.content, links: Validation.extractUrls(data.content)
+				...data, links: Validation.extractUrls(data.content)
 			}
 		})
 

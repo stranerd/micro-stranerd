@@ -27,12 +27,8 @@ export class ChatMetasUseCase {
 		return await this.repository.updateUserBio(user)
 	}
 
-	async updateClassGroup (group: EmbeddedGroup) {
-		return await this.repository.updateClassGroup(group)
-	}
-
-	async updateClassGroupMembers (groupId: string, members: string[]) {
-		return await this.repository.updateClassGroupMembers(groupId, members)
+	async updateClassGroup (group: EmbeddedGroup, members: string[]) {
+		return await this.repository.updateClassGroup(group, members)
 	}
 
 	async deleteGroupMeta (groupId: string) {

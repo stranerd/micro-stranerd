@@ -9,8 +9,7 @@ export interface IChatMetaRepository {
 	find: (id: string, userId: string) => Promise<ChatMetaEntity | null>
 	get: (query: QueryParams) => Promise<QueryResults<ChatMetaEntity>>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
-	updateClassGroup: (group: EmbeddedGroup) => Promise<boolean>
-	updateClassGroupMembers: (groupId: string, members: string[]) => Promise<boolean>
+	updateClassGroup: (group: EmbeddedGroup, members: string[]) => Promise<boolean>
 	updateLastChat: (chat: ChatFromModel) => Promise<void>
 	deleteGroupMeta: (groupId: string) => Promise<boolean>
 }

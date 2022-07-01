@@ -57,6 +57,7 @@ export enum UserMeta {
 
 	flashCards = 'flashCards',
 	notes = 'notes',
+	files = 'files',
 	sets = 'sets'
 }
 
@@ -84,6 +85,7 @@ export enum ScoreRewards {
 	CompleteTest = 1,
 	NewSet = 0.05,
 	NewFlashCard = 1,
+	NewFile = 0.05,
 	NewNote = 0.05
 }
 

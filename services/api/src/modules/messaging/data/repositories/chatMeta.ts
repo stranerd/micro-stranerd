@@ -63,17 +63,10 @@ export class ChatMetaRepository implements IChatMetaRepository {
 		return !!result.acknowledged
 	}
 
-	async updateClassGroup (group: EmbeddedGroup) {
+	async updateClassGroup (group: EmbeddedGroup, members: string[]) {
 		const result = await ChatMeta.updateMany(
 			{ 'data.group.id': group.id },
-			{ $set: { 'data.group': group } })
-		return !!result.acknowledged
-	}
-
-	async updateClassGroupMembers (groupId: string, members: string[]) {
-		const result = await ChatMeta.updateMany(
-			{ 'data.group.id': groupId },
-			{ $set: { members } })
+			{ $set: { 'data.group': group, members } })
 		return !!result.acknowledged
 	}
 

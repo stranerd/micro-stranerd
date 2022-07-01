@@ -14,7 +14,7 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		})
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.notes })
 	},
-	updated: async ({ after, before, changes }) => {
+	updated: async ({ after }) => {
 		await getSocketEmitter().emitUpdated('study/notes', after)
 		await getSocketEmitter().emitUpdated(`study/notes/${after.id}`, after)
 	},

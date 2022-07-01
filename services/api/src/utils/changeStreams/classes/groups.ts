@@ -19,8 +19,8 @@ export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, G
 		await getSocketEmitter().emitUpdated(`classes/groups/${after.classId}`, after)
 		await getSocketEmitter().emitUpdated(`classes/groups/${after.classId}/${after.id}`, after)
 
-		if (changes.name) await ChatMetasUseCases.updateClassGroup(after.getEmbedded())
-		if (changes.users) await ChatMetasUseCases.updateClassGroupMembers(after.id, after.getAllUsers())
+		const shouldUpdateMeta = changes.name || changes.users
+		if (shouldUpdateMeta) await ChatMetasUseCases.updateClassGroup(after.getEmbedded(), after.getAllUsers())
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`classes/groups/${before.classId}`, before)
