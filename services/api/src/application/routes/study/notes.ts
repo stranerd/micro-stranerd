@@ -1,66 +1,66 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { DocumentController } from '../../controllers/study/documents'
+import { NoteController } from '../../controllers/study/notes'
 
-export const documentsRoutes: Route[] = [
+export const notesRoutes: Route[] = [
 	{
-		path: '/study/documents',
+		path: '/study/notes',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await DocumentController.GetDocument(req)
+					result: await NoteController.GetNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/documents/:id',
+		path: '/study/notes/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await DocumentController.FindDocument(req)
+					result: await NoteController.FindNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/documents/:id',
+		path: '/study/notes/:id',
 		method: 'put',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await DocumentController.UpdateDocument(req)
+					result: await NoteController.UpdateNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/documents',
+		path: '/study/notes',
 		method: 'post',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await DocumentController.CreateDocument(req)
+					result: await NoteController.CreateNote(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/study/documents/:id',
+		path: '/study/notes/:id',
 		method: 'delete',
 		controllers: [
 			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await DocumentController.DeleteDocument(req)
+					result: await NoteController.DeleteNote(req)
 				}
 			})
 		]

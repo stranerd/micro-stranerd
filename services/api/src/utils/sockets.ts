@@ -34,7 +34,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('messaging/chatMetas', isMine)
 	getSocketEmitter().register('messaging/sessions', isMine)
 	getSocketEmitter().register('study/flashCards', isOpen)
-	getSocketEmitter().register('study/documents', isOpen)
+	getSocketEmitter().register('study/notes', isOpen)
 	getSocketEmitter().register('study/sets', isOpen)
 	getSocketEmitter().register('study/testPreps', isOpen)
 	getSocketEmitter().register('study/tests', isMine)

@@ -56,7 +56,7 @@ export enum UserMeta {
 	tutorSessions = 'tutorSessions',
 
 	flashCards = 'flashCards',
-	documents = 'documents',
+	notes = 'notes',
 	sets = 'sets'
 }
 
@@ -84,7 +84,7 @@ export enum ScoreRewards {
 	CompleteTest = 1,
 	NewSet = 0.05,
 	NewFlashCard = 1,
-	NewDocument = 0.05
+	NewNote = 0.05
 }
 
 export enum UserSchoolType {

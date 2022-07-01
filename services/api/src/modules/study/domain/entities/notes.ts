@@ -1,14 +1,13 @@
 import { BaseEntity } from '@utils/commons'
-import { EmbeddedUser, Media } from '../types'
+import { EmbeddedUser } from '../types'
 
-export class DocumentEntity extends BaseEntity {
+export class NoteEntity extends BaseEntity {
 	public readonly id: string
 	public readonly title: string
 	public readonly content: string
 	public readonly user: EmbeddedUser
 	public readonly isPrivate: boolean
 	public readonly links: { original: string, normalized: string }[]
-	public readonly media: Media | null
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -19,10 +18,9 @@ export class DocumentEntity extends BaseEntity {
 		             user,
 		             isPrivate,
 		             links,
-		             media,
 		             createdAt,
 		             updatedAt
-	             }: DocumentConstructorArgs) {
+	             }: NoteConstructorArgs) {
 		super()
 		this.id = id
 		this.title = title
@@ -30,17 +28,15 @@ export class DocumentEntity extends BaseEntity {
 		this.user = user
 		this.isPrivate = isPrivate
 		this.links = links
-		this.media = media
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
 }
 
-type DocumentConstructorArgs = {
+type NoteConstructorArgs = {
 	id: string,
 	isPrivate: boolean
 	user: EmbeddedUser
-	media: Media | null
 	title: string
 	content: string
 	links: { original: string, normalized: string }[]

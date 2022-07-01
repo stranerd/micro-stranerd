@@ -1,15 +1,14 @@
-import { EmbeddedUser, Media } from '../../domain/types'
+import { EmbeddedUser } from '../../domain/types'
 
-export interface DocumentFromModel extends DocumentToModel {
+export interface NoteFromModel extends NoteToModel {
 	_id: string
 	createdAt: number
 	updatedAt: number
 }
 
-export interface DocumentToModel {
+export interface NoteToModel {
 	isPrivate: boolean
 	user: EmbeddedUser
-	media: Media | null
 	title: string
 	content: string
 	links: { original: string, normalized: string }[]

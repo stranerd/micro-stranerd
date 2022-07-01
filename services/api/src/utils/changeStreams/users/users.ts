@@ -9,7 +9,7 @@ import {
 } from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/messaging'
-import { DocumentsUseCases, FlashCardsUseCases, SetsUseCases } from '@modules/study'
+import { FlashCardsUseCases, NotesUseCases, SetsUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
 import {
 	AnnouncementsUseCases,
@@ -37,7 +37,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			ChatMetasUseCases, ChatsUseCases, SessionsUseCases, ConnectsUseCases, ReviewsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
-			DocumentsUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
+			NotesUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
 		const updatedScore = !!changes.account?.score

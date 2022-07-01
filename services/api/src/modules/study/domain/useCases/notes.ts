@@ -1,16 +1,16 @@
-import { DocumentToModel } from '../../data/models/documents'
-import { IDocumentRepository } from '../irepositories/documents'
+import { NoteToModel } from '../../data/models/notes'
+import { INoteRepository } from '../irepositories/notes'
 import { QueryParams } from '@utils/commons'
 import { EmbeddedUser } from '../types'
 
-export class DocumentsUseCase {
-	private repository: IDocumentRepository
+export class NotesUseCase {
+	private repository: INoteRepository
 
-	constructor (repository: IDocumentRepository) {
+	constructor (repository: INoteRepository) {
 		this.repository = repository
 	}
 
-	async add (data: DocumentToModel) {
+	async add (data: NoteToModel) {
 		return await this.repository.add(data)
 	}
 
@@ -26,7 +26,7 @@ export class DocumentsUseCase {
 		return await this.repository.get(query)
 	}
 
-	async update (input: { id: string, userId: string, data: Partial<DocumentToModel> }) {
+	async update (input: { id: string, userId: string, data: Partial<NoteToModel> }) {
 		return await this.repository.update(input.id, input.userId, input.data)
 	}
 
