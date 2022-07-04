@@ -13,22 +13,22 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@google-cloud/storage": "^5.20.5",
+		"@google-cloud/storage": "^6.2.2",
 		"@stranerd/api-commons": "^3.15.2",
 		"axios": "^0.27.2",
-		"firebase-admin": "^10.2.0",
-		"nodemailer": "^6.7.5",
-		"stripe": "^9.2.0"
+		"firebase-admin": "^11.0.0",
+		"nodemailer": "^6.7.6",
+		"stripe": "^9.11.0"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.35",
-		"@typescript-eslint/eslint-plugin": "^5.25.0",
-		"@typescript-eslint/parser": "^5.25.0",
-		"eslint": "^8.15.0",
+		"@types/node": "^18.0.1",
+		"@typescript-eslint/eslint-plugin": "^5.30.4",
+		"@typescript-eslint/parser": "^5.30.4",
+		"eslint": "^8.19.0",
 		"eslint-plugin-promise": "^6.0.0",
-		"resolve-tspaths": "^0.4.0",
-		"ts-node-dev": "^1.1.8",
+		"resolve-tspaths": "^0.6.0",
+		"ts-node-dev": "^2.0.0",
 		"tsconfig-paths": "^4.0.0",
-		"typescript": "^4.6.4"
+		"typescript": "^4.7.4"
 	}
 }
