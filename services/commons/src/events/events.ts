@@ -10,7 +10,7 @@ export class EventBus {
 	createPublisher<Event extends { topic: string, data: any }> (topic: Event['topic']) {
 		const { ps } = this
 
-		async function publish (data: Event['data']) {
+		const publish = async (data: Event['data']) => {
 			await (await ps).publish(topic as unknown as string, JSON.stringify(data))
 		}
 
@@ -20,7 +20,7 @@ export class EventBus {
 	createSubscriber<Event extends { topic: string, data: any }> (topic: Event['topic'], onMessage: (data: Event['data']) => void) {
 		const { ps } = this
 
-		async function subscribe () {
+		const subscribe = async () => {
 			await (await ps).subscribe(topic as unknown as string, (data) => {
 				onMessage(JSON.parse(data))
 			})

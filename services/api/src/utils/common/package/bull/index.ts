@@ -1,7 +1,7 @@
 import Bull from 'bull'
 import { Instance } from '../instance'
 import { CronTypes } from './types'
-import { getRandomValue } from '../utils/utils'
+import { Random } from '../utils/utils'
 
 enum JobNames {
 	CronJob = 'CronJob',
@@ -21,7 +21,7 @@ export class BullJob {
 	}
 
 	private static getNewId () {
-		return [Date.now(), getRandomValue(20)].join(':')
+		return [Date.now(), Random.string()].join(':')
 	}
 
 	async addDelayedJob<Event> (data: Event, delayInMs: number): Promise<string> {

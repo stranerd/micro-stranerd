@@ -1,4 +1,5 @@
 import { mongoose } from './index'
+import { Instance } from '../instance'
 
 export enum QueryKeys { and = 'and', or = 'or' }
 
@@ -23,7 +24,7 @@ export type QueryParams = {
 	search?: { value: string, fields: string[] }
 }
 
-export async function parseQueryParams<Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> {
+export const parseQueryParams = async <Model> (collection: mongoose.Model<Model | any>, params: QueryParams): Promise<QueryResults<Model>> => {
 	// Handle where clauses
 	const query = [] as ReturnType<typeof buildWhereQuery>[]
 	const whereType = Object.values(QueryKeys).indexOf(params.whereType!) !== -1 ? params.whereType! : QueryKeys.and
@@ -50,7 +51,8 @@ export async function parseQueryParams<Model> (collection: mongoose.Model<Model 
 	const all = params.all ?? false
 
 	// Handle limit clause
-	const limit = Number(params.limit) <= 100 ? Number(params.limit) : 100
+	const settings = Instance.getInstance().settings
+	const limit = Number(params.limit) <= settings.paginationDefaultLimit ? Number(params.limit) : settings.paginationDefaultLimit
 
 	// Handle offset clause
 	let page = Number.isNaN(Number(params.page)) ? 0 : Number(params.page)

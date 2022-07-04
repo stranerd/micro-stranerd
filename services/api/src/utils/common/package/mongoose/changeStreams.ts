@@ -16,11 +16,11 @@ export type ChangeStreamCallbacks<Model, Entity> = {
 	deleted?: (data: { before: Entity, after: null }) => Promise<void>
 }
 
-async function startChangeStream<Model extends { _id: string }, Entity extends BaseEntity> (
+const startChangeStream = async <Model extends { _id: string }, Entity extends BaseEntity> (
 	collection: mongoose.Model<Model | any>,
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
 	mapper: (model: Model | null) => Entity | null,
-	skipResume = false) {
+	skipResume = false) => {
 
 	const dbName = collection.collection.collectionName as any
 	const cloneName = dbName + '_streams_clone'
@@ -73,7 +73,7 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 				const { updatedFields = {}, removedFields = [], truncatedArrays = [] } = data.updateDescription ?? {}
 				const changed = removedFields
 					.map((f) => f.toString())
-					.concat(truncatedArrays)
+					.concat(truncatedArrays.map((a) => a.field))
 					.concat(Object.keys(updatedFields))
 				const changes = getObjectsFromKeys(changed)
 				if (before) await callbacks.updated?.({
@@ -92,15 +92,15 @@ async function startChangeStream<Model extends { _id: string }, Entity extends B
 	await Instance.getInstance().logger.info(`${dbName} changestream started`)
 }
 
-export async function generateChangeStreams<Model extends { _id: string }, Entity extends BaseEntity> (
+export const generateChangeStreams = async <Model extends { _id: string }, Entity extends BaseEntity> (
 	collection: mongoose.Model<Model | any>,
 	callbacks: ChangeStreamCallbacks<Model, Entity>,
-	mapper: (model: Model | null) => Entity | null) {
+	mapper: (model: Model | null) => Entity | null) => {
 
 	collections.push({ collection, callbacks, mapper })
 }
 
-export async function startAllChangeStreams () {
+export const startAllChangeStreams = async () => {
 	await Promise.all(
 		collections.map(async ({ collection, callbacks, mapper }) => {
 			await startChangeStream(collection, callbacks, mapper)

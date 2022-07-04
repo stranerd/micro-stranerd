@@ -1,10 +1,10 @@
-import { getRandomValue } from '../utils/utils'
+import { Random } from '../utils/utils'
 
 export class BaseEntity {
 	public hash: string
 
 	constructor () {
-		this.hash = getRandomValue()
+		this.hash = Random.string()
 	}
 
 	toJSON () {
