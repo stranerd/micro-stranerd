@@ -66,19 +66,6 @@ export const setsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/study/sets/:id/delete',
-		method: 'put',
-		controllers: [
-			requireAuthUser,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await SetController.DeleteProp(req)
-				}
-			})
-		]
-	},
-	{
 		path: '/study/sets/:id',
 		method: 'delete',
 		controllers: [

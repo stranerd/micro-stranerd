@@ -43,7 +43,8 @@ export class SetController {
 	static async SaveProp (req: Request) {
 		const data = validate({
 			type: req.body.type,
-			propIds: req.body.propIds
+			propIds: req.body.propIds,
+			add: req.body.add
 		}, {
 			type: {
 				required: true,
@@ -52,41 +53,15 @@ export class SetController {
 			propIds: {
 				required: true,
 				rules: [Validation.isArrayOfX((item) => Validation.isString(item).valid, 'strings')]
-			}
-		})
-
-		const updated = await SetsUseCases.updateProp({
-			id: req.params.id,
-			userId: req.authUser!.id,
-			values: data.propIds,
-			add: true,
-			prop: data.type
-		})
-
-		if (updated) return updated
-		throw new NotAuthorizedError()
-	}
-
-	static async DeleteProp (req: Request) {
-		const data = validate({
-			type: req.body.type,
-			propIds: req.body.propIds
-		}, {
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetSaved), (cur, val) => cur === val)]
 			},
-			propIds: {
-				required: true,
-				rules: [Validation.isArrayOfX((item) => Validation.isString(item).valid, 'strings')]
-			}
+			add: { required: true, rules: [Validation.isBoolean] }
 		})
 
 		const updated = await SetsUseCases.updateProp({
 			id: req.params.id,
 			userId: req.authUser!.id,
 			values: data.propIds,
-			add: false,
+			add: data.add,
 			prop: data.type
 		})
 

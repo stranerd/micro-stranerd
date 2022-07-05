@@ -3,6 +3,7 @@ import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/que
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
+import { SetSaved, SetsUseCases } from '@modules/study'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
@@ -36,6 +37,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('questions/questions', before)
 		await getSocketEmitter().emitDeleted(`questions/questions/${before.id}`, before)
+		await SetsUseCases.removeProp({ prop: SetSaved.questions, value: before.id })
 
 		await AnswersUseCases.deleteQuestionAnswers(before.id)
 
