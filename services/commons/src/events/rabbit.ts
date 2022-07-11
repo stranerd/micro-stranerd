@@ -1,5 +1,6 @@
 import amqp from 'amqplib'
 import { Instance } from '../instance'
+import { addWaitBeforeExit } from '../exit'
 
 export const pubAndSub = async () => {
 	const column = Instance.getInstance().settings.rabbitColumnName
@@ -7,7 +8,7 @@ export const pubAndSub = async () => {
 
 	const channel = await con.createChannel()
 
-	process.on('exit', () => channel.close())
+	addWaitBeforeExit(channel.close)
 
 	await channel.assertExchange(column, 'direct', { durable: true })
 	await channel.prefetch(1)

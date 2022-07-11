@@ -13,6 +13,7 @@ import path from 'path'
 import { SocketCallers, SocketEmitter } from '../sockets'
 import { parseAuthUser } from './middlewares/parseAuthUser'
 import { Instance } from '../instance'
+import { addWaitBeforeExit } from '../exit'
 
 type MethodTypes = 'get' | 'post' | 'put' | 'delete' | 'all'
 export type Route = {
@@ -75,7 +76,8 @@ export const getNewServerInstance = (routes: Route[], socketCallers: SocketCalle
 		await Instance.getInstance().cache.connect()
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
-				server.listen(port, () => resolve(true))
+				const app = server.listen(port, () => resolve(true))
+				addWaitBeforeExit(app.close)
 			} catch (err) {
 				reject(err as Error)
 			}

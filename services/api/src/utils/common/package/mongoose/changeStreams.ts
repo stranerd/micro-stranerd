@@ -1,6 +1,7 @@
 import { mongoose } from './index'
 import { BaseEntity } from '../structure'
 import { Instance } from '../instance'
+import { addWaitBeforeExit } from '../exit'
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
 
@@ -48,20 +49,20 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 					upsert: true,
 					returnDocument: 'after'
 				})
-				if (value) await callbacks.created?.({
+				if (value) addWaitBeforeExit(callbacks.created?.({
 					before: null,
 					after: mapper(new collection(after))!
-				})
+				}))
 			}
 
 			if (data.operationType === 'delete') {
 				// @ts-ignore
 				const _id = data.documentKey!._id
 				const { value: before } = await getClone().findOneAndDelete({ _id })
-				if (before) await callbacks.deleted?.({
+				if (before) addWaitBeforeExit(callbacks.deleted?.({
 					before: mapper(new collection(before))!,
 					after: null
-				})
+				}))
 			}
 
 			if (data.operationType === 'update') {
@@ -76,11 +77,11 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 					.concat(truncatedArrays.map((a) => a.field))
 					.concat(Object.keys(updatedFields))
 				const changes = getObjectsFromKeys(changed)
-				if (before) await callbacks.updated?.({
+				if (before) addWaitBeforeExit(callbacks.updated?.({
 					before: mapper(new collection(before))!,
 					after: mapper(new collection(after))!,
 					changes
-				})
+				}))
 			}
 		})
 		.on('error', async (err) => {
@@ -88,6 +89,7 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 			changeStream.close()
 			return startChangeStream(collection, callbacks, mapper, true)
 		})
+	addWaitBeforeExit(() => changeStream.close())
 
 	await Instance.getInstance().logger.info(`${dbName} changestream started`)
 }

@@ -15,6 +15,7 @@ export * from './utils/authUser'
 export * from './utils/utils'
 export * from './validations'
 export * from './sockets'
+export * from './exit'
 
 export const getEnvOrFail = (key: string) => {
 	const value = process.env[key]

@@ -1,6 +1,7 @@
 import { createClient } from 'redis'
 import { Cache } from '../cache'
 import { Instance } from '../../instance'
+import { addWaitBeforeExit } from '../../exit'
 
 export class RedisCache extends Cache {
 	client: ReturnType<typeof createClient>
@@ -12,7 +13,7 @@ export class RedisCache extends Cache {
 			await Instance.getInstance().logger.error('Redis failed with error:', error)
 			process.exit(1)
 		})
-		process.on('exit', async () => await this.client.quit())
+		addWaitBeforeExit(() => this.client.quit())
 	}
 
 	async connect () {

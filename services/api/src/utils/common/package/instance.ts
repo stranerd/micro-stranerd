@@ -4,6 +4,7 @@ import { Cache } from './cache/cache'
 import { RedisCache } from './cache/types/redis-cache'
 import { EventBus } from './events/events'
 import { mongoose, startAllChangeStreams } from './mongoose'
+import { addWaitBeforeExit } from './exit'
 
 type Settings = {
 	isDev: boolean
@@ -108,7 +109,7 @@ export class Instance {
 		try {
 			await mongoose.connect(this.settings.mongoDbURI)
 			await startAllChangeStreams()
-			process.on('exit', () => mongoose.disconnect())
+			addWaitBeforeExit(mongoose.disconnect)
 		} catch (error) {
 			await Instance.getInstance().logger.error('MongoDb failed with error:', error)
 			process.exit(1)
