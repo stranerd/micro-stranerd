@@ -1,10 +1,11 @@
 import { CommentsUseCases, InteractionEntities } from '@modules/interactions'
 import { BadRequestError } from '@utils/commons'
-import { AnswersUseCases } from '@modules/questions'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 
 type Interactions = 'comments' | 'likes' | 'dislikes' | 'views'
 
 const finders = {
+	[InteractionEntities.questions]: async (id: string) => !!(await QuestionsUseCases.find(id)),
 	[InteractionEntities.answers]: async (id: string) => !!(await AnswersUseCases.find(id)),
 	[InteractionEntities.comments]: async (id: string) => {
 		const comment = await CommentsUseCases.find(id)
@@ -15,7 +16,7 @@ const finders = {
 
 export const verifyInteractionEntity = async (type: InteractionEntities, id: string, interaction: Interactions) => {
 	const types = (() => {
-		if (interaction === 'comments') return [InteractionEntities.answers, InteractionEntities.comments]
+		if (interaction === 'comments') return [InteractionEntities.questions, InteractionEntities.answers, InteractionEntities.comments]
 		if (interaction === 'likes') return [InteractionEntities.answers]
 		if (interaction === 'dislikes') return [InteractionEntities.answers]
 		if (interaction === 'views') return []

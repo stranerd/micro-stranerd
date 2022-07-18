@@ -4,7 +4,7 @@ import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
 import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { EmbeddedUser } from '../../domain/types'
+import { EmbeddedUser, QuestionMetaType } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 
 export class QuestionRepository implements IQuestionRepository {
@@ -84,5 +84,12 @@ export class QuestionRepository implements IQuestionRepository {
 	async deleteTagQuestions (tagId: string) {
 		const questions = await Question.deleteMany({ tagId })
 		return questions.acknowledged
+	}
+
+	async updateQuestionMeta (id: string, property: QuestionMetaType, value: 1 | -1) {
+		const question = await Question.findByIdAndUpdate(id, {
+			$inc: { [`meta.${property}`]: value }
+		})
+		return !!question
 	}
 }

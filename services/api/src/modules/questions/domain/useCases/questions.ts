@@ -1,7 +1,7 @@
 import { IQuestionRepository } from '../irepositories/questions'
 import { QuestionToModel } from '../../data/models/questions'
 import { QueryParams } from '@utils/commons'
-import { EmbeddedUser } from '../types'
+import { EmbeddedUser, QuestionMetaType } from '../types'
 
 export class QuestionsUseCase {
 	private repository: IQuestionRepository
@@ -44,5 +44,9 @@ export class QuestionsUseCase {
 
 	async deleteTagQuestions (tagId: string) {
 		return await this.repository.deleteTagQuestions(tagId)
+	}
+
+	async updateQuestionMeta (data: { id: string, property: QuestionMetaType, value: 1 | -1 }) {
+		return this.repository.updateQuestionMeta(data.id, data.property, data.value)
 	}
 }

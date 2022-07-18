@@ -14,4 +14,4 @@ export { QuestionFromModel } from './data/models/questions'
 
 export { AnswerEntity } from './domain/entities/answers'
 export { QuestionEntity } from './domain/entities/questions'
-export { AnswerMetaType } from './domain/types'
+export { AnswerMetaType, QuestionMetaType } from './domain/types'

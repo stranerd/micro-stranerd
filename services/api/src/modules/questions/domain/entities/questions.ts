@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { EmbeddedUser, Media } from '../types'
+import { EmbeddedUser, Media, QuestionMeta } from '../types'
 
 export const BEST_ANSWERS_COUNT = 1
 
@@ -11,13 +11,14 @@ export class QuestionEntity extends BaseEntity {
 	public readonly user: EmbeddedUser
 	public readonly bestAnswers: string[]
 	public readonly answers: { id: string, userId: string }[]
+	public readonly meta: QuestionMeta
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
 	constructor ({
 		             id, body, tagId, attachments,
 		             bestAnswers, createdAt, user,
-		             answers, updatedAt
+		             meta, answers, updatedAt
 	             }: QuestionConstructorArgs) {
 		super()
 		this.id = id
@@ -27,6 +28,7 @@ export class QuestionEntity extends BaseEntity {
 		this.user = user
 		this.bestAnswers = bestAnswers
 		this.answers = answers
+		this.meta = meta
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}
@@ -44,6 +46,7 @@ type QuestionConstructorArgs = {
 	user: EmbeddedUser
 	bestAnswers: string[]
 	answers: { id: string, userId: string }[]
+	meta: QuestionMeta
 	createdAt: number
 	updatedAt: number
 }

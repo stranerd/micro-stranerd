@@ -1,7 +1,7 @@
 import { QuestionEntity } from '../entities/questions'
 import { QuestionToModel } from '../../data/models/questions'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { EmbeddedUser } from '../types'
+import { EmbeddedUser, QuestionMetaType } from '../types'
 
 export interface IQuestionRepository {
 	add: (data: QuestionToModel) => Promise<QuestionEntity>
@@ -13,4 +13,5 @@ export interface IQuestionRepository {
 	updateAnswers: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	updateBestAnswer: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	deleteTagQuestions: (tagId: string) => Promise<boolean>
+	updateQuestionMeta: (id: string, property: QuestionMetaType, value: 1 | -1) => Promise<boolean>
 }

@@ -7,12 +7,12 @@ export class QuestionMapper extends BaseMapper<QuestionFromModel, QuestionToMode
 		if (!model) return null
 		const {
 			_id, body, tagId, attachments,
-			bestAnswers, user, answers,
+			bestAnswers, user, answers, meta,
 			createdAt, updatedAt
 		} = model
 		return new QuestionEntity({
 			id: _id.toString(), body, tagId, attachments,
-			bestAnswers, user, answers,
+			bestAnswers, user, answers, meta,
 			createdAt, updatedAt
 		})
 	}

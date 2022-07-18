@@ -3,6 +3,7 @@ import { QuestionFromModel } from '../models/questions'
 import { QuestionChangeStreamCallbacks } from '@utils/changeStreams/questions/questions'
 import { QuestionEntity } from '../../domain/entities/questions'
 import { QuestionMapper } from '../mappers/questions'
+import { QuestionMetaType } from '../../domain/types'
 
 const Schema = new mongoose.Schema<QuestionFromModel>({
 	_id: {
@@ -37,6 +38,13 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 		required: false,
 		default: []
 	},
+	meta: Object.fromEntries(
+		Object.keys(QuestionMetaType).map((key) => [key, {
+			type: Number,
+			required: false,
+			default: 0
+		}])
+	),
 	createdAt: {
 		type: Number,
 		required: false,
