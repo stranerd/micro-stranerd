@@ -13,5 +13,5 @@ export interface IQuestionRepository {
 	updateAnswers: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	updateBestAnswer: (id: string, answerId: string, userId: string, add: boolean) => Promise<boolean>
 	deleteTagQuestions: (tagId: string) => Promise<boolean>
-	updateQuestionMeta: (id: string, property: QuestionMetaType, value: 1 | -1) => Promise<boolean>
+	updateMeta: (id: string, property: QuestionMetaType, value: 1 | -1) => Promise<boolean>
 }

@@ -38,7 +38,7 @@ export class AnswersUseCase {
 		return await this.repository.deleteQuestionAnswers(questionId)
 	}
 
-	async updateAnswerMeta (data: { id: string, property: AnswerMetaType, value: 1 | -1 }) {
-		return this.repository.updateAnswerMeta(data.id, data.property, data.value)
+	async updateMeta (data: { id: string, property: AnswerMetaType, value: 1 | -1 }) {
+		return this.repository.updateMeta(data.id, data.property, data.value)
 	}
 }

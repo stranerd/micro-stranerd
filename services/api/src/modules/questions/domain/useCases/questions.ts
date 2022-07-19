@@ -46,7 +46,7 @@ export class QuestionsUseCase {
 		return await this.repository.deleteTagQuestions(tagId)
 	}
 
-	async updateQuestionMeta (data: { id: string, property: QuestionMetaType, value: 1 | -1 }) {
-		return this.repository.updateQuestionMeta(data.id, data.property, data.value)
+	async updateMeta (data: { id: string, property: QuestionMetaType, value: 1 | -1 }) {
+		return this.repository.updateMeta(data.id, data.property, data.value)
 	}
 }

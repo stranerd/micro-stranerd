@@ -10,6 +10,6 @@ export interface ICommentRepository {
 	update: (id: string, userId: string, data: Partial<CommentToModel>) => Promise<CommentEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	deleteEntityComments: (entity: InteractionEntity) => Promise<boolean>
-	updateCommentMeta: (commentId: string, property: CommentMetaType, value: 1 | -1) => Promise<void>
+	updateMeta: (commentId: string, property: CommentMetaType, value: 1 | -1) => Promise<void>
 	updateUserBio: (user: CommentToModel['user']) => Promise<boolean>
 }

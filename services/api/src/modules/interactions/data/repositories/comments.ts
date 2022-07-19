@@ -52,7 +52,7 @@ export class CommentRepository implements ICommentRepository {
 		return !!comments.acknowledged
 	}
 
-	async updateCommentMeta (commentId: string, property: CommentMetaType, value: 1 | -1) {
+	async updateMeta (commentId: string, property: CommentMetaType, value: 1 | -1) {
 		await Comment.findByIdAndUpdate(commentId, {
 			$inc: { [`meta.${property}`]: value }
 		})

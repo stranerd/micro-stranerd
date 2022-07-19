@@ -57,7 +57,7 @@ export class AnswerRepository implements IAnswerRepository {
 		return !!answers.acknowledged
 	}
 
-	async updateAnswerMeta (id: string, property: AnswerMetaType, value: 1 | -1) {
+	async updateMeta (id: string, property: AnswerMetaType, value: 1 | -1) {
 		const answer = await Answer.findByIdAndUpdate(id, {
 			$inc: { [`meta.${property}`]: value }
 		})

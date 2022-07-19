@@ -7,7 +7,7 @@ export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, Lik
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated('interactions/likes', after)
 		await getSocketEmitter().emitCreated(`interactions/likes/${after.id}`, after)
-		if (after.entity.type === InteractionEntities.answers) await AnswersUseCases.updateAnswerMeta({
+		if (after.entity.type === InteractionEntities.answers) await AnswersUseCases.updateMeta({
 			id: after.entity.id,
 			property: after.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
 			value: 1
@@ -17,12 +17,12 @@ export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, Lik
 		await getSocketEmitter().emitUpdated('interactions/likes', after)
 		await getSocketEmitter().emitUpdated(`interactions/likes/${after.id}`, after)
 		if (changes.value && after.entity.type === InteractionEntities.answers) {
-			await AnswersUseCases.updateAnswerMeta({
+			await AnswersUseCases.updateMeta({
 				id: after.entity.id,
 				property: before.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
 				value: -1
 			})
-			await AnswersUseCases.updateAnswerMeta({
+			await AnswersUseCases.updateMeta({
 				id: after.entity.id,
 				property: after.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
 				value: 1
@@ -32,7 +32,7 @@ export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, Lik
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('interactions/likes', before)
 		await getSocketEmitter().emitDeleted(`interactions/likes/${before.id}`, before)
-		if (before.entity.type === InteractionEntities.answers) await AnswersUseCases.updateAnswerMeta({
+		if (before.entity.type === InteractionEntities.answers) await AnswersUseCases.updateMeta({
 			id: before.entity.id,
 			property: before.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
 			value: -1

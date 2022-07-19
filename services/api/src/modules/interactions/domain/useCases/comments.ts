@@ -34,8 +34,8 @@ export class CommentsUseCase {
 		return await this.repository.deleteEntityComments(entity)
 	}
 
-	async updateCommentMeta (data: { id: string, property: CommentMetaType, value: 1 | -1 }) {
-		return this.repository.updateCommentMeta(data.id, data.property, data.value)
+	async updateMeta (data: { id: string, property: CommentMetaType, value: 1 | -1 }) {
+		return this.repository.updateMeta(data.id, data.property, data.value)
 	}
 
 	async updateUserBio (user: CommentToModel['user']) {

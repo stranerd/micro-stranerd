@@ -86,7 +86,7 @@ export class QuestionRepository implements IQuestionRepository {
 		return questions.acknowledged
 	}
 
-	async updateQuestionMeta (id: string, property: QuestionMetaType, value: 1 | -1) {
+	async updateMeta (id: string, property: QuestionMetaType, value: 1 | -1) {
 		const question = await Question.findByIdAndUpdate(id, {
 			$inc: { [`meta.${property}`]: value }
 		})

@@ -11,5 +11,5 @@ export interface IAnswerRepository {
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	deleteQuestionAnswers: (questionId: string) => Promise<boolean>
-	updateAnswerMeta: (id: string, property: AnswerMetaType, value: 1 | -1) => Promise<boolean>
+	updateMeta: (id: string, property: AnswerMetaType, value: 1 | -1) => Promise<boolean>
 }
