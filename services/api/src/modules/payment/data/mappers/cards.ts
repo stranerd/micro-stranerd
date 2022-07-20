@@ -12,7 +12,8 @@ export class CardMapper extends BaseMapper<CardFromModel, CardToModel, CardEntit
 			country: param.country,
 			type: param.type,
 			token: param.token,
-			expiry: param.expiry,
+			expiredAt: param.expiredAt,
+			expired: param.expired,
 			primary: param.primary,
 			userId: param.userId,
 			email: param.email,
@@ -29,7 +30,7 @@ export class CardMapper extends BaseMapper<CardFromModel, CardToModel, CardEntit
 			country: param.country,
 			type: param.type,
 			token: param.token,
-			expiry: param.expiry,
+			expiredAt: param.expiredAt,
 			primary: param.primary,
 			userId: param.userId,
 			email: param.email

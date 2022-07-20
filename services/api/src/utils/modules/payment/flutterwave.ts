@@ -28,6 +28,6 @@ type FwTransaction = {
 export class FlutterwavePayment {
 	static async getTransactionByRef (ref: string) {
 		const res = await flw.CustomRequest.custom(`v3/transactions/verify_by_reference?tx_ref=${ref}`, { method: 'GET' }).catch(() => null)
-		return res?.data as FwTransaction | null
+		return res?.body as FwTransaction | null
 	}
 }

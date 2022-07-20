@@ -46,8 +46,8 @@ const CardSchema = new mongoose.Schema<CardFromModel>({
 		type: String,
 		required: true
 	},
-	expiry: {
-		type: String,
+	expiredAt: {
+		type: Number,
 		required: true
 	},
 	createdAt: {

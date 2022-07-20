@@ -1,6 +1,7 @@
 export interface CardFromModel extends CardToModel {
 	_id: string
 	primary: boolean
+	expired: boolean
 	createdAt: number
 	updatedAt: number
 }
@@ -12,7 +13,7 @@ export interface CardToModel {
 	country: string
 	type: string
 	token: string
-	expiry: string
+	expiredAt: number
 	userId: string
 	email: string
 }
