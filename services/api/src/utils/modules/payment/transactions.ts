@@ -1,11 +1,14 @@
 import {
 	CardsUseCases,
+	Currencies,
 	TransactionEntity,
 	TransactionStatus,
 	TransactionsUseCases,
-	TransactionType
+	TransactionType,
+	WalletsUseCases
 } from '@modules/payment'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
+import { Conditions } from '@utils/commons'
 
 export const fulfillTransaction = async (transaction: TransactionEntity) => {
 	if (transaction.data.type === TransactionType.NewCard) {
@@ -23,9 +26,22 @@ export const fulfillTransaction = async (transaction: TransactionEntity) => {
 			token: fTransaction.card.token,
 			expiredAt: new Date(year, month).getTime()
 		})
+		await WalletsUseCases.updateAmount({
+			userId: transaction.userId,
+			amount: await FlutterwavePayment.convertAmount(transaction.amount, transaction.currency, Currencies.NGN)
+		})
 		await TransactionsUseCases.update({
 			id: transaction.id,
 			data: { status: TransactionStatus.settled }
 		})
 	}
+}
+
+export const retryTransactions = async () => {
+	const { results: transactions } = await TransactionsUseCases.get({
+		where: [{ field: 'status', value: TransactionStatus.fulfilled },
+			{ field: 'createdAt', condition: Conditions.lt, value: Date.now() - (60 * 60 * 1000) }],
+		all: true
+	})
+	await Promise.all(transactions.map(fulfillTransaction))
 }

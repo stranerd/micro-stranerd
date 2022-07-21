@@ -9,6 +9,7 @@ export interface TransactionFromModel extends TransactionToModel {
 export interface TransactionToModel {
 	userId: string
 	email: string
+	title: string
 	amount: number
 	currency: Currencies
 	status: TransactionStatus

@@ -8,6 +8,7 @@ export class TransactionMapper extends BaseMapper<TransactionFromModel, Transact
 			id: param._id.toString(),
 			userId: param.userId,
 			email: param.email,
+			title: param.title,
 			amount: param.amount,
 			currency: param.currency,
 			status: param.status,
@@ -21,6 +22,7 @@ export class TransactionMapper extends BaseMapper<TransactionFromModel, Transact
 		return {
 			userId: param.userId,
 			email: param.email,
+			title: param.title,
 			amount: param.amount,
 			currency: param.currency,
 			status: param.status,

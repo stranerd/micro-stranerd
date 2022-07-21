@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { CardsController } from '@application/controllers/payment/cards'
 
 export const cardsRoutes: Route[] = [
@@ -6,6 +6,7 @@ export const cardsRoutes: Route[] = [
 		path: '/payment/cards',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -18,6 +19,7 @@ export const cardsRoutes: Route[] = [
 		path: '/payment/cards/:id',
 		method: 'get',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -30,6 +32,7 @@ export const cardsRoutes: Route[] = [
 		path: '/payment/cards/:id/primary',
 		method: 'put',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -42,6 +45,7 @@ export const cardsRoutes: Route[] = [
 		path: '/payment/cards/:id',
 		method: 'delete',
 		controllers: [
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

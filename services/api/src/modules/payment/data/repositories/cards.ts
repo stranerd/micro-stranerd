@@ -29,7 +29,7 @@ export class CardRepository implements ICardRepository {
 	async create (data: CardToModel) {
 		const firstCard = await Card.findOne({ userId: data.userId })
 		const card = new Card({ ...data, expired: data.expiredAt <= Date.now() })
-		if (!firstCard) return (await this.makePrimary(card.id, data.userId))!
+		if (!firstCard) return (await this.makePrimary(card._id, data.userId))!
 		return this.mapper.mapFrom(card)!
 	}
 
@@ -43,7 +43,10 @@ export class CardRepository implements ICardRepository {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
 			await Card.updateMany({ _id: { $ne: id }, userId }, { $set: { primary: false } }, { session })
-			const card = Card.findOneAndUpdate({ _id: id, userId }, { $set: { primary: true } }, { session, new: true })
+			const card = await Card.findOneAndUpdate({ _id: id, userId }, { $set: { primary: true } }, {
+				session,
+				new: true
+			})
 			res = card
 			return card
 		})

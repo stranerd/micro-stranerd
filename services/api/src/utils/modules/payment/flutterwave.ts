@@ -40,12 +40,11 @@ export class FlutterwavePayment {
 
 	static async convertAmount (amount: number, from: Currencies, to: Currencies) {
 		if (from === to) return amount
-		// flutterwave expects 1000 USD to NGN to have destination as USD and source as NGN, weird right
+		// WARN: flutterwave expects 1000 USD to NGN to have destination as USD and source as NGN, weird right
 		const res = await flw.CustomRequest.custom(`v3/transfers/rates?amount=${amount}&destination_currency=${from}&source_currency=${to}`, { method: 'GET' })
-			.catch(() => {
-				throw new Error('failed to convert')
-			})
-		const data = res.body.data as TransferRate
-		return data.source.amount
+			.catch(() => null)
+		// TODO: figure whether to throw, and consequences of throwing in background process
+		const data = res?.body?.data as TransferRate | undefined
+		return data?.source.amount ?? amount
 	}
 }

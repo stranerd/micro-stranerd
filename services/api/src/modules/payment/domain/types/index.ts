@@ -6,6 +6,7 @@ export enum Currencies {
 export enum TransactionStatus {
 	initialized = 'initialized',
 	fulfilled = 'fulfilled',
+	failed = 'failed',
 	settled = 'settled'
 }
 

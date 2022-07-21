@@ -22,20 +22,25 @@ export class TransactionsController {
 		const isNewCardType = req.body.data?.type === TransactionType.NewCard
 		const authUser = req.authUser!
 
-		const { amount, type } = validate({
-			amount: isNewCardType ? 50 : req.body.amount,
+		const { type } = validate({
 			type: req.body.data?.type
 		}, {
-			amount: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			type: {
 				required: true,
 				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TransactionType), (cur, val) => cur === val)]
 			}
 		})
 
+		const dynamics = { title: '', amount: 0 }
+
+		if (isNewCardType) {
+			dynamics.title = 'Test charge on new card'
+			dynamics.amount = 50
+		}
+
 		return await TransactionsUseCases.create({
-			amount, currency: Currencies.NGN, userId: authUser.id, email: authUser.email,
-			status: TransactionStatus.initialized, data: { type }
+			...dynamics, currency: Currencies.NGN, userId: authUser.id, email: authUser.email,
+			status: TransactionStatus.initialized, data: isNewCardType ? { type } : ({} as any)
 		})
 	}
 
