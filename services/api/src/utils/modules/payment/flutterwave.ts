@@ -1,5 +1,6 @@
 import FlutterwaveNode from 'flutterwave-node-v3'
 import { flutterwaveConfig } from '@utils/environment'
+import { Currencies } from '@modules/payment'
 
 const flw = new FlutterwaveNode(flutterwaveConfig.publicKey, flutterwaveConfig.secretKey)
 
@@ -25,9 +26,26 @@ type FwTransaction = {
 	}
 }
 
+type TransferRate = {
+	rate: number
+	source: { currency: Currencies, amount: number }
+	destination: { currency: Currencies, amount: number }
+}
+
 export class FlutterwavePayment {
 	static async getTransactionByRef (ref: string) {
 		const res = await flw.CustomRequest.custom(`v3/transactions/verify_by_reference?tx_ref=${ref}`, { method: 'GET' }).catch(() => null)
-		return res?.body as FwTransaction | null
+		return res?.body?.data as FwTransaction | null
+	}
+
+	static async convertAmount (amount: number, from: Currencies, to: Currencies) {
+		if (from === to) return amount
+		// flutterwave expects 1000 USD to NGN to have destination as USD and source as NGN, weird right
+		const res = await flw.CustomRequest.custom(`v3/transfers/rates?amount=${amount}&destination_currency=${from}&source_currency=${to}`, { method: 'GET' })
+			.catch(() => {
+				throw new Error('failed to convert')
+			})
+		const data = res.body.data as TransferRate
+		return data.source.amount
 	}
 }
