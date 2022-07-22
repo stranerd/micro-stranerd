@@ -1,13 +1,14 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity, CronTypes } from '@utils/commons'
 import { Currencies } from '../types'
 
 export class PlanEntity extends BaseEntity {
 	public readonly id: string
 	public readonly name: string
-	public readonly interval: string
+	public readonly interval: CronTypes
 	public readonly active: boolean
 	public readonly amount: number
 	public readonly currency: Currencies
+	public readonly data: { questions: number }
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -18,6 +19,7 @@ export class PlanEntity extends BaseEntity {
 		             name,
 		             interval,
 		             active,
+		             data,
 		             createdAt,
 		             updatedAt
 	             }: PlanConstructorArgs) {
@@ -28,8 +30,22 @@ export class PlanEntity extends BaseEntity {
 		this.active = active
 		this.amount = amount
 		this.currency = currency
+		this.data = data
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
+	}
+
+	getNextCharge (time: number) {
+		const date = new Date(time)
+		if (this.interval === CronTypes.secondly) date.setSeconds(date.getSeconds() + 1)
+		if (this.interval === CronTypes.minutely) date.setMinutes(date.getMinutes() + 1)
+		if (this.interval === CronTypes.hourly) date.setHours(date.getHours() + 1)
+		if (this.interval === CronTypes.daily) date.setDate(date.getDate() + 1)
+		if (this.interval === CronTypes.weekly) date.setDate(date.getDate() + 7)
+		if (this.interval === CronTypes.monthly) date.setMonth(date.getMonth() + 1)
+		if (this.interval === CronTypes.quarterly) date.setMonth(date.getMonth() + 3)
+		if (this.interval === CronTypes.yearly) date.setFullYear(date.getFullYear() + 1)
+		return date.getTime()
 	}
 }
 
@@ -39,7 +55,8 @@ type PlanConstructorArgs = {
 	amount: number
 	active: boolean
 	currency: Currencies
-	interval: string
+	interval: CronTypes
+	data: { questions: number }
 	createdAt: number
 	updatedAt: number
 }

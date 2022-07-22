@@ -20,6 +20,23 @@ const WalletSchema = new mongoose.Schema<WalletFromModel>({
 			default: 0
 		}
 	},
+	subscription: {
+		active: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		current: {
+			type: mongoose.Schema.Types.Mixed,
+			required: false,
+			default: null
+		},
+		next: {
+			type: mongoose.Schema.Types.Mixed,
+			required: false,
+			default: null
+		}
+	},
 	createdAt: {
 		type: Number,
 		required: false,

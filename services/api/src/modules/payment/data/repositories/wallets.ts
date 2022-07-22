@@ -1,6 +1,7 @@
 import { IWalletRepository } from '../../domain/irepositories/wallets'
 import { WalletMapper } from '../mappers/wallets'
 import { Wallet } from '../mongooseModels/wallets'
+import { SubscriptionModel } from '../../domain/types'
 
 export class WalletRepository implements IWalletRepository {
 	private static instance: WalletRepository
@@ -31,6 +32,12 @@ export class WalletRepository implements IWalletRepository {
 	async updateAmount (userId: string, amount: number) {
 		let wallet = await WalletRepository.getUserWallet(userId)
 		wallet = (await Wallet.findByIdAndUpdate(wallet._id, { $inc: { amount } }, { new: true }))!
+		return this.mapper.mapFrom(wallet)!
+	}
+
+	async updateSubscription (id: string, data: Partial<SubscriptionModel>) {
+		data = Object.fromEntries(Object.entries(data).map(([key, val]) => [`subscription.${key}`, val]))
+		const wallet = await Wallet.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(wallet)!
 	}
 }

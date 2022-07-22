@@ -10,6 +10,7 @@ import { sendMailAndCatchError } from '@utils/modules/email'
 import { UploaderUseCases } from '@modules/storage'
 import { broadcastEvent } from '@utils/modules/classes/events'
 import { retryTransactions } from '@utils/modules/payment/transactions'
+import { renewSubscription } from '@utils/modules/payment/subscriptions'
 
 const eventBus = appInstance.eventBus
 
@@ -42,6 +43,7 @@ export const subscribers = {
 			data: { done: true }
 		})
 		if (data.type === DelayedJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
+		if (data.type === DelayedJobs.RenewSubscription) await renewSubscription(data.data.userId)
 	}),
 	[EventTypes.TASKSCRONLIKE]: eventBus.createSubscriber<Events[EventTypes.TASKSCRONLIKE]>(EventTypes.TASKSCRONLIKE, async (data) => {
 		if (data.type === CronLikeJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)

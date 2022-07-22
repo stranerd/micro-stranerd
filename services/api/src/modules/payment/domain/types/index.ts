@@ -11,11 +11,31 @@ export enum TransactionStatus {
 }
 
 export enum TransactionType {
-	NewCard = 'NewCard'
+	NewCard = 'NewCard',
+	Subscription = 'Subscription'
 }
 
 type TransactionNewCard = {
 	type: TransactionType.NewCard
 }
 
-export type TransactionData = TransactionNewCard
+type TransactionSubscription = {
+	type: TransactionType.Subscription
+	subscriptionId: string
+}
+
+export type TransactionData = TransactionNewCard | TransactionSubscription
+
+export type SubscriptionModel = {
+	active: boolean
+	current: {
+		id: string
+		activatedAt: number
+		expiredAt: number
+	} | null
+	next: {
+		id: string
+		jobId: string
+		renewedAt: number
+	} | null
+}

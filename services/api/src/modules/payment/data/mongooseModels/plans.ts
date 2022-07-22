@@ -25,8 +25,13 @@ const PlanSchema = new mongoose.Schema<PlanFromModel>({
 		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
+	data: {
+		type: mongoose.Schema.Types.Mixed,
+		required: true,
+		default: {}
+	},
 	interval: {
-		type: String,
+		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
 	createdAt: {

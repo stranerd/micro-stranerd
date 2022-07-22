@@ -32,6 +32,14 @@ type TransferRate = {
 	destination: { currency: Currencies, amount: number }
 }
 
+type ChargeCardData = {
+	token: string
+	currency: Currencies
+	amount: number
+	email: string
+	tx_ref: string
+}
+
 export class FlutterwavePayment {
 	static async getTransactionByRef (ref: string) {
 		const res = await flw.CustomRequest.custom(`v3/transactions/verify_by_reference?tx_ref=${ref}`, { method: 'GET' }).catch(() => null)
@@ -46,5 +54,10 @@ export class FlutterwavePayment {
 		// TODO: figure whether to throw, and consequences of throwing in background process
 		const data = res?.body?.data as TransferRate | undefined
 		return data?.source.amount ?? amount
+	}
+
+	static async chargeCard (data: ChargeCardData) {
+		const res = await flw.Tokenized.charge(data).catch(() => null)
+		return res?.data as FwTransaction | null
 	}
 }

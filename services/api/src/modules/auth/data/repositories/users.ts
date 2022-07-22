@@ -2,7 +2,7 @@ import { IUserRepository } from '../../domain/irepositories/users'
 import { RegisterInput, RoleInput, UserUpdateInput } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { UserFromModel } from '../models/users'
-import { AuthTypes, deleteCachedAccessToken, Hash, NotFoundError, parseQueryParams, QueryParams } from '@utils/commons'
+import { AuthTypes, Hash, NotFoundError, parseQueryParams, QueryParams } from '@utils/commons'
 import User from '../mongooseModels/users'
 
 export class UserRepository implements IUserRepository {
@@ -67,8 +67,6 @@ export class UserRepository implements IUserRepository {
 		const user = await User.findByIdAndUpdate(userId, {
 			$set: set, $unset: unset
 		})
-		// clear accessToken
-		await deleteCachedAccessToken(userId)
 		return !!user
 	}
 

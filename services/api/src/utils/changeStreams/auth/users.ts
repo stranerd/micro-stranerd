@@ -1,4 +1,10 @@
-import { ChangeStreamCallbacks, EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
+import {
+	ChangeStreamCallbacks,
+	deleteCachedAccessToken,
+	EmailsList,
+	EventTypes,
+	readEmailFromPug
+} from '@utils/commons'
 import { publishers } from '@utils/events'
 import { AuthUserEntity, UserFromModel } from '@modules/auth'
 import { subscribeToMailingList } from '@utils/mailing'
@@ -53,6 +59,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 
 		const updatedRoles = changes.roles
 		if (updatedRoles) await UsersUseCases.updateRoles({ id: after.id, data: after.roles, timestamp: Date.now() })
+		if (updatedRoles) await deleteCachedAccessToken(after.id)
 		if (changes.referrer && after.referrer) await ReferralsUseCases.create({
 			userId: after.referrer,
 			referred: after.id
