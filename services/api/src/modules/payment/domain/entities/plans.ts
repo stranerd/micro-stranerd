@@ -1,5 +1,5 @@
 import { BaseEntity, CronTypes } from '@utils/commons'
-import { Currencies } from '../types'
+import { Currencies, PlanData } from '../types'
 
 export class PlanEntity extends BaseEntity {
 	public readonly id: string
@@ -8,7 +8,7 @@ export class PlanEntity extends BaseEntity {
 	public readonly active: boolean
 	public readonly amount: number
 	public readonly currency: Currencies
-	public readonly data: { questions: number }
+	public readonly data: PlanData
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
@@ -56,7 +56,7 @@ type PlanConstructorArgs = {
 	active: boolean
 	currency: Currencies
 	interval: CronTypes
-	data: { questions: number }
+	data: PlanData
 	createdAt: number
 	updatedAt: number
 }

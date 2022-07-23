@@ -2,6 +2,7 @@ import { QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { TagsUseCases, TagTypes } from '@modules/interactions'
+import { PlanDataType, WalletsUseCases } from '@modules/payment'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -49,6 +50,8 @@ export class QuestionController {
 
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user) throw new BadRequestError('user not found')
+		const wallet = await WalletsUseCases.get(user.id)
+		if (wallet.subscription.data[PlanDataType.questions] < 1) throw new BadRequestError('you don\'t have any questions left')
 		const tag = await TagsUseCases.find(data.tagId)
 		if (!tag || !tag.parent || tag.type !== TagTypes.questions) throw new BadRequestError('invalid tagId')
 

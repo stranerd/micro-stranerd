@@ -23,7 +23,8 @@ const activateSub = async (userId: string, walletId: string, subscription: PlanE
 		data: {
 			active: successful,
 			current: successful ? { id: subscription.id, activatedAt: now, expiredAt: renewedAt } : null,
-			next: successful ? { id: subscription.id, jobId, renewedAt } : null
+			next: successful ? { id: subscription.id, jobId, renewedAt } : null,
+			...(successful ? { data: subscription.data } : {})
 		}
 	})
 }

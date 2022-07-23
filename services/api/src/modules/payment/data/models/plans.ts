@@ -1,4 +1,4 @@
-import { Currencies } from '../../domain/types'
+import { Currencies, PlanData } from '../../domain/types'
 import { CronTypes } from '@utils/commons'
 
 export interface PlanFromModel extends PlanToModel {
@@ -13,5 +13,5 @@ export interface PlanToModel {
 	name: string
 	interval: CronTypes
 	active: boolean
-	data: { questions: number }
+	data: PlanData
 }

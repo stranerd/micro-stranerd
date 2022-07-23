@@ -3,6 +3,7 @@ import { PlanFromModel } from '../models/plans'
 import { PlanChangeStreamCallbacks } from '@utils/changeStreams/payment/plans'
 import { PlanEntity } from '../../domain/entities/plans'
 import { PlanMapper } from '../mappers/plans'
+import { PlanDataType } from '../../domain/types'
 
 const PlanSchema = new mongoose.Schema<PlanFromModel>({
 	_id: {
@@ -25,11 +26,13 @@ const PlanSchema = new mongoose.Schema<PlanFromModel>({
 		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
-	data: {
-		type: mongoose.Schema.Types.Mixed,
-		required: true,
-		default: {}
-	},
+	data: Object.fromEntries(
+		Object.keys(PlanDataType).map((key) => [key, {
+			type: Number,
+			required: false,
+			default: 0
+		}])
+	),
 	interval: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true

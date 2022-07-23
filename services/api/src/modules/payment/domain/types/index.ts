@@ -38,4 +38,11 @@ export type SubscriptionModel = {
 		jobId: string
 		renewedAt: number
 	} | null
+	data: PlanData
 }
+
+export enum PlanDataType {
+	questions = 'questions'
+}
+
+export type PlanData = Record<PlanDataType, number>
