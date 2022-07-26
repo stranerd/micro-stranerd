@@ -25,6 +25,10 @@ export class CardsUseCase {
 		return await this.repository.makePrimary(data.id, data.userId)
 	}
 
+	async markExpireds () {
+		return await this.repository.markExpireds()
+	}
+
 	async delete (data: { id: string, userId: string }) {
 		return await this.repository.delete(data.id, data.userId)
 	}

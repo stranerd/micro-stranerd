@@ -7,5 +7,6 @@ export interface ICardRepository {
 	get: (query: QueryParams) => Promise<QueryResults<CardEntity>>
 	find: (id: string, userId: string) => Promise<CardEntity | null>
 	makePrimary: (id: string, userId: string) => Promise<CardEntity | null>
+	markExpireds: () => Promise<boolean>
 	delete: (id: string, userId: string) => Promise<boolean>
 }

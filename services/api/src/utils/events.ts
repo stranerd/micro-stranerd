@@ -11,6 +11,7 @@ import { UploaderUseCases } from '@modules/storage'
 import { broadcastEvent } from '@utils/modules/classes/events'
 import { retryTransactions } from '@utils/modules/payment/transactions'
 import { renewSubscription } from '@utils/modules/payment/subscriptions'
+import { CardsUseCases } from '@modules/payment'
 
 const eventBus = appInstance.eventBus
 
@@ -57,7 +58,10 @@ export const subscribers = {
 			await UsersUseCases.resetRankings(UserRankings.weekly)
 			await NotificationsUseCases.deleteOldSeen()
 		}
-		if (type === CronTypes.monthly) await UsersUseCases.resetRankings(UserRankings.monthly)
+		if (type === CronTypes.monthly) {
+			await UsersUseCases.resetRankings(UserRankings.monthly)
+			await CardsUseCases.markExpireds()
+		}
 		if (type === CronTypes.hourly) {
 			const errors = await EmailErrorsUseCases.getAndDeleteAll()
 			await Promise.all(errors.map(sendMailAndCatchError))

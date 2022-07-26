@@ -54,6 +54,14 @@ export class CardRepository implements ICardRepository {
 		return this.mapper.mapFrom(res)
 	}
 
+	async markExpireds () {
+		const cards = await Card.updateMany({
+			expired: false,
+			expiredAt: { $lte: Date.now() }
+		}, { $set: { expired: true } })
+		return cards.acknowledged
+	}
+
 	async delete (id: string, userId: string) {
 		let card = await Card.findOne({ _id: id, userId, primary: true })
 		if (card) throw new BadRequestError('You can\'t delete your primary card')

@@ -1,5 +1,5 @@
 import { BaseEntity } from '@utils/commons'
-import { SubscriptionModel } from '@modules/payment/domain/types'
+import { SubscriptionModel } from '../types'
 
 export class WalletEntity extends BaseEntity {
 	public readonly id: string
