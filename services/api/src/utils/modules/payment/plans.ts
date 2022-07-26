@@ -1,12 +1,12 @@
 import { Currencies, PlanToModel } from '@modules/payment'
 import { CronTypes } from '@utils/commons'
 
-export const planList: PlanToModel[] = [
+export const plansList: PlanToModel[] = [
 	{
-		_id: 'standard-plan',
+		_id: 'premium-plan',
 		amount: 2500,
 		currency: Currencies.NGN,
-		name: 'Standard Plan',
+		name: 'Premium',
 		interval: CronTypes.monthly,
 		data: { questions: 5 },
 		active: true

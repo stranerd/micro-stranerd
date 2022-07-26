@@ -6,6 +6,8 @@ import { UsersUseCases } from '@modules/users'
 import { registerSockets } from '@utils/sockets'
 import { initializeApp } from 'firebase-admin/app'
 import { startJobs } from '@utils/jobs'
+import { PlansUseCases } from '@modules/payment'
+import { plansList } from '@utils/modules/payment/plans'
 
 const app = getNewServerInstance(routes, {
 	onConnect: async (userId, socketId) => {
@@ -34,6 +36,7 @@ const start = async () => {
 
 	await registerSockets()
 	await UsersUseCases.resetAllUsersStatus()
+	await PlansUseCases.init(plansList)
 	await app.start(port)
 	await appInstance.logger.success(`${appId} api has started listening on port`, port)
 	await startJobs()

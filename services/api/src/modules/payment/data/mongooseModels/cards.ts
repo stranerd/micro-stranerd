@@ -13,18 +13,10 @@ const CardSchema = new mongoose.Schema<CardFromModel>({
 		type: String,
 		required: true
 	},
-	email: {
-		type: String,
-		required: true
-	},
 	primary: {
 		type: Boolean,
 		required: true,
 		default: false
-	},
-	first6Digits: {
-		type: String,
-		required: true
 	},
 	last4Digits: {
 		type: String,

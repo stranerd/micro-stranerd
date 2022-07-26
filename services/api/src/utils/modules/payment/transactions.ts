@@ -17,14 +17,12 @@ export const fulfillTransaction = async (transaction: TransactionEntity) => {
 		const [month, year] = fTransaction.card.expiry.split('/').map((x) => parseInt(x))
 		await CardsUseCases.create({
 			userId: transaction.userId,
-			email: transaction.email,
-			first6Digits: fTransaction.card.first_6digits,
 			last4Digits: fTransaction.card.last_4digits,
 			issuer: fTransaction.card.issuer,
 			country: fTransaction.card.country,
 			type: fTransaction.card.type,
 			token: fTransaction.card.token,
-			expiredAt: new Date(year, month).getTime()
+			expiredAt: new Date(2000 + year, month).getTime()
 		})
 		await WalletsUseCases.updateAmount({
 			userId: transaction.userId,

@@ -27,7 +27,7 @@ export class TransactionsController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TransactionType), (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TransactionType).filter((x) => x !== TransactionType.Subscription), (cur, val) => cur === val)]
 			}
 		})
 

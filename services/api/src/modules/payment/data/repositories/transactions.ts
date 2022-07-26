@@ -27,7 +27,7 @@ export class TransactionRepository implements ITransactionRepository {
 	}
 
 	async create (data: TransactionToModel) {
-		const transaction = new Transaction(data)
+		const transaction = await new Transaction(data).save()
 		return this.mapper.mapFrom(transaction)!
 	}
 

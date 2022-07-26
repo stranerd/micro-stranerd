@@ -7,7 +7,6 @@ export interface CardFromModel extends CardToModel {
 }
 
 export interface CardToModel {
-	first6Digits: string
 	last4Digits: string
 	issuer: string
 	country: string
@@ -15,5 +14,4 @@ export interface CardToModel {
 	token: string
 	expiredAt: number
 	userId: string
-	email: string
 }

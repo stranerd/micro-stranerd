@@ -28,7 +28,7 @@ export class CardRepository implements ICardRepository {
 
 	async create (data: CardToModel) {
 		const firstCard = await Card.findOne({ userId: data.userId })
-		const card = new Card({ ...data, expired: data.expiredAt <= Date.now() })
+		const card = await Card.findOneAndUpdate(data, { $setOnInsert: data }, { new: true, upsert: true })
 		if (!firstCard) return (await this.makePrimary(card._id, data.userId))!
 		return this.mapper.mapFrom(card)!
 	}
