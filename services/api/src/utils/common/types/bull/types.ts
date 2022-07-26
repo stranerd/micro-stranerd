@@ -3,6 +3,7 @@ export enum DelayedJobs {
 	ScheduledSessionStart = 'ScheduledSessionStart',
 	ScheduledSessionNotification = 'ScheduledSessionNotification',
 	TestTimer = 'TestTimer',
+	RenewSubscription = 'RenewSubscription',
 	ClassEvent = 'ClassEvent'
 }
 
@@ -22,6 +23,9 @@ export type DelayedEvent = {
 } | {
 	type: typeof DelayedJobs.TestTimer,
 	data: { testId: string, userId: string }
+} | {
+	type: typeof DelayedJobs.RenewSubscription,
+	data: { userId: string }
 } | {
 	type: DelayedJobs.ClassEvent,
 	data: { eventId: string, timeInMin: number }

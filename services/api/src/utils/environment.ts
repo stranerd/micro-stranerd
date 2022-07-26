@@ -19,10 +19,10 @@ export const emails = Object.fromEntries(
 
 export const clientDomain = `http${!isDev ? 's' : ''}://` + getEnvOrFail('CLIENT_DOMAIN')
 
-const stripe = JSON.parse(getEnvOrFail('STRIPE') || '{}')
-export const stripeConfig = {
-	secretKey: stripe.secretKey,
-	publicKey: stripe.publicKey
+const flutterwave = JSON.parse(getEnvOrFail('FLUTTERWAVE') || '{}')
+export const flutterwaveConfig = {
+	secretKey: flutterwave.secretKey,
+	publicKey: flutterwave.publicKey
 }
 
 const MAILCHIMP_CONFIG = JSON.parse(getEnvOrFail('MAILCHIMP_CONFIG') || '{}')

@@ -1,5 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { ConnectsController } from '../../controllers/users/connects'
+import { isSubscribed } from '@application/middlewares/isSubscribed'
 
 export const connectsRoutes: Route[] = [
 	{
@@ -32,7 +33,7 @@ export const connectsRoutes: Route[] = [
 		path: '/users/connects/',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			requireAuthUser, isSubscribed,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

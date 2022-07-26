@@ -49,4 +49,8 @@ export const registerSockets = () => {
 	getSocketEmitter().register('interactions/likes', isOpen)
 	getSocketEmitter().register('interactions/tags', isOpen)
 	getSocketEmitter().register('interactions/views', isOpen)
+	getSocketEmitter().register('payment/plans', isOpen)
+	getSocketEmitter().register('payment/transactions', isMine)
+	getSocketEmitter().register('payment/cards', isMine)
+	getSocketEmitter().register('payment/wallets', isMine)
 }

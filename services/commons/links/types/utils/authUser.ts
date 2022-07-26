@@ -3,6 +3,7 @@ export enum SupportedAuthRoles {
 	isStranerdTutor = 'isStranerdTutor',
 	isVerified = 'isVerified',
 	isSuperAdmin = 'isSuperAdmin',
+	isSubscribed = 'isSubscribed',
 }
 
 export type AuthRoles = Partial<Record<SupportedAuthRoles, boolean>>

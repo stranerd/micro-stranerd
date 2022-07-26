@@ -9,6 +9,9 @@ import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { UploaderUseCases } from '@modules/storage'
 import { broadcastEvent } from '@utils/modules/classes/events'
+import { retryTransactions } from '@utils/modules/payment/transactions'
+import { renewSubscription } from '@utils/modules/payment/subscriptions'
+import { CardsUseCases } from '@modules/payment'
 
 const eventBus = appInstance.eventBus
 
@@ -41,6 +44,7 @@ export const subscribers = {
 			data: { done: true }
 		})
 		if (data.type === DelayedJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
+		if (data.type === DelayedJobs.RenewSubscription) await renewSubscription(data.data.userId)
 	}),
 	[EventTypes.TASKSCRONLIKE]: eventBus.createSubscriber<Events[EventTypes.TASKSCRONLIKE]>(EventTypes.TASKSCRONLIKE, async (data) => {
 		if (data.type === CronLikeJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
@@ -54,14 +58,14 @@ export const subscribers = {
 			await UsersUseCases.resetRankings(UserRankings.weekly)
 			await NotificationsUseCases.deleteOldSeen()
 		}
-		if (type === CronTypes.monthly) await UsersUseCases.resetRankings(UserRankings.monthly)
+		if (type === CronTypes.monthly) {
+			await UsersUseCases.resetRankings(UserRankings.monthly)
+			await CardsUseCases.markExpireds()
+		}
 		if (type === CronTypes.hourly) {
 			const errors = await EmailErrorsUseCases.getAndDeleteAll()
-			await Promise.all(
-				errors.map(async (error) => {
-					await sendMailAndCatchError(error)
-				})
-			)
+			await Promise.all(errors.map(sendMailAndCatchError))
+			await retryTransactions()
 			await appInstance.job.retryAllFailedJobs()
 		}
 	}),
