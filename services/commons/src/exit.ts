@@ -12,7 +12,13 @@ const signals = {
 
 Object.entries(signals).forEach(([signal, code]) => {
 	process.on(signal, async () => {
-		await Promise.all(listeners.map((l) => typeof l === 'function' ? l() : l))
+		await Promise.all(listeners.map(async (l) => {
+			try {
+				await typeof l === 'function' ? l() : l
+				// eslint-disable-next-line no-empty
+			} catch (err) {
+			}
+		}))
 		process.exit(128 + code)
 	})
 })

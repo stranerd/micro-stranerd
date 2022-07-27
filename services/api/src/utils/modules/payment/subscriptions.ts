@@ -10,7 +10,7 @@ import {
 } from '@modules/payment'
 import { UserEntity, UsersUseCases } from '@modules/users'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
-import { appInstance, DelayedEvent, DelayedJobs } from '@utils/commons'
+import { appInstance, BadRequestError, DelayedEvent, DelayedJobs } from '@utils/commons'
 
 const activateSub = async (userId: string, walletId: string, subscription: PlanEntity, successful: boolean) => {
 	const now = Date.now()
@@ -55,15 +55,16 @@ export const subscribeToPlan = async (userId: string, subscriptionId: string) =>
 	const wallet = await WalletsUseCases.get(userId)
 	if (wallet.subscription.active) return wallet
 	const user = await UsersUseCases.find(userId)
-	if (!user) return wallet
+	if (!user) throw new BadRequestError('profile not found')
 	const subscription = await PlansUseCases.find(subscriptionId)
-	if (!subscription) return wallet
+	if (!subscription) throw new BadRequestError('subscription not found')
 	const { results: cards } = await CardsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
 	const card = cards[0]
-	if (!card) return wallet
+	if (!card) throw new BadRequestError('no card found')
 	const successful = await chargeForSubscription(user, subscription, card)
+	if (!successful) throw new BadRequestError('charge failed')
 	return activateSub(userId, wallet.id, subscription, successful)
 }
 

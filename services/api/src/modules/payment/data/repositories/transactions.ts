@@ -40,4 +40,9 @@ export class TransactionRepository implements ITransactionRepository {
 		const transaction = await Transaction.findByIdAndUpdate(id, { $set: data }, { new: true })
 		return this.mapper.mapFrom(transaction)
 	}
+
+	async delete (ids: string[]) {
+		const transactions = await Transaction.deleteMany({ _id: { $in: ids } })
+		return transactions.acknowledged
+	}
 }

@@ -24,4 +24,8 @@ export class TransactionsUseCase {
 	async update (data: { id: string, data: Partial<TransactionToModel> }) {
 		return await this.repository.update(data.id, data.data)
 	}
+
+	async delete (ids: string[]) {
+		return await this.repository.delete(ids)
+	}
 }

@@ -36,10 +36,18 @@ export const fulfillTransaction = async (transaction: TransactionEntity) => {
 }
 
 export const retryTransactions = async () => {
-	const { results: transactions } = await TransactionsUseCases.get({
+	const time = 60 * 60 * 1000
+	const { results: fulfilledTransactions } = await TransactionsUseCases.get({
 		where: [{ field: 'status', value: TransactionStatus.fulfilled },
-			{ field: 'createdAt', condition: Conditions.lt, value: Date.now() - (60 * 60 * 1000) }],
+			{ field: 'createdAt', condition: Conditions.gt, value: Date.now() - time }],
 		all: true
 	})
-	await Promise.all(transactions.map(fulfillTransaction))
+	await Promise.all(fulfilledTransactions.map(fulfillTransaction))
+
+	const { results: initializedTransactions } = await TransactionsUseCases.get({
+		where: [{ field: 'status', value: TransactionStatus.initialized },
+			{ field: 'createdAt', condition: Conditions.gt, value: Date.now() - time }],
+		all: true
+	})
+	await TransactionsUseCases.delete(initializedTransactions.map((t) => t.id))
 }
