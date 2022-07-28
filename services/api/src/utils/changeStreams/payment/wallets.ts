@@ -19,7 +19,7 @@ export const WalletChangeStreamCallbacks: ChangeStreamCallbacks<WalletFromModel,
 		if (changes.subscription?.active) await AuthUsersUseCases.updateUserRole({
 			userId: after.userId, roles: { [SupportedAuthRoles.isSubscribed]: after.subscription.active }
 		})
-		if (changes.subscription?.next?.jobId && before.subscription.next?.jobId) await appInstance.job.removeDelayedJob(before.subscription.next.jobId)
+		if (before.subscription.current?.jobId !== after.subscription.current?.jobId && before.subscription.current?.jobId) await appInstance.job.removeDelayedJob(before.subscription.current.jobId)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted(`payment/wallets/${before.userId}`, before)
@@ -28,6 +28,6 @@ export const WalletChangeStreamCallbacks: ChangeStreamCallbacks<WalletFromModel,
 		await AuthUsersUseCases.updateUserRole({
 			userId: before.userId, roles: { [SupportedAuthRoles.isSubscribed]: before.subscription.active }
 		})
-		if (before.subscription.next?.jobId) await appInstance.job.removeDelayedJob(before.subscription.next.jobId)
+		if (before.subscription.current?.jobId) await appInstance.job.removeDelayedJob(before.subscription.current.jobId)
 	}
 }

@@ -22,8 +22,8 @@ const activateSub = async (userId: string, walletId: string, subscription: PlanE
 		id: walletId,
 		data: {
 			active: successful,
-			current: successful ? { id: subscription.id, activatedAt: now, expiredAt: renewedAt } : null,
-			next: successful ? { id: subscription.id, jobId, renewedAt } : null,
+			current: successful ? { id: subscription.id, activatedAt: now, expiredAt: renewedAt, jobId } : null,
+			next: successful ? { id: subscription.id, renewedAt } : null,
 			...(successful ? { data: subscription.data } : {})
 		}
 	})
@@ -87,5 +87,7 @@ export const renewSubscription = async (userId: string) => {
 export const cancelSubscription = async (userId: string) => {
 	const wallet = await WalletsUseCases.get(userId)
 	if (!wallet) return
-	await deactivateSub(wallet.id)
+	await WalletsUseCases.updateSubscription({
+		id: wallet.id, data: { next: null }
+	})
 }

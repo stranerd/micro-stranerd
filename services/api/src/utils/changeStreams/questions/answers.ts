@@ -12,6 +12,7 @@ import {
 import { sendNotification } from '@utils/modules/users/notifications'
 import { publishers } from '@utils/events'
 import { CommentsUseCases, InteractionEntities, LikesUseCases } from '@modules/interactions'
+import { WalletsUseCases } from '@modules/payment'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
@@ -72,6 +73,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 				activity: CountStreakBadges.GiveBestAnswer,
 				add: true
 			})
+			if (after.best) await WalletsUseCases.updateAmount({ userId: after.user.id, amount: 200 })
 		}
 
 		if (!after.best && changes.meta?.likes && after.meta.likes >= 20) {

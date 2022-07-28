@@ -32,10 +32,10 @@ export type SubscriptionModel = {
 		id: string
 		activatedAt: number
 		expiredAt: number
+		jobId: string
 	} | null
 	next: {
 		id: string
-		jobId: string
 		renewedAt: number
 	} | null
 	data: PlanData

@@ -1,11 +1,13 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { AnswerController } from '../../controllers/questions/answers'
+import { isSubscribed } from '@application/middlewares/isSubscribed'
 
 export const answersRoutes: Route[] = [
 	{
 		path: '/questions/answers',
 		method: 'get',
 		controllers: [
+			isSubscribed,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -18,6 +20,7 @@ export const answersRoutes: Route[] = [
 		path: '/questions/answers/:id',
 		method: 'get',
 		controllers: [
+			isSubscribed,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +46,7 @@ export const answersRoutes: Route[] = [
 		path: '/questions/answers',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			requireAuthUser, isSubscribed,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

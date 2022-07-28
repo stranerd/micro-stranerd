@@ -1,6 +1,6 @@
 import { WalletsUseCases } from '@modules/payment'
 import { Request, validate, Validation } from '@utils/commons'
-import { cancelSubscription, renewSubscription, subscribeToPlan } from '@utils/modules/payment/subscriptions'
+import { cancelSubscription, subscribeToPlan } from '@utils/modules/payment/subscriptions'
 
 export class WalletsController {
 	static async get (req: Request) {
@@ -19,9 +19,5 @@ export class WalletsController {
 
 	static async cancelSubscription (req: Request) {
 		return await cancelSubscription(req.authUser!.id)
-	}
-
-	static async renewSubscription (req: Request) {
-		return await renewSubscription(req.authUser!.id)
 	}
 }

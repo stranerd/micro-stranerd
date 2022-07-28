@@ -58,7 +58,7 @@ export class CardRepository implements ICardRepository {
 		const cards = await Card.updateMany({
 			expired: false,
 			expiredAt: { $lte: Date.now() }
-		}, { $set: { expired: true } })
+		}, { $set: { expired: true, primary: false } })
 		return cards.acknowledged
 	}
 
