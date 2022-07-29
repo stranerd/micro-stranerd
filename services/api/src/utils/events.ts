@@ -65,7 +65,7 @@ export const subscribers = {
 		if (type === CronTypes.hourly) {
 			const errors = await EmailErrorsUseCases.getAndDeleteAll()
 			await Promise.all(errors.map(sendMailAndCatchError))
-			await retryTransactions()
+			await retryTransactions(60 * 60 * 1000)
 			await appInstance.job.retryAllFailedJobs()
 		}
 	}),

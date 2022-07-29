@@ -12,7 +12,8 @@ export enum TransactionStatus {
 
 export enum TransactionType {
 	NewCard = 'NewCard',
-	Subscription = 'Subscription'
+	Subscription = 'Subscription',
+	BestAnswer = 'BestAnswer'
 }
 
 type TransactionNewCard = {
@@ -24,7 +25,13 @@ type TransactionSubscription = {
 	subscriptionId: string
 }
 
-export type TransactionData = TransactionNewCard | TransactionSubscription
+type TransactionBestAnswer = {
+	type: TransactionType.BestAnswer
+	answerId: string
+	questionId: string
+}
+
+export type TransactionData = TransactionNewCard | TransactionSubscription | TransactionBestAnswer
 
 export type SubscriptionModel = {
 	active: boolean

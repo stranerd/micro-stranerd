@@ -7,6 +7,8 @@ export const TransactionChangeStreamCallbacks: ChangeStreamCallbacks<Transaction
 	created: async ({ after }) => {
 		await getSocketEmitter().emitCreated(`payment/transactions/${after.userId}`, after)
 		await getSocketEmitter().emitCreated(`payment/transactions/${after.id}/${after.userId}`, after)
+
+		if (after.status === TransactionStatus.fulfilled) await fulfillTransaction(after)
 	},
 	updated: async ({ after, before, changes }) => {
 		await getSocketEmitter().emitUpdated(`payment/transactions/${after.userId}`, after)

@@ -4,7 +4,7 @@ import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
 
-const roles = Object.values<string>(SupportedAuthRoles).filter((key) => key !== SupportedAuthRoles.isSuperAdmin)
+const roles = [SupportedAuthRoles.isStranerdAdmin, SupportedAuthRoles.isStranerdTutor, SupportedAuthRoles.isVerified]
 
 export class UserController {
 	static async findUser (req: Request) {

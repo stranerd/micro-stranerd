@@ -8,6 +8,10 @@ export const registerSockets = () => {
 		                                 channel
 	                                 }) => user?.roles?.[SupportedAuthRoles.isStranerdAdmin] ? channel : null
 	const isMine: OnJoinFn = async ({ channel, user }) => user ? `${channel}/${user.id}` : null
+	const isSubbed: OnJoinFn = async ({
+		                                  channel,
+		                                  user
+	                                  }) => user?.roles[SupportedAuthRoles.isSubscribed] ? channel : null
 	const isOpen: OnJoinFn = async ({ channel }) => channel
 	const classJoinCb: OnJoinFn = async (data, params) => {
 		const { classId = null } = params
@@ -22,7 +26,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('classes/groups/:classId', classJoinCb)
 	getSocketEmitter().register('classes/events/:classId', classJoinCb)
 	getSocketEmitter().register('classes/schemes/:classId', classJoinCb)
-	getSocketEmitter().register('questions/answers', isOpen)
+	getSocketEmitter().register('questions/answers', isSubbed)
 	getSocketEmitter().register('questions/questions', isOpen)
 	getSocketEmitter().register('reports/reports', isAdmin)
 	getSocketEmitter().register('school/courses', isOpen)
