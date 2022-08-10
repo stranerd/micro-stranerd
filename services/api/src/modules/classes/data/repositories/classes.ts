@@ -28,10 +28,17 @@ export class ClassRepository implements IClassRepository {
 	}
 
 	async add (data: ClassToModel) {
-		const classInstance = new Class(data)
-		classInstance.users[ClassUsers.admins] = [data.user.id]
-		classInstance.users[ClassUsers.members] = [data.user.id]
-		return this.mapper.mapFrom(await classInstance.save())!
+		const newData = {
+			...data, users: {
+				[ClassUsers.admins]: [data.user.id],
+				[ClassUsers.members]: [data.user.id]
+			}
+		}
+		const classInst = await Class.findOneAndUpdate({ school: data.school }, { $setOnInsert: newData }, {
+			new: true,
+			upsert: true
+		})
+		return this.mapper.mapFrom(classInst)!
 	}
 
 	async find (id: string) {

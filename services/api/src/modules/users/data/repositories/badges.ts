@@ -1,8 +1,7 @@
 import { IBadgeRepository } from '../../domain/irepositories/badges'
 import { BadgeMapper } from '../mappers/badges'
 import { Badge } from '../mongooseModels/badges'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
-import { BadgeFromModel } from '../models/badges'
+import { mongoose } from '@utils/commons'
 import { CountStreakBadges } from '../../domain/types'
 import { getDateDifference } from '@utils/functions'
 import { RankTypes } from '../../domain/entities/ranks'
@@ -16,28 +15,18 @@ export class BadgeRepository implements IBadgeRepository {
 		return BadgeRepository.instance
 	}
 
-	async getBadges (query: QueryParams) {
-		const data = await parseQueryParams<BadgeFromModel>(Badge, query)
-		return {
-			...data,
-			results: data.results.map((n) => this.mapper.mapFrom(n)!)
-		}
-	}
-
-	async findBadge (userId: string) {
-		const badge = await Badge.findOne({ userId })
-		return this.mapper.mapFrom(badge)
+	async get (userId: string) {
+		const badge = await Badge.findOneAndUpdate({ userId }, { $setOnInsert: { userId } }, {
+			new: true,
+			upsert: true
+		})
+		return this.mapper.mapFrom(badge)!
 	}
 
 	async recordRank (userId: string, rank: RankTypes, add: boolean) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
-			const badgeModel = await Badge.findOneAndUpdate(
-				{ _id: userId, userId },
-				{ $setOnInsert: { _id: userId, userId } },
-				{ session, upsert: true, new: true }
-			)
-			const badge = this.mapper.mapFrom(badgeModel)!
+			const badge = await this.get(userId)
 
 			const updateData = {
 				[add ? '$addToSet' : '$pull']: { ['badges.rank']: rank }
@@ -51,12 +40,7 @@ export class BadgeRepository implements IBadgeRepository {
 	async recordCountStreak (userId: string, activity: CountStreakBadges, add: boolean) {
 		const session = await mongoose.startSession()
 		await session.withTransaction(async (session) => {
-			const badgeModel = await Badge.findOneAndUpdate(
-				{ _id: userId, userId },
-				{ $setOnInsert: { _id: userId, userId } },
-				{ session, upsert: true, new: true }
-			)
-			const badge = this.mapper.mapFrom(badgeModel)!
+			const badge = await this.get(userId)
 			const countLevels = badge.unlockCountBadge(activity, add)
 			const streakLevels = badge.unlockStreakBadge(activity, add)
 

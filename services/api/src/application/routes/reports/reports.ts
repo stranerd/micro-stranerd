@@ -1,6 +1,6 @@
 import { ReportController } from '@application/controllers/reports/reports'
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
-import { isAdmin } from '@application/middlewares/isAdmin'
+import { isAdmin } from '@application/middlewares'
 
 export const reportRoutes: Route[] = [
 	{

@@ -22,7 +22,7 @@ export class AuthUsersUseCase {
 			where: [{ field: 'email', value: email.toLowerCase() }],
 			limit: 1
 		})
-		return res.results[0] ?? null
+		return res.results.at(0) ?? null
 	}
 
 	async getUsers (data: QueryParams) {

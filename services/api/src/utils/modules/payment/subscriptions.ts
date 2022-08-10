@@ -61,7 +61,7 @@ export const subscribeToPlan = async (userId: string, subscriptionId: string) =>
 	const { results: cards } = await CardsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
-	const card = cards[0]
+	const card = cards.at(0)
 	if (!card) throw new BadRequestError('no card found')
 	const successful = await chargeForSubscription(user, subscription, card)
 	if (!successful) throw new BadRequestError('charge failed')
@@ -78,7 +78,7 @@ export const renewSubscription = async (userId: string) => {
 	const { results: cards } = await CardsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
-	const card = cards[0]
+	const card = cards.at(0)
 	if (!card) return await deactivateSub(wallet.id)
 	const successful = await chargeForSubscription(user, subscription, card)
 	return successful ? activateSub(userId, wallet.id, subscription, successful) : await deactivateSub(wallet.id)

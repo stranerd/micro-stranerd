@@ -60,15 +60,17 @@ export class ClassController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const { name, departmentId, description, courses, photo: classPhoto } = validate({
+		const { name, departmentId, year, description, courses, photo: classPhoto } = validate({
 			name: req.body.name,
 			departmentId: req.body.school?.departmentId,
+			year: req.body.year,
 			description: req.body.description,
 			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: req.files.photo?.[0] ?? null
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			departmentId: { required: true, rules: [Validation.isString] },
+			year: { required: true, rules: [Validation.isNumber] },
 			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
 			courses: {
 				required: true,
@@ -86,7 +88,8 @@ export class ClassController {
 			school: {
 				departmentId: department.id,
 				facultyId: department.facultyId,
-				institutionId: department.institutionId
+				institutionId: department.institutionId,
+				year
 			},
 			user: user.getEmbedded(), courses
 		})

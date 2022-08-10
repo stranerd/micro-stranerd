@@ -14,6 +14,7 @@ export interface ClassToModel {
 		institutionId: string
 		facultyId: string
 		departmentId: string
+		year: number
 	}
 	description: string
 	photo: Media | null

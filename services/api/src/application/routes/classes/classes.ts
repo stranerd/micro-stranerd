@@ -1,6 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { ClassController } from '../../controllers/classes/classes'
-import { isVerified } from '@application/middlewares'
 
 export const classesRoutes: Route[] = [
 	{
@@ -44,7 +43,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes',
 		method: 'post',
 		controllers: [
-			requireAuthUser, isVerified,
+			requireAuthUser,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

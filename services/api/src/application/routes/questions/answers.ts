@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { AnswerController } from '../../controllers/questions/answers'
-import { isSubscribed } from '@application/middlewares/isSubscribed'
+import { isSubscribed } from '@application/middlewares'
 
 export const answersRoutes: Route[] = [
 	{

@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { PastQuestionController } from '../../controllers/school/pastQuestions'
-import { isAdmin } from '@application/middlewares/isAdmin'
+import { isAdmin } from '@application/middlewares'
 
 export const pastQuestionsRoutes: Route[] = [
 	{

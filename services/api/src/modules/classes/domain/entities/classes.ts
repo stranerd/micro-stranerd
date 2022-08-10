@@ -9,6 +9,7 @@ export class ClassEntity extends BaseEntity {
 		institutionId: string
 		facultyId: string
 		departmentId: string
+		year: number
 	}
 	public readonly description: string
 	public readonly photo: Media | null
@@ -19,18 +20,18 @@ export class ClassEntity extends BaseEntity {
 	public readonly updatedAt: number
 
 	constructor ({
-		             id,
-		             user,
-		             name,
-		             school,
-		             description,
-		             photo,
-		             users,
-		             requests,
-		             courses,
-		             createdAt,
-		             updatedAt
-	             }: ClassConstructorArgs) {
+					 id,
+					 user,
+					 name,
+					 school,
+					 description,
+					 photo,
+					 users,
+					 requests,
+					 courses,
+					 createdAt,
+					 updatedAt
+				 }: ClassConstructorArgs) {
 		super()
 		this.id = id
 		this.user = user
@@ -58,6 +59,7 @@ type ClassConstructorArgs = {
 		institutionId: string
 		facultyId: string
 		departmentId: string
+		year: number
 	}
 	description: string
 	photo: Media | null

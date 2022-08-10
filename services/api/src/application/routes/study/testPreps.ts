@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { TestPrepController } from '../../controllers/study/testPreps'
-import { isAdmin } from '@application/middlewares/isAdmin'
+import { isAdmin } from '@application/middlewares'
 
 export const testPrepsRoutes: Route[] = [
 	{

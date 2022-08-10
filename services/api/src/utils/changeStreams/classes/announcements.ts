@@ -31,7 +31,7 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 			const { results } = await EventsUseCases.get({
 				where: [{ field: 'data.announcementId', value: before.id }]
 			})
-			const event = results[0] ?? null
+			const event = results.at(0) ?? null
 			if (event) {
 				if (after.reminder) await EventsUseCases.update({
 					title: after.body,
@@ -52,7 +52,7 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 			const { results } = await EventsUseCases.get({
 				where: [{ field: 'data.announcementId', value: before.id }]
 			})
-			const event = results[0] ?? null
+			const event = results.at(0) ?? null
 			if (event) await EventsUseCases.delete({ classId: event.classId, id: event.id, userId: event.id })
 		}
 	}

@@ -9,8 +9,6 @@ services:
     command: "sh ./wait-for-it.sh redis:6379 mongodb:27017 rabbitmq:5672 -- yarn dev"
 
   mongodb:
-    ports:
-      - '27017:27017'
     restart: unless-stopped
 
   mongodb-express:

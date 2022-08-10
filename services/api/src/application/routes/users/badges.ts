@@ -10,7 +10,7 @@ export const badgesRoutes: Route[] = [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await BadgesController.findBadge(req)
+					result: await BadgesController.get(req)
 				}
 			})
 		]

@@ -1,5 +1,4 @@
 import { IBadgeRepository } from '../irepositories/badges'
-import { QueryParams } from '@utils/commons'
 import { CountStreakBadges } from '../types/badges'
 import { RankTypes } from '../entities/ranks'
 
@@ -10,12 +9,8 @@ export class BadgesUseCase {
 		this.repository = repo
 	}
 
-	async find (id: string) {
-		return await this.repository.findBadge(id)
-	}
-
-	async get (input: QueryParams) {
-		return await this.repository.getBadges(input)
+	async get (id: string) {
+		return await this.repository.get(id)
 	}
 
 	async recordCountStreak (input: { userId: string, activity: CountStreakBadges, add: boolean }) {

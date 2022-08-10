@@ -1,5 +1,13 @@
 import { AuthUsersUseCases } from '@modules/auth'
-import { NotFoundError, Request, SupportedAuthRoles, validate, Validation, verifyAccessToken } from '@utils/commons'
+import {
+	BadRequestError,
+	NotFoundError,
+	Request,
+	SupportedAuthRoles,
+	validate,
+	Validation,
+	verifyAccessToken
+} from '@utils/commons'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
@@ -50,6 +58,7 @@ export class UserController {
 			value: { required: true, rules: [Validation.isBoolean] },
 			userId: { required: true, rules: [Validation.isString] }
 		})
+		if (req.authUser!.id === userId) throw new BadRequestError('You cannot modify your own roles')
 
 		return await AuthUsersUseCases.updateUserRole({
 			userId, roles: { [role]: value }

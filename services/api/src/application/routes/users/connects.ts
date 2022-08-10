@@ -1,6 +1,6 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
 import { ConnectsController } from '../../controllers/users/connects'
-import { isSubscribed } from '@application/middlewares/isSubscribed'
+import { isSubscribed } from '@application/middlewares'
 
 export const connectsRoutes: Route[] = [
 	{
