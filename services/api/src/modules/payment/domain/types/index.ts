@@ -1,6 +1,9 @@
 export enum Currencies {
-	NGN = 'NGN',
-	USD = 'USD'
+	NGN = 'NGN'
+}
+
+export enum CurrencyCountries {
+	NG = 'NG'
 }
 
 export enum TransactionStatus {
@@ -53,3 +56,10 @@ export enum PlanDataType {
 }
 
 export type PlanData = Record<PlanDataType, number>
+
+export type AccountDetails = {
+	country: CurrencyCountries
+	number: string
+	bankCode: string
+	bankName: string
+}

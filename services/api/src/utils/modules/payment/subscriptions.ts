@@ -86,8 +86,7 @@ export const renewSubscription = async (userId: string) => {
 
 export const cancelSubscription = async (userId: string) => {
 	const wallet = await WalletsUseCases.get(userId)
-	if (!wallet) return
-	await WalletsUseCases.updateSubscription({
+	return await WalletsUseCases.updateSubscription({
 		id: wallet.id, data: { next: null }
 	})
 }

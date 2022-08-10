@@ -16,6 +16,31 @@ export const walletsRoutes: Route[] = [
 		]
 	},
 	{
+		path: '/payment/wallets/banks/:country',
+		method: 'get',
+		controllers: [
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await WalletsController.getBanks(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/payment/wallets/account',
+		method: 'post',
+		controllers: [
+			requireAuthUser,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await WalletsController.updateAccount(req)
+				}
+			})
+		]
+	},
+	{
 		path: '/payment/wallets/subscriptions',
 		method: 'post',
 		controllers: [

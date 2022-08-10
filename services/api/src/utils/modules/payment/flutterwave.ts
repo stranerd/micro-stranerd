@@ -1,6 +1,6 @@
 import FlutterwaveNode from 'flutterwave-node-v3'
 import { flutterwaveConfig } from '@utils/environment'
-import { Currencies } from '@modules/payment'
+import { Currencies, CurrencyCountries } from '@modules/payment'
 
 const flw = new FlutterwaveNode(flutterwaveConfig.publicKey, flutterwaveConfig.secretKey)
 
@@ -21,8 +21,8 @@ type FwTransaction = {
 		expiry: string
 	},
 	customer: {
-		id: number,
-		email: string,
+		id: number
+		email: string
 	}
 }
 
@@ -38,6 +38,12 @@ type ChargeCardData = {
 	amount: number
 	email: string
 	tx_ref: string
+}
+
+type Bank = {
+	id: number
+	code: string
+	name: string
 }
 
 export class FlutterwavePayment {
@@ -59,5 +65,15 @@ export class FlutterwavePayment {
 	static async chargeCard (data: ChargeCardData) {
 		const res = await flw.Tokenized.charge(data).catch(() => null)
 		return res?.data as FwTransaction | null
+	}
+
+	static async getBanks (country: CurrencyCountries) {
+		const res = await flw.CustomRequest.custom(`v3/banks/${country}`, { method: 'GET' }).catch(() => null)
+		return res?.body?.data as Bank[] ?? []
+	}
+
+	static async verifyAccount ({ number, bankCode }: { number: string, bankCode: string }) {
+		const res = await flw.Misc.verify_Account({ account_number: number, account_bank: bankCode }).catch(() => null)
+		return !!res?.data
 	}
 }
