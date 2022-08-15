@@ -1,6 +1,6 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/commons'
-import { generateAuthOutput } from '@utils/modules/auth'
+import { generateAuthOutput, verifyReferrer } from '@utils/modules/auth'
 import { UploaderUseCases } from '@modules/storage'
 
 export class EmailsController {
@@ -44,7 +44,8 @@ export class EmailsController {
 		})
 		const photo = userPhoto ? await UploaderUseCases.upload('profiles/photos', userPhoto) : null
 		const validateData = {
-			firstName, lastName, email, password, photo, description, referrer
+			firstName, lastName, email, password, photo, description,
+			referrer: await verifyReferrer(referrer) ? referrer : null
 		}
 
 		const updatedUser = user

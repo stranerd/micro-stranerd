@@ -1,6 +1,6 @@
 import { AuthUseCases } from '@modules/auth'
 import { Request, validate, Validation } from '@utils/commons'
-import { generateAuthOutput } from '@utils/modules/auth'
+import { generateAuthOutput, verifyReferrer } from '@utils/modules/auth'
 
 export class IdentitiesController {
 	static async googleSignIn (req: Request) {
@@ -14,7 +14,10 @@ export class IdentitiesController {
 			referrer: { required: true, nullable: true, rules: [Validation.isString] }
 		})
 
-		const data = await AuthUseCases.googleSignIn(validatedData)
+		const data = await AuthUseCases.googleSignIn({
+			...validatedData,
+			referrer: await verifyReferrer(validatedData.referrer) ? validatedData.referrer : null
+		})
 		return await generateAuthOutput(data)
 	}
 }
