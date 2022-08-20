@@ -7,7 +7,8 @@ import {
 	QueryParams,
 	Request,
 	validate,
-	Validation
+	Validation,
+	ValidationError
 } from '@utils/commons'
 
 export class SchemeController {
@@ -36,6 +37,13 @@ export class SchemeController {
 			start: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
 			end: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(req.body.start)] }
 		})
+
+		const classInst = await ClassesUseCases.find(req.params.classId)
+		if (!classInst) throw new BadRequestError('class not found')
+		if (!classInst.courses.includes(title)) throw new ValidationError([{
+			messages: ['is not a class course'],
+			field: 'title'
+		}])
 
 		const updatedScheme = await SchemesUseCases.update({
 			id: req.params.id,
@@ -70,6 +78,10 @@ export class SchemeController {
 		const classInst = await ClassesUseCases.find(classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
+		if (!classInst.courses.includes(title)) throw new ValidationError([{
+			messages: ['is not a class course'],
+			field: 'title'
+		}])
 
 		return await SchemesUseCases.add({
 			title, topic, start, end, classId,

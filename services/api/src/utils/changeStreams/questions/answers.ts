@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks, EventTypes, Validation } from '@utils/commons'
 import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import {
@@ -35,9 +35,9 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		const question = await QuestionsUseCases.find(after.questionId)
 		if (question) {
 			await sendNotification([question.user.id], {
-				title: 'New Answer',
-				body: 'Your question has been answered. Go have a look',
-				data: { type: NotificationType.answers, questionId: after.questionId, answerId: after.id },
+				title: `${question.user.bio.fullName} answered your question`,
+				body: Validation.extractTextFromHTML(after.body),
+				data: { type: NotificationType.NewAnswer, questionId: after.questionId, answerId: after.id },
 				sendEmail: true
 			})
 		}

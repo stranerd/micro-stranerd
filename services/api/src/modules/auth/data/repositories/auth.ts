@@ -131,8 +131,7 @@ export class AuthRepository implements IAuthRepository {
 
 		const names = (data.name ?? '').split(' ')
 		const firstName = names[0] ?? ''
-		// const middleName = (names.length > 2 ? names[1] : '') ?? ''
-		const lastName = (names.length > 1 ? names.reverse()[0] : '') ?? ''
+		const lastName = names.length > 1 ? names.at(-1) : ''
 		const email = data.email!.toLowerCase()
 
 		const photo = data.picture ? {

@@ -42,11 +42,7 @@ export class ConnectRepository implements IConnectRepository {
 
 	async accept ({ id, userId, accept }: { id: string, userId: string, accept: boolean }) {
 		const filter = { _id: id, 'to.id': userId, pending: true, accepted: false }
-		if (accept) {
-			const connect = await Connect.findOneAndUpdate(filter, { $set: { accepted: true, pending: false } })
-			return !!connect
-		}
-		const connect = await Connect.findOneAndDelete(filter)
+		const connect = await Connect.findOneAndUpdate(filter, { $set: { accepted: accept, pending: false } })
 		return !!connect
 	}
 

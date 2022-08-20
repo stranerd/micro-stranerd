@@ -48,11 +48,16 @@ export const unScheduleEvent = async (event: EventEntity) => {
 export const broadcastEvent = async (eventId: string, timeInMin: number) => {
 	const { results: [event] } = await EventsUseCases.get({ where: [{ field: 'id', value: eventId }] })
 	if (!event) return
-	let body = ''
-	if (event.data.type === EventType.timetable) body = timeInMin > 0 ? `Reminder: ${event.title} will start in ${timeInMin} minutes` : `Reminder: ${event.title} is starting now`
-	else body = timeInMin > 0 ? `Reminder: ${event.title} ends in ${timeInMin} minutes` : `Reminder: ${event.title} is ending now`
-	await sendNotification(event.getAllUsers(), {
-		title: 'Class Event', body, sendEmail: false,
-		data: { type: NotificationType.classEvents, eventId: event.id, classId: event.classId }
+	if (event.data.type === EventType.timetable) await sendNotification(event.getAllUsers(), {
+		title: `${timeInMin > 0 ? `In ${timeInMin} minutes` : 'Now'}`,
+		sendEmail: false,
+		body: event.title,
+		data: { type: NotificationType.NewClassTimetableEvent, eventId: event.id, classId: event.classId, timeInMin }
+	})
+	else await sendNotification(event.getAllUsers(), {
+		title: `${timeInMin > 0 ? `In ${timeInMin} minutes` : 'Now'}`,
+		sendEmail: false,
+		body: event.title,
+		data: { type: NotificationType.NewClassOneOffEvent, eventId: event.id, classId: event.classId }
 	})
 }

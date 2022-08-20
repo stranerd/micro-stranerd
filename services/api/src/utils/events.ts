@@ -1,8 +1,7 @@
 import { appInstance, CronLikeJobs, CronTypes, DelayedJobs, Events, EventTypes } from '@utils/commons'
-import { NotificationsUseCases, NotificationType, UserRankings, UsersUseCases } from '@modules/users'
+import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { endSession, startSession } from '@utils/modules/messaging/sessions'
 import { SessionsUseCases } from '@modules/messaging'
-import { sendNotification } from '@utils/modules/users/notifications'
 import { TestsUseCases } from '@modules/study'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { EmailErrorsUseCases } from '@modules/emails'
@@ -23,7 +22,7 @@ export const subscribers = {
 			const session = await SessionsUseCases.find({ sessionId, userId })
 			if (session) await startSession(session)
 		}
-		if (data.type === DelayedJobs.ScheduledSessionNotification) {
+		/* if (data.type === DelayedJobs.ScheduledSessionNotification) {
 			const { sessionId, studentId, tutorId, timeInMin } = data.data
 			await sendNotification([studentId], {
 				title: 'Session Timer',
@@ -37,7 +36,7 @@ export const subscribers = {
 				data: { type: NotificationType.sessions, userId: studentId, sessionId },
 				sendEmail: false
 			})
-		}
+		} */
 		if (data.type === DelayedJobs.TestTimer) await TestsUseCases.update({
 			id: data.data.testId,
 			userId: data.data.userId,

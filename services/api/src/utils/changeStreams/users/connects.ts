@@ -1,7 +1,15 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { ConnectEntity, ConnectFromModel, UserMeta, UsersUseCases } from '@modules/users'
+import {
+	ConnectEntity,
+	ConnectFromModel,
+	ConnectsUseCases,
+	NotificationType,
+	UserMeta,
+	UsersUseCases
+} from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { ChatMetasUseCases, ChatType } from '@modules/messaging'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromModel, ConnectEntity> = {
 	created: async ({ after }) => {
@@ -9,6 +17,12 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 		await getSocketEmitter().emitCreated(`users/connects/${after.to.id}`, after)
 		await getSocketEmitter().emitCreated(`users/connects/${after.id}/${after.from.id}`, after)
 		await getSocketEmitter().emitCreated(`users/connects/${after.id}/${after.to.id}`, after)
+		await sendNotification([after.to.id], {
+			title: `${after.from.bio.fullName} is requesting to connect`,
+			sendEmail: false,
+			body: 'Check out their profile',
+			data: { type: NotificationType.ConnectRequested, connectId: after.id, userId: after.from.id }
+		})
 	},
 	updated: async ({ after, changes }) => {
 		await getSocketEmitter().emitUpdated(`users/connects/${after.from.id}`, after)
@@ -16,8 +30,8 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 		await getSocketEmitter().emitUpdated(`users/connects/${after.id}/${after.from.id}`, after)
 		await getSocketEmitter().emitUpdated(`users/connects/${after.id}/${after.to.id}`, after)
 
-		if (changes.accepted) await Promise.all([
-			await ChatMetasUseCases.add({
+		if (changes.pending && !after.pending) await Promise.all([
+			after.accepted && ChatMetasUseCases.add({
 				members: [after.from.id, after.to.id],
 				data: {
 					type: ChatType.personal,
@@ -27,12 +41,24 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 					}
 				}
 			}),
-			UsersUseCases.incrementMeta({
+			after.accepted && UsersUseCases.incrementMeta({
 				id: after.from.id, property: UserMeta.connects, value: after.accepted ? 1 : -1
 			}),
-			UsersUseCases.incrementMeta({
+			after.accepted && UsersUseCases.incrementMeta({
 				id: after.to.id, property: UserMeta.connects, value: after.accepted ? 1 : -1
-			})
+			}),
+			after.accepted ? sendNotification([after.from.id], {
+				title: `${after.from.bio.fullName} accepted your request`,
+				sendEmail: false,
+				body: 'Go message them!',
+				data: { type: NotificationType.ConnectAccepted, connectId: after.id, userId: after.to.id }
+			}) : sendNotification([after.from.id], {
+				title: `${after.from.bio.fullName} declined your request`,
+				sendEmail: false,
+				body: 'Try connecting later!',
+				data: { type: NotificationType.ConnectDeclined, connectId: after.id, userId: after.to.id }
+			}),
+			!after.accepted && ConnectsUseCases.delete({ id: after.id, userId: after.from.id })
 		])
 	},
 	deleted: async ({ before }) => {

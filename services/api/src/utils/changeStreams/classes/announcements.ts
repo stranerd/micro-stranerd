@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/commons'
-import { AnnouncementEntity, AnnouncementFromModel, ClassesUseCases, EventsUseCases, EventType } from '@modules/classes'
+import { AnnouncementEntity, AnnouncementFromModel, EventsUseCases, EventType } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
@@ -9,13 +9,10 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}`, after)
 		await getSocketEmitter().emitCreated(`classes/announcements/${after.classId}/${after.id}`, after)
 
-		const classInst = await ClassesUseCases.find(after.classId)
-		if (!classInst) return
-		const users = classInst.getAllUsers().filter((userId) => userId !== after.user.id)
-		await sendNotification(users, {
-			title: classInst.name,
+		await sendNotification(after.getAllUsers().filter((userId) => userId !== after.user.id), {
+			title: 'New announcement!',
 			body: after.body, sendEmail: false,
-			data: { type: NotificationType.classAnnouncements, classId: after.classId, announcementId: after.id }
+			data: { type: NotificationType.NewClassAnnouncement, classId: after.classId, announcementId: after.id }
 		})
 
 		if (after.reminder) await EventsUseCases.add({

@@ -7,7 +7,8 @@ import {
 	QueryParams,
 	Request,
 	validate,
-	Validation
+	Validation,
+	ValidationError
 } from '@utils/commons'
 import { getCronOrder } from '@utils/modules/classes/events'
 
@@ -62,6 +63,15 @@ export class EventController {
 			lecturer: { required: isTimetable, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
+		if (isTimetable) {
+			const classInst = await ClassesUseCases.find(req.params.classId)
+			if (!classInst) throw new BadRequestError('class not found')
+			if (!classInst.courses.includes(title)) throw new ValidationError([{
+				messages: ['is not a class course'],
+				field: 'title'
+			}])
+		}
+
 		const updatedEvent = await EventsUseCases.update({
 			id: req.params.id,
 			classId: req.params.classId,
@@ -100,6 +110,10 @@ export class EventController {
 		const classInst = await ClassesUseCases.find(classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
+		if (isTimetable && !classInst.courses.includes(title)) throw new ValidationError([{
+			messages: ['is not a class course'],
+			field: 'title'
+		}])
 
 		return await EventsUseCases.add({
 			title, classId, users: classInst.users, user: user.getEmbedded(),

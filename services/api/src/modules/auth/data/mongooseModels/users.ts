@@ -24,13 +24,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	firstName: {
 		type: String,
 		trim: true,
-		lowercase: true,
 		required: true
 	},
 	lastName: {
 		type: String,
 		trim: true,
-		lowercase: true,
 		required: false,
 		default: ''
 	},

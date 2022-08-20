@@ -63,7 +63,7 @@ export class ClassController {
 		const { name, departmentId, year, description, courses, photo: classPhoto } = validate({
 			name: req.body.name,
 			departmentId: req.body.school?.departmentId,
-			year: req.body.year,
+			year: req.body.school?.year,
 			description: req.body.description,
 			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: req.files.photo?.[0] ?? null
