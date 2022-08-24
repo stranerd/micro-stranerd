@@ -135,7 +135,8 @@ export class EventController {
 	static async MarkRead (req: Request) {
 		return await EventsUseCases.markRead({
 			classId: req.params.classId,
-			userId: req.authUser!.id
+			userId: req.authUser!.id,
+			type: req.body.type
 		})
 	}
 }

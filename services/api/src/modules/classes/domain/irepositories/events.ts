@@ -1,7 +1,7 @@
 import { EventEntity } from '../entities/events'
 import { EventToModel } from '../../data/models/events'
 import { QueryParams, QueryResults } from '@utils/commons'
-import { ClassUsers, EmbeddedUser } from '../types'
+import { ClassUsers, EmbeddedUser, EventType } from '../types'
 
 export interface IEventRepository {
 	add: (data: EventToModel) => Promise<EventEntity>
@@ -13,5 +13,5 @@ export interface IEventRepository {
 	updateUsers: (classId: string, users: Record<ClassUsers, string[]>) => Promise<boolean>
 	deleteClassEvents: (classId: string) => Promise<boolean>
 	updateTaskIds: (id: string, data: { taskIds: string[], add: boolean }) => Promise<void>
-	markRead: (classId: string, userId: string) => Promise<boolean>
+	markRead: (classId: string, userId: string, type: EventType) => Promise<boolean>
 }

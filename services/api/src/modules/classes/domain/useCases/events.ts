@@ -1,7 +1,7 @@
 import { EventToModel } from '../../data/models/events'
 import { IEventRepository } from '../irepositories/events'
 import { QueryParams } from '@utils/commons'
-import { ClassUsers, EmbeddedUser } from '../types'
+import { ClassUsers, EmbeddedUser, EventType } from '../types'
 
 export class EventsUseCase {
 	private repository: IEventRepository
@@ -46,7 +46,7 @@ export class EventsUseCase {
 		return await this.repository.updateTaskIds(input.id, input.data)
 	}
 
-	async markRead (input: { classId: string, userId: string }) {
-		return await this.repository.markRead(input.classId, input.userId)
+	async markRead (input: { classId: string, userId: string, type: EventType }) {
+		return await this.repository.markRead(input.classId, input.userId, input.type)
 	}
 }

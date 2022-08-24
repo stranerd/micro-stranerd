@@ -3,7 +3,7 @@ import { EventMapper } from '../mappers/events'
 import { EventFromModel, EventToModel } from '../models/events'
 import { Event } from '../mongooseModels/events'
 import { parseQueryParams, QueryParams } from '@utils/commons'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
+import { ClassUsers, EmbeddedUser, EventType } from '../../domain/types'
 
 export class EventRepository implements IEventRepository {
 	private static instance: EventRepository
@@ -77,10 +77,10 @@ export class EventRepository implements IEventRepository {
 		})
 	}
 
-	async markRead (classId: string, userId: string) {
+	async markRead (classId: string, userId: string, type: EventType) {
 		const readAt = Date.now()
 		const events = await Event.updateMany(
-			{ classId, [`readAt.${userId}`]: null },
+			{ classId, [`readAt.${userId}`]: null, 'data.type': type },
 			{ $set: { [`readAt.${userId}`]: readAt } }
 		)
 		return events.acknowledged
