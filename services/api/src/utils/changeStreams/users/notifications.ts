@@ -27,7 +27,7 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 				})
 				await publishers[EventTypes.SENDMAIL].publish({
 					from: EmailsList.NO_REPLY, to: user.bio.email, subject: after.title,
-					content, data: { attachments: { logoWhite: true } }
+					content, data: {}
 				})
 			}
 		}

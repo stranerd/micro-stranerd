@@ -32,14 +32,10 @@ export class DepartmentController {
 
 	static async UpdateDepartment (req: Request) {
 		const data = validate({
-			name: req.body.name,
-			tagId: req.body.tagId
+			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			tagId: { required: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
 		})
-		const tag = await TagsUseCases.find(data.tagId)
-		if (!tag || tag.type !== TagTypes.departments) throw new BadRequestError('invalid tagId')
 
 		const updatedDepartment = await DepartmentsUseCases.update({ id: req.params.id, data })
 		if (updatedDepartment) return updatedDepartment

@@ -17,20 +17,10 @@ export const sendMail = async (email: TypedEmail) => {
 
 	const attachments = [] as { filename: string, path: string, cid: string }[]
 
-	if (email.data.attachments?.logoWhite) attachments.push({
-		filename: 'logo-white.png',
-		path: path.join('emails/attachments/logo-white.png'),
-		cid: 'logo-white'
-	})
-	if (email.data.attachments?.logoBlue) attachments.push({
-		filename: 'logo-blue.png',
-		path: path.join('emails/attachments/logo-blue.png'),
-		cid: 'logo-blue'
-	})
-	if (email.data.attachments?.icon) attachments.push({
-		filename: 'icon.png',
-		path: path.join('emails/attachments/icon.png'),
-		cid: 'icon'
+	attachments.push({
+		filename: 'logo.png',
+		path: path.join('emails/attachments/logo.png'),
+		cid: 'logo'
 	})
 
 	await transporter.sendMail({
