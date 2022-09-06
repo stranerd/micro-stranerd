@@ -58,6 +58,7 @@ export const subscribeToPlan = async (userId: string, subscriptionId: string) =>
 	if (!user) throw new BadRequestError('profile not found')
 	const subscription = await PlansUseCases.find(subscriptionId)
 	if (!subscription) throw new BadRequestError('subscription not found')
+	if (!subscription.active) throw new BadRequestError('you cant subscribe to this plan currently')
 	const { results: cards } = await CardsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
@@ -74,7 +75,7 @@ export const renewSubscription = async (userId: string) => {
 	const user = await UsersUseCases.find(userId)
 	if (!user) return await deactivateSub(wallet.id)
 	const subscription = await PlansUseCases.find(wallet.subscription.next.id)
-	if (!subscription) return await deactivateSub(wallet.id)
+	if (!subscription || !subscription.active) return await deactivateSub(wallet.id)
 	const { results: cards } = await CardsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})

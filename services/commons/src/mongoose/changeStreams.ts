@@ -39,50 +39,56 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 			const cacheName = `streams-${streamId}`
 			const cached = await Instance.getInstance().cache.setInTransaction(cacheName, streamId, 15)
 			if (cached[0]) return
-			await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
+			addWaitBeforeExit((async () => {
+				await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
 
-			if (data.operationType === 'insert') {
-				// @ts-ignore
-				const _id = data.documentKey!._id
-				const after = data.fullDocument as Model
-				const { value } = await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
-					upsert: true,
-					returnDocument: 'after'
-				})
-				if (value) addWaitBeforeExit(callbacks.created?.({
-					before: null,
-					after: mapper(new collection(after))!
-				}))
-			}
+				if (data.operationType === 'insert') {
+					// @ts-ignore
+					const _id = data.documentKey!._id
+					const after = data.fullDocument as Model
+					const { value } = await getClone().findOneAndUpdate({ _id }, { $set: { ...after, _id } }, {
+						upsert: true,
+						returnDocument: 'after'
+					})
+					if (value) callbacks.created?.({
+						before: null,
+						after: mapper(new collection(after))!
+					})
+				}
 
-			if (data.operationType === 'delete') {
-				// @ts-ignore
-				const _id = data.documentKey!._id
-				const { value: before } = await getClone().findOneAndDelete({ _id })
-				if (before) addWaitBeforeExit(callbacks.deleted?.({
-					before: mapper(new collection(before))!,
-					after: null
-				}))
-			}
+				if (data.operationType === 'delete') {
+					// @ts-ignore
+					const _id = data.documentKey!._id
+					const { value: before } = await getClone().findOneAndDelete({ _id })
+					if (before) callbacks.deleted?.({
+						before: mapper(new collection(before))!,
+						after: null
+					})
+				}
 
-			if (data.operationType === 'update') {
-				// @ts-ignore
-				const _id = data.documentKey!._id
-				const after = data.fullDocument as Model
-				const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
-				// @ts-ignore
-				const { updatedFields = {}, removedFields = [], truncatedArrays = [] } = data.updateDescription ?? {}
-				const changed = removedFields
-					.map((f) => f.toString())
-					.concat(truncatedArrays.map((a) => a.field))
-					.concat(Object.keys(updatedFields))
-				const changes = getObjectsFromKeys(changed)
-				if (before) addWaitBeforeExit(callbacks.updated?.({
-					before: mapper(new collection(before))!,
-					after: mapper(new collection(after))!,
-					changes
-				}))
-			}
+				if (data.operationType === 'update') {
+					// @ts-ignore
+					const _id = data.documentKey!._id
+					const after = data.fullDocument as Model
+					const { value: before } = await getClone().findOneAndUpdate({ _id }, { $set: after }, { returnDocument: 'before' })
+					// @ts-ignore
+					const {
+						updatedFields = {},
+						removedFields = [],
+						truncatedArrays = []
+					} = data.updateDescription ?? {}
+					const changed = removedFields
+						.map((f) => f.toString())
+						.concat(truncatedArrays.map((a) => a.field))
+						.concat(Object.keys(updatedFields))
+					const changes = getObjectsFromKeys(changed)
+					if (before) callbacks.updated?.({
+						before: mapper(new collection(before))!,
+						after: mapper(new collection(after))!,
+						changes
+					})
+				}
+			})())
 		})
 		.on('error', async (err) => {
 			await Instance.getInstance().logger.error(`Change Stream errored out: ${dbName}: ${err.message}`)
