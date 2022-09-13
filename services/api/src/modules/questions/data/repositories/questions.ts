@@ -44,17 +44,20 @@ export class QuestionRepository implements IQuestionRepository {
 		return this.mapper.mapFrom(question)
 	}
 
-	async updateBestAnswer (id: string, answerId: string, userId: string, add: boolean) {
+	async updateBestAnswer (questionId: string, answerId: string, userId: string, add: boolean) {
 		const session = await mongoose.startSession()
 		let res = null as any
 		await session.withTransaction(async (session) => {
 			const question = await Question.findOneAndUpdate({
-				_id: id, 'user.id': userId,
+				_id: questionId, 'user.id': userId,
 				...(add ? { [`bestAnswers.${BEST_ANSWERS_COUNT}`]: { $exists: false } } : { 'bestAnswers': answerId })
 			}, {
 				[add ? '$addToSet' : 'pull']: { bestAnswers: answerId }
 			}, { session, new: true })
-			const answer = question ? await Answer.findByIdAndUpdate(answerId, { $set: { best: add } }, {
+			const answer = question ? await Answer.findOneAndUpdate({
+				_id: answerId,
+				questionId
+			}, { $set: { best: add } }, {
 				session, new: true
 			}) : null
 			res = !!question && !!answer

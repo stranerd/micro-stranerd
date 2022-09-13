@@ -1,4 +1,4 @@
-import { QuestionsUseCases } from '@modules/questions'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
 import { TagsUseCases, TagTypes } from '@modules/interactions'
@@ -68,7 +68,9 @@ export class QuestionController {
 		})
 
 		const question = await QuestionsUseCases.find(req.params.id)
+		const answer = await AnswersUseCases.find(answerId)
 		if (!question) throw new BadRequestError('question not found')
+		if (!answer || answer.questionId !== question.id) throw new BadRequestError('invalid answer')
 		if (question.user.id !== authUserId) throw new NotAuthorizedError()
 		if (question.isAnswered) throw new BadRequestError('question is already answered')
 		if (question.bestAnswers.find((a) => a === answerId)) throw new BadRequestError('answer is already marked best answer')
