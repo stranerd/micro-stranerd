@@ -1,7 +1,7 @@
 import { ChatMetaFromModel, ChatMetaToModel } from '../models/chatMeta'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
 import { ChatMapper } from './chat'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class ChatMetaMapper extends BaseMapper<ChatMetaFromModel, ChatMetaToModel, ChatMetaEntity> {
 	mapFrom (model: ChatMetaFromModel | null) {

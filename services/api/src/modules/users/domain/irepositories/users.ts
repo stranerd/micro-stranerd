@@ -1,6 +1,6 @@
 import { UserEntity } from '../entities/users'
 import { ScoreRewards, UserAccount, UserBio, UserRoles, UserSchoolData } from '../types'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface IUserRepository {
 	getUsers (query: QueryParams): Promise<QueryResults<UserEntity>>

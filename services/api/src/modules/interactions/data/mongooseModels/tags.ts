@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { TagFromModel } from '../models/tags'
 import { TagChangeStreamCallbacks } from '@utils/changeStreams/interactions/tags'
 import { TagEntity } from '../../domain/entities/tags'

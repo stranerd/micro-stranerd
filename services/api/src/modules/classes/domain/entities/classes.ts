@@ -1,5 +1,5 @@
 import { ClassUsers, EmbeddedUser, Media } from '../types'
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 
 export class ClassEntity extends BaseEntity {
 	public readonly id: string
@@ -20,18 +20,18 @@ export class ClassEntity extends BaseEntity {
 	public readonly updatedAt: number
 
 	constructor ({
-					 id,
-					 user,
-					 name,
-					 school,
-					 description,
-					 photo,
-					 users,
-					 requests,
-					 courses,
-					 createdAt,
-					 updatedAt
-				 }: ClassConstructorArgs) {
+		             id,
+		             user,
+		             name,
+		             school,
+		             description,
+		             photo,
+		             users,
+		             requests,
+		             courses,
+		             createdAt,
+		             updatedAt
+	             }: ClassConstructorArgs) {
 		super()
 		this.id = id
 		this.user = user

@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { EventEntity, EventFromModel, EventsUseCases, EventType } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { scheduleEvent, unScheduleEvent } from '@utils/modules/classes/events'

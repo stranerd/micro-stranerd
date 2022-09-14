@@ -1,7 +1,7 @@
 import { IReferralRepository } from '../../domain/irepositories/referrals'
 import { ReferralMapper } from '../mappers/referrals'
 import { Referral } from '../mongooseModels/referrals'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ReferralFromModel, ReferralToModel } from '../models/referrals'
 
 export class ReferralRepository implements IReferralRepository {

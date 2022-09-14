@@ -1,5 +1,5 @@
 import { EmbeddedUser } from '@modules/users'
-import { MediaOutput } from '@utils/commons'
+import { MediaOutput } from '@utils/app/package'
 import { EmbeddedGroup } from '@modules/classes'
 
 export { EmbeddedUser, EmbeddedGroup }

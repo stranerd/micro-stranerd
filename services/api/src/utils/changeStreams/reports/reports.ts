@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { ReportEntity, ReportFromModel } from '@modules/reports'
 import { getSocketEmitter } from '@index'
 

@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ChatMetaFromModel } from '../models/chatMeta'
 import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/messaging/chatMetas'
 import { ChatMetaMapper } from '../mappers/chatMeta'

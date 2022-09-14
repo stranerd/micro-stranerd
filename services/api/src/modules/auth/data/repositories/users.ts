@@ -2,7 +2,7 @@ import { IUserRepository } from '../../domain/irepositories/users'
 import { RegisterInput, RoleInput, UserUpdateInput } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { UserFromModel } from '../models/users'
-import { AuthTypes, Hash, NotFoundError, parseQueryParams, QueryParams } from '@utils/commons'
+import { AuthTypes, Hash, NotFoundError, parseQueryParams, QueryParams } from '@utils/app/package'
 import User from '../mongooseModels/users'
 
 export class UserRepository implements IUserRepository {

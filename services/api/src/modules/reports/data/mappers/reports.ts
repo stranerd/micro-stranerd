@@ -1,5 +1,5 @@
 import { ReportEntity } from '../../domain/entities/reports'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 
 export class ReportMapper extends BaseMapper<ReportFromModel, ReportToModel, ReportEntity> {

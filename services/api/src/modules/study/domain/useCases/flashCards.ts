@@ -1,6 +1,6 @@
 import { FlashCardToModel } from '../../data/models/flashCards'
 import { IFlashCardRepository } from '../irepositories/flashCards'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export class FlashCardsUseCase {

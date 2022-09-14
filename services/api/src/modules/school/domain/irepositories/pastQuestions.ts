@@ -1,6 +1,6 @@
 import { PastQuestionEntity } from '../entities/pastQuestions'
 import { PastQuestionToModel } from '../../data/models/pastQuestions'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface IPastQuestionRepository {
 	add: (data: PastQuestionToModel) => Promise<PastQuestionEntity>

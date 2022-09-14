@@ -1,6 +1,6 @@
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { NoteEntity } from '../../domain/entities/notes'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class NoteMapper extends BaseMapper<NoteFromModel, NoteToModel, NoteEntity> {
 	mapFrom (model: NoteFromModel | null) {

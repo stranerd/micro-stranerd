@@ -1,6 +1,6 @@
 import { SetToModel } from '../../data/models/sets'
 import { ISetRepository } from '../irepositories/sets'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser, SetSaved } from '../types'
 
 export class SetsUseCase {

@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { MessageController } from '@application/controllers/meta/messages'
 
 export const messagesRoutes: Route[] = [

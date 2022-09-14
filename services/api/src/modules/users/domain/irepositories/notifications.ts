@@ -1,6 +1,6 @@
 import { NotificationEntity } from '../entities/notifications'
 import { NotificationToModel } from '../../data/models/notifications'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface INotificationRepository {
 	findNotification (data: { userId: string, id: string }): Promise<NotificationEntity | null>

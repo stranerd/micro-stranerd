@@ -2,7 +2,7 @@ import { InstitutionEntity } from '../../domain/entities/institutions'
 import { IInstitutionRepository } from '../../domain/irepositories/institutions'
 import { InstitutionMapper } from '../mappers/institutions'
 import { InstitutionFromModel, InstitutionToModel } from '../models/institutions'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Institution } from '../mongooseModels/institutions'
 
 export class InstitutionRepository implements IInstitutionRepository {

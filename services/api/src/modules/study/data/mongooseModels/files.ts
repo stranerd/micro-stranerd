@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { FileFromModel } from '../models/files'
 import { FileChangeStreamCallbacks } from '@utils/changeStreams/study/files'
 import { FileEntity } from '../../domain/entities/files'

@@ -1,5 +1,5 @@
 import { RegisterInput, RoleInput, UserUpdateInput } from '../types'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { AuthUserEntity } from '../entities/users'
 
 export interface IUserRepository {

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, Media, QuestionMeta } from '../types'
 
 export const BEST_ANSWERS_COUNT = 1

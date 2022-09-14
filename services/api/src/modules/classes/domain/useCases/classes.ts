@@ -1,6 +1,6 @@
 import { ClassToModel } from '../../data/models/classes'
 import { IClassRepository } from '../irepositories/classes'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export class ClassesUseCase {

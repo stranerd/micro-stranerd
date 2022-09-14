@@ -1,6 +1,6 @@
 import { QuestionEntity } from '../entities/questions'
 import { QuestionToModel } from '../../data/models/questions'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser, QuestionMetaType } from '../types'
 
 export interface IQuestionRepository {

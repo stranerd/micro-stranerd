@@ -8,7 +8,7 @@ import {
 	Request,
 	validate,
 	Validation
-} from '@utils/commons'
+} from '@utils/app/package'
 
 export class GroupController {
 	static async FindGroup (req: Request) {

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { ChatEntity } from './chat'
 import { ChatData, ChatMetaData, ChatType } from '../types'
 

@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { GroupController } from '../../controllers/classes/groups'
 
 export const groupsRoutes: Route[] = [

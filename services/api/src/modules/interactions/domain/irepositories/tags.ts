@@ -1,4 +1,4 @@
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { TagToModel } from '../../data/models/tags'
 import { TagEntity } from '../entities/tags'
 

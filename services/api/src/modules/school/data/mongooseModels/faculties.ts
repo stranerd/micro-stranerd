@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { FacultyFromModel } from '../models/faculties'
 import { FacultyChangeStreamCallbacks } from '@utils/changeStreams/school/faculties'
 import { FacultyEntity } from '../../domain/entities/faculties'

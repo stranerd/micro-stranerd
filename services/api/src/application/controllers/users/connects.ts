@@ -7,7 +7,7 @@ import {
 	Request,
 	validate,
 	Validation
-} from '@utils/commons'
+} from '@utils/app/package'
 
 export class ConnectsController {
 	static async find (req: Request) {

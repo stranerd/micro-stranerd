@@ -1,6 +1,6 @@
 import { TestPrepFromModel, TestPrepToModel } from '../models/testPreps'
 import { TestPrepEntity } from '../../domain/entities/testPreps'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class TestPrepMapper extends BaseMapper<TestPrepFromModel, TestPrepToModel, TestPrepEntity> {
 	mapFrom (model: TestPrepFromModel | null) {

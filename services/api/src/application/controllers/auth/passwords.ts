@@ -1,6 +1,6 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { generateAuthOutput } from '@utils/modules/auth'
-import { BadRequestError, Hash, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { BadRequestError, Hash, Request, validate, Validation, ValidationError } from '@utils/app/package'
 
 export class PasswordsController {
 	static async sendResetMail (req: Request) {

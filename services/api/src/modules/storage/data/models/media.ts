@@ -1,3 +1,3 @@
-import { MediaOutput, StorageFile } from '@utils/commons'
+import { MediaOutput, StorageFile } from '@utils/app/package'
 
 export { MediaOutput, StorageFile as MediaInput }

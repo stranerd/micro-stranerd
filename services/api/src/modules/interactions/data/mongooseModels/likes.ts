@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { LikeFromModel } from '../models/likes'
 import { LikeChangeStreamCallbacks } from '@utils/changeStreams/interactions/likes'
 import { LikeEntity } from '../../domain/entities/likes'

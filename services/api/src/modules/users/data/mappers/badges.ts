@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { BadgeEntity } from '../../domain/entities/badges'
 import { BadgeFromModel, BadgeToModel } from '../models/badges'
 

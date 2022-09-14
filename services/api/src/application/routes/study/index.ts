@@ -1,4 +1,4 @@
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 import { flashcardsRoutes } from './flashCards'
 import { notesRoutes } from './notes'
 import { filesRoutes } from './files'

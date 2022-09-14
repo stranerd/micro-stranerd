@@ -1,6 +1,6 @@
 import { EventEntity, EventsUseCases, EventType } from '@modules/classes'
-import { appInstance } from '@utils/commons'
-import { CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/types'
+import { appInstance } from '@utils/app/types'
+import { CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/app/types'
 import { addCron, getCronString } from '@utils/modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'

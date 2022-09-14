@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { TestPrepFromModel } from '../models/testPreps'
 import { TestPrepChangeStreamCallbacks } from '@utils/changeStreams/study/testPreps'
 import { TestPrepEntity } from '../../domain/entities/testPreps'

@@ -2,7 +2,7 @@ import { TestPrepEntity } from '../../domain/entities/testPreps'
 import { ITestPrepRepository } from '../../domain/irepositories/testPreps'
 import { TestPrepMapper } from '../mappers/testPreps'
 import { TestPrepFromModel, TestPrepToModel } from '../models/testPreps'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { TestPrep } from '../mongooseModels/testPreps'
 
 export class TestPrepRepository implements ITestPrepRepository {

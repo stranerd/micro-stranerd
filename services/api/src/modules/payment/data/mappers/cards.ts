@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { CardEntity } from '../../domain/entities/cards'
 import { CardFromModel, CardToModel } from '../models/cards'
 

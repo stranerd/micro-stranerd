@@ -1,7 +1,7 @@
-import { OnJoinFn } from '@utils/commons'
+import { OnJoinFn } from '@utils/app/package'
 import { ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
-import { SupportedAuthRoles } from '@utils/types'
+import { SupportedAuthRoles } from '@utils/app/types'
 
 export const registerSockets = () => {
 	const isAdmin: OnJoinFn = async ({

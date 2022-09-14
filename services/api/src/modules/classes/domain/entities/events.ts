@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser, EventDataType } from '../types'
 
 export class EventEntity extends BaseEntity {

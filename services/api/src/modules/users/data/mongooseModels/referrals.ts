@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ReferralFromModel } from '../models/referrals'
 import { ReferralChangeStreamCallbacks } from '@utils/changeStreams/users/referrals'
 import { ReferralEntity } from '../../domain/entities/referrals'

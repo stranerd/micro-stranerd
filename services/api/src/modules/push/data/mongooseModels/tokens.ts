@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { TokenFromModel } from '../models/tokens'
 import { TokenChangeStreamCallbacks } from '@utils/changeStreams/push/tokens'
 import { TokenEntity } from '../../domain/entities/tokens'

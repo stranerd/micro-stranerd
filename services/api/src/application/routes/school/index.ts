@@ -3,7 +3,7 @@ import { departmentsRoutes } from './departments'
 import { facultiesRoutes } from './faculties'
 import { institutionsRoutes } from './institutions'
 import { pastQuestionsRoutes } from './pastQuestions'
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 
 export const schoolRoutes: Route[] = [
 	...coursesRoutes,

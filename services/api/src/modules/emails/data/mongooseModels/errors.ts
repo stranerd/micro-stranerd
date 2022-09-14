@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ErrorFromModel } from '../models/errors'
 import { ErrorChangeStreamCallbacks } from '@utils/changeStreams/emails/errors'
 import { ErrorEntity } from '../../domain/entities/errors'

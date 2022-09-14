@@ -1,4 +1,4 @@
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 import { badgesRoutes } from './badges'
 import { connectsRoutes } from './connects'
 import { notificationsRoutes } from './notifications'

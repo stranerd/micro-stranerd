@@ -2,7 +2,7 @@ import { ISetRepository } from '../../domain/irepositories/sets'
 import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser, SetSaved } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {

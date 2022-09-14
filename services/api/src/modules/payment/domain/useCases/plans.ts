@@ -1,4 +1,4 @@
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { IPlanRepository } from '../irepositories/plans'
 import { PlanToModel } from '../../data/models/plans'
 

@@ -1,6 +1,6 @@
 import { CardToModel } from '../../data/models/cards'
 import { CardEntity } from '../entities/cards'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface ICardRepository {
 	create: (data: CardToModel) => Promise<CardEntity>

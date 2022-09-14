@@ -2,7 +2,7 @@ import { INoteRepository } from '../../domain/irepositories/notes'
 import { NoteMapper } from '../mappers/notes'
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { Note } from '../mongooseModels/notes'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class NoteRepository implements INoteRepository {

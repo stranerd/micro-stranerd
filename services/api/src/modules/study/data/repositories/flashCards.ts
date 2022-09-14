@@ -2,7 +2,7 @@ import { IFlashCardRepository } from '../../domain/irepositories/flashCards'
 import { FlashCardMapper } from '../mappers/flashCards'
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCard } from '../mongooseModels/flashCards'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class FlashCardRepository implements IFlashCardRepository {

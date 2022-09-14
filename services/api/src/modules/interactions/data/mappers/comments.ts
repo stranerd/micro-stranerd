@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { CommentEntity } from '../../domain/entities/comments'
 import { CommentFromModel, CommentToModel } from '../models/comments'
 

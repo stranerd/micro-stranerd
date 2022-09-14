@@ -2,7 +2,7 @@ import { FacultyEntity } from '../../domain/entities/faculties'
 import { IFacultyRepository } from '../../domain/irepositories/faculties'
 import { FacultyMapper } from '../mappers/faculties'
 import { FacultyFromModel, FacultyToModel } from '../models/faculties'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Faculty } from '../mongooseModels/faculties'
 
 export class FacultyRepository implements IFacultyRepository {

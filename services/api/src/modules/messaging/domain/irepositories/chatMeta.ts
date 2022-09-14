@@ -1,4 +1,4 @@
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ChatMetaEntity } from '../entities/chatMeta'
 import { EmbeddedGroup, EmbeddedUser } from '../types'
 import { ChatMetaToModel } from '../../data/models/chatMeta'

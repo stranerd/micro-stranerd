@@ -1,5 +1,5 @@
 import { UserSchoolType, UsersUseCases } from '@modules/users'
-import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, Conditions, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { CoursesUseCases, DepartmentsUseCases } from '@modules/school'
 
 export class UsersController {

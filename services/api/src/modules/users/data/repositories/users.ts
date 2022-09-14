@@ -2,7 +2,7 @@ import { IUserRepository } from '../../domain/irepositories/users'
 import { UserAccount, UserBio, UserRankings, UserRoles, UserSchoolData } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { User } from '../mongooseModels/users'
-import { mongoose, parseQueryParams } from '@utils/commons'
+import { mongoose, parseQueryParams } from '@utils/app/package'
 import { UserFromModel } from '../models/users'
 import { getDateDifference } from '@utils/functions'
 

@@ -2,7 +2,7 @@ import { ITestRepository } from '../../domain/irepositories/tests'
 import { TestMapper } from '../mappers/tests'
 import { TestFromModel, TestToModel } from '../models/tests'
 import { Test } from '../mongooseModels/tests'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { AnswerType } from '../../domain/types'
 
 export class TestRepository implements ITestRepository {

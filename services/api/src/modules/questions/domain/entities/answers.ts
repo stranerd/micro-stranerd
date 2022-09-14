@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { AnswerMeta, EmbeddedUser, Media } from '../types'
 
 export class AnswerEntity extends BaseEntity {

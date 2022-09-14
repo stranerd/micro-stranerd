@@ -8,7 +8,7 @@ import {
 	Request,
 	validate,
 	Validation
-} from '@utils/commons'
+} from '@utils/app/package'
 import { ClassUsers } from '@modules/classes/domain/types'
 import { UploaderUseCases } from '@modules/storage'
 import { DepartmentsUseCases } from '@modules/school'

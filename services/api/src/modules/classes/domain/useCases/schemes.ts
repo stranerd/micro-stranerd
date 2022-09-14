@@ -1,6 +1,6 @@
 import { SchemeToModel } from '../../data/models/schemes'
 import { ISchemeRepository } from '../irepositories/schemes'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export class SchemesUseCase {

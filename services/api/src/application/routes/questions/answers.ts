@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { AnswerController } from '../../controllers/questions/answers'
 import { isSubscribed } from '@application/middlewares'
 

@@ -2,7 +2,7 @@ import { IClassRepository } from '../../domain/irepositories/classes'
 import { ClassMapper } from '../mappers/classes'
 import { ClassFromModel, ClassToModel } from '../models/classes'
 import { Class } from '../mongooseModels/classes'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class ClassRepository implements IClassRepository {

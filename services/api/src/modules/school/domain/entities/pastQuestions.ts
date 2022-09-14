@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { Media, PastQuestionData } from '../types'
 
 export class PastQuestionEntity extends BaseEntity {

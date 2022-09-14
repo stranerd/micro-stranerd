@@ -1,5 +1,5 @@
 import { Currencies, PlanData, PlanFeatures } from '../../domain/types'
-import { CronTypes } from '@utils/commons'
+import { CronTypes } from '@utils/app/package'
 
 export interface PlanFromModel extends PlanToModel {
 	createdAt: number

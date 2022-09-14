@@ -3,7 +3,7 @@ import { QuestionMapper } from '../mappers/questions'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
 import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser, QuestionMetaType } from '../../domain/types'
 import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 

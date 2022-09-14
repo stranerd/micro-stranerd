@@ -2,7 +2,7 @@ import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { IPastQuestionRepository } from '../../domain/irepositories/pastQuestions'
 import { PastQuestionMapper } from '../mappers/pastQuestions'
 import { PastQuestionFromModel, PastQuestionToModel } from '../models/pastQuestions'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { PastQuestion } from '../mongooseModels/pastQuestions'
 
 export class PastQuestionRepository implements IPastQuestionRepository {

@@ -1,4 +1,4 @@
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 import { reportRoutes } from './reports'
 
 export const reportsRoutes: Route[] = [

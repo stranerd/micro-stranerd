@@ -1,6 +1,6 @@
 import { LikeToModel } from '../../data/models/likes'
 import { LikeEntity } from '../entities/likes'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { InteractionEntity } from '../types'
 
 export interface ILikeRepository {

@@ -2,7 +2,7 @@ import { SessionMapper } from '../mappers/session'
 import { ISessionRepository } from '../../domain/irepositories/session'
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { Session } from '../mongooseModels/session'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class SessionRepository implements ISessionRepository {

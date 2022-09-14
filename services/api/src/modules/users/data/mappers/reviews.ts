@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ReviewEntity } from '../../domain/entities/reviews'
 import { ReviewFromModel, ReviewToModel } from '../models/reviews'
 

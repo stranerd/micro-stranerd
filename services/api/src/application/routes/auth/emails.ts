@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { EmailsController } from '../../controllers/auth/emails'
 
 const emailSignIn: Route = {

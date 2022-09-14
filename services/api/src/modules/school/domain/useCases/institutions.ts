@@ -1,6 +1,6 @@
 import { InstitutionToModel } from '../../data/models/institutions'
 import { IInstitutionRepository } from '../irepositories/institutions'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class InstitutionsUseCase {
 	private repository: IInstitutionRepository

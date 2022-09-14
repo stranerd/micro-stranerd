@@ -2,7 +2,7 @@ import { ITagRepository } from '../../domain/irepositories/tags'
 import { TagMapper } from '../mappers/tags'
 import { TagFromModel, TagToModel } from '../models/tags'
 import { Tag } from '../mongooseModels/tags'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 
 export class TagRepository implements ITagRepository {
 	private static instance: TagRepository

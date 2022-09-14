@@ -1,7 +1,7 @@
 import { ICardRepository } from '../../domain/irepositories/cards'
 import { CardMapper } from '../mappers/cards'
 import { CardFromModel, CardToModel } from '../models/cards'
-import { BadRequestError, mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { BadRequestError, mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { Card } from '../mongooseModels/cards'
 
 export class CardRepository implements ICardRepository {

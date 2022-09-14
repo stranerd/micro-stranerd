@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { WalletEntity } from '../../domain/entities/wallets'
 import { WalletFromModel, WalletToModel } from '../models/wallets'
 

@@ -1,6 +1,6 @@
 import { ReviewEntity } from '../entities/reviews'
 import { ReviewToModel } from '../../data/models/reviews'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export interface IReviewRepository {

@@ -2,7 +2,7 @@ import { IEventRepository } from '../../domain/irepositories/events'
 import { EventMapper } from '../mappers/events'
 import { EventFromModel, EventToModel } from '../models/events'
 import { Event } from '../mongooseModels/events'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser, EventType } from '../../domain/types'
 
 export class EventRepository implements IEventRepository {

@@ -1,6 +1,6 @@
 import { FacultyToModel } from '../../data/models/faculties'
 import { IFacultyRepository } from '../irepositories/faculties'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class FacultiesUseCase {
 	private repository: IFacultyRepository

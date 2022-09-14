@@ -9,7 +9,7 @@ import {
 	validate,
 	Validation,
 	ValidationError
-} from '@utils/commons'
+} from '@utils/app/package'
 import { getCronOrder } from '@utils/modules/classes/events'
 
 const isValidTimeZone = (tz: string) => {

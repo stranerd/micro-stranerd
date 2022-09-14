@@ -1,5 +1,5 @@
 import { Currencies, TransactionStatus, TransactionsUseCases, TransactionType } from '@modules/payment'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
 import { flutterwaveConfig } from '@utils/environment'
 

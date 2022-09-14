@@ -1,6 +1,6 @@
 import { ISessionRepository } from '../irepositories/session'
 import { SessionFromModel, SessionToModel } from '../../data/models/session'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export class SessionsUseCase {

@@ -1,4 +1,4 @@
-import { BaseEntity, CronTypes } from '@utils/commons'
+import { BaseEntity, CronTypes } from '@utils/app/package'
 import { Currencies, PlanData, PlanFeatures } from '../types'
 
 export class PlanEntity extends BaseEntity {

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export class GroupEntity extends BaseEntity {

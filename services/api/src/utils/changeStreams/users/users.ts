@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { BadgesUseCases, ConnectsUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/messaging'

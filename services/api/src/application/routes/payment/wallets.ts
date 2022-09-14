@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { WalletsController } from '@application/controllers/payment/wallets'
 
 export const walletsRoutes: Route[] = [

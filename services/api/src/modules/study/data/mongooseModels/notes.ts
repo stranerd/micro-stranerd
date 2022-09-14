@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { NoteFromModel } from '../models/notes'
 import { NoteChangeStreamCallbacks } from '@utils/changeStreams/study/notes'
 import { NoteEntity } from '../../domain/entities/notes'

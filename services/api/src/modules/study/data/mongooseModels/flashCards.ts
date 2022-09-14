@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { FlashCardFromModel } from '../models/flashCards'
 import { FlashCardChangeStreamCallbacks } from '@utils/changeStreams/study/flashCards'
 import { FlashCardEntity } from '../../domain/entities/flashCards'

@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { SetEntity, SetFromModel } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'

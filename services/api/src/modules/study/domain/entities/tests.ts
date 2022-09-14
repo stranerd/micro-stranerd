@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { AnswerType, PastQuestionType, TestData } from '../types'
 
 export class TestEntity extends BaseEntity {

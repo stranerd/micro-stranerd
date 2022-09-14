@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { CommentMeta, EmbeddedUser, InteractionEntity } from '../types'
 
 export class CommentEntity extends BaseEntity {

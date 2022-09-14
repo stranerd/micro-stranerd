@@ -1,7 +1,7 @@
 import { IReviewRepository } from '../../domain/irepositories/reviews'
 import { ReviewMapper } from '../mappers/reviews'
 import { Review } from '../mongooseModels/reviews'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ReviewFromModel, ReviewToModel } from '../models/reviews'
 import { EmbeddedUser } from '../../domain/types'
 

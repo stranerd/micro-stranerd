@@ -1,7 +1,7 @@
 import { IViewRepository } from '../../domain/irepositories/views'
 import { ViewMapper } from '../mappers/views'
 import { ViewFromModel, ViewToModel } from '../models/views'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { View } from '../mongooseModels/views'
 import { InteractionEntity } from '../../domain/types'
 

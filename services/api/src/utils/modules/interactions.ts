@@ -1,5 +1,5 @@
 import { CommentsUseCases, InteractionEntities } from '@modules/interactions'
-import { BadRequestError } from '@utils/commons'
+import { BadRequestError } from '@utils/app/package'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 
 type Interactions = 'comments' | 'likes' | 'dislikes' | 'views'

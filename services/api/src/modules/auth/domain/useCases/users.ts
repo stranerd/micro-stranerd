@@ -1,5 +1,5 @@
 import { IUserRepository } from '../irepositories/users'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { RegisterInput, RoleInput, UserUpdateInput } from '../types'
 
 export class AuthUsersUseCase {

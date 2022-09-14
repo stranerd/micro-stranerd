@@ -1,5 +1,5 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
-import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { AuthTypes, Request, validate, Validation, ValidationError } from '@utils/app/package'
 import { generateAuthOutput, verifyReferrer } from '@utils/modules/auth'
 import { UploaderUseCases } from '@modules/storage'
 

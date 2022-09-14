@@ -1,4 +1,4 @@
-import { Request, validate, Validation } from '@utils/commons'
+import { Request, validate, Validation } from '@utils/app/package'
 import { MessageType, sendNewMessageEmail } from '@utils/modules/meta/messages'
 
 export class MessageController {

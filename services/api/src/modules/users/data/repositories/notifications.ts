@@ -1,7 +1,7 @@
 import { INotificationRepository } from '../../domain/irepositories/notifications'
 import { NotificationMapper } from '../mappers/notifications'
 import { Notification } from '../mongooseModels/notifications'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { NotificationFromModel, NotificationToModel } from '../models/notifications'
 
 export class NotificationRepository implements INotificationRepository {

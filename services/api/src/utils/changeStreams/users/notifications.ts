@@ -1,5 +1,5 @@
-import { ChangeStreamCallbacks, readEmailFromPug } from '@utils/commons'
-import { EmailsList, EventTypes } from '@utils/types'
+import { ChangeStreamCallbacks, readEmailFromPug } from '@utils/app/package'
+import { EmailsList, EventTypes } from '@utils/app/types'
 import { NotificationEntity, NotificationFromModel, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { sendPushNotification } from '@utils/modules/push'

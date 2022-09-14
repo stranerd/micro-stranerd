@@ -2,7 +2,7 @@ import { ChatMapper } from '../mappers/chat'
 import { IChatRepository } from '../../domain/irepositories/chat'
 import { ChatFromModel, ChatToModel } from '../models/chat'
 import { Chat } from '../mongooseModels/chat'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/commons'
+import { mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { ChatMeta } from '../mongooseModels/chatMeta'
 import { ChatType, EmbeddedUser } from '../../domain/types'
 

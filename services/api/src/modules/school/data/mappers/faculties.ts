@@ -1,6 +1,6 @@
 import { FacultyFromModel, FacultyToModel } from '../models/faculties'
 import { FacultyEntity } from '../../domain/entities/faculties'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class FacultyMapper extends BaseMapper<FacultyFromModel, FacultyToModel, FacultyEntity> {
 	mapFrom (model: FacultyFromModel | null) {

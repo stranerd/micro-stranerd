@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, ReportData } from '../types'
 
 export class ReportEntity extends BaseEntity {

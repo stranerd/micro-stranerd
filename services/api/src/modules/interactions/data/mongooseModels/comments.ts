@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { CommentFromModel } from '../models/comments'
 import { CommentChangeStreamCallbacks } from '@utils/changeStreams/interactions/comments'
 import { CommentEntity } from '../../domain/entities/comments'

@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { TransactionEntity } from '../../domain/entities/transactions'
 import { TransactionFromModel, TransactionToModel } from '../models/transactions'
 

@@ -1,5 +1,5 @@
 import { DepartmentsUseCases, FacultiesUseCases } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { TagsUseCases, TagTypes } from '@modules/interactions'
 
 export class DepartmentController {

@@ -8,7 +8,7 @@ import {
 	WalletsUseCases
 } from '@modules/payment'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
-import { Conditions } from '@utils/commons'
+import { Conditions } from '@utils/app/package'
 
 export const fulfillTransaction = async (transaction: TransactionEntity) => {
 	if (transaction.data.type === TransactionType.NewCard) {

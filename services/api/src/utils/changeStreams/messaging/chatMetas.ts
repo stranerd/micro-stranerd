@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { ChatMetaEntity, ChatMetaFromModel } from '@modules/messaging'
 import { getSocketEmitter } from '@index'
 

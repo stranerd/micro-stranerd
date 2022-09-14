@@ -1,6 +1,6 @@
 import { TestPrepEntity } from '../entities/testPreps'
 import { TestPrepToModel } from '../../data/models/testPreps'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface ITestPrepRepository {
 	add: (data: TestPrepToModel) => Promise<TestPrepEntity>

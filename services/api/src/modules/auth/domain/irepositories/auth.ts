@@ -1,5 +1,5 @@
 import { Credential, PasswordResetInput } from '../types'
-import { AuthTypes } from '@utils/commons'
+import { AuthTypes } from '@utils/app/package'
 import { UserToModel } from '../../data/models/users'
 import { AuthUserEntity } from '../entities/users'
 

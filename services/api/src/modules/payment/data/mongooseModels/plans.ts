@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { PlanFromModel } from '../models/plans'
 import { PlanChangeStreamCallbacks } from '@utils/changeStreams/payment/plans'
 import { PlanEntity } from '../../domain/entities/plans'

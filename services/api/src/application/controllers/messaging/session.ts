@@ -1,6 +1,6 @@
 import { SessionsUseCases } from '@modules/messaging'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryKeys, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class SessionController {
 	static async getSessions (req: Request) {

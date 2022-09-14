@@ -1,6 +1,6 @@
 import { FlashCardEntity } from '../entities/flashCards'
 import { FlashCardToModel } from '../../data/models/flashCards'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export interface IFlashCardRepository {

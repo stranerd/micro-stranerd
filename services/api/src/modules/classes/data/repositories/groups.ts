@@ -2,7 +2,7 @@ import { IGroupRepository } from '../../domain/irepositories/groups'
 import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { Group } from '../mongooseModels/groups'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class GroupRepository implements IGroupRepository {

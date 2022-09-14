@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 
 export class ErrorEntity extends BaseEntity {
 	public readonly id: string

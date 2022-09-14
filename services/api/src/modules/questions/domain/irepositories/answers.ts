@@ -1,4 +1,4 @@
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { AnswerToModel } from '../../data/models/answers'
 import { AnswerEntity } from '../entities/answers'
 import { AnswerMetaType, EmbeddedUser } from '../types'

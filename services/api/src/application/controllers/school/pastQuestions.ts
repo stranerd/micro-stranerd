@@ -1,5 +1,5 @@
 import { CoursesUseCases, PastQuestionsUseCases, PastQuestionType } from '@modules/school'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class PastQuestionController {
 	static async FindPastQuestion (req: Request) {

@@ -1,6 +1,6 @@
 import { ClassFromModel, ClassToModel } from '../models/classes'
 import { ClassEntity } from '../../domain/entities/classes'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class ClassMapper extends BaseMapper<ClassFromModel, ClassToModel, ClassEntity> {
 	mapFrom (model: ClassFromModel | null) {

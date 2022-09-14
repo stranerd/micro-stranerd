@@ -1,5 +1,5 @@
 import { ReferralsUseCases } from '@modules/users'
-import { QueryParams, Request } from '@utils/commons'
+import { QueryParams, Request } from '@utils/app/package'
 
 export class ReferralsController {
 	static async getReferrals (req: Request) {

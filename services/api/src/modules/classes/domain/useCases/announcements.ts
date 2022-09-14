@@ -1,6 +1,6 @@
 import { AnnouncementToModel } from '../../data/models/announcements'
 import { IAnnouncementRepository } from '../irepositories/announcements'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export class AnnouncementsUseCase {

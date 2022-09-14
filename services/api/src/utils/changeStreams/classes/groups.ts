@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { GroupEntity, GroupFromModel } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'

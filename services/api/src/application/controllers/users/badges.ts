@@ -1,5 +1,5 @@
 import { BadgesUseCases } from '@modules/users'
-import { Request } from '@utils/commons'
+import { Request } from '@utils/app/package'
 
 export class BadgesController {
 	static async get (req: Request) {

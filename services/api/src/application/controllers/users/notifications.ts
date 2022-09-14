@@ -1,5 +1,5 @@
 import { NotificationsUseCases } from '@modules/users'
-import { QueryParams, Request, validate, Validation } from '@utils/commons'
+import { QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class NotificationsController {
 	static async getNotifications (req: Request) {

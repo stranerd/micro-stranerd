@@ -1,5 +1,5 @@
 import { IChatMetaRepository } from '../irepositories/chatMeta'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedGroup, EmbeddedUser } from '../types'
 import { ChatFromModel } from '../../data/models/chat'
 import { ChatMetaToModel } from '../../data/models/chatMeta'

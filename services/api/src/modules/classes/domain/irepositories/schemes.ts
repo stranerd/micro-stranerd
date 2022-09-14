@@ -1,6 +1,6 @@
 import { SchemeEntity } from '../entities/schemes'
 import { SchemeToModel } from '../../data/models/schemes'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export interface ISchemeRepository {

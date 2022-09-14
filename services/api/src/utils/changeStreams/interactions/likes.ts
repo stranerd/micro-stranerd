@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { InteractionEntities, LikeEntity, LikeFromModel } from '@modules/interactions'
 import { getSocketEmitter } from '@index'
 import { AnswerMetaType, AnswersUseCases } from '@modules/questions'

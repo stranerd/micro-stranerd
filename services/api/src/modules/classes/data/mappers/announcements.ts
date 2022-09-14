@@ -1,6 +1,6 @@
 import { AnnouncementFromModel, AnnouncementToModel } from '../models/announcements'
 import { AnnouncementEntity } from '../../domain/entities/announcements'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class AnnouncementMapper extends BaseMapper<AnnouncementFromModel, AnnouncementToModel, AnnouncementEntity> {
 	mapFrom (model: AnnouncementFromModel | null) {

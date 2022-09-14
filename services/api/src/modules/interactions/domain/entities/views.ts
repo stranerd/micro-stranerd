@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, InteractionEntity } from '../types'
 
 export class ViewEntity extends BaseEntity {

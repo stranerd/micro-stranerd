@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { TransactionFromModel } from '../models/transactions'
 import { TransactionChangeStreamCallbacks } from '@utils/changeStreams/payment/transactions'
 import { TransactionEntity } from '../../domain/entities/transactions'

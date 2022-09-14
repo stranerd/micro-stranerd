@@ -1,4 +1,4 @@
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { ITransactionRepository } from '../irepositories/transactions'
 import { TransactionToModel } from '../../data/models/transactions'
 

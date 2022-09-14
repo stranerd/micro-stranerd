@@ -1,6 +1,6 @@
 export { EmbeddedUser } from '@modules/users'
 
-import { MediaOutput } from '@utils/commons'
+import { MediaOutput } from '@utils/app/package'
 
 export type Media = MediaOutput
 

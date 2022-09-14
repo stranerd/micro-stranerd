@@ -1,6 +1,6 @@
 import { SessionFromModel, SessionToModel } from '../models/session'
 import { SessionEntity } from '../../domain/entities/session'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class SessionMapper extends BaseMapper<SessionFromModel, SessionToModel, SessionEntity> {
 	mapFrom (model: SessionFromModel | null) {

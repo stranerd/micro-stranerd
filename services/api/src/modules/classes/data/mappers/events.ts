@@ -1,6 +1,6 @@
 import { EventFromModel, EventToModel } from '../models/events'
 import { EventEntity } from '../../domain/entities/events'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class EventMapper extends BaseMapper<EventFromModel, EventToModel, EventEntity> {
 	mapFrom (model: EventFromModel | null) {

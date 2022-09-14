@@ -1,6 +1,6 @@
 import { InstitutionEntity } from '../entities/institutions'
 import { InstitutionToModel } from '../../data/models/institutions'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface IInstitutionRepository {
 	add: (data: InstitutionToModel) => Promise<InstitutionEntity>

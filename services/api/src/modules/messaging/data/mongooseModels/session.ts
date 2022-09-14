@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { SessionEntity } from '../../domain/entities/session'
 import { SessionFromModel } from '../models/session'
 import { SessionChangeStreamCallbacks } from '@utils/changeStreams/messaging/sessions'

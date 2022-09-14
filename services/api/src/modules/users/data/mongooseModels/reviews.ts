@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ReviewFromModel } from '../models/reviews'
 import { ReviewChangeStreamCallbacks } from '@utils/changeStreams/users/reviews'
 import { ReviewEntity } from '../../domain/entities/reviews'

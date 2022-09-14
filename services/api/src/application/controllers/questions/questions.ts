@@ -1,6 +1,6 @@
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { TagsUseCases, TagTypes } from '@modules/interactions'
 import { PlanDataType, WalletsUseCases } from '@modules/payment'
 

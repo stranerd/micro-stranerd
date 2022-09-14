@@ -1,4 +1,4 @@
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 import { sessionRoutes } from './session'
 import { chatMetaRoutes } from './chatMeta'
 import { chatRoutes } from './chat'

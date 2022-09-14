@@ -1,5 +1,5 @@
 import { ChatData, EmbeddedUser, Media } from '../types'
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 
 export class ChatEntity extends BaseEntity {
 	public readonly id: string

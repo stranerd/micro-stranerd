@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { SessionEntity, SessionFromModel, SessionsUseCases } from '@modules/messaging'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UsersUseCases } from '@modules/users'
 import { cancelSessionTask, scheduleSession, startSession } from '@utils/modules/messaging/sessions'

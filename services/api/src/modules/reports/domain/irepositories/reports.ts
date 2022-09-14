@@ -1,6 +1,6 @@
 import { ReportEntity } from '../entities/reports'
 import { ReportToModel } from '../../data/models/reports'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export interface IReportRepository {

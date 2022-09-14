@@ -1,5 +1,5 @@
 import { AuthUseCases } from '@modules/auth'
-import { Request, validate, Validation } from '@utils/commons'
+import { Request, validate, Validation } from '@utils/app/package'
 import { generateAuthOutput, verifyReferrer } from '@utils/modules/auth'
 
 export class IdentitiesController {

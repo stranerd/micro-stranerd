@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { AnswerEntity } from '../../domain/entities/answers'
 

@@ -2,7 +2,7 @@ import { DepartmentEntity } from '../../domain/entities/departments'
 import { IDepartmentRepository } from '../../domain/irepositories/departments'
 import { DepartmentMapper } from '../mappers/departments'
 import { DepartmentFromModel, DepartmentToModel } from '../models/departments'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Department } from '../mongooseModels/departments'
 
 export class DepartmentRepository implements IDepartmentRepository {

@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ViewEntity } from '../../domain/entities/views'
 import { ViewFromModel, ViewToModel } from '../models/views'
 

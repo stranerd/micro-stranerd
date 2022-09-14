@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { AuthUserEntity } from '../../domain/entities/users'
 import { UserFromModel, UserToModel } from '../models/users'
 

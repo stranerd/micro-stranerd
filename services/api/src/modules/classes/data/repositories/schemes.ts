@@ -2,7 +2,7 @@ import { ISchemeRepository } from '../../domain/irepositories/schemes'
 import { SchemeMapper } from '../mappers/schemes'
 import { SchemeFromModel, SchemeToModel } from '../models/schemes'
 import { Scheme } from '../mongooseModels/schemes'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class SchemeRepository implements ISchemeRepository {

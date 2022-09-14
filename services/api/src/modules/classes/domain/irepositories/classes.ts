@@ -1,6 +1,6 @@
 import { ClassEntity } from '../entities/classes'
 import { ClassToModel } from '../../data/models/classes'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export interface IClassRepository {

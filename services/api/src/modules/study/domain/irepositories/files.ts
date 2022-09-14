@@ -1,6 +1,6 @@
 import { FileEntity } from '../entities/files'
 import { FileToModel } from '../../data/models/files'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export interface IFileRepository {

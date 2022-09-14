@@ -1,6 +1,6 @@
 import { INotificationRepository } from '../irepositories/notifications'
 import { NotificationToModel } from '../../data/models/notifications'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class NotificationsUseCase {
 	repository: INotificationRepository

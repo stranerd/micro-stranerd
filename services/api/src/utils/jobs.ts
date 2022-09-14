@@ -1,5 +1,5 @@
-import { appInstance, CronTypes } from '@utils/commons'
-import { CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/types'
+import { CronTypes } from '@utils/app/package'
+import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/app/types'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { CardsUseCases } from '@modules/payment'

@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { IdentitiesController } from '../../controllers/auth/identities'
 
 const googleSignIn: Route = {

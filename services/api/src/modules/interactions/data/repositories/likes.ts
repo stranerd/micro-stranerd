@@ -1,7 +1,7 @@
 import { ILikeRepository } from '../../domain/irepositories/likes'
 import { LikeMapper } from '../mappers/likes'
 import { LikeFromModel, LikeToModel } from '../models/likes'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Like } from '../mongooseModels/likes'
 import { InteractionEntity } from '../../domain/types'
 

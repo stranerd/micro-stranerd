@@ -1,7 +1,7 @@
 import { ICommentRepository } from '../../domain/irepositories/comments'
 import { CommentMapper } from '../mappers/comments'
 import { CommentFromModel, CommentToModel } from '../models/comments'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Comment } from '../mongooseModels/comments'
 import { CommentMetaType, InteractionEntity } from '../../domain/types'
 

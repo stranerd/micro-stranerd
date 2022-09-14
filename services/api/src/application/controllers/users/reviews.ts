@@ -1,5 +1,5 @@
 import { ReviewsUseCases, UsersUseCases } from '@modules/users'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class ReviewsController {
 	static async getReviews (req: Request) {

@@ -1,6 +1,6 @@
 import { TransactionToModel } from '../../data/models/transactions'
 import { TransactionEntity } from '../entities/transactions'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface ITransactionRepository {
 	create: (data: TransactionToModel) => Promise<TransactionEntity>

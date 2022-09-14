@@ -1,5 +1,5 @@
-import { ChangeStreamCallbacks, Validation } from '@utils/commons'
-import { EventTypes } from '@utils/types'
+import { ChangeStreamCallbacks, Validation } from '@utils/app/package'
+import { EventTypes } from '@utils/app/types'
 import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import {

@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { CountStreakBadgeNames, CountStreakBadges, CountValues, StreakValues } from '../types'
 import { ranks, RankTypes } from './ranks'
 

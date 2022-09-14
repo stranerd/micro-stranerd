@@ -3,7 +3,7 @@ import { identitiesRoutes } from './identities'
 import { passwordsRoutes } from './passwords'
 import { tokenRoutes } from './token'
 import { userRoutes } from './user'
-import { Route } from '@utils/commons'
+import { Route } from '@utils/app/package'
 
 export const authRoutes: Route[] = [
 	...emailRoutes,

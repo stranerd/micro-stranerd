@@ -1,4 +1,4 @@
-import { Request } from '@utils/commons'
+import { Request } from '@utils/app/package'
 import { getNewTokens } from '@utils/modules/auth'
 
 export class TokenController {

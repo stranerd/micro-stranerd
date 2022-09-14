@@ -2,7 +2,7 @@ import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ReportData, ReportsUseCases, ReportType } from '@modules/reports'
 import { UsersUseCases } from '@modules/users'
 import { PastQuestionsUseCases } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class ReportController {
 	static async GetReports (req: Request) {

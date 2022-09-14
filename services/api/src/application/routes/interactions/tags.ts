@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { TagController } from '../../controllers/interactions/tags'
 import { isAdmin } from '@application/middlewares'
 

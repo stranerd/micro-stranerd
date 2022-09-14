@@ -1,6 +1,6 @@
 import { ViewToModel } from '../../data/models/views'
 import { ViewEntity } from '../entities/views'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { InteractionEntity } from '../types'
 
 export interface IViewRepository {

@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { PlanEntity, PlanFromModel } from '@modules/payment'
 import { getSocketEmitter } from '@index'
 

@@ -1,6 +1,6 @@
 import { InstitutionFromModel, InstitutionToModel } from '../models/institutions'
 import { InstitutionEntity } from '../../domain/entities/institutions'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class InstitutionMapper extends BaseMapper<InstitutionFromModel, InstitutionToModel, InstitutionEntity> {
 	mapFrom (model: InstitutionFromModel | null) {

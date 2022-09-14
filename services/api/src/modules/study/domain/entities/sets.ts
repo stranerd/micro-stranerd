@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, SetSaved } from '../types'
 
 export class SetEntity extends BaseEntity {

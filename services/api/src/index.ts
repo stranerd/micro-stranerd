@@ -1,4 +1,5 @@
-import { appInstance, getNewServerInstance } from '@utils/commons'
+import { getNewServerInstance } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
 import { routes } from '@application/routes'

@@ -9,7 +9,7 @@ import {
 	validate,
 	Validation,
 	ValidationError
-} from '@utils/commons'
+} from '@utils/app/package'
 
 export class SchemeController {
 	static async FindScheme (req: Request) {

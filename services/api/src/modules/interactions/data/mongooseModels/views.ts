@@ -1,6 +1,6 @@
 import { ViewMapper } from './../mappers/views'
 import { ViewEntity } from '../../domain/entities/views'
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ViewChangeStreamCallbacks } from '@utils/changeStreams/interactions/views'
 import { ViewFromModel } from '../models/views'
 

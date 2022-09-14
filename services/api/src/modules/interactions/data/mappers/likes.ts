@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { LikeEntity } from '../../domain/entities/likes'
 import { LikeFromModel, LikeToModel } from '../models/likes'
 

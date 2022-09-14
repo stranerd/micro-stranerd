@@ -1,6 +1,6 @@
 import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases } from '@modules/school'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { getRandomN } from '@utils/functions'
 
 export class TestController {

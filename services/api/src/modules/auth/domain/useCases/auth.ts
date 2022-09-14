@@ -1,4 +1,4 @@
-import { AuthTypes } from '@utils/commons'
+import { AuthTypes } from '@utils/app/package'
 import { Credential, PasswordResetInput, RegisterInput } from '../types'
 import { IAuthRepository } from '../irepositories/auth'
 import { UserToModel } from '../../data/models/users'

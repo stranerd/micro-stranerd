@@ -2,7 +2,7 @@ import { CourseEntity } from '../../domain/entities/courses'
 import { ICourseRepository } from '../../domain/irepositories/courses'
 import { CourseMapper } from '../mappers/courses'
 import { CourseFromModel, CourseToModel } from '../models/courses'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Course } from '../mongooseModels/courses'
 
 export class CourseRepository implements ICourseRepository {

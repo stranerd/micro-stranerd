@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { TagTypes } from '../types'
 
 export class TagEntity extends BaseEntity {

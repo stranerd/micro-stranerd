@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { SchemeFromModel } from '../models/schemes'
 import { SchemeEntity } from '../../domain/entities/schemes'
 import { SchemeChangeStreamCallbacks } from '@utils/changeStreams/classes/schemes'

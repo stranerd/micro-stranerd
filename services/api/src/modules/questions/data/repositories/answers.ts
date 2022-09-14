@@ -2,7 +2,7 @@ import { IAnswerRepository } from '../../domain/irepositories/answers'
 import { AnswerMapper } from '../mappers/answers'
 import { AnswerFromModel, AnswerToModel } from '../models/answers'
 import { Answer } from '../mongooseModels/answers'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { AnswerMetaType, EmbeddedUser } from '../../domain/types'
 
 export class AnswerRepository implements IAnswerRepository {

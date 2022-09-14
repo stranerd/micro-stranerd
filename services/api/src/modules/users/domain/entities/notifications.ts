@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { NotificationData } from '../types'
 
 export class NotificationEntity extends BaseEntity {

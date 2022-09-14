@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/app/package'
 import { TokensUseCases } from '@modules/push'
 
 const subscribeDevice: Route = {

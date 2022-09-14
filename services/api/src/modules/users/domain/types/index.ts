@@ -1,5 +1,5 @@
-import { MediaOutput } from '@utils/commons'
-import { AuthRoles } from '@utils/types'
+import { MediaOutput } from '@utils/app/package'
+import { AuthRoles } from '@utils/app/types'
 
 export * from './badges'
 export * from './notifications'

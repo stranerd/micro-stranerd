@@ -1,6 +1,6 @@
 import { PastQuestionFromModel, PastQuestionToModel } from '../models/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class PastQuestionMapper extends BaseMapper<PastQuestionFromModel, PastQuestionToModel, PastQuestionEntity> {
 	mapFrom (model: PastQuestionFromModel | null) {

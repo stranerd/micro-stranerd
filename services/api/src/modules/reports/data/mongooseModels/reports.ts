@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 import { ReportMapper } from '../mappers/reports'
 import { ReportEntity } from '../../domain/entities/reports'

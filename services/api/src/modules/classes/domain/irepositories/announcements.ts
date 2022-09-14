@@ -1,6 +1,6 @@
 import { AnnouncementEntity } from '../entities/announcements'
 import { AnnouncementToModel } from '../../data/models/announcements'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export interface IAnnouncementRepository {

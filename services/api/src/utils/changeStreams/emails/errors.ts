@@ -1,4 +1,5 @@
-import { appInstance, ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ErrorEntity, ErrorFromModel } from '@modules/emails'
 
 export const ErrorChangeStreamCallbacks: ChangeStreamCallbacks<ErrorFromModel, ErrorEntity> = {

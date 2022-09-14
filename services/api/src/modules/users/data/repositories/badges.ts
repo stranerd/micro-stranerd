@@ -1,7 +1,7 @@
 import { IBadgeRepository } from '../../domain/irepositories/badges'
 import { BadgeMapper } from '../mappers/badges'
 import { Badge } from '../mongooseModels/badges'
-import { mongoose } from '@utils/commons'
+import { mongoose } from '@utils/app/package'
 import { CountStreakBadges } from '../../domain/types'
 import { getDateDifference } from '@utils/functions'
 import { RankTypes } from '../../domain/entities/ranks'

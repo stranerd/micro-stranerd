@@ -1,5 +1,5 @@
-import { appInstance, ChangeStreamCallbacks, Conditions } from '@utils/commons'
-import { DelayedEvent, DelayedJobs } from '@utils/types'
+import { ChangeStreamCallbacks, Conditions } from '@utils/app/package'
+import { appInstance, DelayedEvent, DelayedJobs } from '@utils/app/types'
 import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'

@@ -1,6 +1,6 @@
 import { GroupToModel } from '../../data/models/groups'
 import { IGroupRepository } from '../irepositories/groups'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export class GroupsUseCase {

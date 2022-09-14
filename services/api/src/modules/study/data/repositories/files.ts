@@ -2,7 +2,7 @@ import { IFileRepository } from '../../domain/irepositories/files'
 import { FileMapper } from '../mappers/files'
 import { FileFromModel, FileToModel } from '../models/files'
 import { File } from '../mongooseModels/files'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class FileRepository implements IFileRepository {

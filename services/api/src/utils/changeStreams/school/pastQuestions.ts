@@ -1,5 +1,5 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
-import { EventTypes } from '@utils/types'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { EventTypes } from '@utils/app/types'
 import { getSocketEmitter } from '@index'
 import { PastQuestionEntity, PastQuestionFromModel, PastQuestionType } from '@modules/school'
 import { publishers } from '@utils/events'

@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { AnnouncementFromModel } from '../models/announcements'
 import { AnnouncementEntity } from '../../domain/entities/announcements'
 import { AnnouncementChangeStreamCallbacks } from '@utils/changeStreams/classes/announcements'

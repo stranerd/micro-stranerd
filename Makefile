@@ -58,12 +58,8 @@ copy-envs:
 
 link-commons:
 	$(foreach app, $(APPS),\
-	rm ./services/$(app)/src/utils/commons.ts &&\
-	ln ./services/commons/links/commons.ts ./services/$(app)/src/utils &&\
-	rm -r ./services/$(app)/src/utils/common &&\
-	rm -r ./services/$(app)/src/utils/types &&\
-	mkdir ./services/$(app)/src/utils/common -p &&\
-	mkdir ./services/$(app)/src/utils/types -p &&\
-	cp -al ./services/commons/src/* ./services/$(app)/src/utils/common &&\
-	cp -al ./services/commons/links/types/* ./services/$(app)/src/utils/types &&\
+	rm -r ./services/$(app)/src/utils/app &&\
+	mkdir -p ./services/$(app)/src/utils/app/commons &&\
+	cp -al ./services/commons/links/* ./services/$(app)/src/utils/app/ &&\
+	cp -al ./services/commons/src/* ./services/$(app)/src/utils/app/commons &&\
 ) echo

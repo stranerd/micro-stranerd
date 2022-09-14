@@ -1,6 +1,6 @@
 import { PastQuestionToModel } from '../../data/models/pastQuestions'
 import { IPastQuestionRepository } from '../irepositories/pastQuestions'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class PastQuestionsUseCase {
 	private repository: IPastQuestionRepository

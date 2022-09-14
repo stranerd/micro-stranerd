@@ -8,7 +8,7 @@ import {
 	UserSession,
 	UserStatus
 } from '../types'
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 import { getNextRank, getRank } from './ranks'
 
 export class UserEntity extends BaseEntity {

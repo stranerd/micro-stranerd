@@ -1,6 +1,6 @@
 import { IChatRepository } from '../irepositories/chat'
 import { ChatToModel } from '../../data/models/chat'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export class ChatsUseCase {

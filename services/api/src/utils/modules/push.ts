@@ -1,7 +1,6 @@
-import { appInstance } from '@utils/commons'
+import { appInstance, PushNotification } from '@utils/app/types'
 import { TokensUseCases } from '@modules/push'
 import { messaging } from 'firebase-admin'
-import { PushNotification } from '@utils/types'
 
 const chunkArray = <T> (arr: T[], size: number) => new Array(Math.ceil(arr.length / size))
 	.fill([])

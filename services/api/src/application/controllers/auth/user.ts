@@ -1,9 +1,9 @@
 import { AuthUsersUseCases } from '@modules/auth'
-import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/commons'
+import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
 import { signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
-import { SupportedAuthRoles } from '@utils/types'
+import { SupportedAuthRoles } from '@utils/app/types'
 
 const roles = [SupportedAuthRoles.isStranerdAdmin, SupportedAuthRoles.isStranerdTutor, SupportedAuthRoles.isVerified]
 

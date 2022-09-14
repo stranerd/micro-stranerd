@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes, StorageFile, validate, Validation } from '@utils/commons'
+import { makeController, Route, StatusCodes, StorageFile, validate, Validation } from '@utils/app/package'
 import { UploaderUseCases } from '@modules/storage'
 
 const uploadFile: Route = {

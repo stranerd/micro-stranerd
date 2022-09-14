@@ -1,5 +1,5 @@
 import { CoursesUseCases, DepartmentsUseCases, InstitutionsUseCases } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class CourseController {
 	static async FindCourse (req: Request) {

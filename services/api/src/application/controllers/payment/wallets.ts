@@ -1,5 +1,5 @@
 import { CurrencyCountries, WalletsUseCases } from '@modules/payment'
-import { BadRequestError, Request, validate, Validation, ValidationError } from '@utils/commons'
+import { BadRequestError, Request, validate, Validation, ValidationError } from '@utils/app/package'
 import { cancelSubscription, subscribeToPlan } from '@utils/modules/payment/subscriptions'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
 

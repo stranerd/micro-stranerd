@@ -1,5 +1,5 @@
 import { Currencies, PlanToModel } from '@modules/payment'
-import { CronTypes } from '@utils/commons'
+import { CronTypes } from '@utils/app/package'
 
 export const plansList: PlanToModel[] = [
 	{

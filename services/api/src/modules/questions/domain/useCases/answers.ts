@@ -1,6 +1,6 @@
 import { IAnswerRepository } from '../irepositories/answers'
 import { AnswerToModel } from '../../data/models/answers'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { AnswerMetaType, EmbeddedUser } from '../types'
 
 export class AnswersUseCase {

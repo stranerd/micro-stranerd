@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { FlashCardController } from '../../controllers/study/flashCards'
 
 export const flashcardsRoutes: Route[] = [

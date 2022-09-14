@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { TransactionEntity, TransactionFromModel, TransactionStatus } from '@modules/payment'
 import { getSocketEmitter } from '@index'
 import { fulfillTransaction } from '@utils/modules/payment/transactions'

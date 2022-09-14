@@ -1,6 +1,6 @@
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCardEntity } from '../../domain/entities/flashCards'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class FlashCardMapper extends BaseMapper<FlashCardFromModel, FlashCardToModel, FlashCardEntity> {
 	mapFrom (model: FlashCardFromModel | null) {

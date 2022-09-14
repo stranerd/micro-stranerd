@@ -1,6 +1,6 @@
 import { TestToModel } from '../../data/models/tests'
 import { ITestRepository } from '../irepositories/tests'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class TestsUseCase {
 	private repository: ITestRepository

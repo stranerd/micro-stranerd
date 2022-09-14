@@ -1,8 +1,8 @@
 import { createTransport } from 'nodemailer'
 import path from 'path'
 import { emails, isDev } from '@utils/environment'
-import { appInstance } from '@utils/commons'
-import { EmailsList, TypedEmail } from '@utils/types'
+import { appInstance } from '@utils/app/types'
+import { EmailsList, TypedEmail } from '@utils/app/types'
 import { EmailErrorsUseCases } from '@modules/emails'
 
 export const sendMail = async (email: TypedEmail) => {

@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ConnectEntity } from '../../domain/entities/connects'
 import { ConnectFromModel, ConnectToModel } from '../models/connects'
 

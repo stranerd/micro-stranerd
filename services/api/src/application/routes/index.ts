@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { appId } from '@utils/environment'
 import { authRoutes } from './auth'
 import { pushRoutes } from './push'

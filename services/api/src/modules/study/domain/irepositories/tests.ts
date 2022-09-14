@@ -1,6 +1,6 @@
 import { TestEntity } from '../entities/tests'
 import { TestToModel } from '../../data/models/tests'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { AnswerType } from '../types'
 
 export interface ITestRepository {

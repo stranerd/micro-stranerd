@@ -1,5 +1,5 @@
 import { ClassUsers, EmbeddedUser } from '../types'
-import { BaseEntity } from '@utils/commons'
+import { BaseEntity } from '@utils/app/package'
 
 export class AnnouncementEntity extends BaseEntity {
 	public readonly id: string

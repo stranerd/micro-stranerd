@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { NotificationEntity } from '../../domain/entities/notifications'
 import { NotificationFromModel, NotificationToModel } from '../models/notifications'
 

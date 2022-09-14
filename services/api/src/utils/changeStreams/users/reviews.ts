@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/app/package'
 import { ReviewEntity, ReviewFromModel, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 

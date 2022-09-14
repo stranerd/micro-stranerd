@@ -1,5 +1,5 @@
 import { ChatMetasUseCases } from '@modules/messaging'
-import { Conditions, QueryParams, Request } from '@utils/commons'
+import { Conditions, QueryParams, Request } from '@utils/app/package'
 
 export class ChatMetaController {
 	static async getChatMeta (req: Request) {

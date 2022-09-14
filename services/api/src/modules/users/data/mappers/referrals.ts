@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ReferralEntity } from '../../domain/entities/referrals'
 import { ReferralFromModel, ReferralToModel } from '../models/referrals'
 

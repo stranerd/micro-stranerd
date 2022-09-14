@@ -1,4 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/commons'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { TokenController } from '../../controllers/auth/token'
 
 const getNewTokens: Route = {

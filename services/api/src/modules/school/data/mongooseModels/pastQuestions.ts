@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { PastQuestionFromModel } from '../models/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/school/pastQuestions'

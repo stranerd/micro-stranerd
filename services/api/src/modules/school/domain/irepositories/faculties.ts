@@ -1,6 +1,6 @@
 import { FacultyEntity } from '../entities/faculties'
 import { FacultyToModel } from '../../data/models/faculties'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface IFacultyRepository {
 	add: (data: FacultyToModel) => Promise<FacultyEntity>

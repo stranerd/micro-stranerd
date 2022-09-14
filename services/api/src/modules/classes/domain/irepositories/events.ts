@@ -1,6 +1,6 @@
 import { EventEntity } from '../entities/events'
 import { EventToModel } from '../../data/models/events'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser, EventType } from '../types'
 
 export interface IEventRepository {

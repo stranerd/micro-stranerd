@@ -1,5 +1,5 @@
 import { PlansUseCases } from '@modules/payment'
-import { QueryParams, Request } from '@utils/commons'
+import { QueryParams, Request } from '@utils/app/package'
 
 export class PlansController {
 	static async find (req: Request) {

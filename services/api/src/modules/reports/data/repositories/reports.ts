@@ -2,7 +2,7 @@ import { IReportRepository } from '../../domain/irepositories/reports'
 import { ReportMapper } from '../mappers/reports'
 import { Report } from '../mongooseModels/reports'
 import { ReportFromModel, ReportToModel } from '../models/reports'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class ReportRepository implements IReportRepository {

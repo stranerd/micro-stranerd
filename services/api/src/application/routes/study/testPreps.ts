@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { TestPrepController } from '../../controllers/study/testPreps'
 import { isAdmin } from '@application/middlewares'
 

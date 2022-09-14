@@ -1,6 +1,6 @@
 import { FileToModel } from '../../data/models/files'
 import { IFileRepository } from '../irepositories/files'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export class FilesUseCase {

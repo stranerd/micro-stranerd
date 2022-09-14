@@ -1,6 +1,6 @@
 import { CommentToModel } from '../../data/models/comments'
 import { CommentEntity } from '../entities/comments'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { CommentMetaType, InteractionEntity } from '../types'
 
 export interface ICommentRepository {

@@ -1,6 +1,6 @@
 import { CourseToModel } from '../../data/models/courses'
 import { ICourseRepository } from '../irepositories/courses'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class CoursesUseCase {
 	private repository: ICourseRepository

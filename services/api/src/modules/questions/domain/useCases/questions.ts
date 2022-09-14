@@ -1,6 +1,6 @@
 import { IQuestionRepository } from '../irepositories/questions'
 import { QuestionToModel } from '../../data/models/questions'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser, QuestionMetaType } from '../types'
 
 export class QuestionsUseCase {

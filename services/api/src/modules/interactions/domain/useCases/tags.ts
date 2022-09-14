@@ -1,6 +1,6 @@
 import { ITagRepository } from '../irepositories/tags'
 import { TagToModel } from '../../data/models/tags'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class TagsUseCase {
 	private repository: ITagRepository

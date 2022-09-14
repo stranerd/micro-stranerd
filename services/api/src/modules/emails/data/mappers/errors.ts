@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { ErrorFromModel, ErrorToModel } from '../models/errors'
 import { ErrorEntity } from '../../domain/entities/errors'
 

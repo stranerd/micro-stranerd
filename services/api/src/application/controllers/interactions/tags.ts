@@ -1,5 +1,5 @@
 import { TagsUseCases, TagTypes } from '@modules/interactions'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class TagController {
 	static async FindTag (req: Request) {

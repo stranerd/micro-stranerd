@@ -1,6 +1,6 @@
 import { NoteToModel } from '../../data/models/notes'
 import { INoteRepository } from '../irepositories/notes'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
 
 export class NotesUseCase {

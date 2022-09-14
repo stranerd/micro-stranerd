@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { mailchimpConfig } from '@utils/environment'
-import { appInstance } from '@utils/commons'
+import { appInstance } from '@utils/app/types'
 
 export const subscribeToMailingList = async (email: string) => {
 	const body = {

@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { PlanEntity } from '../../domain/entities/plans'
 import { PlanFromModel, PlanToModel } from '../models/plans'
 

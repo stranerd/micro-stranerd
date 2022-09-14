@@ -1,7 +1,7 @@
 import { IConnectRepository } from '../../domain/irepositories/connects'
 import { ConnectMapper } from '../mappers/connects'
 import { Connect } from '../mongooseModels/connects'
-import { parseQueryParams } from '@utils/commons'
+import { parseQueryParams } from '@utils/app/package'
 import { ConnectFromModel, ConnectToModel } from '../models/connects'
 import { EmbeddedUser } from '../../domain/types'
 

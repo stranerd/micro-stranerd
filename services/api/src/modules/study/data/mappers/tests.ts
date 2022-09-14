@@ -1,6 +1,6 @@
 import { TestFromModel, TestToModel } from '../models/tests'
 import { TestEntity } from '../../domain/entities/tests'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class TestMapper extends BaseMapper<TestFromModel, TestToModel, TestEntity> {
 	mapFrom (model: TestFromModel | null) {

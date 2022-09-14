@@ -1,6 +1,6 @@
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { GroupEntity } from '../../domain/entities/groups'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class GroupMapper extends BaseMapper<GroupFromModel, GroupToModel, GroupEntity> {
 	mapFrom (model: GroupFromModel | null) {

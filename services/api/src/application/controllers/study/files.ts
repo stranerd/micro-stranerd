@@ -1,6 +1,6 @@
 import { FilesUseCases } from '@modules/study'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { UploaderUseCases } from '@modules/storage'
 
 export class FileController {

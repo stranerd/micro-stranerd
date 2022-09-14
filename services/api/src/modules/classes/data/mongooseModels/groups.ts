@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { GroupFromModel } from '../models/groups'
 import { GroupEntity } from '../../domain/entities/groups'
 import { GroupChangeStreamCallbacks } from '@utils/changeStreams/classes/groups'

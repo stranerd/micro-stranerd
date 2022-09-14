@@ -5,7 +5,7 @@ import {
 	exchangeOldForNewTokens,
 	makeAccessToken,
 	makeRefreshToken
-} from '@utils/commons'
+} from '@utils/app/package'
 import { AuthOutput, AuthUserEntity, AuthUsersUseCases } from '@modules/auth'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {

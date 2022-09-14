@@ -1,6 +1,6 @@
 import { TestPrepToModel } from '../../data/models/testPreps'
 import { ITestPrepRepository } from '../irepositories/testPreps'
-import { QueryParams } from '@utils/commons'
+import { QueryParams } from '@utils/app/package'
 
 export class TestPrepsUseCase {
 	private repository: ITestPrepRepository

@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { EventFromModel } from '../models/events'
 import { EventEntity } from '../../domain/entities/events'
 import { EventChangeStreamCallbacks } from '@utils/changeStreams/classes/events'

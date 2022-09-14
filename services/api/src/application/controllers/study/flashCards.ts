@@ -1,6 +1,6 @@
 import { FlashCardsUseCases } from '@modules/study'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class FlashCardController {
 	static async FindFlashCard (req: Request) {

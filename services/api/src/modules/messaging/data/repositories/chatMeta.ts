@@ -1,4 +1,4 @@
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { IChatMetaRepository } from '../../domain/irepositories/chatMeta'
 import { ChatMetaMapper } from '../mappers/chatMeta'
 import { ChatMetaFromModel, ChatMetaToModel } from '../models/chatMeta'

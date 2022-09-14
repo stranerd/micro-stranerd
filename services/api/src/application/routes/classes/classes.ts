@@ -1,4 +1,4 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/commons'
+import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
 import { ClassController } from '../../controllers/classes/classes'
 
 export const classesRoutes: Route[] = [

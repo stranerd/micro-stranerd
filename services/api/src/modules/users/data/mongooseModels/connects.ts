@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ConnectFromModel } from '../models/connects'
 import { ConnectEntity } from '../../domain/entities/connects'
 import { ConnectMapper } from '../mappers/connects'

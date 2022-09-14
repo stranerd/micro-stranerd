@@ -1,6 +1,6 @@
 import { SetEntity } from '../entities/sets'
 import { SetToModel } from '../../data/models/sets'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser, SetSaved } from '../types'
 
 export interface ISetRepository {

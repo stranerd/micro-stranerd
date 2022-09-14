@@ -4,7 +4,6 @@ import { publishers } from '@utils/events'
 import User from '../mongooseModels/users'
 import { UserFromModel, UserToModel } from '../models/users'
 import {
-	appInstance,
 	AuthTypes,
 	BadRequestError,
 	Hash,
@@ -13,8 +12,8 @@ import {
 	Random,
 	readEmailFromPug,
 	ValidationError
-} from '@utils/commons'
-import { EmailsList, EventTypes } from '@utils/types'
+} from '@utils/app/package'
+import { appInstance, EmailsList, EventTypes } from '@utils/app/types'
 import { UserMapper } from '../mappers/users'
 import axios from 'axios'
 

@@ -1,5 +1,5 @@
 import { FacultiesUseCases, InstitutionsUseCases } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class FacultyController {
 	static async FindFaculty (req: Request) {

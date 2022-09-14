@@ -1,6 +1,6 @@
 import { GroupEntity } from '../entities/groups'
 import { GroupToModel } from '../../data/models/groups'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
 
 export interface IGroupRepository {

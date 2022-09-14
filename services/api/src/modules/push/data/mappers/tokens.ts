@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 import { TokenFromModel, TokenToModel } from '../models/tokens'
 import { TokenEntity } from '../../domain/entities/tokens'
 

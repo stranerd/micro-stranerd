@@ -1,6 +1,6 @@
 import { DepartmentEntity } from '../entities/departments'
 import { DepartmentToModel } from '../../data/models/departments'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 
 export interface IDepartmentRepository {
 	add: (data: DepartmentToModel) => Promise<DepartmentEntity>

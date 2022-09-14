@@ -1,6 +1,6 @@
 import { PrepType, TestPrepsUseCases } from '@modules/study'
 import { CoursesUseCases, PastQuestionType } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 
 export class TestPrepController {
 	static async FindTestPrep (req: Request) {

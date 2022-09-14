@@ -1,5 +1,5 @@
 import { ConnectEntity } from '../entities/connects'
-import { QueryParams, QueryResults } from '@utils/commons'
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { ConnectToModel } from '../../data/models/connects'
 import { EmbeddedUser } from '@modules/users'
 

@@ -1,5 +1,5 @@
 import { CommentsUseCases, InteractionEntities } from '@modules/interactions'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/commons'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { UsersUseCases } from '@modules/users'
 import { verifyInteractionEntity } from '@utils/modules/interactions'
 

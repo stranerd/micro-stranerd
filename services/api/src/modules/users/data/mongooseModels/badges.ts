@@ -1,4 +1,4 @@
-import { generateChangeStreams, mongoose } from '@utils/commons'
+import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { BadgeFromModel } from '../models/badges'
 import { BadgeChangeStreamCallbacks } from '@utils/changeStreams/users/badges'
 import { BadgeEntity } from '../../domain/entities/badges'

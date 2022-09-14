@@ -2,7 +2,7 @@ import { IAnnouncementRepository } from '../../domain/irepositories/announcement
 import { AnnouncementMapper } from '../mappers/announcements'
 import { AnnouncementFromModel, AnnouncementToModel } from '../models/announcements'
 import { Announcement } from '../mongooseModels/announcements'
-import { parseQueryParams, QueryParams } from '@utils/commons'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class AnnouncementRepository implements IAnnouncementRepository {

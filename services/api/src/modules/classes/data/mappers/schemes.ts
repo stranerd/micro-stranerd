@@ -1,6 +1,6 @@
 import { SchemeFromModel, SchemeToModel } from '../models/schemes'
 import { SchemeEntity } from '../../domain/entities/schemes'
-import { BaseMapper } from '@utils/commons'
+import { BaseMapper } from '@utils/app/package'
 
 export class SchemeMapper extends BaseMapper<SchemeFromModel, SchemeToModel, SchemeEntity> {
 	mapFrom (model: SchemeFromModel | null) {

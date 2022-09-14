@@ -1,4 +1,4 @@
-import { MediaOutput } from '@utils/commons'
+import { MediaOutput } from '@utils/app/package'
 
 export { EmbeddedUser } from '@modules/users'
 export * from './events'
