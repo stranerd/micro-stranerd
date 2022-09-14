@@ -21,13 +21,7 @@ export interface IUserRepository {
 
 	resetRankings (key: keyof UserAccount['rankings']): Promise<boolean>
 
-	setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean): Promise<void>
-
-	updateUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[], add: boolean): Promise<void>
-
 	updateUserStreak (userId: string): Promise<{ skip: boolean, increase: boolean, reset: boolean, streak: number }>
-
-	updateUserRatings (userId: string, ratings: number, add: boolean): Promise<boolean>
 
 	updateUserStatus (userId: string, socketId: string, add: boolean): Promise<boolean>
 

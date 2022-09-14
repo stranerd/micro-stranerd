@@ -7,8 +7,6 @@ import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { retryTransactions } from '@utils/modules/payment/transactions'
 import { broadcastEvent } from '@utils/modules/classes/events'
-import { endSession, startSession } from '@utils/modules/messaging/sessions'
-import { SessionsUseCases } from '@modules/messaging'
 import { TestsUseCases } from '@modules/study'
 import { renewSubscription } from '@utils/modules/payment/subscriptions'
 
@@ -20,27 +18,6 @@ export const startJobs = async () => {
 		{ name: CronTypes.monthly, cron: '0 0 1 * *' }
 	], {
 		onDelayed: async (data) => {
-			if (data.type === DelayedJobs.SessionTimer) await endSession(data.data.sessionId)
-			if (data.type === DelayedJobs.ScheduledSessionStart) {
-				const { sessionId, studentId: userId } = data.data
-				const session = await SessionsUseCases.find({ sessionId, userId })
-				if (session) await startSession(session)
-			}
-			/* if (data.type === DelayedJobs.ScheduledSessionNotification) {
-				const { sessionId, studentId, tutorId, timeInMin } = data.data
-				await sendNotification([studentId], {
-					title: 'Session Timer',
-					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
-					data: { type: NotificationType.sessions, userId: tutorId, sessionId },
-					sendEmail: false
-				})
-				await sendNotification([tutorId], {
-					title: 'Session Timer',
-					body: timeInMin > 0 ? `Your session will start in ${timeInMin} minutes` : 'Your session is starting now',
-					data: { type: NotificationType.sessions, userId: studentId, sessionId },
-					sendEmail: false
-				})
-			} */
 			if (data.type === DelayedJobs.TestTimer) await TestsUseCases.update({
 				id: data.data.testId,
 				userId: data.data.userId,

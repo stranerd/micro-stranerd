@@ -1,7 +1,7 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { BadgesUseCases, ConnectsUseCases, ReviewsUseCases, UserEntity, UserFromModel } from '@modules/users'
+import { BadgesUseCases, ConnectsUseCases, UserEntity, UserFromModel } from '@modules/users'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
-import { ChatMetasUseCases, ChatsUseCases, SessionsUseCases } from '@modules/messaging'
+import { ChatMetasUseCases, ChatsUseCases } from '@modules/messaging'
 import { FilesUseCases, FlashCardsUseCases, NotesUseCases, SetsUseCases } from '@modules/study'
 import { ReportsUseCases } from '@modules/reports'
 import {
@@ -26,7 +26,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
-			ChatMetasUseCases, ChatsUseCases, SessionsUseCases, ConnectsUseCases, ReviewsUseCases,
+			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
 			NotesUseCases, FilesUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases

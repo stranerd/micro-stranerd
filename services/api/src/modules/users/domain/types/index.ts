@@ -29,10 +29,6 @@ export type UserAccount = {
 	score: number
 	rankings: Record<UserRankings, number>
 	meta: Record<UserMeta, number>
-	ratings: {
-		total: number
-		count: number
-	}
 	streak: {
 		count: number
 		longestStreak: number
@@ -53,9 +49,6 @@ export enum UserMeta {
 	answers = 'answers',
 	bestAnswers = 'bestAnswers',
 
-	sessions = 'sessions',
-	tutorSessions = 'tutorSessions',
-
 	flashCards = 'flashCards',
 	notes = 'notes',
 	files = 'files',
@@ -69,19 +62,10 @@ export enum UserRankings {
 	overall = 'overall'
 }
 
-export interface UserSession {
-	currentSessions: string[]
-	currentTutorSessions: string[]
-	requests: string[]
-	lobby: string[]
-}
-
 export enum ScoreRewards {
 	BestAnswer = 2,
 	NewAnswer = 1,
 	NewQuestion = 0.5,
-
-	CompleteSession = 1,
 
 	CompleteTest = 1,
 	NewSet = 0.05,

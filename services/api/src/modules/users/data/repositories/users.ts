@@ -79,25 +79,6 @@ export class UserRepository implements IUserRepository {
 		})
 	}
 
-	async setUsersCurrentSession (studentId: string, tutorId: string, sessionId: string, add: boolean) {
-		const session = await mongoose.startSession()
-		const key = add ? '$addToSet' : '$pull'
-		await session.withTransaction(async (session) => {
-			await User.findByIdAndUpdate(studentId, { [key]: { 'session.currentSessions': sessionId } }, { session })
-			await User.findByIdAndUpdate(tutorId, { [key]: { 'session.currentTutorSessions': sessionId } }, { session })
-		})
-		await session.endSession()
-	}
-
-	async updateUserQueuedSessions (studentId: string, tutorId: string, sessionIds: string[], add: boolean) {
-		const session = await mongoose.startSession()
-		await session.withTransaction(async (session) => {
-			await User.findByIdAndUpdate(studentId, { [add ? '$addToSet' : '$pull']: { 'session.lobby': { [add ? '$each' : '$in']: sessionIds } } }, { session })
-			await User.findByIdAndUpdate(tutorId, { [add ? '$addToSet' : '$pull']: { 'session.requests': { [add ? '$each' : '$in']: sessionIds } } }, { session })
-		})
-		await session.endSession()
-	}
-
 	async updateUserStreak (userId: string) {
 		const session = await mongoose.startSession()
 		const res = { skip: false, increase: false, reset: false, streak: 0 }
@@ -123,16 +104,6 @@ export class UserRepository implements IUserRepository {
 		})
 		await session.endSession()
 		return res
-	}
-
-	async updateUserRatings (userId: string, ratings: number, add: boolean) {
-		const user = await User.findByIdAndUpdate(userId, {
-			$inc: {
-				'account.ratings.total': add ? ratings : 0 - ratings,
-				'account.ratings.count': add ? 1 : -1
-			}
-		})
-		return !!user
 	}
 
 	async updateUserStatus (userId: string, socketId: string, add: boolean) {

@@ -1,5 +1,5 @@
 import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
-import { ChatController } from '../../controllers/messaging'
+import { ChatController } from '../../controllers/messaging/chat'
 
 export const chatRoutes: Route[] = [
 	{

@@ -1,13 +1,4 @@
-import {
-	EmbeddedUser,
-	UserAccount,
-	UserBio,
-	UserDates,
-	UserRoles,
-	UserSchoolData,
-	UserSession,
-	UserStatus
-} from '../types'
+import { EmbeddedUser, UserAccount, UserBio, UserDates, UserRoles, UserSchoolData, UserStatus } from '../types'
 import { BaseEntity } from '@utils/app/package'
 import { getNextRank, getRank } from './ranks'
 
@@ -18,10 +9,9 @@ export class UserEntity extends BaseEntity {
 	public readonly dates: UserDates
 	public readonly status: UserStatus
 	public readonly account: UserAccount
-	public readonly session: UserSession
 	public readonly school: UserSchoolData | null
 
-	constructor ({ id, bio, roles, dates, status, account, session, school }: UserConstructorArgs) {
+	constructor ({ id, bio, roles, dates, status, account, school }: UserConstructorArgs) {
 		super()
 		this.id = id
 		this.bio = bio ?? {}
@@ -29,7 +19,6 @@ export class UserEntity extends BaseEntity {
 		this.dates = dates
 		this.status = status
 		this.account = account
-		this.session = session
 		this.school = school
 	}
 
@@ -57,6 +46,5 @@ type UserConstructorArgs = {
 	dates: UserDates
 	status: UserStatus
 	account: UserAccount
-	session: UserSession
 	school: UserSchoolData | null
 }

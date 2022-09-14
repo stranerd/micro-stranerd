@@ -1,5 +1,5 @@
 import { IUserRepository } from '../irepositories/users'
-import { UserAccount, UserBio, UserMeta, UserRoles, UserSchoolData } from '../types'
+import { UserAccount, UserBio, UserRoles, UserSchoolData } from '../types'
 import { QueryParams } from '@utils/app/package'
 
 export class UsersUseCase {
@@ -33,15 +33,8 @@ export class UsersUseCase {
 		return await this.repository.getUsers(query)
 	}
 
-	async incrementMeta (params: { id: string, value: 1 | -1, property: keyof Omit<UserAccount['meta'], 'tutorSessions' | 'sessions'> }) {
+	async incrementMeta (params: { id: string, value: 1 | -1, property: keyof UserAccount['meta'] }) {
 		return await this.repository.incrementUserMetaProperty(params.id, params.property, params.value)
-	}
-
-	async incrementSessionCount (params: { studentId: string, tutorId: string, value: 1 | -1 }) {
-		await Promise.all([
-			this.repository.incrementUserMetaProperty(params.studentId, UserMeta.sessions, params.value),
-			this.repository.incrementUserMetaProperty(params.tutorId, UserMeta.tutorSessions, params.value)
-		])
 	}
 
 	async updateStatus (input: { userId: string, socketId: string, add: boolean }) {
@@ -54,18 +47,6 @@ export class UsersUseCase {
 
 	async resetRankings (key: keyof UserAccount['rankings']) {
 		return await this.repository.resetRankings(key)
-	}
-
-	async updateRatings (input: { userId: string, ratings: number, add: boolean }) {
-		return await this.repository.updateUserRatings(input.userId, input.ratings, input.add)
-	}
-
-	async setCurrentSession (params: { studentId: string, tutorId: string, sessionId: string, add: boolean }) {
-		return await this.repository.setUsersCurrentSession(params.studentId, params.tutorId, params.sessionId, params.add)
-	}
-
-	async updateQueuedSessions (params: { studentId: string, sessionIds: string[], tutorId: string, add: boolean }) {
-		return await this.repository.updateUserQueuedSessions(params.studentId, params.tutorId, params.sessionIds, params.add)
 	}
 
 	async updateNerdScore (params: { userId: string, amount: number }) {

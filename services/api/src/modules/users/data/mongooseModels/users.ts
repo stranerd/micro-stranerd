@@ -21,19 +21,6 @@ const Rankings = Object.fromEntries(
 	}])
 )
 
-const UserRating = {
-	count: {
-		type: Number,
-		required: false,
-		default: 0
-	},
-	total: {
-		type: Number,
-		required: false,
-		default: 0
-	}
-}
-
 const UserStreak = {
 	count: {
 		type: Number,
@@ -90,28 +77,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 			default: 0
 		}
 	},
-	session: {
-		currentSessions: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		currentTutorSessions: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		requests: {
-			type: [String],
-			required: false,
-			default: []
-		},
-		lobby: {
-			type: [String],
-			required: false,
-			default: []
-		}
-	},
 	account: {
 		score: {
 			type: Number,
@@ -120,7 +85,6 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		},
 		rankings: Rankings,
 		meta: Meta,
-		ratings: UserRating,
 		streak: UserStreak
 	},
 	school: {

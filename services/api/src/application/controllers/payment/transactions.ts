@@ -20,6 +20,7 @@ export class TransactionsController {
 
 	static async create (req: Request) {
 		const isNewCardType = req.body.data?.type === TransactionType.NewCard
+		const types = [TransactionType.NewCard]
 		const authUser = req.authUser!
 
 		const { type } = validate({
@@ -27,7 +28,7 @@ export class TransactionsController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TransactionType).filter((x) => x !== TransactionType.Subscription), (cur, val) => cur === val)]
+				rules: [Validation.isString, Validation.arrayContainsX(types, (cur, val) => cur === val)]
 			}
 		})
 
