@@ -1,10 +1,5 @@
-import {
-	ChangeStreamCallbacks,
-	deleteCachedAccessToken,
-	EmailsList,
-	EventTypes,
-	readEmailFromPug
-} from '@utils/commons'
+import { ChangeStreamCallbacks, deleteCachedAccessToken, readEmailFromPug } from '@utils/commons'
+import { EmailsList, EventTypes } from '@utils/types'
 import { publishers } from '@utils/events'
 import { AuthUserEntity, UserFromModel } from '@modules/auth'
 import { subscribeToMailingList } from '@utils/mailing'

@@ -1,4 +1,5 @@
-import { appInstance, ChangeStreamCallbacks, SupportedAuthRoles } from '@utils/commons'
+import { appInstance, ChangeStreamCallbacks } from '@utils/commons'
+import { SupportedAuthRoles } from '@utils/types'
 import { WalletEntity, WalletFromModel } from '@modules/payment'
 import { getSocketEmitter } from '@index'
 import { AuthUsersUseCases } from '@modules/auth'

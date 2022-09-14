@@ -7,8 +7,6 @@ import {
 	appInstance,
 	AuthTypes,
 	BadRequestError,
-	EmailsList,
-	EventTypes,
 	Hash,
 	MediaOutput,
 	mongoose,
@@ -16,6 +14,7 @@ import {
 	readEmailFromPug,
 	ValidationError
 } from '@utils/commons'
+import { EmailsList, EventTypes } from '@utils/types'
 import { UserMapper } from '../mappers/users'
 import axios from 'axios'
 

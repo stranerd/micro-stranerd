@@ -1,4 +1,5 @@
-import { makeMiddleware, NotAuthenticatedError, NotAuthorizedError, SupportedAuthRoles } from '@utils/commons'
+import { makeMiddleware, NotAuthenticatedError, NotAuthorizedError } from '@utils/commons'
+import { SupportedAuthRoles } from '@utils/types'
 
 export const isAdmin = makeMiddleware(
 	async (request) => {

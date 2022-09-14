@@ -1,4 +1,5 @@
-import { AuthRoles, AuthTypes, MediaOutput } from '@utils/commons'
+import { AuthTypes, MediaOutput } from '@utils/commons'
+import { AuthRoles } from '@utils/types'
 
 export interface UserFromModel extends UserToModel {
 	_id: string

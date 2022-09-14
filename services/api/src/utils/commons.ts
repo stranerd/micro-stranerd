@@ -7,9 +7,9 @@
 
 // When running in dev mode, uncomment this export && comment the other
 // @ts-ignore
-import { getEnvOrFail, Instance } from './common/package'
+import { getEnvOrFail, Instance } from './common'
 //@ts-ignore
-export * from './common/package'
+export * from './common'
 
 // For production, uncomment this export && comment the other
 //@ts-ignore
@@ -29,6 +29,3 @@ Instance.initialize({
 	rabbitColumnName: 'StranerdExchangeColumn'
 })
 export const appInstance = Instance.getInstance()
-
-//@ts-ignore
-export * from './common/types'

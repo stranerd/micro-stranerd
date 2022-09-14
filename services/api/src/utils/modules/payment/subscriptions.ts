@@ -10,7 +10,8 @@ import {
 } from '@modules/payment'
 import { UserEntity, UsersUseCases } from '@modules/users'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
-import { appInstance, BadRequestError, DelayedEvent, DelayedJobs } from '@utils/commons'
+import { appInstance, BadRequestError } from '@utils/commons'
+import { DelayedEvent, DelayedJobs } from '@utils/types'
 
 const activateSub = async (userId: string, walletId: string, subscription: PlanEntity, successful: boolean) => {
 	const now = Date.now()

@@ -1,5 +1,6 @@
-import { EmailsList, EventTypes, readEmailFromPug } from '@utils/commons'
+import { readEmailFromPug } from '@utils/commons'
 import { publishers } from '@utils/events'
+import { EmailsList, EventTypes } from '@utils/types'
 
 export enum MessageType {
 	student = 'student',

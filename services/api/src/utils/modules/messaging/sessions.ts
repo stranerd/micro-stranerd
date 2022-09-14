@@ -1,6 +1,7 @@
 import { SessionEntity, SessionsUseCases } from '@modules/messaging'
-import { appInstance, DelayedEvent, DelayedJobs } from '@utils/commons'
+import { appInstance } from '@utils/commons'
 import { UsersUseCases } from '@modules/users'
+import { DelayedEvent, DelayedJobs } from '@utils/types'
 
 export const startSession = async (session: SessionEntity) => {
 	await UsersUseCases.setCurrentSession({

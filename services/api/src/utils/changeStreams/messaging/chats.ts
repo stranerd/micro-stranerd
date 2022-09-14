@@ -1,4 +1,5 @@
-import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/commons'
+import { EventTypes } from '@utils/types'
 import { ChatEntity, ChatFromModel, ChatMetasUseCases } from '@modules/messaging'
 import { publishers } from '@utils/events'
 import { getSocketEmitter } from '@index'

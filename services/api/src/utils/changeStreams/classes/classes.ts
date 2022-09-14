@@ -1,4 +1,5 @@
-import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/commons'
+import { EventTypes } from '@utils/types'
 import {
 	AnnouncementsUseCases,
 	ClassEntity,

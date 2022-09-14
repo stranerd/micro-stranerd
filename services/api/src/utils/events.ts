@@ -1,4 +1,5 @@
-import { appInstance, Events, EventTypes } from '@utils/commons'
+import { appInstance } from '@utils/commons'
+import { Events, EventTypes } from '@utils/types'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { UploaderUseCases } from '@modules/storage'
 

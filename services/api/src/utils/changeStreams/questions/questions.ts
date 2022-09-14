@@ -1,4 +1,5 @@
-import { ChangeStreamCallbacks, EventTypes } from '@utils/commons'
+import { ChangeStreamCallbacks } from '@utils/commons'
+import { EventTypes } from '@utils/types'
 import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'

@@ -1,4 +1,5 @@
-import { appInstance, CronLikeEvent, CronLikeJobs, CronTypes, DelayedEvent, DelayedJobs } from '@utils/commons'
+import { appInstance, CronTypes } from '@utils/commons'
+import { CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/types'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { CardsUseCases } from '@modules/payment'
@@ -66,7 +67,7 @@ export const startJobs = async () => {
 			}
 			if (type === CronTypes.hourly) {
 				const errors = await EmailErrorsUseCases.getAndDeleteAll()
-				await Promise.all(errors.map(sendMailAndCatchError))
+				await Promise.all(errors.map((e) => sendMailAndCatchError(e as any)))
 				await retryTransactions(60 * 60 * 1000)
 				await appInstance.job.retryAllFailedJobs()
 			}
