@@ -75,19 +75,8 @@ export enum ScoreRewards {
 }
 
 export enum UserSchoolType {
-	'secondary' = 'secondary',
 	'aspirant' = 'aspirant',
 	'college' = 'college'
-}
-
-type SecondaryType = {
-	type: UserSchoolType.secondary
-	exams: {
-		institutionId: string
-		courseIds: string[]
-		startDate: number
-		endDate: number
-	}[]
 }
 
 type AspirantType = {
@@ -108,4 +97,4 @@ type CollegeType = {
 	tagId: string
 }
 
-export type UserSchoolData = SecondaryType | AspirantType | CollegeType
+export type UserSchoolData = AspirantType | CollegeType

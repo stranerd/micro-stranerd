@@ -15,7 +15,6 @@ export class UsersController {
 	static async updateSchool (req: Request) {
 		const isCollege = req.body.type === UserSchoolType.college
 		const isAspirant = req.body.type === UserSchoolType.aspirant
-		const isSecondary = req.body.type === UserSchoolType.secondary
 
 		const { type, departmentId, exams } = validate({
 			type: req.body.type,
@@ -28,7 +27,7 @@ export class UsersController {
 			},
 			departmentId: { required: isCollege, rules: [Validation.isString] },
 			exams: {
-				required: isAspirant || isSecondary,
+				required: isAspirant,
 				rules: [
 					Validation.isArrayOfX((exam: any) => {
 						const matches = [Validation.isString(exam?.institutionId).valid]
