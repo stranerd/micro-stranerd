@@ -9,14 +9,6 @@ export const isAdmin = makeMiddleware(
 	}
 )
 
-export const isVerified = makeMiddleware(
-	async (request) => {
-		const isVerified = request.authUser?.roles?.[SupportedAuthRoles.isVerified]
-		if (!request.authUser) throw new NotAuthenticatedError()
-		if (!isVerified) throw new NotAuthorizedError()
-	}
-)
-
 export const isSubscribed = makeMiddleware(
 	async (request) => {
 		const isSubscribed = request.authUser?.roles?.[SupportedAuthRoles.isSubscribed]
