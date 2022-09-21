@@ -34,8 +34,6 @@ services:
   mongodb:
     image: 'mongo:6.0.1'
     hostname: mongodb
-    ports:
-      - "27017:27017"
     volumes:
       - '/c/data/docker/mstranerd/mongo/db:/data/db'
       - '/c/data/docker/mstranerd/mongo/configdb:/data/configdb'
