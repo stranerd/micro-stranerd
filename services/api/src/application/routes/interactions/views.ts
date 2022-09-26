@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { ViewsController } from '../../controllers/interactions/views'
+import { isAuthenticated } from '@application/middlewares'
 
 export const viewsRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const viewsRoutes: Route[] = [
 		path: '/interactions/views/',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

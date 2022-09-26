@@ -1,5 +1,23 @@
-import { makeMiddleware, NotAuthenticatedError, NotAuthorizedError } from '@utils/app/package'
+import {
+	makeMiddleware,
+	NotAuthenticatedError,
+	NotAuthorizedError,
+	requireAuthUser,
+	requireRefreshUser
+} from '@utils/app/package'
 import { SupportedAuthRoles } from '@utils/app/types'
+
+export const isAuthenticated = makeMiddleware(
+	async (request) => {
+		await requireAuthUser(request)
+	}
+)
+
+export const hasRefreshToken = makeMiddleware(
+	async (request) => {
+		await requireRefreshUser(request)
+	}
+)
 
 export const isAdmin = makeMiddleware(
 	async (request) => {

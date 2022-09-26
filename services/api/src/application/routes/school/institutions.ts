@@ -1,6 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { InstitutionController } from '../../controllers/school/institutions'
-import { isAdmin } from '@application/middlewares'
+import { isAdmin, isAuthenticated } from '@application/middlewares'
 
 export const institutionsRoutes: Route[] = [
 	{
@@ -31,8 +31,7 @@ export const institutionsRoutes: Route[] = [
 		path: '/school/institutions',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
-			isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -45,8 +44,7 @@ export const institutionsRoutes: Route[] = [
 		path: '/school/institutions/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
-			isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -59,8 +57,7 @@ export const institutionsRoutes: Route[] = [
 		path: '/school/institutions/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
-			isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

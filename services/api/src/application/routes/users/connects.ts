@@ -1,13 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { ConnectsController } from '../../controllers/users/connects'
-import { isSubscribed } from '@application/middlewares'
+import { isAuthenticated, isSubscribed } from '@application/middlewares'
 
 export const connectsRoutes: Route[] = [
 	{
 		path: '/users/connects/',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -20,7 +20,7 @@ export const connectsRoutes: Route[] = [
 		path: '/users/connects/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -33,7 +33,7 @@ export const connectsRoutes: Route[] = [
 		path: '/users/connects/',
 		method: 'post',
 		controllers: [
-			requireAuthUser, isSubscribed,
+			isAuthenticated, isSubscribed,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -46,7 +46,7 @@ export const connectsRoutes: Route[] = [
 		path: '/users/connects/:id/accept',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -59,7 +59,7 @@ export const connectsRoutes: Route[] = [
 		path: '/users/connects/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

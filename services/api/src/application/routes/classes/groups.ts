@@ -1,12 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { GroupController } from '../../controllers/classes/groups'
+import { isAuthenticated } from '@application/middlewares'
 
 export const groupsRoutes: Route[] = [
 	{
 		path: '/classes/groups/:classId',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -19,7 +20,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -32,7 +33,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -45,7 +46,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId/',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -58,7 +59,7 @@ export const groupsRoutes: Route[] = [
 		path: '/classes/groups/:classId/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

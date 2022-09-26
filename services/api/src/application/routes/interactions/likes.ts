@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { LikesController } from '../../controllers/interactions/likes'
+import { isAuthenticated } from '@application/middlewares'
 
 export const likesRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const likesRoutes: Route[] = [
 		path: '/interactions/likes/',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

@@ -1,12 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { NotificationsController } from '../../controllers/users/notifications'
+import { isAuthenticated } from '@application/middlewares'
 
 export const notificationsRoutes: Route[] = [
 	{
 		path: '/users/notifications/',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -19,7 +20,7 @@ export const notificationsRoutes: Route[] = [
 		path: '/users/notifications/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -32,7 +33,7 @@ export const notificationsRoutes: Route[] = [
 		path: '/users/notifications/seen',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -45,7 +46,7 @@ export const notificationsRoutes: Route[] = [
 		path: '/users/notifications/:id/seen',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

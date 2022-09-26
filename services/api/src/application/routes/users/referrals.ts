@@ -1,12 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { ReferralsController } from '../../controllers/users/referrals'
+import { isAuthenticated } from '@application/middlewares'
 
 export const referralsRoutes: Route[] = [
 	{
 		path: '/users/referrals/',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -19,7 +20,7 @@ export const referralsRoutes: Route[] = [
 		path: '/users/referrals/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

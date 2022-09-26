@@ -1,5 +1,4 @@
 export * from './requireAuthUser'
 export * from './requireRefreshUser'
-export * from './requireAuthUserIsVerified'
 export * from './notFoundHandler'
 export * from './errorHandler'

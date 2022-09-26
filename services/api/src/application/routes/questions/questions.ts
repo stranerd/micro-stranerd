@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { QuestionController } from '../../controllers/questions/questions'
+import { isAuthenticated } from '@application/middlewares'
 
 export const questionsRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const questionsRoutes: Route[] = [
 		path: '/questions/questions/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +44,7 @@ export const questionsRoutes: Route[] = [
 		path: '/questions/questions',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -56,7 +57,7 @@ export const questionsRoutes: Route[] = [
 		path: '/questions/questions/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -69,7 +70,7 @@ export const questionsRoutes: Route[] = [
 		path: '/questions/questions/:id/best',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

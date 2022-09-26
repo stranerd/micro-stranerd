@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { ClassController } from '../../controllers/classes/classes'
+import { isAuthenticated } from '@application/middlewares'
 
 export const classesRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +44,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -56,7 +57,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -69,7 +70,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id/requests',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -82,7 +83,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id/leave',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -95,7 +96,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id/requests',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -108,7 +109,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id/members',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -121,7 +122,7 @@ export const classesRoutes: Route[] = [
 		path: '/classes/classes/:id/roles',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

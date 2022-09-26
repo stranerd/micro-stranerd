@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { FileController } from '../../controllers/study/files'
+import { isAuthenticated } from '@application/middlewares'
 
 export const filesRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const filesRoutes: Route[] = [
 		path: '/study/files/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +44,7 @@ export const filesRoutes: Route[] = [
 		path: '/study/files',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -56,7 +57,7 @@ export const filesRoutes: Route[] = [
 		path: '/study/files/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

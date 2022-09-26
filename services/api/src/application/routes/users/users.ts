@@ -1,12 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { UsersController } from '../../controllers/users/users'
+import { isAuthenticated } from '@application/middlewares'
 
 export const usersRoutes: Route[] = [
 	{
 		path: '/users/users/school',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

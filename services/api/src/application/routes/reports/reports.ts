@@ -1,13 +1,13 @@
 import { ReportController } from '@application/controllers/reports/reports'
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
-import { isAdmin } from '@application/middlewares'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
+import { isAdmin, isAuthenticated } from '@application/middlewares'
 
 export const reportRoutes: Route[] = [
 	{
 		path: '/reports/reports',
 		method: 'get',
 		controllers: [
-			requireAuthUser, isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -20,7 +20,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports/reports/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser, isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -33,7 +33,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports/reports/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser, isAdmin,
+			isAuthenticated, isAdmin,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -46,7 +46,7 @@ export const reportRoutes: Route[] = [
 		path: '/reports/reports',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

@@ -1,12 +1,13 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { ChatController } from '../../controllers/messaging/chat'
+import { isAuthenticated } from '@application/middlewares'
 
 export const chatRoutes: Route[] = [
 	{
 		path: '/messaging/chats',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -19,7 +20,7 @@ export const chatRoutes: Route[] = [
 		path: '/messaging/chats/:id',
 		method: 'get',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -32,7 +33,7 @@ export const chatRoutes: Route[] = [
 		path: '/messaging/chats',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -45,7 +46,7 @@ export const chatRoutes: Route[] = [
 		path: '/messaging/chats/read',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,

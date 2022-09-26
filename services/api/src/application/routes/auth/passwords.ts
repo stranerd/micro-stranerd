@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { PasswordsController } from '../../controllers/auth/passwords'
+import { isAuthenticated } from '@application/middlewares'
 
 const resetPasswordEmail: Route = {
 	path: '/auth/passwords/reset/mail',
@@ -31,7 +32,7 @@ const updatePassword: Route = {
 	path: '/auth/passwords/update',
 	method: 'post',
 	controllers: [
-		requireAuthUser,
+		isAuthenticated,
 		makeController(async (req) => {
 			return {
 				status: StatusCodes.Ok,

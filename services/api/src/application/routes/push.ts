@@ -1,11 +1,12 @@
-import { makeController, requireAuthUser, Route, StatusCodes, validate, Validation } from '@utils/app/package'
+import { makeController, Route, StatusCodes, validate, Validation } from '@utils/app/package'
 import { TokensUseCases } from '@modules/push'
+import { isAuthenticated } from '@application/middlewares'
 
 const subscribeDevice: Route = {
 	path: '/push/devices/subscribe',
 	method: 'post',
 	controllers: [
-		requireAuthUser,
+		isAuthenticated,
 		makeController(async (req) => {
 			const { token } = validate({
 				token: req.body.token
@@ -25,7 +26,7 @@ const unsubscribeDevice: Route = {
 	path: '/push/devices/unsubscribe',
 	method: 'post',
 	controllers: [
-		requireAuthUser,
+		isAuthenticated,
 		makeController(async (req) => {
 			const { token } = validate({
 				token: req.body.token

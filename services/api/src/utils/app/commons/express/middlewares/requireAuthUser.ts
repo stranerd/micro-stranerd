@@ -1,9 +1,7 @@
-import { makeMiddleware } from '../controllers'
+import { Request } from '../controllers/request'
 import { NotAuthenticatedError } from '../../errors'
 
-export const requireAuthUser = makeMiddleware(
-	async (request) => {
-		if (request.pendingError) throw request.pendingError
-		if (!request.authUser) throw new NotAuthenticatedError()
-	}
-)
+export const requireAuthUser = async (request: Request) => {
+	if (request.pendingError) throw request.pendingError
+	if (!request.authUser) throw new NotAuthenticatedError()
+}

@@ -1,5 +1,6 @@
-import { makeController, requireAuthUser, Route, StatusCodes } from '@utils/app/package'
+import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { SetController } from '../../controllers/study/sets'
+import { isAuthenticated } from '@application/middlewares'
 
 export const setsRoutes: Route[] = [
 	{
@@ -30,7 +31,7 @@ export const setsRoutes: Route[] = [
 		path: '/study/sets',
 		method: 'post',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -43,7 +44,7 @@ export const setsRoutes: Route[] = [
 		path: '/study/sets/:id',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -56,7 +57,7 @@ export const setsRoutes: Route[] = [
 		path: '/study/sets/:id/save',
 		method: 'put',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
@@ -69,7 +70,7 @@ export const setsRoutes: Route[] = [
 		path: '/study/sets/:id',
 		method: 'delete',
 		controllers: [
-			requireAuthUser,
+			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
