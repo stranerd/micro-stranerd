@@ -8,7 +8,7 @@ export const plansList: PlanToModel[] = [
 		currency: Currencies.NGN,
 		name: 'Solo',
 		interval: CronTypes.monthly,
-		data: { questions: 5 },
+		data: { questions: 10 },
 		features: {
 			classes: true, flashCards: true, homework: true, connect: true,
 			tests: false, solutions: false, manuals: false
