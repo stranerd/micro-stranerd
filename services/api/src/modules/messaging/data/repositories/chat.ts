@@ -56,8 +56,8 @@ export class ChatRepository implements IChatRepository {
 		}
 	}
 
-	async find (id: string, userId: string) {
-		const chat = await Chat.findOne({ _id: id, 'data.members': userId })
+	async find (id: string) {
+		const chat = await Chat.findById(id)
 		return this.mapper.mapFrom(chat)
 	}
 

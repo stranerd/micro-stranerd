@@ -6,7 +6,7 @@ import { ClassUsers, EmbeddedUser } from '../types'
 export interface IGroupRepository {
 	add: (data: GroupToModel) => Promise<GroupEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<GroupEntity>>
-	find: (classId: string, id: string, userId: string) => Promise<GroupEntity | null>
+	find: (id: string) => Promise<GroupEntity | null>
 	update: (classId: string, id: string, userId: string, data: Partial<GroupToModel>) => Promise<GroupEntity | null>
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>

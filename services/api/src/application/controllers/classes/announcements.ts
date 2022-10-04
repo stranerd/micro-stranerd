@@ -12,11 +12,9 @@ import {
 
 export class AnnouncementController {
 	static async FindAnnouncement (req: Request) {
-		return await AnnouncementsUseCases.find({
-			id: req.params.id,
-			classId: req.params.classId,
-			userId: req.authUser!.id
-		})
+		const announcement = await AnnouncementsUseCases.find(req.params.id)
+		if (!announcement || announcement.classId !== req.params.classId || !announcement.users.members.includes(req.authUser!.id)) return null
+		return announcement
 	}
 
 	static async GetAnnouncement (req: Request) {

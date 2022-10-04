@@ -38,8 +38,8 @@ export class TestRepository implements ITestRepository {
 		return this.mapper.mapFrom(test)!
 	}
 
-	async find (id: string, userId: string) {
-		const test = await Test.findOne({ _id: id, userId })
+	async find (id: string) {
+		const test = await Test.findById(id )
 		return this.mapper.mapFrom(test)
 	}
 

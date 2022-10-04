@@ -6,7 +6,7 @@ import { ClassUsers, EmbeddedUser } from '../types'
 export interface IAnnouncementRepository {
 	add: (data: AnnouncementToModel) => Promise<AnnouncementEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<AnnouncementEntity>>
-	find: (classId: string, id: string, userId: string) => Promise<AnnouncementEntity | null>
+	find: (id: string) => Promise<AnnouncementEntity | null>
 	update: (classId: string, id: string, userId: string, data: Partial<AnnouncementToModel>) => Promise<AnnouncementEntity | null>
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>

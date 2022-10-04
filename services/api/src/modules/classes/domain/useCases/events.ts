@@ -22,8 +22,8 @@ export class EventsUseCase {
 		return await this.repository.delete(data.classId, data.id, data.userId)
 	}
 
-	async find (input: { classId: string, id: string, userId: string }) {
-		return await this.repository.find(input.classId, input.id, input.userId)
+	async find (id: string) {
+		return await this.repository.find(id)
 	}
 
 	async get (query: QueryParams) {

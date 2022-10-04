@@ -6,7 +6,7 @@ import { ClassUsers, EmbeddedUser } from '../types'
 export interface ISchemeRepository {
 	add: (data: SchemeToModel) => Promise<SchemeEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<SchemeEntity>>
-	find: (classId: string, id: string, userId: string) => Promise<SchemeEntity | null>
+	find: (id: string) => Promise<SchemeEntity | null>
 	update: (classId: string, id: string, userId: string, data: Partial<SchemeToModel>) => Promise<SchemeEntity | null>
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>

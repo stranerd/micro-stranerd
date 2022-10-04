@@ -36,8 +36,8 @@ export class SchemeRepository implements ISchemeRepository {
 		return this.mapper.mapFrom(scheme)!
 	}
 
-	async find (classId: string, id: string, userId: string) {
-		const scheme = await Scheme.findOne({ _id: id, classId, 'users.members': userId })
+	async find (id: string) {
+		const scheme = await Scheme.findById(id)
 		return this.mapper.mapFrom(scheme)
 	}
 

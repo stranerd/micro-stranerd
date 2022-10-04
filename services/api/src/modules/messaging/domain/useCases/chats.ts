@@ -14,8 +14,8 @@ export class ChatsUseCase {
 		return await this.repository.add(data)
 	}
 
-	async find (input: { userId: string, id: string }) {
-		return await this.repository.find(input.id, input.userId)
+	async find (id: string) {
+		return await this.repository.find(id)
 	}
 
 	async get (query: QueryParams) {

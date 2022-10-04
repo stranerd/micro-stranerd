@@ -9,6 +9,8 @@ export class ChatMetaController {
 	}
 
 	static async findChatMeta (req: Request) {
-		return await ChatMetasUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const chatMeta = await ChatMetasUseCases.find(req.params.id)
+		if (!chatMeta || !chatMeta.members.includes(req.authUser!.id)) return null
+		return chatMeta
 	}
 }

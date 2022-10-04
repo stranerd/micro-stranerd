@@ -33,7 +33,9 @@ const isCronMore = (start: any) => (val: any) => getCronOrder(val) >= getCronOrd
 
 export class EventController {
 	static async FindEvent (req: Request) {
-		return await EventsUseCases.find({ id: req.params.id, classId: req.params.classId, userId: req.authUser!.id })
+		const event = await EventsUseCases.find(req.params.id)
+		if (!event || event.classId !== req.params.classId || !event.users.members.includes(req.authUser!.id)) return null
+		return event
 	}
 
 	static async GetEvent (req: Request) {

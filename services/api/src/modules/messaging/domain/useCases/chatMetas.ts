@@ -15,8 +15,8 @@ export class ChatMetasUseCase {
 		return await this.repository.add(data)
 	}
 
-	async find (data: { id: string, userId: string }) {
-		return await this.repository.find(data.id, data.userId)
+	async find (id: string) {
+		return await this.repository.find(id)
 	}
 
 	async get (query: QueryParams) {

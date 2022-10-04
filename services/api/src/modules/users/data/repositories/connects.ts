@@ -14,8 +14,8 @@ export class ConnectRepository implements IConnectRepository {
 		return ConnectRepository.instance
 	}
 
-	async find ({ userId, id }: { userId: string, id: string }) {
-		const connect = await Connect.findOne({ _id: id, $or: [{ 'from.id': userId }, { 'to.id': userId }] })
+	async find (id: string) {
+		const connect = await Connect.findById(id)
 		return this.mapper.mapFrom(connect)
 	}
 

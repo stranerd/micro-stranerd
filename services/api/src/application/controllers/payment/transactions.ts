@@ -9,7 +9,9 @@ export class TransactionsController {
 	}
 
 	static async find (req: Request) {
-		return await TransactionsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const transaction = await TransactionsUseCases.find(req.params.id)
+		if (!transaction || transaction.userId !== req.authUser!.id) return null
+		return transaction
 	}
 
 	static async get (req: Request) {
@@ -46,8 +48,8 @@ export class TransactionsController {
 	}
 
 	static async fulfill (req: Request) {
-		const transaction = await TransactionsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
-		if (!transaction) throw new NotAuthorizedError()
+		const transaction = await TransactionsUseCases.find(req.params.id)
+		if (!transaction || transaction.userId !== req.authUser!.id) throw new NotAuthorizedError()
 		const successful = await FlutterwavePayment.verify(transaction.id, transaction.amount, transaction.currency)
 		if (!successful) throw new BadRequestError('transaction unsuccessful')
 		return await TransactionsUseCases.update({

@@ -38,8 +38,8 @@ export class ChatMetaRepository implements IChatMetaRepository {
 		return this.mapper.mapFrom(chatMeta)!
 	}
 
-	async find (id: string, userId: string) {
-		const chat = await ChatMeta.findOne({ _id: id, members: userId })
+	async find (id: string) {
+		const chat = await ChatMeta.findById(id)
 		return this.mapper.mapFrom(chat)
 	}
 

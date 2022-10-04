@@ -1,6 +1,6 @@
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
 import {
-	BadRequestError,
+	BadRequestError, Conditions,
 	NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
@@ -14,12 +14,14 @@ import { UsersUseCases } from '@modules/users'
 export class ChatController {
 	static async getChats (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'data.members', value: req.authUser!.id }]
+		query.auth = [{ field: 'data.members', condition: Conditions.in, value: req.authUser!.id }]
 		return await ChatsUseCases.get(query)
 	}
 
 	static async findChat (req: Request) {
-		return await ChatsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const chat = await ChatsUseCases.find(req.params.id)
+		if (!chat || !chat.data.members.includes(req.authUser!.id)) return null
+		return chat
 	}
 
 	static async addChat (req: Request) {

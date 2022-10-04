@@ -10,8 +10,8 @@ export class ConnectsUseCase {
 		this.repository = repo
 	}
 
-	async find (input: { userId: string, id: string }) {
-		return await this.repository.find(input)
+	async find (id: string) {
+		return await this.repository.find(id)
 	}
 
 	async get (input: QueryParams) {

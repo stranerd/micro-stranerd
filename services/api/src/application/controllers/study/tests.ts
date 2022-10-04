@@ -5,7 +5,9 @@ import { getRandomN } from '@utils/functions'
 
 export class TestController {
 	static async FindTest (req: Request) {
-		return await TestsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const test = await TestsUseCases.find(req.params.id)
+		if (!test || test.userId !== req.authUser!.id) return null
+		return test
 	}
 
 	static async GetTests (req: Request) {

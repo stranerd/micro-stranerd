@@ -6,7 +6,7 @@ import { ClassUsers, EmbeddedUser, EventType } from '../types'
 export interface IEventRepository {
 	add: (data: EventToModel) => Promise<EventEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<EventEntity>>
-	find: (classId: string, id: string, userId: string) => Promise<EventEntity | null>
+	find: (id: string) => Promise<EventEntity | null>
 	update: (classId: string, id: string, userId: string, data: Partial<EventToModel>) => Promise<EventEntity | null>
 	delete: (classId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>

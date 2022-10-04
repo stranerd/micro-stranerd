@@ -36,8 +36,8 @@ export class EventRepository implements IEventRepository {
 		return this.mapper.mapFrom(event)!
 	}
 
-	async find (classId: string, id: string, userId: string) {
-		const event = await Event.findOne({ _id: id, classId, 'users.members': userId })
+	async find (id: string) {
+		const event = await Event.findById(id)
 		return this.mapper.mapFrom(event)
 	}
 

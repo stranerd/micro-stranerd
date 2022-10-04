@@ -36,8 +36,8 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 		return this.mapper.mapFrom(announcement)!
 	}
 
-	async find (classId: string, id: string, userId: string) {
-		const announcement = await Announcement.findOne({ _id: id, classId, 'users.members': userId })
+	async find (id: string) {
+		const announcement = await Announcement.findById(id)
 		return this.mapper.mapFrom(announcement)
 	}
 

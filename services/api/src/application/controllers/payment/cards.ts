@@ -3,7 +3,9 @@ import { NotAuthorizedError, QueryParams, Request } from '@utils/app/package'
 
 export class CardsController {
 	static async find (req: Request) {
-		return await CardsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const card = await CardsUseCases.find(req.params.id)
+		if (!card || card.userId !== req.authUser!.id) return null
+		return card
 	}
 
 	static async get (req: Request) {

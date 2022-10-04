@@ -12,7 +12,9 @@ import {
 
 export class GroupController {
 	static async FindGroup (req: Request) {
-		return await GroupsUseCases.find({ id: req.params.id, classId: req.params.classId, userId: req.authUser!.id })
+		const group = await GroupsUseCases.find(req.params.id)
+		if (!group || group.classId !== req.params.classId || !group.users.members.includes(req.authUser!.id)) return null
+		return group
 	}
 
 	static async GetGroup (req: Request) {

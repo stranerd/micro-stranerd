@@ -21,12 +21,12 @@ export class ReferralRepository implements IReferralRepository {
 		}
 	}
 
-	async findReferral (data: { userId: string, id: string }) {
-		const referral = await Referral.findOne({ _id: data.id, userId: data.userId })
+	async find (id: string) {
+		const referral = await Referral.findById(id)
 		return this.mapper.mapFrom(referral)
 	}
 
-	async createReferral (data: ReferralToModel) {
+	async create (data: ReferralToModel) {
 		const referral = await new Referral(data).save()
 		return this.mapper.mapFrom(referral)!
 	}

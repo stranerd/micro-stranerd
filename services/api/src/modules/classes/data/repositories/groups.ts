@@ -32,8 +32,8 @@ export class GroupRepository implements IGroupRepository {
 		return this.mapper.mapFrom(group)!
 	}
 
-	async find (classId: string, id: string, userId: string) {
-		const group = await Group.findOne({ _id: id, classId, 'users.members': userId })
+	async find (id: string) {
+		const group = await Group.findById(id)
 		return this.mapper.mapFrom(group)
 	}
 

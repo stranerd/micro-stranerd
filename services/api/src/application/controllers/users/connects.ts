@@ -11,7 +11,9 @@ import {
 
 export class ConnectsController {
 	static async find (req: Request) {
-		return await ConnectsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		const connect = await ConnectsUseCases.find(req.params.id)
+		if (!connect || ![connect.from.id, connect.to.id].includes(req.authUser!.id)) return null
+		return connect
 	}
 
 	static async get (req: Request) {

@@ -13,7 +13,9 @@ import {
 
 export class SchemeController {
 	static async FindScheme (req: Request) {
-		return await SchemesUseCases.find({ id: req.params.id, classId: req.params.classId, userId: req.authUser!.id })
+		const scheme = await SchemesUseCases.find(req.params.id)
+		if (!scheme || scheme.classId !== req.params.classId || !scheme.users.members.includes(req.authUser!.id)) return null
+		return scheme
 	}
 
 	static async GetScheme (req: Request) {

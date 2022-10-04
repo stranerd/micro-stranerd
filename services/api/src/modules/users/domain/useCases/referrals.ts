@@ -10,11 +10,11 @@ export class ReferralsUseCase {
 	}
 
 	async create (input: ReferralToModel) {
-		return await this.repository.createReferral(input)
+		return await this.repository.create(input)
 	}
 
-	async find (input: { userId: string, id: string }) {
-		return await this.repository.findReferral(input)
+	async find (id: string) {
+		return await this.repository.find(id)
 	}
 
 	async get (input: QueryParams) {
