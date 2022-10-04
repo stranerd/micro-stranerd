@@ -37,11 +37,10 @@ const chargeForSubscription = async (user: UserEntity, subscription: PlanEntity,
 		status: TransactionStatus.initialized, title: `Subscription charge for ${subscription.name}`,
 		data: { type: TransactionType.Subscription, subscriptionId: subscription.id }
 	})
-	const fTransaction = await FlutterwavePayment.chargeCard({
+	const successful = await FlutterwavePayment.chargeCard({
 		email: transaction.email, amount: transaction.amount, currency: transaction.currency,
-		token: card.token, tx_ref: transaction.id
+		token: card.token, id: transaction.id
 	})
-	const successful = fTransaction?.status === 'successful'
 	await TransactionsUseCases.update({
 		id: transaction.id,
 		data: { status: successful ? TransactionStatus.settled : TransactionStatus.failed }

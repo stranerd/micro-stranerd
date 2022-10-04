@@ -46,17 +46,13 @@ export class TransactionsController {
 	}
 
 	static async fulfill (req: Request) {
-		const transactionId = req.params.id
-		const transaction = await TransactionsUseCases.find({ id: transactionId, userId: req.authUser!.id })
-		const fTransaction = await FlutterwavePayment.getTransactionByRef(transactionId)
-		if (!transaction || !fTransaction) throw new NotAuthorizedError()
-		if (transaction.currency !== fTransaction.currency || transaction.amount !== fTransaction.amount) throw new BadRequestError('tampered transaction')
-		if (fTransaction.status !== 'successful') throw new BadRequestError('transaction was unsuccessful')
+		const transaction = await TransactionsUseCases.find({ id: req.params.id, userId: req.authUser!.id })
+		if (!transaction) throw new NotAuthorizedError()
+		const successful = await FlutterwavePayment.verify(transaction.id, transaction.amount, transaction.currency)
+		if (!successful) throw new BadRequestError('transaction unsuccessful')
 		return await TransactionsUseCases.update({
-			id: transactionId,
-			data: {
-				status: TransactionStatus.fulfilled
-			}
+			id: transaction.id,
+			data: { status: TransactionStatus.fulfilled }
 		})
 	}
 }

@@ -19,7 +19,7 @@ export const WalletsUseCases = new WalletsUseCase(walletRepository)
 
 export { PlanFromModel, PlanToModel } from './data/models/plans'
 export { TransactionFromModel } from './data/models/transactions'
-export { CardFromModel } from './data/models/cards'
+export { CardFromModel, CardToModel } from './data/models/cards'
 export { WalletFromModel } from './data/models/wallets'
 export { PlanEntity } from './domain/entities/plans'
 export { TransactionEntity } from './domain/entities/transactions'
