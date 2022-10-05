@@ -11,11 +11,11 @@ import {
 	mongoose,
 	Random,
 	readEmailFromPug,
+	signinWithGoogle,
 	ValidationError
 } from '@utils/app/package'
 import { appInstance, EmailsList, EventTypes } from '@utils/app/types'
 import { UserMapper } from '../mappers/users'
-import axios from 'axios'
 
 const TOKENS_TTL_IN_SECS = 60 * 60
 
@@ -121,15 +121,7 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async googleSignIn (idToken: string, referrer: string | null) {
-		const authUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
-		const { data } = await axios.get(authUrl).catch((err) => {
-			const message = err?.response?.data?.error
-			throw new BadRequestError(message ? 'Invalid id token' : 'Something unexpected happened')
-		})
-
-		const names = (data.name ?? '').split(' ')
-		const firstName = names[0] ?? ''
-		const lastName = names.length > 1 ? names.at(-1) : ''
+		const data = await signinWithGoogle(idToken)
 		const email = data.email!.toLowerCase()
 
 		const photo = data.picture ? {
@@ -142,10 +134,10 @@ export class AuthRepository implements IAuthRepository {
 			const userData = {
 				email, referrer,
 				authTypes: [AuthTypes.google],
-				firstName,
-				lastName,
+				firstName: data.first_name,
+				lastName: data.last_name,
 				description: '',
-				isVerified: true,
+				isVerified: data.email_verified === 'true',
 				roles: {},
 				password: '',
 				photo
