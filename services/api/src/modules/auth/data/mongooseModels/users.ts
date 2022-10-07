@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 	firstName: {
 		type: String,
 		trim: true,
-		required: true
+		required: false,
+		default: ''
 	},
 	lastName: {
 		type: String,
