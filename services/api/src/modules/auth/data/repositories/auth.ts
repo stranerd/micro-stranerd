@@ -11,6 +11,7 @@ import {
 	mongoose,
 	Random,
 	readEmailFromPug,
+	signinWithApple,
 	signinWithGoogle,
 	ValidationError
 } from '@utils/app/package'
@@ -150,6 +151,38 @@ export class AuthRepository implements IAuthRepository {
 			password: ''
 		}
 		return await this.authenticateUser(credentials, false, AuthTypes.google)
+	}
+
+	async appleSignIn ({ idToken, firstName, lastName }, referrer) {
+		const data = await signinWithApple(idToken)
+		const email = data.email?.toLowerCase()
+		if (!email) throw new BadRequestError('can\'t access your email. Signin another way')
+
+		return this.authorizeSocial(AuthTypes.google, {
+			email, photo: null, firstName: firstName ?? 'Apple User', lastName: lastName ?? '',
+			isVerified: data.email_verified === 'true', referrer
+		})
+	}
+
+	private async authorizeSocial (type: AuthTypes, data: Pick<UserToModel, 'email' | 'firstName' | 'lastName' | 'photo' | 'isVerified' | 'referrer'>) {
+		const userData = await User.findOne({ email: data.email })
+
+		if (!userData) return await this.addNewUser({
+			firstName: data.firstName,
+			lastName: data.lastName,
+			description: '',
+			email: data.email,
+			photo: data.photo,
+			authTypes: [type],
+			password: '',
+			isVerified: data.isVerified,
+			referrer: data.referrer
+		}, type)
+
+		return await this.authenticateUser({
+			email: userData.email,
+			password: ''
+		}, false, type)
 	}
 
 	private async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes) {

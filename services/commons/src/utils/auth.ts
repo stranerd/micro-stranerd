@@ -35,9 +35,9 @@ export const signinWithApple = async (idToken: string) => {
 		if (data.exp * 1000 < Date.now()) throw new Error('expired idToken')
 		// TODO: Find out how to get profile data from api
 		return data as {
-			email: string
+			email?: string
 			sub: string
-			email_verified: 'true' | 'false'
+			email_verified?: 'true' | 'false'
 		} & Record<string, any>
 	} catch (err: any) {
 		throw new Error(err.message || 'Invalid idToken')

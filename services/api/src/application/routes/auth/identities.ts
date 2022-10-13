@@ -14,4 +14,17 @@ const googleSignIn: Route = {
 	]
 }
 
-export const identitiesRoutes = [googleSignIn]
+const appleSignIn: Route = {
+	path: '/auth/identities/apple',
+	method: 'post',
+	controllers: [
+		makeController(async (req) => {
+			return {
+				status: StatusCodes.Ok,
+				result: await IdentitiesController.appleSignIn(req)
+			}
+		})
+	]
+}
+
+export const identitiesRoutes = [googleSignIn, appleSignIn]
