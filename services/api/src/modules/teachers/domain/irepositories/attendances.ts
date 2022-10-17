@@ -12,4 +12,7 @@ export interface IAttendanceRepository {
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateMembers: (courseId: string, members: string[]) => Promise<boolean>
 	deleteCourseAttendances: (courseId: string) => Promise<boolean>
+	close: (courseId: string, id: string, userId: string) => Promise<boolean>
+	generateToken: (courseId: string, id: string, userId: string) => Promise<string | null>
+	tick: (courseId: string, id: string, userId: string, token: string) => Promise<boolean>
 }

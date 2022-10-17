@@ -65,5 +65,44 @@ export const attendancesRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/teachers/attendances/:courseId/:id/close',
+		method: 'post',
+		controllers: [
+			isAuthenticated,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AttendanceController.CloseAttendance(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/teachers/attendances/:courseId/:id/token',
+		method: 'post',
+		controllers: [
+			isAuthenticated,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AttendanceController.GenerateToken(req)
+				}
+			})
+		]
+	},
+	{
+		path: '/teachers/attendances/:courseId/:id/tick',
+		method: 'post',
+		controllers: [
+			isAuthenticated,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await AttendanceController.TickAttendance(req)
+				}
+			})
+		]
 	}
 ]

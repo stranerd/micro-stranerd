@@ -41,4 +41,16 @@ export class AttendancesUseCase {
 	async deleteCourseAttendances (courseId: string) {
 		return this.repository.deleteCourseAttendances(courseId)
 	}
+
+	async close (data: { courseId: string, id: string, userId: string }) {
+		return this.repository.close(data.courseId, data.id, data.userId)
+	}
+
+	async generateToken (data: { courseId: string, id: string, userId: string }) {
+		return this.repository.generateToken(data.courseId, data.id, data.userId)
+	}
+
+	async tick (data: { courseId: string, id: string, token: string, userId: string }) {
+		return this.repository.tick(data.courseId, data.id, data.userId, data.token)
+	}
 }

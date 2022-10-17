@@ -77,4 +77,41 @@ export class AttendanceController {
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
+
+	static async CloseAttendance (req: Request) {
+		const authUserId = req.authUser!.id
+		const isClosed = await AttendancesUseCases.close({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId
+		})
+		if (isClosed) return isClosed
+		throw new NotAuthorizedError()
+	}
+
+	static async GenerateToken (req: Request) {
+		const authUserId = req.authUser!.id
+		const token = await AttendancesUseCases.generateToken({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId
+		})
+		if (token) return token
+		throw new NotAuthorizedError()
+	}
+
+	static async TickAttendance (req: Request) {
+		const authUserId = req.authUser!.id
+		const { token } = validate({
+			token: req.body.token
+		}, {
+			token: { required: true, rules: [Validation.isString] }
+		})
+		const ticked = await AttendancesUseCases.tick({
+			courseId: req.params.courseId, id: req.params.id,
+			token, userId: authUserId
+		})
+		if (ticked) return ticked
+		throw new NotAuthorizedError()
+	}
 }
