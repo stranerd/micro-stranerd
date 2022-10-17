@@ -7,6 +7,7 @@ export type AuthUser = {
 
 export enum AuthTypes {
 	google = 'google',
+	apple = 'apple',
 	email = 'email',
 	facebook = 'facebook',
 	twitter = 'twitter',

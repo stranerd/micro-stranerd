@@ -154,11 +154,13 @@ export class AuthRepository implements IAuthRepository {
 	}
 
 	async appleSignIn ({ idToken, firstName, lastName }, referrer) {
-		const data = await signinWithApple(idToken)
+		const data = await signinWithApple(idToken).catch((e: any) => {
+			throw new BadRequestError(e.message)
+		})
 		const email = data.email?.toLowerCase()
 		if (!email) throw new BadRequestError('can\'t access your email. Signin another way')
 
-		return this.authorizeSocial(AuthTypes.google, {
+		return this.authorizeSocial(AuthTypes.apple, {
 			email, photo: null, firstName: firstName ?? 'Apple User', lastName: lastName ?? '',
 			isVerified: data.email_verified === 'true', referrer
 		})

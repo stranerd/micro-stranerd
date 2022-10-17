@@ -15,7 +15,7 @@ export const errorHandler = makeErrorMiddleware(
 			await Instance.getInstance().logger.error(err)
 			return {
 				status: StatusCodes.BadRequest,
-				result: [{ message: 'Something went wrong', data: err }]
+				result: [{ message: 'Something went wrong', data: err.message }]
 			}
 		}
 	}
