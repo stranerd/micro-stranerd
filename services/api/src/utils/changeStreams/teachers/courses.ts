@@ -1,5 +1,5 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { CourseEntity, CourseFromModel, FilesUseCases } from '@modules/teachers'
+import { AttendancesUseCases, CourseEntity, CourseFromModel, FilesUseCases } from '@modules/teachers'
 import { getSocketEmitter } from '@index'
 
 export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel, CourseEntity> = {
@@ -11,14 +11,16 @@ export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel,
 		await getSocketEmitter().emitUpdated('teachers/courses', after)
 		await getSocketEmitter().emitUpdated(`teachers/courses/${after.id}`, after)
 		await Promise.all([
-			FilesUseCases.updateMembers({ courseId: after.id, members: after.members })
+			FilesUseCases.updateMembers({ courseId: after.id, members: after.members }),
+			AttendancesUseCases.updateMembers({ courseId: after.id, members: after.members })
 		])
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('teachers/courses', before)
 		await getSocketEmitter().emitDeleted(`teachers/courses/${before.id}`, before)
 		await Promise.all([
-			FilesUseCases.deleteCourseFiles(before.id)
+			FilesUseCases.deleteCourseFiles(before.id),
+			AttendancesUseCases.deleteCourseAttendances(before.id)
 		])
 	}
 }
