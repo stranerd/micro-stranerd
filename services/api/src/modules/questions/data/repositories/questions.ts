@@ -40,7 +40,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<QuestionToModel>) {
-		const question = await Question.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data })
+		const question = await Question.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(question)
 	}
 

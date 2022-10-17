@@ -65,5 +65,18 @@ export const coursesRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/teachers/courses/:id/join',
+		method: 'post',
+		controllers: [
+			isAuthenticated,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await CourseController.DeleteCourse(req)
+				}
+			})
+		]
 	}
 ]

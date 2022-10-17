@@ -38,7 +38,7 @@ export class CourseRepository implements ICourseRepository {
 	}
 
 	async update (id: string, userId: string, data: Partial<CourseToModel>) {
-		const course = await Course.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data })
+		const course = await Course.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
 		return this.mapper.mapFrom(course)
 	}
 
@@ -49,6 +49,13 @@ export class CourseRepository implements ICourseRepository {
 
 	async delete (id: string, userId: string) {
 		const course = await Course.findOneAndDelete({ _id: id, 'user.id': userId })
+		return !!course
+	}
+
+	async join (courseId: string, userId: string, join: boolean) {
+		const course = await Course.findOneAndUpdate({ _id: courseId, 'user.id': { $ne: userId } }, {
+			[join ? '$addToSet' : '$pull']: { userId }
+		}, { new: true })
 		return !!course
 	}
 }

@@ -33,4 +33,8 @@ export class CoursesUseCase {
 	async updateUserBio (user: EmbeddedUser) {
 		return await this.repository.updateUserBio(user)
 	}
+
+	async join (data: { courseId: string, userId: string, join: boolean }) {
+		return await this.repository.join(data.courseId, data.userId, data.join)
+	}
 }

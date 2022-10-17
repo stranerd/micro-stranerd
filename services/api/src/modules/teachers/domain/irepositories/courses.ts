@@ -10,4 +10,5 @@ export interface ICourseRepository {
 	update: (id: string, userId: string, data: Partial<CourseToModel>) => Promise<CourseEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
+	join: (courseId: string, userId: string, join: boolean) => Promise<boolean>
 }

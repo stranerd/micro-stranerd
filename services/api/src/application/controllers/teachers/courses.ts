@@ -50,4 +50,16 @@ export class CourseController {
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
+
+	static async JoinCourse (req: Request) {
+		const userId = req.authUser!.id
+		const { join } = validate({
+			join: req.body.join
+		}, {
+			join: { required: true, rules: [Validation.isBoolean] },
+		})
+		const isJoined = await CoursesUseCases.join({ courseId: req.params.id, userId, join })
+		if (isJoined) return isJoined
+		throw new NotAuthorizedError()
+	}
 }
