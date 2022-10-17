@@ -2,7 +2,7 @@ import { EmbeddedUser } from '../../domain/types'
 
 export interface CourseFromModel extends CourseToModel {
 	_id: string
-	students: string[]
+	members: string[]
 	createdAt: number
 	updatedAt: number
 }

@@ -28,7 +28,7 @@ export class CourseRepository implements ICourseRepository {
 	}
 
 	async add (data: CourseToModel) {
-		const course = await new Course(data).save()
+		const course = await new Course({ ...data, members: [data.user.id] }).save()
 		return this.mapper.mapFrom(course)!
 	}
 

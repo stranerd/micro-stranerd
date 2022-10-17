@@ -1,22 +1,24 @@
 import { BaseEntity } from '@utils/app/package'
-import { EmbeddedUser } from '../types'
+import { EmbeddedUser, Media } from '../types'
 
-export class CourseEntity extends BaseEntity {
+export class FileEntity extends BaseEntity {
 	public readonly id: string
+	public readonly courseId: string
 	public readonly title: string
-	public readonly level: string
+	public readonly media: Media
 	public readonly user: EmbeddedUser
 	public readonly members: string[]
 	public readonly createdAt: number
 	public readonly updatedAt: number
 
 	constructor ({
-		             id, title, level, user, members, createdAt, updatedAt
-	             }: CourseConstructorArgs) {
+		             id, courseId, title, media, user, members, createdAt, updatedAt
+	             }: FileConstructorArgs) {
 		super()
 		this.id = id
+		this.courseId = courseId
 		this.title = title
-		this.level = level
+		this.media = media
 		this.user = user
 		this.members = members
 		this.createdAt = createdAt
@@ -24,10 +26,11 @@ export class CourseEntity extends BaseEntity {
 	}
 }
 
-type CourseConstructorArgs = {
+type FileConstructorArgs = {
 	id: string
+	courseId: string
 	title: string
-	level: string
+	media: Media
 	user: EmbeddedUser
 	members: string[]
 	createdAt: number

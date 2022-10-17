@@ -2,6 +2,7 @@ import { OnJoinFn } from '@utils/app/package'
 import { ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { SupportedAuthRoles } from '@utils/app/types'
+import { CoursesUseCases } from '@modules/teachers'
 
 export const registerSockets = () => {
 	const isAdmin: OnJoinFn = async ({
@@ -21,6 +22,13 @@ export const registerSockets = () => {
 		if (!classInst?.getAllUsers().includes(data.user.id)) return null
 		return await isOpen(data, params)
 	}
+	const teachersJoinCb: OnJoinFn = async (data, params) => {
+		const { courseId = null } = params
+		if (!courseId || !data.user) return null
+		const course = await CoursesUseCases.find(courseId)
+		if (!course?.members.includes(data.user.id)) return null
+		return await isOpen(data, params)
+	}
 
 	getSocketEmitter().register('classes/classes', isOpen)
 	getSocketEmitter().register('classes/announcements/:classId', classJoinCb)
@@ -28,6 +36,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('classes/events/:classId', classJoinCb)
 	getSocketEmitter().register('classes/schemes/:classId', classJoinCb)
 	getSocketEmitter().register('teachers/courses', isOpen)
+	getSocketEmitter().register('teachers/files', teachersJoinCb)
 	getSocketEmitter().register('questions/answers', isSubbed)
 	getSocketEmitter().register('questions/questions', isOpen)
 	getSocketEmitter().register('reports/reports', isAdmin)

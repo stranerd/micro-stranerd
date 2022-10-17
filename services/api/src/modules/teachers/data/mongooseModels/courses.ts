@@ -22,7 +22,7 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 		type: mongoose.Schema.Types.Mixed as unknown as CourseFromModel['user'],
 		required: true
 	},
-	students: {
+	members: {
 		type: [String],
 		required: false,
 		default: []
