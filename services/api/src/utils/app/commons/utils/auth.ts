@@ -22,22 +22,23 @@ export const signinWithGoogle = async (idToken: string) => {
 
 export const signinWithApple = async (idToken: string) => {
 	try {
+		const APPLE_BASE = 'https://appleid.apple.com'
 		const json = jwt.decode(idToken, { complete: true })
-		const kid = json?.header?.kid
-		if (!kid) throw new Error('')
-		const key = await jwksClient({ jwksUri: 'https://appleid.apple.com/auth/keys' })
-			.getSigningKey(kid).catch(() => null)
-		const publicKey = key?.getPublicKey()
+		if (!json?.header) throw new Error('')
+		const { kid, alg } = json.header
+		const publicKey = await jwksClient({ jwksUri: `${APPLE_BASE}/auth/keys`, cache: true })
+			.getSigningKey(kid).then((key) => key.getPublicKey()).catch(() => null)
 		if (!publicKey) throw new Error('')
-		const data = jwt.verify(idToken, publicKey) as Record<string, any>
+		const data = jwt.verify(idToken, publicKey, { algorithms: [alg as any] }) as Record<string, any>
 		if (!data) throw new Error('')
-		if (data.iss !== 'https://appleid.apple.com') throw new Error('')
+		if (data.iss !== APPLE_BASE) throw new Error('')
 		if (data.exp * 1000 < Date.now()) throw new Error('expired idToken')
 		// TODO: Find out how to get profile data from api
 		return data as {
 			email?: string
 			sub: string
 			email_verified?: 'true' | 'false'
+			is_private_email?: 'true' | 'false'
 		} & Record<string, any>
 	} catch (err: any) {
 		throw new Error(err.message || 'Invalid idToken')
