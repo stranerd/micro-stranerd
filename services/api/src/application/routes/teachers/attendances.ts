@@ -4,7 +4,7 @@ import { isAuthenticated } from '@application/middlewares'
 
 export const attendancesRoutes: Route[] = [
 	{
-		path: '/teachers/attendances',
+		path: '/teachers/attendances/:courseId',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const attendancesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/attendances/:id',
+		path: '/teachers/attendances/:courseId/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const attendancesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/attendances/:id',
+		path: '/teachers/attendances/:courseId/:id',
 		method: 'put',
 		controllers: [
 			isAuthenticated,
@@ -41,7 +41,7 @@ export const attendancesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/attendances',
+		path: '/teachers/attendances/:courseId',
 		method: 'post',
 		controllers: [
 			isAuthenticated,
@@ -54,7 +54,7 @@ export const attendancesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/attendances/:id',
+		path: '/teachers/attendances/:courseId/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated,

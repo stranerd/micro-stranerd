@@ -37,9 +37,9 @@ export class AttendanceRepository implements IAttendanceRepository {
 		return this.mapper.mapFrom(attendance)
 	}
 
-	async update (id: string, userId: string, data: Partial<AttendanceToModel>) {
+	async update (courseId: string, id: string, userId: string, data: Partial<AttendanceToModel>) {
 		const attendance = await Attendance.findOneAndUpdate({
-			_id: id,
+			_id: id, courseId,
 			'user.id': userId
 		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(attendance)
@@ -50,8 +50,8 @@ export class AttendanceRepository implements IAttendanceRepository {
 		return attendances.acknowledged
 	}
 
-	async delete (id: string, userId: string) {
-		const attendance = await Attendance.findOneAndDelete({ _id: id, 'user.id': userId })
+	async delete (courseId: string, id: string, userId: string) {
+		const attendance = await Attendance.findOneAndDelete({ _id: id, courseId, 'user.id': userId })
 		return !!attendance
 	}
 

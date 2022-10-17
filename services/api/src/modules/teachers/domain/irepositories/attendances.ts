@@ -7,8 +7,8 @@ export interface IAttendanceRepository {
 	add: (data: AttendanceToModel) => Promise<AttendanceEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<AttendanceEntity>>
 	find: (id: string) => Promise<AttendanceEntity | null>
-	update: (id: string, userId: string, data: Partial<AttendanceToModel>) => Promise<AttendanceEntity | null>
-	delete: (id: string, userId: string) => Promise<boolean>
+	update: (courseId: string, id: string, userId: string, data: Partial<AttendanceToModel>) => Promise<AttendanceEntity | null>
+	delete: (courseId: string, id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
 	updateMembers: (courseId: string, members: string[]) => Promise<boolean>
 	deleteCourseAttendances: (courseId: string) => Promise<boolean>

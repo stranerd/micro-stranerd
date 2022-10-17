@@ -4,7 +4,7 @@ import { isAuthenticated } from '@application/middlewares'
 
 export const filesRoutes: Route[] = [
 	{
-		path: '/teachers/files',
+		path: '/teachers/files/:courseId',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -16,7 +16,7 @@ export const filesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/files/:id',
+		path: '/teachers/files/:courseId/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
@@ -28,7 +28,7 @@ export const filesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/files/:id',
+		path: '/teachers/files/:courseId/:id',
 		method: 'put',
 		controllers: [
 			isAuthenticated,
@@ -41,7 +41,7 @@ export const filesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/files',
+		path: '/teachers/files/:courseId',
 		method: 'post',
 		controllers: [
 			isAuthenticated,
@@ -54,7 +54,7 @@ export const filesRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/teachers/files/:id',
+		path: '/teachers/files/:courseId/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated,

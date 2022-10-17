@@ -37,8 +37,12 @@ export class FileRepository implements IFileRepository {
 		return this.mapper.mapFrom(file)
 	}
 
-	async update (id: string, userId: string, data: Partial<FileToModel>) {
-		const file = await File.findOneAndUpdate({ _id: id, 'user.id': userId }, { $set: data }, { new: true })
+	async update (courseId: string, id: string, userId: string, data: Partial<FileToModel>) {
+		const file = await File.findOneAndUpdate({
+			_id: id,
+			courseId,
+			'user.id': userId
+		}, { $set: data }, { new: true })
 		return this.mapper.mapFrom(file)
 	}
 
@@ -47,8 +51,8 @@ export class FileRepository implements IFileRepository {
 		return files.acknowledged
 	}
 
-	async delete (id: string, userId: string) {
-		const file = await File.findOneAndDelete({ _id: id, 'user.id': userId })
+	async delete (courseId: string, id: string, userId: string) {
+		const file = await File.findOneAndDelete({ _id: id, courseId, 'user.id': userId })
 		return !!file
 	}
 

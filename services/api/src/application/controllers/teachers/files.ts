@@ -45,7 +45,12 @@ export class FileController {
 			...(changedMedia ? { media: data.media } : {})
 		}
 
-		const updatedFile = await FilesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedFile = await FilesUseCases.update({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId,
+			data: validateData
+		})
 
 		if (updatedFile) return updatedFile
 		throw new NotAuthorizedError()
@@ -78,7 +83,11 @@ export class FileController {
 
 	static async DeleteFile (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await FilesUseCases.delete({ id: req.params.id, userId: authUserId })
+		const isDeleted = await FilesUseCases.delete({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId
+		})
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}

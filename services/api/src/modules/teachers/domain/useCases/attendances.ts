@@ -14,8 +14,8 @@ export class AttendancesUseCase {
 		return await this.repository.add(data)
 	}
 
-	async delete (input: { id: string, userId: string }) {
-		return await this.repository.delete(input.id, input.userId)
+	async delete (input: { courseId: string, id: string, userId: string }) {
+		return await this.repository.delete(input.courseId, input.id, input.userId)
 	}
 
 	async find (id: string) {
@@ -26,8 +26,8 @@ export class AttendancesUseCase {
 		return await this.repository.get(query)
 	}
 
-	async update (input: { id: string, userId: string, data: Partial<AttendanceToModel> }) {
-		return await this.repository.update(input.id, input.userId, input.data)
+	async update (input: { courseId: string, id: string, userId: string, data: Partial<AttendanceToModel> }) {
+		return await this.repository.update(input.courseId, input.id, input.userId, input.data)
 	}
 
 	async updateUserBio (user: EmbeddedUser) {

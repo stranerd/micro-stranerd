@@ -34,7 +34,12 @@ export class AttendanceController {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
 		})
 
-		const updatedAttendance = await AttendancesUseCases.update({ id: req.params.id, userId: authUserId, data })
+		const updatedAttendance = await AttendancesUseCases.update({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId,
+			data
+		})
 
 		if (updatedAttendance) return updatedAttendance
 		throw new NotAuthorizedError()
@@ -64,7 +69,11 @@ export class AttendanceController {
 
 	static async DeleteAttendance (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await AttendancesUseCases.delete({ id: req.params.id, userId: authUserId })
+		const isDeleted = await AttendancesUseCases.delete({
+			courseId: req.params.courseId,
+			id: req.params.id,
+			userId: authUserId
+		})
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
