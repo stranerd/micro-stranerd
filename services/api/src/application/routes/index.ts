@@ -13,6 +13,7 @@ import { studyRoutes } from './study'
 import { userRoutes } from './users'
 import { interactionRoutes } from './interactions'
 import { paymentRoutes } from './payment'
+import { teachersRoutes } from './teachers'
 
 export const routes: Route[] = [
 	...authRoutes,
@@ -28,6 +29,7 @@ export const routes: Route[] = [
 	...userRoutes,
 	...interactionRoutes,
 	...paymentRoutes,
+	...teachersRoutes,
 	{
 		path: '/',
 		method: 'get',
