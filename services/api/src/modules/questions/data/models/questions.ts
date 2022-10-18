@@ -14,4 +14,5 @@ export interface QuestionToModel {
 	attachments: Media[]
 	tagId: string
 	user: EmbeddedUser
+	isPrivate: boolean
 }

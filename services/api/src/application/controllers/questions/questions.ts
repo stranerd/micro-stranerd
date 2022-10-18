@@ -1,8 +1,17 @@
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
+import {
+	BadRequestError,
+	NotAuthorizedError,
+	QueryKeys,
+	QueryParams,
+	Request,
+	validate,
+	Validation
+} from '@utils/app/package'
 import { TagsUseCases, TagTypes } from '@modules/interactions'
 import { PlanDataType, WalletsUseCases } from '@modules/payment'
+import { SupportedAuthRoles } from '@utils/app/types'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -11,6 +20,11 @@ export class QuestionController {
 
 	static async GetQuestion (req: Request) {
 		const query = req.query as QueryParams
+		query.auth = [{ field: 'isPrivate', value: false }]
+		if (req.authUser && !req.authUser.roles[SupportedAuthRoles.isStranerdTutor]) {
+			query.authType = QueryKeys.or
+			query.auth.push({ field: 'user.id', value: req.authUser!.id })
+		}
 		return await QuestionsUseCases.get(query)
 	}
 
@@ -38,10 +52,12 @@ export class QuestionController {
 		const data = validate({
 			body: req.body.body,
 			tagId: req.body.tagId,
+			isPrivate: req.body.isPrivate,
 			attachments: req.body.attachments
 		}, {
 			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
 			tagId: { required: true, rules: [Validation.isString] },
+			isPrivate: { required: true, rules: [Validation.isBoolean] },
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]

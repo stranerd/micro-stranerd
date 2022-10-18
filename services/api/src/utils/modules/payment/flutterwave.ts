@@ -43,10 +43,10 @@ export class FlutterwavePayment {
 		const transaction = res?.body?.data as FwTransaction | null
 		if (!transaction) return false
 		if (transaction.currency !== currency || transaction.amount !== amount) return false
-		return transaction.status !== 'successful'
+		return transaction.status === 'successful'
 	}
 
-	static async saveCard (userId: string, transactionId: string) :Promise<CardToModel | null> {
+	static async saveCard (userId: string, transactionId: string): Promise<CardToModel | null> {
 		const res = await flw().CustomRequest.custom(`v3/transactions/verify_by_reference?tx_ref=${transactionId}`, { method: 'GET' }).catch(() => null)
 		const transaction = res?.body?.data as FwTransaction | null
 		if (!transaction) return null
@@ -91,7 +91,10 @@ export class FlutterwavePayment {
 	}
 
 	static async verifyAccount ({ number, bankCode }: { number: string, bankCode: string }) {
-		const res = await flw().Misc.verify_Account({ account_number: number, account_bank: bankCode }).catch(() => null)
+		const res = await flw().Misc.verify_Account({
+			account_number: number,
+			account_bank: bankCode
+		}).catch(() => null)
 		return !!res?.data
 	}
 }

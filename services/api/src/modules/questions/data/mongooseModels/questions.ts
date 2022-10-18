@@ -45,6 +45,11 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 			default: 0
 		}])
 	),
+	isPrivate: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
 	createdAt: {
 		type: Number,
 		required: false,
