@@ -6,13 +6,13 @@ export class QuestionMapper extends BaseMapper<QuestionFromModel, QuestionToMode
 	mapFrom (model: QuestionFromModel | null) {
 		if (!model) return null
 		const {
-			_id, body, tagId, attachments,
+			_id, body, tagId, attachments, isPrivate,
 			bestAnswers, user, answers, meta,
 			createdAt, updatedAt
 		} = model
 		return new QuestionEntity({
 			id: _id.toString(), body, tagId, attachments,
-			bestAnswers, user, answers, meta,
+			bestAnswers, user, answers, meta, isPrivate,
 			createdAt, updatedAt
 		})
 	}
@@ -22,6 +22,7 @@ export class QuestionMapper extends BaseMapper<QuestionFromModel, QuestionToMode
 			body: entity.body,
 			attachments: entity.attachments,
 			tagId: entity.tagId,
+			isPrivate: entity.isPrivate,
 			user: entity.user
 		}
 	}
