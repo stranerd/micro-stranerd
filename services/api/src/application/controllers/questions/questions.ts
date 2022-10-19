@@ -20,10 +20,12 @@ export class QuestionController {
 
 	static async GetQuestion (req: Request) {
 		const query = req.query as QueryParams
-		query.auth = [{ field: 'isPrivate', value: false }]
-		if (req.authUser && !req.authUser.roles[SupportedAuthRoles.isStranerdTutor]) {
-			query.authType = QueryKeys.or
-			query.auth.push({ field: 'user.id', value: req.authUser!.id })
+		if (!req.authUser?.roles[SupportedAuthRoles.isStranerdTutor]) {
+			query.auth = [{ field: 'isPrivate', value: false }]
+			if (req.authUser) {
+				query.authType = QueryKeys.or
+				query.auth.push({ field: 'user.id', value: req.authUser!.id })
+			}
 		}
 		return await QuestionsUseCases.get(query)
 	}

@@ -5,7 +5,7 @@ import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
 import { SupportedAuthRoles } from '@utils/app/types'
 
-const roles = [SupportedAuthRoles.isStranerdAdmin, SupportedAuthRoles.isStranerdTutor, SupportedAuthRoles.isVerified]
+const roles = [SupportedAuthRoles.isStranerdAdmin, SupportedAuthRoles.isStranerdTutor]
 
 export class UserController {
 	static async findUser (req: Request) {
