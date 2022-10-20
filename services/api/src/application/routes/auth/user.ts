@@ -1,12 +1,12 @@
 import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { UserController } from '../../controllers/auth/user'
-import { isAdmin, isAuthenticated } from '../../middlewares'
+import { isAdmin, isAuthenticated, isAuthenticatedButIgnoreVerified } from '../../middlewares'
 
 const getUserDetails: Route = {
 	path: '/auth/user',
 	method: 'get',
 	controllers: [
-		isAuthenticated,
+		isAuthenticatedButIgnoreVerified,
 		makeController(async (req) => {
 			return {
 				status: StatusCodes.Ok,

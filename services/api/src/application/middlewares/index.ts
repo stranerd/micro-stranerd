@@ -7,9 +7,16 @@ import {
 } from '@utils/app/package'
 import { SupportedAuthRoles } from '@utils/app/types'
 
+export const isAuthenticatedButIgnoreVerified = makeMiddleware(
+	async (request) => {
+		await requireAuthUser(request)
+	}
+)
+
 export const isAuthenticated = makeMiddleware(
 	async (request) => {
 		await requireAuthUser(request)
+		if (!request.authUser?.isVerified) throw new NotAuthenticatedError('verify your account to proceed')
 	}
 )
 
