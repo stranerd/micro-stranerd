@@ -14,6 +14,7 @@ import {
 import { getSocketEmitter } from '@index'
 import { CommentsUseCases, LikesUseCases, ViewsUseCases } from '@modules/interactions'
 import {
+	AssignmentSubmissionsUseCases,
 	AssignmentsUseCases,
 	AttendancesUseCases,
 	CoursesUseCases,
@@ -35,7 +36,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
-			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases, AssignmentsUseCases,
+			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases, AssignmentsUseCases, AssignmentSubmissionsUseCases,
 			NotesUseCases, FilesUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 

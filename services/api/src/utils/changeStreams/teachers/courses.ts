@@ -1,5 +1,6 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
 import {
+	AssignmentSubmissionsUseCases,
 	AssignmentsUseCases,
 	AttendancesUseCases,
 	CourseEntity,
@@ -19,7 +20,8 @@ export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel,
 		await Promise.all([
 			FilesUseCases.updateMembers({ courseId: after.id, members: after.members }),
 			AttendancesUseCases.updateMembers({ courseId: after.id, members: after.members }),
-			AssignmentsUseCases.updateMembers({ courseId: after.id, members: after.members })
+			AssignmentsUseCases.updateMembers({ courseId: after.id, members: after.members }),
+			AssignmentSubmissionsUseCases.updateMembers({ courseId: after.id, members: after.members })
 		])
 	},
 	deleted: async ({ before }) => {
