@@ -1,12 +1,17 @@
 import { IAssignmentSubmissionRepository } from '../irepositories/assignmentSubmissions'
 import { QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
+import { AssignmentSubmissionToModel } from '../../data/models/assignmentSubmissions'
 
 export class AssignmentSubmissionsUseCase {
 	private repository: IAssignmentSubmissionRepository
 
 	constructor (repository: IAssignmentSubmissionRepository) {
 		this.repository = repository
+	}
+
+	async submit (data: AssignmentSubmissionToModel) {
+		return await this.repository.submit(data)
 	}
 
 	async delete (input: { courseId: string, id: string, userId: string }) {

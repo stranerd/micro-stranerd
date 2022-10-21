@@ -1,8 +1,10 @@
 import { AssignmentSubmissionEntity } from '../entities/assignmentSubmissions'
 import { QueryParams, QueryResults } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
+import { AssignmentSubmissionToModel } from '../../data/models/assignmentSubmissions'
 
 export interface IAssignmentSubmissionRepository {
+	submit: (data: AssignmentSubmissionToModel) => Promise<AssignmentSubmissionEntity>
 	get: (condition: QueryParams) => Promise<QueryResults<AssignmentSubmissionEntity>>
 	find: (id: string) => Promise<AssignmentSubmissionEntity | null>
 	delete: (courseId: string, id: string, userId: string) => Promise<boolean>

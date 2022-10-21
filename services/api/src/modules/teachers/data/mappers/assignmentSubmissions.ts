@@ -13,9 +13,7 @@ export class AssignmentSubmissionMapper extends BaseMapper<AssignmentSubmissionF
 
 	mapTo (entity: AssignmentSubmissionEntity) {
 		return {
-			courseId: entity.courseId,
 			assignmentId: entity.assignmentId,
-			members: entity.members,
 			user: entity.user,
 			attachments: entity.attachments
 		}
