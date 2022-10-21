@@ -5,7 +5,8 @@ import {
 	AttendancesUseCases,
 	CourseEntity,
 	CourseFromModel,
-	FilesUseCases
+	FilesUseCases,
+	PostsUseCases
 } from '@modules/teachers'
 import { getSocketEmitter } from '@index'
 
@@ -20,6 +21,7 @@ export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel,
 		await Promise.all([
 			FilesUseCases.updateMembers({ courseId: after.id, members: after.members }),
 			AttendancesUseCases.updateMembers({ courseId: after.id, members: after.members }),
+			PostsUseCases.updateMembers({ courseId: after.id, members: after.members }),
 			AssignmentsUseCases.updateMembers({ courseId: after.id, members: after.members }),
 			AssignmentSubmissionsUseCases.updateMembers({ courseId: after.id, members: after.members })
 		])
@@ -30,6 +32,7 @@ export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel,
 		await Promise.all([
 			FilesUseCases.deleteCourseFiles(before.id),
 			AttendancesUseCases.deleteCourseAttendances(before.id),
+			PostsUseCases.deleteCoursePosts(before.id),
 			AssignmentsUseCases.deleteCourseAssignments(before.id)
 		])
 	}

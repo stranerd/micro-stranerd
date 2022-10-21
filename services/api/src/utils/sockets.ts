@@ -40,6 +40,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('teachers/:courseId/attendances', teachersJoinCb)
 	getSocketEmitter().register('teachers/:courseId/assignments', teachersJoinCb)
 	getSocketEmitter().register('teachers/:courseId/assignmentSubmissions', teachersJoinCb)
+	getSocketEmitter().register('teachers/:courseId/posts', teachersJoinCb)
 	getSocketEmitter().register('questions/answers', isSubbed)
 	getSocketEmitter().register('questions/questions', isOpen)
 	getSocketEmitter().register('reports/reports', isAdmin)

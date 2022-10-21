@@ -18,7 +18,8 @@ import {
 	AssignmentsUseCases,
 	AttendancesUseCases,
 	CoursesUseCases,
-	FilesUseCases as CoursesFilesUseCases
+	FilesUseCases as CoursesFilesUseCases,
+	PostsUseCases
 } from '@modules/teachers'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
@@ -36,7 +37,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
-			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases, AssignmentsUseCases, AssignmentSubmissionsUseCases,
+			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases, AssignmentsUseCases, AssignmentSubmissionsUseCases, PostsUseCases,
 			NotesUseCases, FilesUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 
