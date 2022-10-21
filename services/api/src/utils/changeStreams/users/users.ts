@@ -13,7 +13,12 @@ import {
 } from '@modules/classes'
 import { getSocketEmitter } from '@index'
 import { CommentsUseCases, LikesUseCases, ViewsUseCases } from '@modules/interactions'
-import { AttendancesUseCases, CoursesUseCases, FilesUseCases as CoursesFilesUseCases } from '@modules/teachers'
+import {
+	AssignmentsUseCases,
+	AttendancesUseCases,
+	CoursesUseCases,
+	FilesUseCases as CoursesFilesUseCases
+} from '@modules/teachers'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
@@ -30,7 +35,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
 			QuestionsUseCases, AnswersUseCases, CommentsUseCases, LikesUseCases, ViewsUseCases,
 			ClassesUseCases, AnnouncementsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases,
-			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases,
+			CoursesUseCases, CoursesFilesUseCases, AttendancesUseCases, AssignmentsUseCases,
 			NotesUseCases, FilesUseCases, FlashCardsUseCases, SetsUseCases, ReportsUseCases
 		].map(async (useCase) => await useCase.updateUserBio(after.getEmbedded())))
 

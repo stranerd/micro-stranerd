@@ -6,8 +6,8 @@ import { NotificationType } from '@modules/users'
 
 export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel, SchemeEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`classes/schemes/${after.classId}`, after)
-		await getSocketEmitter().emitCreated(`classes/schemes/${after.classId}/${after.id}`, after)
+		await getSocketEmitter().emitCreated(`classes/${after.classId}/schemes`, after)
+		await getSocketEmitter().emitCreated(`classes/${after.classId}/schemes/${after.id}`, after)
 		await sendNotification(after.getAllUsers(), {
 			title: `${after.title} course outline updated`,
 			sendEmail: false,
@@ -16,8 +16,8 @@ export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel,
 		})
 	},
 	updated: async ({ after, changes }) => {
-		await getSocketEmitter().emitUpdated(`classes/schemes/${after.classId}`, after)
-		await getSocketEmitter().emitUpdated(`classes/schemes/${after.classId}/${after.id}`, after)
+		await getSocketEmitter().emitUpdated(`classes/${after.classId}/schemes`, after)
+		await getSocketEmitter().emitUpdated(`classes/${after.classId}/schemes/${after.id}`, after)
 		if (changes.title || changes.topic || changes.start || changes.end) await sendNotification(after.getAllUsers(), {
 			title: `${after.title} course outline updated`,
 			sendEmail: false,
@@ -26,8 +26,8 @@ export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel,
 		})
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`classes/schemes/${before.classId}`, before)
-		await getSocketEmitter().emitDeleted(`classes/schemes/${before.classId}/${before.id}`, before)
+		await getSocketEmitter().emitDeleted(`classes/${before.classId}/schemes`, before)
+		await getSocketEmitter().emitDeleted(`classes/${before.classId}/schemes/${before.id}`, before)
 		await sendNotification(before.getAllUsers(), {
 			title: `${before.title} course outline updated`,
 			sendEmail: false,
