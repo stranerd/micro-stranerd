@@ -1,67 +1,67 @@
 import { makeController, Route, StatusCodes } from '@utils/app/package'
-import { FileController } from '../../controllers/teachers/files'
+import { AssignmentController } from '../../controllers/teachers/assignments'
 import { isAuthenticated } from '@application/middlewares'
 
-export const filesRoutes: Route[] = [
+export const assignmentsRoutes: Route[] = [
 	{
-		path: '/teachers/:courseId/files',
+		path: '/teachers/:courseId/assignments',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.GetFile(req)
+					result: await AssignmentController.GetAssignment(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
+		path: '/teachers/:courseId/assignments/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.FindFile(req)
+					result: await AssignmentController.FindAssignment(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
+		path: '/teachers/:courseId/assignments/:id',
 		method: 'put',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.UpdateFile(req)
+					result: await AssignmentController.UpdateAssignment(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files',
+		path: '/teachers/:courseId/assignments',
 		method: 'post',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.CreateFile(req)
+					result: await AssignmentController.CreateAssignment(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
+		path: '/teachers/:courseId/assignments/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.DeleteFile(req)
+					result: await AssignmentController.DeleteAssignment(req)
 				}
 			})
 		]
