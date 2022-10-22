@@ -9,6 +9,7 @@ import {
 	validate,
 	Validation
 } from '@utils/app/package'
+import { UploaderUseCases } from '@modules/storage'
 
 export class AssignmentSubmissionController {
 	static async FindAssignmentSubmission (req: Request) {
@@ -26,9 +27,9 @@ export class AssignmentSubmissionController {
 	}
 
 	static async SubmitAssignment (req: Request) {
-		const { assignmentId, attachments } = validate({
+		const { assignmentId, attachments: attachmentFiles } = validate({
 			assignmentId: req.params.assignmentId,
-			attachments: req.body.attachments
+			attachments: req.files.attachments ?? []
 		}, {
 			assignmentId: { required: true, rules: [Validation.isString] },
 			attachments: {
@@ -43,6 +44,8 @@ export class AssignmentSubmissionController {
 
 		const user = await UsersUseCases.find(userId)
 		if (!user) throw new BadRequestError('user not found')
+
+		const attachments = await UploaderUseCases.uploadMany(`teachers/assignments/${assignmentId}/submissions`, attachmentFiles)
 
 		return await AssignmentSubmissionsUseCases.submit({
 			assignmentId, attachments, user: user.getEmbedded()

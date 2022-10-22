@@ -42,9 +42,7 @@ const uploadFiles: Route = {
 					]
 				}
 			})
-			const res = await Promise.all(
-				data.files.map(async (f) => await UploaderUseCases.upload(data.path, f))
-			)
+			const res = await UploaderUseCases.uploadMany(data.path, data.files)
 			return {
 				status: StatusCodes.Ok,
 				result: res

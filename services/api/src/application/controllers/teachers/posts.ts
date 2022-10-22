@@ -1,4 +1,4 @@
-import { AssignmentsUseCases, CoursesUseCases } from '@modules/teachers'
+import { CoursesUseCases, PostsUseCases, PostType } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
 	BadRequestError,
@@ -9,30 +9,32 @@ import {
 	validate,
 	Validation
 } from '@utils/app/package'
-import { UploaderUseCases } from '@modules/storage'
 
-export class AssignmentController {
-	static async FindAssignment (req: Request) {
-		const assignment = await AssignmentsUseCases.find(req.params.id)
-		if (!assignment || assignment.courseId !== req.params.courseId || !assignment.members.includes(req.authUser!.id)) return null
-		return assignment
+export class PostController {
+	static async FindPost (req: Request) {
+		const post = await PostsUseCases.find(req.params.id)
+		if (!post || post.courseId !== req.params.courseId || !post.members.includes(req.authUser!.id)) return null
+		return post
 	}
 
-	static async GetAssignment (req: Request) {
+	static async GetPost (req: Request) {
 		const query = req.query as QueryParams
 		query.authType = QueryKeys.and
 		query.auth = [{ field: 'courseId', value: req.params.courseId },
 			{ field: 'members', value: req.authUser!.id }]
-		return await AssignmentsUseCases.get(query)
+		return await PostsUseCases.get(query)
 	}
 
-	static async CreateAssignment (req: Request) {
-		const { title, courseId, description, deadline, attachments: attachmentFiles } = validate({
+	static async CreatePost (req: Request) {
+		const acceptableTypes = Object.keys(PostType).filter((type) => type !== PostType.assignments)
+
+		const { title, courseId, description, attachments, type } = validate({
 			title: req.body.title,
 			description: req.body.description,
 			deadline: req.body.deadline,
 			courseId: req.params.courseId,
-			attachments: req.files.attachments ?? []
+			attachments: req.body.attachments,
+			type: req.body.data.type
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
@@ -41,6 +43,9 @@ export class AssignmentController {
 			attachments: {
 				required: true,
 				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+			},
+			type: {
+				required: true, rules: [Validation.arrayContainsX(acceptableTypes, (cur, val) => cur === val)]
 			}
 		})
 
@@ -51,17 +56,16 @@ export class AssignmentController {
 		const user = await UsersUseCases.find(userId)
 		if (!user) throw new BadRequestError('user not found')
 
-		const attachments = await UploaderUseCases.uploadMany('teachers/assignments', attachmentFiles)
-
-		return await AssignmentsUseCases.add({
+		return await PostsUseCases.add({
 			courseId: course.id, members: course.members,
-			title, description, attachments, deadline, user: user.getEmbedded()
+			title, description, attachments, user: user.getEmbedded(),
+			data: { type }
 		})
 	}
 
-	static async DeleteAssignment (req: Request) {
+	static async DeletePost (req: Request) {
 		const authUserId = req.authUser!.id
-		const isDeleted = await AssignmentsUseCases.delete({
+		const isDeleted = await PostsUseCases.delete({
 			courseId: req.params.courseId,
 			id: req.params.id,
 			userId: authUserId
