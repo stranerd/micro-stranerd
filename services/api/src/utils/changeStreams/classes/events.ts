@@ -7,8 +7,8 @@ import { NotificationType } from '@modules/users'
 
 export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, EventEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`classes/events/${after.classId}`, after)
-		await getSocketEmitter().emitCreated(`classes/events/${after.classId}/${after.id}`, after)
+		await getSocketEmitter().emitCreated(`classes/${after.classId}/events`, after)
+		await getSocketEmitter().emitCreated(`classes/${after.classId}/events/${after.id}`, after)
 		await scheduleEvent(after)
 		if (after.data.type === EventType.timetable) await sendNotification(after.getAllUsers(), {
 			title: `${after.title} timetable updated`,
@@ -23,8 +23,8 @@ export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, E
 		})
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated(`classes/events/${after.classId}`, after)
-		await getSocketEmitter().emitUpdated(`classes/events/${after.classId}/${after.id}`, after)
+		await getSocketEmitter().emitUpdated(`classes/${after.classId}/events`, after)
+		await getSocketEmitter().emitUpdated(`classes/${after.classId}/events/${after.id}`, after)
 
 		if (changes.data) {
 			await unScheduleEvent(before)
@@ -47,8 +47,8 @@ export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, E
 		})
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`classes/events/${before.classId}`, before)
-		await getSocketEmitter().emitDeleted(`classes/events/${before.classId}/${before.id}`, before)
+		await getSocketEmitter().emitDeleted(`classes/${before.classId}/events`, before)
+		await getSocketEmitter().emitDeleted(`classes/${before.classId}/events/${before.id}`, before)
 		await unScheduleEvent(before)
 		if (before.data.type === EventType.timetable) await sendNotification(before.getAllUsers(), {
 			title: `${before.title} timetable updated`,

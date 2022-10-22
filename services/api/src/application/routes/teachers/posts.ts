@@ -1,67 +1,54 @@
 import { makeController, Route, StatusCodes } from '@utils/app/package'
-import { FileController } from '../../controllers/teachers/files'
+import { PostController } from '../../controllers/teachers/posts'
 import { isAuthenticated } from '@application/middlewares'
 
-export const filesRoutes: Route[] = [
+export const postsRoutes: Route[] = [
 	{
-		path: '/teachers/:courseId/files',
+		path: '/teachers/:courseId/posts',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.GetFile(req)
+					result: await PostController.GetPost(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
+		path: '/teachers/:courseId/posts/:id',
 		method: 'get',
 		controllers: [
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.FindFile(req)
+					result: await PostController.FindPost(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
-		method: 'put',
-		controllers: [
-			isAuthenticated,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await FileController.UpdateFile(req)
-				}
-			})
-		]
-	},
-	{
-		path: '/teachers/:courseId/files',
+		path: '/teachers/:courseId/posts',
 		method: 'post',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.CreateFile(req)
+					result: await PostController.CreatePost(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/teachers/:courseId/files/:id',
+		path: '/teachers/:courseId/posts/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await FileController.DeleteFile(req)
+					result: await PostController.DeletePost(req)
 				}
 			})
 		]
