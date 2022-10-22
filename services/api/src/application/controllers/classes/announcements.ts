@@ -25,27 +25,6 @@ export class AnnouncementController {
 		return await AnnouncementsUseCases.get(query)
 	}
 
-	static async UpdateAnnouncement (req: Request) {
-		const authUserId = req.authUser!.id
-		const { body } = validate({
-			body: req.body.body
-		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
-		})
-
-		const data = { body }
-
-		const updatedAnnouncement = await AnnouncementsUseCases.update({
-			id: req.params.id,
-			classId: req.params.classId,
-			userId: authUserId,
-			data
-		})
-
-		if (updatedAnnouncement) return updatedAnnouncement
-		throw new NotAuthorizedError()
-	}
-
 	static async CreateAnnouncement (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)

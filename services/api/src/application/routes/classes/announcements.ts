@@ -30,19 +30,6 @@ export const announcementsRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/classes/announcements/:classId/:id',
-		method: 'put',
-		controllers: [
-			isAuthenticated,
-			makeController(async (req) => {
-				return {
-					status: StatusCodes.Ok,
-					result: await AnnouncementController.UpdateAnnouncement(req)
-				}
-			})
-		]
-	},
-	{
 		path: '/classes/announcements/:classId/',
 		method: 'post',
 		controllers: [
