@@ -4,7 +4,7 @@ import { CronTypes } from '@utils/app/package'
 export const plansList: PlanToModel[] = [
 	{
 		_id: 'solo-plan',
-		amount: 1500,
+		amount: 2000,
 		currency: Currencies.NGN,
 		name: 'Solo',
 		interval: CronTypes.monthly,
@@ -17,7 +17,7 @@ export const plansList: PlanToModel[] = [
 	},
 	{
 		_id: 'premium-plan',
-		amount: 2500,
+		amount: 3000,
 		currency: Currencies.NGN,
 		name: 'Premium',
 		interval: CronTypes.monthly,

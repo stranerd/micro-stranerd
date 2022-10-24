@@ -2,7 +2,7 @@ import { IAssignmentSubmissionRepository } from '../../domain/irepositories/assi
 import { AssignmentSubmissionMapper } from '../mappers/assignmentSubmissions'
 import { AssignmentSubmissionFromModel, AssignmentSubmissionToModel } from '../models/assignmentSubmissions'
 import { AssignmentSubmission } from '../mongooseModels/assignmentSubmissions'
-import { mongoose, NotAuthorizedError, parseQueryParams, QueryParams } from '@utils/app/package'
+import { BadRequestError, mongoose, NotAuthorizedError, parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 import { Assignment } from '../mongooseModels/assignments'
 import { AssignmentMapper } from '../mappers/assignments'
@@ -28,6 +28,7 @@ export class AssignmentSubmissionRepository implements IAssignmentSubmissionRepo
 		await session.withTransaction(async (session) => {
 			const assignment = this.assignmentMapper.mapFrom(await Assignment.findById(data.assignmentId, {}, { session }))
 			if (!assignment || !assignment.members.includes(data.user.id)) throw new NotAuthorizedError('can\'t submit to this assignment')
+			if (assignment.deadline! > Date.now()) throw new BadRequestError('deadline is passed')
 			const submission = await AssignmentSubmission.findOneAndUpdate({
 				assignmentId: data.assignmentId, 'user.id': data.user.id, courseId: assignment.courseId
 			}, {
