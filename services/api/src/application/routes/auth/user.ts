@@ -71,4 +71,18 @@ const superAdmin: Route = {
 	]
 }
 
-export const userRoutes = [getUserDetails, updateUserRole, updateUser, signout, superAdmin]
+const deleteAccount: Route = {
+	path: '/auth/user',
+	method: 'delete',
+	controllers: [
+		isAuthenticated,
+		makeController(async (req) => {
+			return {
+				status: StatusCodes.Ok,
+				result: await UserController.delete(req)
+			}
+		})
+	]
+}
+
+export const userRoutes = [getUserDetails, updateUserRole, updateUser, signout, superAdmin, deleteAccount]

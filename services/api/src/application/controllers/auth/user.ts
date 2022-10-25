@@ -74,4 +74,11 @@ export class UserController {
 			}
 		})
 	}
+
+	static async delete (req: Request) {
+		const authUserId = req.authUser!.id
+		const deleted = await AuthUsersUseCases.deleteUsers([authUserId])
+		await signOutUser(authUserId)
+		return deleted
+	}
 }
