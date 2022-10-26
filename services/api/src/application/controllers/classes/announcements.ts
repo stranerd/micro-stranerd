@@ -28,7 +28,7 @@ export class AnnouncementController {
 	static async CreateAnnouncement (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const { body, classId, reminder } = validate({
 			body: req.body.body,

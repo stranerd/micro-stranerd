@@ -88,7 +88,7 @@ export class EventController {
 	static async CreateEvent (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const isTimetable = req.body.data?.type === EventType.timetable
 		const { title, classId, type, start, end, lecturer } = validate({

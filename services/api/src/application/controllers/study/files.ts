@@ -51,7 +51,7 @@ export class FileController {
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 		const media = await UploaderUseCases.upload('study/files', data.media)
 		return await FilesUseCases.add({
 			...data, media, user: user.getEmbedded()

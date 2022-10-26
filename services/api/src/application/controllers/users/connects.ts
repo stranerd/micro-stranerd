@@ -37,9 +37,9 @@ export class ConnectsController {
 			to: { required: true, rules: [Validation.isString] }
 		})
 		const fromUser = await UsersUseCases.find(req.authUser!.id)
-		if (!fromUser) throw new BadRequestError('profile not found')
+		if (!fromUser || fromUser.isDeleted()) throw new BadRequestError('profile not found')
 		const toUser = await UsersUseCases.find(to)
-		if (!toUser) throw new BadRequestError('to not found')
+		if (!toUser || toUser.isDeleted()) throw new BadRequestError('to not found')
 
 		return await ConnectsUseCases.create({
 			from: fromUser.getEmbedded(), to: toUser.getEmbedded(),

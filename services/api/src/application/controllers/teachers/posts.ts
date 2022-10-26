@@ -54,7 +54,7 @@ export class PostController {
 		if (!course || course.user.id !== userId) throw new NotAuthorizedError()
 
 		const user = await UsersUseCases.find(userId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		return await PostsUseCases.add({
 			courseId: course.id, members: course.members,

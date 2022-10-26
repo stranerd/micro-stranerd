@@ -39,7 +39,7 @@ export class CourseController {
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		return await CoursesUseCases.add({ ...data, user: user.getEmbedded() })
 	}
@@ -56,7 +56,7 @@ export class CourseController {
 		const { join } = validate({
 			join: req.body.join
 		}, {
-			join: { required: true, rules: [Validation.isBoolean] },
+			join: { required: true, rules: [Validation.isBoolean] }
 		})
 		const isJoined = await CoursesUseCases.join({ courseId: req.params.id, userId, join })
 		if (isJoined) return isJoined

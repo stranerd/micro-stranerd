@@ -59,7 +59,7 @@ export class NoteController {
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 		return await NotesUseCases.add({
 			...data, user: user.getEmbedded(),
 			links: Validation.extractUrls(data.content)

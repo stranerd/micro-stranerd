@@ -21,7 +21,7 @@ export class SetController {
 
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		return await SetsUseCases.add({ name, user: user.getEmbedded() })
 	}

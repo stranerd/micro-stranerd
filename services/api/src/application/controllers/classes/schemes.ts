@@ -61,7 +61,7 @@ export class SchemeController {
 	static async CreateScheme (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const { title, classId, topic, start, end } = validate({
 			title: req.body.title,

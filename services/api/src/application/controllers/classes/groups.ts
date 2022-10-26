@@ -49,7 +49,7 @@ export class GroupController {
 	static async CreateGroup (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const { name, classId } = validate({
 			name: req.body.name,

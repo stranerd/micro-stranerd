@@ -29,7 +29,7 @@ export class CommentsController {
 
 		await verifyInteractionEntity(entityType, entityId, 'comments')
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('profile not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
 		return await CommentsUseCases.create({
 			body, entity: { id: entityId, type: entityType },

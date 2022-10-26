@@ -29,7 +29,7 @@ export class ViewsController {
 
 		await verifyInteractionEntity(entityType, entityId, 'views')
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('profile not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
 		return await ViewsUseCases.create({
 			entity: { id: entityId, type: entityType },

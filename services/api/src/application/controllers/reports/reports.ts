@@ -35,11 +35,11 @@ export class ReportController {
 		let reportedData: ReportData | null = null
 
 		const reporter = await UsersUseCases.find(req.authUser!.id)
-		if (!reporter) throw new BadRequestError('reporter not found')
+		if (!reporter || reporter.isDeleted()) throw new BadRequestError('reporter not found')
 
 		if (type == ReportType.users) {
 			const user = await UsersUseCases.find(reportedId)
-			if (!user) throw new BadRequestError('user not found')
+			if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 			reportedData = {
 				type: ReportType.users,
 				reported: user.getEmbedded()

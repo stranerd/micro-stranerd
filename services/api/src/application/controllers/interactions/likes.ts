@@ -29,7 +29,7 @@ export class LikesController {
 
 		await verifyInteractionEntity(entityType, entityId, value ? 'likes' : 'dislikes')
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('profile not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
 		return await LikesUseCases.like({
 			value, entity: { id: entityId, type: entityType },

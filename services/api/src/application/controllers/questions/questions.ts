@@ -67,7 +67,7 @@ export class QuestionController {
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 		const wallet = await WalletsUseCases.get(user.id)
 		if (wallet.subscription.data[PlanDataType.questions] < 1) throw new BadRequestError('you don\'t have any questions left')
 		const tag = await TagsUseCases.find(data.tagId)

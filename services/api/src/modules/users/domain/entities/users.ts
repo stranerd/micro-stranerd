@@ -30,6 +30,10 @@ export class UserEntity extends BaseEntity {
 		return getNextRank(this.rank.id)
 	}
 
+	isDeleted () {
+		return this.dates.deletedAt !== null
+	}
+
 	getEmbedded (): EmbeddedUser {
 		return {
 			id: this.id,

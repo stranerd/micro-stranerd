@@ -58,7 +58,7 @@ export class ClassController {
 	static async CreateClass (req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const { name, departmentId, year, description, courses, photo: classPhoto } = validate({
 			name: req.body.name,

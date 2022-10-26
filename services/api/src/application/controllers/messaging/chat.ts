@@ -44,7 +44,7 @@ export class ChatController {
 
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
-		if (!user) throw new BadRequestError('profile not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
 		const { results } = await ChatMetasUseCases.get({
 			where: [

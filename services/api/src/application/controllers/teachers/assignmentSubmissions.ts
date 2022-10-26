@@ -43,7 +43,7 @@ export class AssignmentSubmissionController {
 		if (!assignment || !assignment.members.includes(userId)) throw new NotAuthorizedError()
 
 		const user = await UsersUseCases.find(userId)
-		if (!user) throw new BadRequestError('user not found')
+		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		const attachments = await UploaderUseCases.uploadMany(`teachers/assignments/${assignmentId}/submissions`, attachmentFiles)
 
