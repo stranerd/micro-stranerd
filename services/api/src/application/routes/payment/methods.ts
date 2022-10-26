@@ -1,56 +1,56 @@
 import { makeController, Route, StatusCodes } from '@utils/app/package'
-import { CardsController } from '@application/controllers/payment/cards'
+import { MethodsController } from '@application/controllers/payment/methods'
 import { isAuthenticated } from '@application/middlewares'
 
-export const cardsRoutes: Route[] = [
+export const methodsRoutes: Route[] = [
 	{
-		path: '/payment/cards',
+		path: '/payment/methods',
 		method: 'get',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CardsController.get(req)
+					result: await MethodsController.get(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/payment/cards/:id',
+		path: '/payment/methods/:id',
 		method: 'get',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CardsController.find(req)
+					result: await MethodsController.find(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/payment/cards/:id/primary',
+		path: '/payment/methods/:id/primary',
 		method: 'put',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CardsController.makePrimary(req)
+					result: await MethodsController.makePrimary(req)
 				}
 			})
 		]
 	},
 	{
-		path: '/payment/cards/:id',
+		path: '/payment/methods/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated,
 			makeController(async (req) => {
 				return {
 					status: StatusCodes.Ok,
-					result: await CardsController.delete(req)
+					result: await MethodsController.delete(req)
 				}
 			})
 		]

@@ -73,3 +73,16 @@ export type AccountDetails = {
 	bankCode: string
 	bankName: string
 }
+
+export enum MethodType {
+	card = 'card'
+}
+
+export type MethodData = {
+	type: MethodType.card
+	last4Digits: string
+	country: string
+	cardType: string
+	expiredAt: number
+	expired: boolean
+}

@@ -1,6 +1,6 @@
 import FlutterwaveNode from 'flutterwave-node-v3'
 import { flutterwaveConfig } from '@utils/environment'
-import { CardToModel, Currencies, CurrencyCountries } from '@modules/payment'
+import { Currencies, CurrencyCountries, MethodToModel, MethodType } from '@modules/payment'
 
 const flw = () => new FlutterwaveNode(flutterwaveConfig.publicKey, flutterwaveConfig.secretKey)
 
@@ -46,18 +46,22 @@ export class FlutterwavePayment {
 		return transaction.status === 'successful'
 	}
 
-	static async saveCard (userId: string, transactionId: string): Promise<CardToModel | null> {
+	static async saveCard (userId: string, transactionId: string): Promise<MethodToModel | null> {
 		const res = await flw().CustomRequest.custom(`v3/transactions/verify_by_reference?tx_ref=${transactionId}`, { method: 'GET' }).catch(() => null)
 		const transaction = res?.body?.data as FwTransaction | null
 		if (!transaction) return null
 		const [month, year] = transaction.card.expiry.split('/').map((x) => parseInt(x))
+		const expireTime = new Date(2000 + year, month).getTime()
 		return {
-			userId,
-			last4Digits: transaction.card.last_4digits,
-			country: transaction.card.country,
-			type: transaction.card.type,
-			token: transaction.card.token,
-			expiredAt: new Date(2000 + year, month).getTime()
+			userId, token: transaction.card.token,
+			data: {
+				type: MethodType.card,
+				last4Digits: transaction.card.last_4digits,
+				country: transaction.card.country,
+				cardType: transaction.card.type,
+				expiredAt: expireTime,
+				expired: expireTime <= Date.now()
+			}
 		}
 	}
 

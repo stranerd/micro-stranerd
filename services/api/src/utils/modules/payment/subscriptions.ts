@@ -1,6 +1,6 @@
 import {
-	CardEntity,
-	CardsUseCases,
+	MethodEntity,
+	MethodsUseCases,
 	PlanEntity,
 	PlansUseCases,
 	TransactionStatus,
@@ -11,8 +11,7 @@ import {
 import { UserEntity, UsersUseCases } from '@modules/users'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
 import { BadRequestError } from '@utils/app/package'
-import { appInstance } from '@utils/app/types'
-import { DelayedEvent, DelayedJobs } from '@utils/app/types'
+import { appInstance, DelayedEvent, DelayedJobs } from '@utils/app/types'
 
 const activateSub = async (userId: string, walletId: string, subscription: PlanEntity, successful: boolean) => {
 	const now = Date.now()
@@ -31,7 +30,7 @@ const activateSub = async (userId: string, walletId: string, subscription: PlanE
 	})
 }
 
-const chargeForSubscription = async (user: UserEntity, subscription: PlanEntity, card: CardEntity) => {
+const chargeForSubscription = async (user: UserEntity, subscription: PlanEntity, method: MethodEntity) => {
 	const transaction = await TransactionsUseCases.create({
 		userId: user.id, email: user.bio.email, amount: subscription.amount, currency: subscription.currency,
 		status: TransactionStatus.initialized, title: `Subscription charge for ${subscription.name}`,
@@ -39,7 +38,7 @@ const chargeForSubscription = async (user: UserEntity, subscription: PlanEntity,
 	})
 	const successful = await FlutterwavePayment.chargeCard({
 		email: transaction.email, amount: transaction.amount, currency: transaction.currency,
-		token: card.token, id: transaction.id
+		token: method.token, id: transaction.id
 	})
 	await TransactionsUseCases.update({
 		id: transaction.id,
@@ -60,12 +59,12 @@ export const subscribeToPlan = async (userId: string, subscriptionId: string) =>
 	const subscription = await PlansUseCases.find(subscriptionId)
 	if (!subscription) throw new BadRequestError('subscription not found')
 	if (!subscription.active) throw new BadRequestError('you cant subscribe to this plan currently')
-	const { results: cards } = await CardsUseCases.get({
+	const { results: methods } = await MethodsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
-	const card = cards.at(0)
-	if (!card) throw new BadRequestError('no card found')
-	const successful = await chargeForSubscription(user, subscription, card)
+	const method = methods.at(0)
+	if (!method) throw new BadRequestError('no method found')
+	const successful = await chargeForSubscription(user, subscription, method)
 	if (!successful) throw new BadRequestError('charge failed')
 	return activateSub(userId, wallet.id, subscription, successful)
 }
@@ -77,12 +76,12 @@ export const renewSubscription = async (userId: string) => {
 	if (!user) return await deactivateSub(wallet.id)
 	const subscription = await PlansUseCases.find(wallet.subscription.next.id)
 	if (!subscription || !subscription.active) return await deactivateSub(wallet.id)
-	const { results: cards } = await CardsUseCases.get({
+	const { results: methods } = await MethodsUseCases.get({
 		where: [{ field: 'userId', value: userId }, { field: 'primary', value: true }]
 	})
-	const card = cards.at(0)
-	if (!card) return await deactivateSub(wallet.id)
-	const successful = await chargeForSubscription(user, subscription, card)
+	const method = methods.at(0)
+	if (!method) return await deactivateSub(wallet.id)
+	const successful = await chargeForSubscription(user, subscription, method)
 	return successful ? activateSub(userId, wallet.id, subscription, successful) : await deactivateSub(wallet.id)
 }
 

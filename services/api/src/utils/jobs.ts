@@ -2,7 +2,7 @@ import { CronTypes } from '@utils/app/package'
 import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/app/types'
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
-import { CardsUseCases } from '@modules/payment'
+import { MethodsUseCases } from '@modules/payment'
 import { EmailErrorsUseCases } from '@modules/emails'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { retryTransactions } from '@utils/modules/payment/transactions'
@@ -40,7 +40,7 @@ export const startJobs = async () => {
 			}
 			if (type === CronTypes.monthly) {
 				await UsersUseCases.resetRankings(UserRankings.monthly)
-				await CardsUseCases.markExpireds()
+				await MethodsUseCases.markExpireds()
 			}
 			if (type === CronTypes.hourly) {
 				const errors = await EmailErrorsUseCases.getAndDeleteAll()

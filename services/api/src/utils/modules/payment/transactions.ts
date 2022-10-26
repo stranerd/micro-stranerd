@@ -1,6 +1,6 @@
 import {
-	CardsUseCases,
 	Currencies,
+	MethodsUseCases,
 	TransactionEntity,
 	TransactionStatus,
 	TransactionsUseCases,
@@ -12,9 +12,9 @@ import { Conditions } from '@utils/app/package'
 
 export const fulfillTransaction = async (transaction: TransactionEntity) => {
 	if (transaction.data.type === TransactionType.NewCard) {
-		const card = await FlutterwavePayment.saveCard(transaction.userId, transaction.id)
-		if (!card) return
-		await CardsUseCases.create(card)
+		const method = await FlutterwavePayment.saveCard(transaction.userId, transaction.id)
+		if (!method) return
+		await MethodsUseCases.create(method)
 		await WalletsUseCases.updateAmount({
 			userId: transaction.userId,
 			amount: await FlutterwavePayment.convertAmount(transaction.amount, transaction.currency, Currencies.NGN)
