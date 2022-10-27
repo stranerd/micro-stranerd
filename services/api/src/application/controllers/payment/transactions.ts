@@ -38,7 +38,7 @@ export class TransactionsController {
 
 		if (isNewCardType) {
 			dynamics.title = 'Test charge on new card'
-			dynamics.amount = 50
+			dynamics.amount = 10
 		}
 
 		return await TransactionsUseCases.create({
