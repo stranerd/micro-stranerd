@@ -66,12 +66,12 @@ export class QuestionController {
 			}
 		})
 
+		const tag = await TagsUseCases.find(data.tagId)
+		if (!tag || !tag.parent || tag.type !== TagTypes.questions) throw new BadRequestError('invalid tagId')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 		const wallet = await WalletsUseCases.get(user.id)
 		if (wallet.subscription.data[PlanDataType.questions] < 1) throw new BadRequestError('you don\'t have any questions left')
-		const tag = await TagsUseCases.find(data.tagId)
-		if (!tag || !tag.parent || tag.type !== TagTypes.questions) throw new BadRequestError('invalid tagId')
 
 		return await QuestionsUseCases.add({ ...data, user: user.getEmbedded() })
 	}

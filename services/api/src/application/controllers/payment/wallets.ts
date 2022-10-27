@@ -9,13 +9,13 @@ export class WalletsController {
 	}
 
 	static async subscribeToPlan (req: Request) {
-		const { subscriptionId } = validate({
-			subscriptionId: req.body.subscriptionId
+		const { planId } = validate({
+			planId: req.body.planId
 		}, {
-			subscriptionId: { required: true, rules: [Validation.isString] }
+			planId: { required: true, rules: [Validation.isString] }
 		})
 
-		return await subscribeToPlan(req.authUser!.id, subscriptionId)
+		return await subscribeToPlan(req.authUser!.id, planId)
 	}
 
 	static async cancelSubscription (req: Request) {
