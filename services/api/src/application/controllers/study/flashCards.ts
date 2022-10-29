@@ -44,7 +44,7 @@ export class FlashCardController {
 				required: true,
 				rules: [
 					Validation.isArrayOfX((cur: any) => Validation.isString(cur?.question).valid && Validation.isString(cur?.answer).valid, 'questions'),
-					Validation.hasMoreThanX(0)
+					Validation.hasMoreThanX(0), Validation.hasLessThanOrEqualToX(128)
 				]
 			}
 		})

@@ -9,5 +9,4 @@ export interface IDepartmentRepository {
 	find: (id: string) => Promise<DepartmentEntity | null>
 	delete: (id: string) => Promise<boolean>
 	deleteFacultyDepartments: (facultyId: string) => Promise<boolean>
-	deleteTagDepartments: (tagId: string) => Promise<boolean>
 }

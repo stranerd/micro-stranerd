@@ -52,8 +52,7 @@ export class UsersController {
 					type: UserSchoolType.college,
 					institutionId: department.institutionId,
 					facultyId: department.facultyId,
-					departmentId: department.id,
-					tagId: department.tagId
+					departmentId: department.id
 				}
 			})
 		} else {

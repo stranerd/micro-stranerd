@@ -21,10 +21,6 @@ const Schema = new mongoose.Schema<DepartmentFromModel>({
 		type: String,
 		required: true
 	},
-	tagId: {
-		type: String,
-		required: true
-	},
 	createdAt: {
 		type: Number,
 		required: false,

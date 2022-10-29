@@ -1,6 +1,5 @@
 import { DepartmentsUseCases, FacultiesUseCases } from '@modules/school'
 import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
-import { TagsUseCases, TagTypes } from '@modules/interactions'
 
 export class DepartmentController {
 	static async FindDepartment (req: Request) {
@@ -15,17 +14,13 @@ export class DepartmentController {
 	static async CreateDepartment (req: Request) {
 		const data = validate({
 			name: req.body.name,
-			facultyId: req.body.facultyId,
-			tagId: req.body.tagId
+			facultyId: req.body.facultyId
 		}, {
 			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			facultyId: { required: true, rules: [Validation.isString] },
-			tagId: { required: true, rules: [Validation.isString] }
+			facultyId: { required: true, rules: [Validation.isString] }
 		})
 		const faculty = await FacultiesUseCases.find(data.facultyId)
 		if (!faculty) throw new BadRequestError('faculty not found')
-		const tag = await TagsUseCases.find(data.tagId)
-		if (!tag || tag.type !== TagTypes.departments) throw new BadRequestError('invalid tagId')
 
 		return await DepartmentsUseCases.add({ ...data, institutionId: faculty.institutionId })
 	}
