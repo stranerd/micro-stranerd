@@ -52,7 +52,8 @@ export type SubscriptionModel = {
 }
 
 export enum PlanDataType {
-	questions = 'questions'
+	questions = 'questions',
+	flashCards = 'flashCards'
 }
 
 export type PlanData = Record<PlanDataType, number>

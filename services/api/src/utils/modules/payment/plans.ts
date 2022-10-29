@@ -3,29 +3,12 @@ import { CronTypes } from '@utils/app/package'
 
 export const plansList: PlanToModel[] = [
 	{
-		_id: 'solo-plan',
-		amount: 2000,
-		currency: Currencies.NGN,
-		name: 'Solo',
-		interval: CronTypes.monthly,
-		data: { questions: 10 },
-		features: {
-			classes: true, flashCards: true, homework: true, connect: true,
-			tests: false, solutions: false, manuals: false
-		},
-		active: true
-	},
-	{
 		_id: 'premium-plan',
-		amount: 3000,
+		amount: 2000,
 		currency: Currencies.NGN,
 		name: 'Premium',
 		interval: CronTypes.monthly,
-		data: { questions: 10 },
-		features: {
-			classes: true, flashCards: true, homework: true, connect: true,
-			tests: true, solutions: true, manuals: true
-		},
-		active: false
+		data: { questions: 10, flashCards: 1 },
+		active: true
 	}
 ]
