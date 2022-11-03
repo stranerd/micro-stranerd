@@ -52,9 +52,10 @@ export class TransactionsController {
 		if (!transaction || transaction.userId !== req.authUser!.id) throw new NotAuthorizedError()
 		const successful = await FlutterwavePayment.verify(transaction.id, transaction.amount, transaction.currency)
 		if (!successful) throw new BadRequestError('transaction unsuccessful')
-		return await TransactionsUseCases.update({
+		const updatedTxn = await TransactionsUseCases.update({
 			id: transaction.id,
 			data: { status: TransactionStatus.fulfilled }
 		})
+		return !!updatedTxn
 	}
 }
