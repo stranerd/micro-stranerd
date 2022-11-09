@@ -108,6 +108,7 @@ export class Instance {
 	async startDbConnection () {
 		try {
 			await mongoose.connect(this.settings.mongoDbURI)
+			await Instance.getInstance().cache.connect()
 			await startAllChangeStreams()
 			addWaitBeforeExit(mongoose.disconnect)
 		} catch (error) {

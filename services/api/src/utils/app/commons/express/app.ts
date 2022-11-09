@@ -73,7 +73,6 @@ export const getNewServerInstance = (routes: Route[], socketCallers: SocketCalle
 	})
 
 	const start = async (port: number) => {
-		await Instance.getInstance().cache.connect()
 		return await new Promise((resolve: (s: boolean) => void, reject: (e: Error) => void) => {
 			try {
 				const app = server.listen(port, () => resolve(true))
