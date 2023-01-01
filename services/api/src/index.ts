@@ -39,7 +39,7 @@ const start = async () => {
 	await UsersUseCases.resetAllUsersStatus()
 	await PlansUseCases.init(plansList)
 	await app.start(port)
-	await appInstance.logger.success(`${appId} api has started listening on port`, port)
+	await appInstance.logger.success(`${appId} service has started listening on port`, port)
 	await startJobs()
 }
 
