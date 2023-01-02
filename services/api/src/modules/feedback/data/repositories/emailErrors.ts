@@ -3,8 +3,8 @@ import { EmailErrorMapper } from '../mappers/emailErrors'
 import { EmailErrorToModel } from '../models/emailErrors'
 import { EmailError } from '../mongooseModels/emailErrors'
 
-export class ErrorRepository implements IEmailErrorRepository {
-	private static instance: ErrorRepository
+export class EmailErrorRepository implements IEmailErrorRepository {
+	private static instance: EmailErrorRepository
 	private mapper: EmailErrorMapper
 
 	private constructor () {
@@ -12,8 +12,8 @@ export class ErrorRepository implements IEmailErrorRepository {
 	}
 
 	static getInstance () {
-		if (!ErrorRepository.instance) ErrorRepository.instance = new ErrorRepository()
-		return ErrorRepository.instance
+		if (!EmailErrorRepository.instance) EmailErrorRepository.instance = new EmailErrorRepository()
+		return EmailErrorRepository.instance
 	}
 
 	async add (data: EmailErrorToModel) {
