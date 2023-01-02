@@ -13,10 +13,6 @@ const Schema = new mongoose.Schema<PhoneErrorFromModel>({
 		type: String,
 		required: true
 	},
-	subject: {
-		type: String,
-		required: true
-	},
 	from: {
 		type: String,
 		required: true

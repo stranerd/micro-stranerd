@@ -5,6 +5,7 @@ import { PushNotification } from './types/push'
 
 export enum EventTypes {
 	SENDMAIL = 'SENDMAIL',
+	SENDTEXT = 'SENDTEXT',
 	DELETEFILE = 'DELETEFILE',
 	PUSHNOTIFICATION = 'PUSHNOTIFICATION'
 }

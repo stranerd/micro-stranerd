@@ -3,12 +3,13 @@ import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } f
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { MethodsUseCases } from '@modules/payment'
-import { EmailErrorsUseCases } from '@modules/feedback'
-import { sendMailAndCatchError } from '@utils/modules/email'
+import { EmailErrorsUseCases, PhoneErrorsUseCases } from '@modules/feedback'
+import { sendMailAndCatchError } from '@utils/modules/feedback/email'
 import { retryTransactions } from '@utils/modules/payment/transactions'
 import { broadcastEvent } from '@utils/modules/classes/events'
 import { TestsUseCases } from '@modules/study'
 import { renewSubscription } from '@utils/modules/payment/subscriptions'
+import { sendTextAndCatchError } from '@utils/modules/feedback/phone'
 
 export const startJobs = async () => {
 	await appInstance.job.startProcessingQueues<DelayedEvent, CronLikeEvent>([
@@ -43,8 +44,10 @@ export const startJobs = async () => {
 				await MethodsUseCases.markExpireds()
 			}
 			if (type === CronTypes.hourly) {
-				const errors = await EmailErrorsUseCases.getAndDeleteAll()
-				await Promise.all(errors.map((e) => sendMailAndCatchError(e as any)))
+				const emails = await EmailErrorsUseCases.getAndDeleteAll()
+				await Promise.all(emails.map((e) => sendMailAndCatchError(e as any)))
+				const texts = await PhoneErrorsUseCases.getAndDeleteAll()
+				await Promise.all(texts.map((t) => sendTextAndCatchError(t as any)))
 				await retryTransactions(60 * 60 * 1000)
 				await appInstance.job.retryAllFailedJobs()
 			}

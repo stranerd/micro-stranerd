@@ -5,9 +5,8 @@ export interface PhoneErrorFromModel extends PhoneErrorToModel {
 }
 
 export interface PhoneErrorToModel {
-	error: string,
-	subject: string,
-	to: string,
-	content: string,
+	error: string
+	to: string
+	content: string
 	from: string
 }
