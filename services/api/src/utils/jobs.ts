@@ -3,7 +3,7 @@ import { appInstance, CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } f
 import { NotificationsUseCases, UserRankings, UsersUseCases } from '@modules/users'
 import { deleteUnverifiedUsers } from '@utils/modules/auth'
 import { MethodsUseCases } from '@modules/payment'
-import { EmailErrorsUseCases } from '@modules/emails'
+import { EmailErrorsUseCases } from '@modules/feedback'
 import { sendMailAndCatchError } from '@utils/modules/email'
 import { retryTransactions } from '@utils/modules/payment/transactions'
 import { broadcastEvent } from '@utils/modules/classes/events'

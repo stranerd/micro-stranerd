@@ -1,6 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 
-export class ErrorEntity extends BaseEntity {
+export class EmailErrorEntity extends BaseEntity {
 	public readonly id: string
 	public readonly error: string
 	public readonly subject: string
