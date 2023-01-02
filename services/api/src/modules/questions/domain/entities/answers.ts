@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { AnswerMeta, EmbeddedUser, Media } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class AnswerEntity extends BaseEntity {
 	public readonly id: string
@@ -23,7 +24,7 @@ export class AnswerEntity extends BaseEntity {
 		this.body = body
 		this.questionId = questionId
 		this.tagId = tagId
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.attachments = attachments
 		this.best = best ?? false
 		this.meta = meta

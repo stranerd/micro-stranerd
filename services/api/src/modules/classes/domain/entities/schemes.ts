@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class SchemeEntity extends BaseEntity {
 	public readonly id: string
@@ -30,7 +31,7 @@ export class SchemeEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.title = title
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.topic = topic
 		this.start = start
 		this.end = end

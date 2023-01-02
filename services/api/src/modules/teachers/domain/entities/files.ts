@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, Media } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class FileEntity extends BaseEntity {
 	public readonly id: string
@@ -19,7 +20,7 @@ export class FileEntity extends BaseEntity {
 		this.courseId = courseId
 		this.title = title
 		this.media = media
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.members = members
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt

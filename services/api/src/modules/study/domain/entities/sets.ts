@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, SetSaved } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class SetEntity extends BaseEntity {
 	public readonly id: string
@@ -19,9 +20,9 @@ export class SetEntity extends BaseEntity {
 	             }: SetConstructorArgs) {
 		super()
 		this.id = id
-		this.name = name
+		this.name = name ? name : 'My Library'
 		this.saved = saved
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}

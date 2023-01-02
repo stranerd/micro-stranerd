@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class AttendanceEntity extends BaseEntity {
 	public readonly id: string
@@ -19,7 +20,7 @@ export class AttendanceEntity extends BaseEntity {
 		this.id = id
 		this.courseId = courseId
 		this.title = title
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.members = members
 		this.attended = attended
 		this.closedAt = closedAt

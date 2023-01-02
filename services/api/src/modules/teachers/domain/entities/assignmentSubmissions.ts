@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, Media } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class AssignmentSubmissionEntity extends BaseEntity {
 	public readonly id: string
@@ -19,7 +20,7 @@ export class AssignmentSubmissionEntity extends BaseEntity {
 		this.courseId = courseId
 		this.assignmentId = assignmentId
 		this.members = members
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.attachments = attachments
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt

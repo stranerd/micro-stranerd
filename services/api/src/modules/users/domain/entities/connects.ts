@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser } from '../types'
+import { generateDefaultUser } from './users'
 
 export class ConnectEntity extends BaseEntity {
 	public readonly id: string
@@ -13,8 +14,8 @@ export class ConnectEntity extends BaseEntity {
 	constructor ({ id, from, to, pending, accepted, createdAt, updatedAt }: ConnectConstructorArgs) {
 		super()
 		this.id = id
-		this.from = from
-		this.to = to
+		this.from = generateDefaultUser(from)
+		this.to = generateDefaultUser(to)
 		this.pending = pending
 		this.accepted = accepted
 		this.createdAt = createdAt

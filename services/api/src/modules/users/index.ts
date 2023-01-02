@@ -29,7 +29,7 @@ export { ConnectFromModel } from './data/models/connects'
 export { BadgeEntity } from './domain/entities/badges'
 export { NotificationEntity } from './domain/entities/notifications'
 export { ReferralEntity } from './domain/entities/referrals'
-export { UserEntity } from './domain/entities/users'
+export { UserEntity, generateDefaultUser } from './domain/entities/users'
 export { ConnectEntity } from './domain/entities/connects'
 export { RankTypes } from './domain/entities/ranks'
 export {

@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, Media, QuestionMeta } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export const BEST_ANSWERS_COUNT = 1
 
@@ -26,7 +27,7 @@ export class QuestionEntity extends BaseEntity {
 		this.body = body
 		this.attachments = attachments
 		this.tagId = tagId
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.bestAnswers = bestAnswers
 		this.answers = answers
 		this.meta = meta

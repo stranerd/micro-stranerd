@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class GroupEntity extends BaseEntity {
 	public readonly id: string
@@ -22,7 +23,7 @@ export class GroupEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.name = name
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.classId = classId
 		this.users = users
 		this.createdAt = createdAt

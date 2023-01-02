@@ -1,6 +1,7 @@
 import { BaseEntity } from '@utils/app/package'
 import { ChatEntity } from './chat'
 import { ChatData, ChatMetaData, ChatType } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class ChatMetaEntity extends BaseEntity {
 	public readonly id: string
@@ -18,6 +19,10 @@ export class ChatMetaEntity extends BaseEntity {
 		this.id = id
 		this.members = members
 		this.data = data
+		if (this.data.type === ChatType.personal) Object.fromEntries(
+			Object.entries(this.data.users)
+				.map(([key, val]) => [key, generateDefaultUser(val)])
+		)
 		this.last = last
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt

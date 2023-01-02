@@ -14,8 +14,8 @@ export class UserEntity extends BaseEntity {
 	constructor ({ id, bio, roles, dates, status, account, school }: UserConstructorArgs) {
 		super()
 		this.id = id
-		this.bio = bio ?? {}
-		this.roles = roles ?? {}
+		this.bio = generateDefaultBio(bio ?? {})
+		this.roles = generateDefaultRoles(roles ?? {})
 		this.dates = dates
 		this.status = status
 		this.account = account
@@ -51,4 +51,30 @@ type UserConstructorArgs = {
 	status: UserStatus
 	account: UserAccount
 	school: UserSchoolData | null
+}
+
+const capitalize = (value: string) => value.trim().split(' ').map((c: string) => (c[0]?.toUpperCase() ?? '') + c.slice(1)).join(' ')
+
+const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
+	const firstName = capitalize(bio?.firstName ?? 'Anon')
+	const lastName = capitalize(bio?.lastName ?? 'Ymous')
+	const fullName = capitalize(bio?.fullName ?? (firstName + ' ' + lastName))
+	const email = bio?.email ?? 'anon@ymous.com'
+	const description = bio?.description ?? ''
+	const photo = bio?.photo ?? null
+	return { firstName, lastName, fullName, email, description, photo }
+}
+
+const generateDefaultRoles = (roles: Partial<UserRoles>): UserRoles => {
+	return {
+		isStranerdAdmin: roles?.isStranerdAdmin ?? false,
+		isStranerdTutor: roles?.isStranerdTutor ?? false
+	}
+}
+
+export const generateDefaultUser = (user: Partial<EmbeddedUser>): EmbeddedUser => {
+	const id = user?.id ?? ''
+	const bio = generateDefaultBio(user?.bio ?? {})
+	const roles = generateDefaultRoles(user?.roles ?? {})
+	return { id, bio, roles }
 }

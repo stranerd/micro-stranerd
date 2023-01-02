@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { ClassUsers, EmbeddedUser, EventDataType } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class EventEntity extends BaseEntity {
 	public readonly id: string
@@ -28,7 +29,7 @@ export class EventEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.title = title
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.data = data
 		this.classId = classId
 		this.users = users
