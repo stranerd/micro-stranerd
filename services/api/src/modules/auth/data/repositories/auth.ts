@@ -99,7 +99,7 @@ export class AuthRepository implements IAuthRepository {
 		// send verification text
 		await publishers[EventTypes.SENDTEXT].publish({
 			to: number.join(''),
-			content: `Your Stranerd API verification code is: ${token}}`,
+			content: `Your Stranerd API verification code is: ${token}`,
 			from: 'Stranerd'
 		})
 
@@ -145,7 +145,10 @@ export class AuthRepository implements IAuthRepository {
 		if (!userEmail) throw new BadRequestError('Invalid token')
 		await appInstance.cache.delete('password-reset-token-' + input.token)
 
-		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: await Hash.hash(input.password) }, $addToSet: { authTypes: AuthTypes.email } }, { new: true })
+		const user = await User.findOneAndUpdate({ email: userEmail }, {
+			$set: { password: await Hash.hash(input.password) },
+			$addToSet: { authTypes: AuthTypes.email }
+		}, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
 
 		return this.mapper.mapFrom(user)!

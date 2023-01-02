@@ -40,8 +40,8 @@ export class AuthUserEntity extends BaseEntity {
 		return [this.firstName, this.lastName].join(' ').replaceAll('  ', ' ')
 	}
 
-	static bioKeys (): (keyof UserUpdateInput | 'email')[] {
-		return ['firstName', 'lastName', 'email', 'photo', 'description']
+	static bioKeys (): (keyof UserUpdateInput | 'email' | 'phone')[] {
+		return ['firstName', 'lastName', 'email', 'photo', 'description', 'phone']
 	}
 }
 
