@@ -36,3 +36,5 @@ export const mailchimpConfig = {
 export const superAdminEmail = getEnvOrFail('SUPER_ADMIN')
 
 export const openAIKey = getEnvOrFail('OPEN_AI_KEY')
+
+export const termiiAPIKey = getEnvOrFail('TERMII_API_KEY')

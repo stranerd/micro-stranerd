@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, InteractionEntity } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class LikeEntity extends BaseEntity {
 	public readonly id: string
@@ -14,7 +15,7 @@ export class LikeEntity extends BaseEntity {
 		this.id = id
 		this.value = value
 		this.entity = entity
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
 	}

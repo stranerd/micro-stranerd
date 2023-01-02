@@ -1,6 +1,6 @@
-import { AuthUsersUseCases } from '@modules/auth'
+import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
-import { signOutUser } from '@utils/modules/auth'
+import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
 import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
 import { SupportedAuthRoles } from '@utils/app/types'
@@ -80,5 +80,37 @@ export class UserController {
 		const deleted = await AuthUsersUseCases.deleteUsers([authUserId])
 		await signOutUser(authUserId)
 		return deleted
+	}
+
+	static async sendVerificationText (req: Request) {
+		const { phone } = validate({
+			phone: req.body.phone
+		}, {
+			phone: {
+				required: true, rules: [(phone: { code: string, number: string }) => {
+					const { code = '', number = '' } = phone ?? {}
+					const isValidCode = Validation.isString(code).valid && code.startsWith('+') && Validation.isNumber(parseInt(code.slice(1))).valid
+					const isValidNumber = Validation.isNumber(parseInt(number)).valid
+					if (!isValidCode) return Validation.isInvalid('invalid phone code')
+					if (!isValidNumber) return Validation.isInvalid('invalid phone number')
+					return Validation.isValid()
+				}]
+			}
+		})
+
+		return await AuthUseCases.sendVerificationText({
+			id: req.authUser!.id, phone
+		})
+	}
+
+	static async verifyPhone (req: Request) {
+		const { token } = validate({
+			token: req.body.token
+		}, {
+			token: { required: true, rules: [Validation.isString] }
+		})
+
+		const data = await AuthUseCases.verifyPhone(token)
+		return await generateAuthOutput(data)
 	}
 }

@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, ReportData } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class ReportEntity extends BaseEntity {
 	public readonly id: string
@@ -17,7 +18,7 @@ export class ReportEntity extends BaseEntity {
 		super()
 		this.id = id
 		this.data = data
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.reportedId = reportedId
 		this.message = message
 		this.createdAt = createdAt

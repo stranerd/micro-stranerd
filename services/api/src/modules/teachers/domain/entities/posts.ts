@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { EmbeddedUser, Media, PostData, PostMetaType } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class PostEntity extends BaseEntity {
 	public readonly id: string
@@ -34,7 +35,7 @@ export class PostEntity extends BaseEntity {
 		this.title = title
 		this.description = description
 		this.data = data
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.attachments = attachments
 		this.meta = meta
 		this.createdAt = createdAt

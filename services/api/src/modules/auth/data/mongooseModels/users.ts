@@ -44,6 +44,11 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 		required: false,
 		default: null
 	},
+	phone: {
+		type: mongoose.Schema.Types.Mixed,
+		required: false,
+		default: null
+	},
 	referrer: {
 		type: String,
 		required: false,

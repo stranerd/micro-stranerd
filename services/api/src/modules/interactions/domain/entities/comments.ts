@@ -1,5 +1,6 @@
 import { BaseEntity } from '@utils/app/package'
 import { CommentMeta, EmbeddedUser, InteractionEntity } from '../types'
+import { generateDefaultUser } from '@modules/users'
 
 export class CommentEntity extends BaseEntity {
 	public readonly id: string
@@ -15,7 +16,7 @@ export class CommentEntity extends BaseEntity {
 		this.id = id
 		this.body = body
 		this.entity = entity
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.meta = meta
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt

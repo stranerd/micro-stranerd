@@ -1,5 +1,6 @@
 import { ChatData, EmbeddedUser, Media } from '../types'
 import { BaseEntity } from '@utils/app/package'
+import { generateDefaultUser } from '@modules/users'
 
 export class ChatEntity extends BaseEntity {
 	public readonly id: string
@@ -16,7 +17,7 @@ export class ChatEntity extends BaseEntity {
 	constructor ({ id, from, to, data, body, links, media, createdAt, updatedAt, readAt }: ChatConstructorArgs) {
 		super()
 		this.id = id
-		this.from = from
+		this.from = generateDefaultUser(from)
 		this.to = to
 		this.data = data
 		this.body = body

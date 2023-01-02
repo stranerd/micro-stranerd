@@ -1,10 +1,10 @@
-export interface ErrorFromModel extends ErrorToModel {
+export interface EmailErrorFromModel extends EmailErrorToModel {
 	_id: string
 	createdAt: number
 	updatedAt: number
 }
 
-export interface ErrorToModel {
+export interface EmailErrorToModel {
 	error: string,
 	subject: string,
 	to: string,

@@ -18,6 +18,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
+				phone: after.phone,
 				photo: after.photo
 			}
 		})
@@ -48,6 +49,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 				fullName: after.fullName,
 				email: after.email,
 				description: after.description,
+				phone: after.phone,
 				photo: after.photo
 			}
 		})

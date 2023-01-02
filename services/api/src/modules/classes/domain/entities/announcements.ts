@@ -1,5 +1,6 @@
 import { ClassUsers, EmbeddedUser } from '../types'
 import { BaseEntity } from '@utils/app/package'
+import { generateDefaultUser } from '@modules/users'
 
 export class AnnouncementEntity extends BaseEntity {
 	public readonly id: string
@@ -28,7 +29,7 @@ export class AnnouncementEntity extends BaseEntity {
 		this.users = users
 		this.classId = classId
 		this.reminder = reminder
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.body = body
 		this.readAt = readAt
 		this.createdAt = createdAt

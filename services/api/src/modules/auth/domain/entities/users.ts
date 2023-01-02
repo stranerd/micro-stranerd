@@ -1,6 +1,6 @@
 import { AuthTypes, BaseEntity, MediaOutput } from '@utils/app/package'
 import { AuthRoles } from '@utils/app/types'
-import { UserUpdateInput } from '../types'
+import { Phone, UserUpdateInput } from '../types'
 
 export class AuthUserEntity extends BaseEntity {
 	public readonly id: string
@@ -10,6 +10,7 @@ export class AuthUserEntity extends BaseEntity {
 	public readonly firstName: string
 	public readonly lastName: string
 	public readonly photo: MediaOutput | null
+	public readonly phone: Phone | null
 	public readonly referrer: string | null
 	public readonly isVerified: boolean
 	public readonly authTypes: AuthTypes[]
@@ -26,6 +27,7 @@ export class AuthUserEntity extends BaseEntity {
 		this.lastName = data.lastName
 		this.description = data.description
 		this.photo = data.photo
+		this.phone = data.phone
 		this.referrer = data.referrer
 		this.isVerified = data.isVerified
 		this.authTypes = data.authTypes
@@ -38,8 +40,8 @@ export class AuthUserEntity extends BaseEntity {
 		return [this.firstName, this.lastName].join(' ').replaceAll('  ', ' ')
 	}
 
-	static bioKeys (): (keyof UserUpdateInput | 'email')[] {
-		return ['firstName', 'lastName', 'email', 'photo', 'description']
+	static bioKeys (): (keyof UserUpdateInput | 'email' | 'phone')[] {
+		return ['firstName', 'lastName', 'email', 'photo', 'description', 'phone']
 	}
 }
 
@@ -52,6 +54,7 @@ export interface UserConstructorArgs {
 	firstName: string;
 	lastName: string;
 	photo: MediaOutput | null;
+	phone: Phone | null;
 	referrer: string | null;
 	isVerified: boolean;
 	authTypes: AuthTypes[];

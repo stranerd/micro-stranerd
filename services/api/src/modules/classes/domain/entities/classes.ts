@@ -1,5 +1,6 @@
 import { ClassUsers, EmbeddedUser, Media } from '../types'
 import { BaseEntity } from '@utils/app/package'
+import { generateDefaultUser } from '@modules/users'
 
 export class ClassEntity extends BaseEntity {
 	public readonly id: string
@@ -34,7 +35,7 @@ export class ClassEntity extends BaseEntity {
 	             }: ClassConstructorArgs) {
 		super()
 		this.id = id
-		this.user = user
+		this.user = generateDefaultUser(user)
 		this.name = name
 		this.school = school
 		this.description = description

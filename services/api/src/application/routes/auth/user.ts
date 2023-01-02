@@ -85,4 +85,33 @@ const deleteAccount: Route = {
 	]
 }
 
-export const userRoutes = [getUserDetails, updateUserRole, updateUser, signout, superAdmin, deleteAccount]
+const sendVerificationText: Route = {
+	path: '/auth/phone/verify/text',
+	method: 'post',
+	controllers: [
+		makeController(async (req) => {
+			return {
+				status: StatusCodes.Ok,
+				result: await UserController.sendVerificationText(req)
+			}
+		})
+	]
+}
+
+const verifyPhone: Route = {
+	path: '/auth/phone/verify',
+	method: 'post',
+	controllers: [
+		makeController(async (req) => {
+			return {
+				status: StatusCodes.Ok,
+				result: await UserController.verifyPhone(req)
+			}
+		})
+	]
+}
+
+export const userRoutes = [
+	getUserDetails, updateUserRole, updateUser, signout,
+	superAdmin, deleteAccount, sendVerificationText, verifyPhone
+]
