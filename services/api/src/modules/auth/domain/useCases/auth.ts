@@ -30,6 +30,7 @@ export class AuthUseCase {
 			email: params.email,
 			description: params.description,
 			photo: params.photo,
+			phone: null,
 			referrer: params.referrer,
 			isVerified: false,
 			authTypes: [AuthTypes.email]
@@ -54,8 +55,8 @@ export class AuthUseCase {
 		return await this.repository.verifyEmail(token)
 	}
 
-	async sendVerificationText (id: string, phone: Phone) {
-		return await this.repository.sendVerificationText(id, phone)
+	async sendVerificationText (data: { id: string, phone: Phone }) {
+		return await this.repository.sendVerificationText(data.id, data.phone)
 	}
 
 	async verifyPhone (token: string) {

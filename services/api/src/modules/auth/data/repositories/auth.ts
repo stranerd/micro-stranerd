@@ -159,28 +159,10 @@ export class AuthRepository implements IAuthRepository {
 			link: data.picture
 		} as unknown as MediaOutput : null
 
-		const userData = await User.findOne({ email })
-
-		if (!userData) {
-			const userData = {
-				email, referrer,
-				authTypes: [AuthTypes.google],
-				firstName: data.first_name,
-				lastName: data.last_name,
-				description: '',
-				isVerified: data.email_verified === 'true',
-				roles: {},
-				password: '',
-				photo
-			}
-			return await this.addNewUser(userData, AuthTypes.google)
-		}
-
-		const credentials: Credential = {
-			email: userData.email,
-			password: ''
-		}
-		return await this.authenticateUser(credentials, false, AuthTypes.google)
+		return this.authorizeSocial(AuthTypes.google, {
+			email, photo, firstName: data.first_name, lastName: data.last_name,
+			isVerified: data.email_verified === 'true', referrer
+		})
 	}
 
 	async appleSignIn ({ idToken, firstName, lastName }, referrer) {
@@ -206,7 +188,7 @@ export class AuthRepository implements IAuthRepository {
 			email: data.email,
 			photo: data.photo,
 			authTypes: [type],
-			password: '',
+			password: '', phone: null,
 			isVerified: data.isVerified,
 			referrer: data.referrer
 		}, type)

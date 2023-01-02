@@ -1,5 +1,6 @@
 import { AuthTypes, MediaOutput } from '@utils/app/package'
 import { AuthRoles } from '@utils/app/types'
+import { Phone } from '../../domain/types'
 
 export interface UserFromModel extends UserToModel {
 	_id: string
@@ -15,6 +16,7 @@ export interface UserToModel {
 	firstName: string
 	lastName: string
 	photo: MediaOutput | null
+	phone: Phone | null
 	referrer: string | null
 	isVerified: boolean
 	authTypes: AuthTypes[]

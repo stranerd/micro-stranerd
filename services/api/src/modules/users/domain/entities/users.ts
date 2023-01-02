@@ -62,7 +62,8 @@ const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
 	const email = bio?.email ?? 'anon@ymous.com'
 	const description = bio?.description ?? ''
 	const photo = bio?.photo ?? null
-	return { firstName, lastName, fullName, email, description, photo }
+	const phone = bio?.phone ?? null
+	return { firstName, lastName, fullName, email, description, photo, phone }
 }
 
 const generateDefaultRoles = (roles: Partial<UserRoles>): UserRoles => {

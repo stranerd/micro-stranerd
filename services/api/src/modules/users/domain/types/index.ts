@@ -1,5 +1,6 @@
 import { MediaOutput } from '@utils/app/package'
 import { AuthRoles } from '@utils/app/types'
+import { Phone } from '@modules/auth'
 
 export * from './badges'
 export * from './notifications'
@@ -11,6 +12,7 @@ export type UserBio = {
 	fullName: string
 	description: string
 	photo: MediaOutput | null
+	phone: Phone | null
 }
 
 export type UserRoles = AuthRoles
