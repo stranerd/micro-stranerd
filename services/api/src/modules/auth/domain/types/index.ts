@@ -1,5 +1,10 @@
 import { MediaOutput } from '@utils/app/package'
 
+export type Phone = {
+	code: string
+	number: string
+}
+
 export interface UserUpdateInput {
 	firstName: string
 	lastName: string

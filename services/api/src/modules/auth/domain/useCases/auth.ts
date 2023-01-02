@@ -1,5 +1,5 @@
 import { AuthTypes } from '@utils/app/package'
-import { Credential, PasswordResetInput, RegisterInput } from '../types'
+import { Credential, PasswordResetInput, Phone, RegisterInput } from '../types'
 import { IAuthRepository } from '../irepositories/auth'
 import { UserToModel } from '../../data/models/users'
 
@@ -52,5 +52,13 @@ export class AuthUseCase {
 
 	async verifyEmail (token: string) {
 		return await this.repository.verifyEmail(token)
+	}
+
+	async sendVerificationText (id: string, phone: Phone) {
+		return await this.repository.sendVerificationText(id, phone)
+	}
+
+	async verifyPhone (token: string) {
+		return await this.repository.verifyPhone(token)
 	}
 }

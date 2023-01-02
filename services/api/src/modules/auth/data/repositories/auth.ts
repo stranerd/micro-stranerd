@@ -1,5 +1,5 @@
 import { IAuthRepository } from '../../domain/irepositories/auth'
-import { Credential, PasswordResetInput } from '../../domain/types'
+import { Credential, PasswordResetInput, Phone } from '../../domain/types'
 import { publishers } from '@utils/events'
 import User from '../mongooseModels/users'
 import { UserFromModel, UserToModel } from '../models/users'
@@ -85,6 +85,36 @@ export class AuthRepository implements IAuthRepository {
 
 		const user = await User.findOneAndUpdate({ email: userEmail }, { $set: { isVerified: true } }, { new: true })
 		if (!user) throw new BadRequestError('No account with saved email exists')
+
+		return this.mapper.mapFrom(user)!
+	}
+
+	async sendVerificationText (id: string, phone: Phone) {
+		const number = [phone.code, phone.number]
+		const token = Random.number(1e5, 1e6).toString()
+
+		// save to cache
+		await appInstance.cache.set('phone-verification-token-' + token, number.concat(id).join('|'), TOKENS_TTL_IN_SECS)
+
+		// send verification text
+		await publishers[EventTypes.SENDTEXT].publish({
+			to: number.join(''),
+			content: `Your Stranerd API verification code is: ${token}}`,
+			from: 'Stranerd'
+		})
+
+		return true
+	}
+
+	async verifyPhone (token: string) {
+		// check token in cache
+		const userPhone = await appInstance.cache.get('phone-verification-token-' + token)
+		if (!userPhone) throw new BadRequestError('Invalid token')
+		await appInstance.cache.delete('phone-verification-token-' + token)
+		const [code, number, id] = userPhone.split('|')
+
+		const user = await User.findByIdAndUpdate(id, { $set: { phone: { code, number } } }, { new: true })
+		if (!user) throw new BadRequestError('No user found')
 
 		return this.mapper.mapFrom(user)!
 	}

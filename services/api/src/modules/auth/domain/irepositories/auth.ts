@@ -1,4 +1,4 @@
-import { Credential, PasswordResetInput } from '../types'
+import { Credential, PasswordResetInput, Phone } from '../types'
 import { AuthTypes } from '@utils/app/package'
 import { UserToModel } from '../../data/models/users'
 import { AuthUserEntity } from '../entities/users'
@@ -11,6 +11,10 @@ export interface IAuthRepository {
 	sendVerificationMail (email: string): Promise<boolean>
 
 	verifyEmail (token: string): Promise<AuthUserEntity>
+
+	sendVerificationText (id: string, phone: Phone): Promise<boolean>
+
+	verifyPhone (token: string): Promise<AuthUserEntity>
 
 	sendPasswordResetMail (email: string): Promise<boolean>
 
