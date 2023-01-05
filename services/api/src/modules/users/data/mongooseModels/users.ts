@@ -15,9 +15,9 @@ const Meta = Object.fromEntries(
 
 const Rankings = Object.fromEntries(
 	Object.keys(UserRankings).map((key) => [key, {
-		type: Number,
+		type: mongoose.Schema.Types.Mixed,
 		required: false,
-		default: 0
+		default: () => ({ value: 0, lastUpdatedAt: Date.now() })
 	}])
 )
 

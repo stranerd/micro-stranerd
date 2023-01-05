@@ -29,7 +29,7 @@ export type UserStatus = {
 
 export type UserAccount = {
 	score: number
-	rankings: Record<UserRankings, number>
+	rankings: Record<UserRankings, { value: number, lastUpdatedAt: number }>
 	meta: Record<UserMeta, number>
 	streak: {
 		count: number

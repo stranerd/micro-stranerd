@@ -50,9 +50,13 @@ export class UserRepository implements IUserRepository {
 
 	async updateNerdScore (userId: string, amount: number) {
 		const rankings = Object.fromEntries(
-			Object.keys(UserRankings).map((key) => [`account.rankings.${key}`, amount])
+			Object.keys(UserRankings).map((key) => [`account.rankings.${key}.value`, amount])
+		)
+		const lastUpdatedAt = Object.fromEntries(
+			Object.keys(UserRankings).map((key) => [`account.rankings.${key}.lastUpdatedAt`, amount])
 		)
 		const user = await User.findByIdAndUpdate(userId, {
+			$set: lastUpdatedAt,
 			$inc: { ...rankings, 'account.score': amount }
 		})
 		return !!user
@@ -60,7 +64,7 @@ export class UserRepository implements IUserRepository {
 
 	async resetRankings (key: keyof UserAccount['rankings']) {
 		const res = await User.updateMany({}, {
-			$set: { [`account.rankings.${key}`]: 0 }
+			$set: { [`account.rankings.${key}`]: { value: 0, lastUpdatedAt: Date.now() } }
 		})
 		return !!res.acknowledged
 	}
