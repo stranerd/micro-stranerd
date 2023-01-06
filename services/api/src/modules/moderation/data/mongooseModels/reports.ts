@@ -2,7 +2,7 @@ import { generateChangeStreams, mongoose } from '@utils/app/package'
 import { ReportFromModel, ReportToModel } from '../models/reports'
 import { ReportMapper } from '../mappers/reports'
 import { ReportEntity } from '../../domain/entities/reports'
-import { ReportChangeStreamCallbacks } from '@utils/changeStreams/reports/reports'
+import { ReportChangeStreamCallbacks } from '@utils/changeStreams/moderation/reports'
 
 const ReportSchema = new mongoose.Schema<ReportFromModel>({
 	_id: {
@@ -13,11 +13,7 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 		type: mongoose.Schema.Types.Mixed as unknown as ReportToModel['user'],
 		required: true
 	},
-	reportedId: {
-		type: String,
-		required: true
-	},
-	data: {
+	entity: {
 		type: mongoose.Schema.Types.Mixed,
 		required: true
 	},
@@ -37,6 +33,6 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 	}
 }, { timestamps: { currentTime: Date.now }, minimize: false })
 
-export const Report = mongoose.model<ReportFromModel>('StranerdReport', ReportSchema)
+export const Report = mongoose.model<ReportFromModel>('StranerdModerationReport', ReportSchema)
 
 generateChangeStreams<ReportFromModel, ReportEntity>(Report, ReportChangeStreamCallbacks, new ReportMapper().mapFrom).then()

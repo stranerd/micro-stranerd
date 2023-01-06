@@ -5,7 +5,7 @@ import { pushRoutes } from './push'
 import { storageRoutes } from './storage'
 import { classRoutes } from './classes'
 import { metaRoutes } from './meta'
-import { reportsRoutes } from './reports'
+import { moderationRoutes } from './moderation'
 import { questionRoutes } from './questions'
 import { schoolRoutes } from './school'
 import { messagingRoutes } from './messaging'
@@ -21,7 +21,7 @@ export const routes: Route[] = [
 	...storageRoutes,
 	...classRoutes,
 	...metaRoutes,
-	...reportsRoutes,
+	...moderationRoutes,
 	...questionRoutes,
 	...schoolRoutes,
 	...messagingRoutes,

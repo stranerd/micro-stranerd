@@ -3,7 +3,7 @@ import { BadgesUseCases, ConnectsUseCases, UserEntity, UserFromModel } from '@mo
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ChatMetasUseCases, ChatsUseCases } from '@modules/messaging'
 import { FilesUseCases, FlashCardsUseCases, NotesUseCases, SetsUseCases } from '@modules/study'
-import { ReportsUseCases } from '@modules/reports'
+import { ReportsUseCases } from '@modules/moderation'
 import {
 	AnnouncementsUseCases,
 	ClassesUseCases,

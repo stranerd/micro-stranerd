@@ -1,10 +1,10 @@
-import { ReportController } from '@application/controllers/reports/reports'
+import { ReportController } from '@application/controllers/moderation/reports'
 import { makeController, Route, StatusCodes } from '@utils/app/package'
 import { isAdmin, isAuthenticated } from '@application/middlewares'
 
 export const reportRoutes: Route[] = [
 	{
-		path: '/reports/reports',
+		path: '/moderation/reports',
 		method: 'get',
 		controllers: [
 			isAuthenticated, isAdmin,
@@ -17,7 +17,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports/reports/:id',
+		path: '/moderation/reports/:id',
 		method: 'get',
 		controllers: [
 			isAuthenticated, isAdmin,
@@ -30,7 +30,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports/reports/:id',
+		path: '/moderation/reports/:id',
 		method: 'delete',
 		controllers: [
 			isAuthenticated, isAdmin,
@@ -43,7 +43,7 @@ export const reportRoutes: Route[] = [
 		]
 	},
 	{
-		path: '/reports/reports',
+		path: '/moderation/reports',
 		method: 'post',
 		controllers: [
 			isAuthenticated,

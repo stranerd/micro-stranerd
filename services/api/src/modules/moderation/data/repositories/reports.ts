@@ -28,7 +28,11 @@ export class ReportRepository implements IReportRepository {
 	}
 
 	async create (data: ReportToModel) {
-		const report = await new Report(data).save()
+		const report = await Report.findOneAndUpdate(
+			{ 'user.id': data.user.id, message: data.message, entity: data.entity },
+			{ $setOnInsert: data },
+			{ new: true, upsert: true }
+		)
 		return this.mapper.mapFrom(report)!
 	}
 

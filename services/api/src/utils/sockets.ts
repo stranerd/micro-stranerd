@@ -43,7 +43,7 @@ export const registerSockets = () => {
 	getSocketEmitter().register('teachers/:courseId/posts', teachersJoinCb)
 	getSocketEmitter().register('questions/answers', isSubbed)
 	getSocketEmitter().register('questions/questions', isOpen)
-	getSocketEmitter().register('reports/reports', isAdmin)
+	getSocketEmitter().register('moderation/reports', isAdmin)
 	getSocketEmitter().register('school/courses', isOpen)
 	getSocketEmitter().register('school/departments', isOpen)
 	getSocketEmitter().register('school/faculties', isOpen)

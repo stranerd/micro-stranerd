@@ -5,6 +5,6 @@ const reportRepository = ReportRepository.getInstance()
 
 export const ReportsUseCases = new ReportsUseCase(reportRepository)
 
-export { ReportData, ReportType } from './domain/types'
+export { ReportType } from './domain/types'
 export { ReportFromModel } from './data/models/reports'
 export { ReportEntity } from './domain/entities/reports'
