@@ -60,4 +60,18 @@ export class FlashCardController {
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
+
+	static async SaveMatch (req: Request) {
+		const data = validate({
+			time: req.body.time
+		}, {
+			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] }
+		})
+
+		return await FlashCardsUseCases.saveMatch({
+			userId: req.authUser!.id,
+			flashCardId: req.params.id,
+			time: data.time
+		})
+	}
 }

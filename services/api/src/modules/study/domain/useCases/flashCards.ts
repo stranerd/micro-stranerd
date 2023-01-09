@@ -33,4 +33,8 @@ export class FlashCardsUseCase {
 	async updateUserBio (user: EmbeddedUser) {
 		return await this.repository.updateUserBio(user)
 	}
+
+	async saveMatch (input: { flashCardId: string, userId: string, time: number }) {
+		return await this.repository.saveMatch(input.flashCardId, input.userId, input.time)
+	}
 }

@@ -65,5 +65,18 @@ export const flashcardsRoutes: Route[] = [
 				}
 			})
 		]
+	},
+	{
+		path: '/study/flashCards/:id/match',
+		method: 'post',
+		controllers: [
+			isAuthenticated,
+			makeController(async (req) => {
+				return {
+					status: StatusCodes.Ok,
+					result: await FlashCardController.SaveMatch(req)
+				}
+			})
+		]
 	}
 ]

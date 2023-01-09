@@ -2,7 +2,7 @@ import { IFlashCardRepository } from '../../domain/irepositories/flashCards'
 import { FlashCardMapper } from '../mappers/flashCards'
 import { FlashCardFromModel, FlashCardToModel } from '../models/flashCards'
 import { FlashCard } from '../mongooseModels/flashCards'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
+import { Instance, parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
 
 export class FlashCardRepository implements IFlashCardRepository {
@@ -53,5 +53,15 @@ export class FlashCardRepository implements IFlashCardRepository {
 	async delete (id: string, userId: string) {
 		const flashCard = await FlashCard.findOneAndDelete({ _id: id, 'user.id': userId })
 		return !!flashCard
+	}
+
+	async saveMatch (flashCardId: string, userId: string, time: number) {
+		time = Number(time.toFixed(1))
+		const key = `flashcard-matches-${flashCardId}-${userId}`
+		const value = await Instance.getInstance().cache.get(key)
+		const cachedTime = Number(value ?? '0')
+		if (cachedTime && time >= cachedTime) return { time: cachedTime, record: false }
+		await Instance.getInstance().cache.set(key, time.toString(), -1)
+		return { time, record: true }
 	}
 }

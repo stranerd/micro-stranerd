@@ -10,4 +10,6 @@ export interface IFlashCardRepository {
 	update: (id: string, userId: string, data: Partial<FlashCardToModel>) => Promise<FlashCardEntity | null>
 	delete: (id: string, userId: string) => Promise<boolean>
 	updateUserBio: (user: EmbeddedUser) => Promise<boolean>
+
+	saveMatch: (flashCardId: string, userId: string, time: number) => Promise<{ time: number, record: boolean }>
 }
