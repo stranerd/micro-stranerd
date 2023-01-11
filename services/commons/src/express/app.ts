@@ -60,7 +60,7 @@ export const getNewServerInstance = (routes: Route[], socketCallers: SocketCalle
 		fileUpload({
 			limits: { fileSize: settings.maxFileUploadSizeInMb * 1024 * 1024 },
 			useTempFiles: false
-		})
+		}) as any
 	)
 	const socket = new io.Server(server, { cors: { origin: '*' } })
 	const socketEmitter = new SocketEmitter(socket, socketCallers)
