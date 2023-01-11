@@ -14,7 +14,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@google-cloud/storage": "^6.7.0",
-		"@stranerd/api-commons": "^3.18.5",
+		"@stranerd/api-commons": "^3.19.0",
 		"firebase-admin": "^11.2.0",
 		"flutterwave-node-v3": "^1.0.11",
 		"nodemailer": "^6.8.0",
