@@ -1,7 +1,6 @@
 import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases } from '@modules/school'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
-import { getRandomN } from '@utils/functions'
 
 export class TestController {
 	static async FindTest (req: Request) {
@@ -50,7 +49,7 @@ export class TestController {
 			all: true
 		})
 		if (results.length < prep.questions) throw new BadRequestError('Not enough questions to take this test')
-		const questions = getRandomN(results, isUnTimed ? results.length : prep.questions).map((q) => q.id)
+		const questions = Validation.getRandomSample(results, isUnTimed ? results.length : prep.questions).map((q) => q.id)
 
 		const data = {
 			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,

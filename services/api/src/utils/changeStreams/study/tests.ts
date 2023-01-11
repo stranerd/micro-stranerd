@@ -1,9 +1,8 @@
-import { ChangeStreamCallbacks, Conditions } from '@utils/app/package'
+import { ChangeStreamCallbacks, Conditions, Validation } from '@utils/app/package'
 import { appInstance, DelayedEvent, DelayedJobs } from '@utils/app/types'
 import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { getSocketEmitter } from '@index'
-import { getPercentage } from '@utils/functions'
 import { ScoreRewards, UsersUseCases } from '@modules/users'
 
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
@@ -39,7 +38,7 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 					.filter((q) => q.data.type === PastQuestionType.objective)
 					.map((q) => q.data.type === PastQuestionType.objective && after.answers[q.id] === q.data.correctIndex)
 
-				const score = getPercentage(correct.filter((c) => c).length, correct.length)
+				const score = Validation.getPercentage(correct.filter((c) => c).length, correct.length)
 				await TestsUseCases.update({
 					id: after.id,
 					userId: after.userId,
