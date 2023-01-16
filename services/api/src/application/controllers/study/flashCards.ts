@@ -15,7 +15,7 @@ export class FlashCardController {
 	static async UpdateFlashCard (req: Request) {
 		const data = validate({
 			title: req.body.title,
-			set: req.body.set
+			set: req.body.set?.filter((x) => x.question && x.answer)
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			set: {
@@ -37,7 +37,7 @@ export class FlashCardController {
 	static async CreateFlashCard (req: Request) {
 		const data = validate({
 			title: req.body.title,
-			set: req.body.set
+			set: req.body.set?.filter((x) => x.question && x.answer)
 		}, {
 			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
 			set: {
