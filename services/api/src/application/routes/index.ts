@@ -1,5 +1,4 @@
-import { makeController, Route, StatusCodes } from '@utils/app/package'
-import { appId } from '@utils/environment'
+import { Route } from '@utils/app/package'
 import { authRoutes } from './auth'
 import { pushRoutes } from './push'
 import { storageRoutes } from './storage'
@@ -29,17 +28,5 @@ export const routes: Route[] = [
 	...userRoutes,
 	...interactionRoutes,
 	...paymentRoutes,
-	...teachersRoutes,
-	{
-		path: '/',
-		method: 'get',
-		controllers: [
-			makeController(async () => {
-				return {
-					status: StatusCodes.Ok,
-					result: `${appId} service running`
-				}
-			})
-		]
-	}
+	...teachersRoutes
 ]

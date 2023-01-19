@@ -7,7 +7,7 @@ import fileUpload from 'express-fileupload'
 import slowDown from 'express-slow-down'
 import rateLimit from 'express-rate-limit'
 import { StatusCodes } from './statusCodes'
-import { Controller } from './controllers'
+import { Controller, makeController } from './controllers'
 import { errorHandler, notFoundHandler } from './middlewares'
 import path from 'path'
 import { SocketCallers, SocketEmitter } from '../sockets'
@@ -24,6 +24,18 @@ export type Route = {
 
 const preRoutes: Route[] = []
 const postRoutes: Route[] = [
+	{
+		path: '__health',
+		method: 'get',
+		controllers: [
+			makeController(async () => {
+				return {
+					status: StatusCodes.Ok,
+					result: `${Instance.getInstance().settings.appId} service running`
+				}
+			})
+		]
+	},
 	{
 		path: '',
 		method: 'all',
