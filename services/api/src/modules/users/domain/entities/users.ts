@@ -1,5 +1,5 @@
 import { EmbeddedUser, UserAccount, UserBio, UserDates, UserRoles, UserSchoolData, UserStatus } from '../types'
-import { BaseEntity } from '@utils/app/package'
+import { BaseEntity, Validation } from '@utils/app/package'
 import { getNextRank, getRank } from './ranks'
 
 export class UserEntity extends BaseEntity {
@@ -53,12 +53,10 @@ type UserConstructorArgs = {
 	school: UserSchoolData | null
 }
 
-const capitalize = (value: string) => value.trim().split(' ').map((c: string) => (c[0]?.toUpperCase() ?? '') + c.slice(1)).join(' ')
-
 const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
-	const firstName = capitalize(bio?.firstName ?? 'Anon')
-	const lastName = capitalize(bio?.lastName ?? 'Ymous')
-	const fullName = capitalize(bio?.fullName ?? (firstName + ' ' + lastName))
+	const firstName = Validation.capitalizeText(bio?.firstName ?? 'Anon')
+	const lastName = Validation.capitalizeText(bio?.lastName ?? 'Ymous')
+	const fullName = Validation.capitalizeText(bio?.fullName ?? (firstName + ' ' + lastName))
 	const email = bio?.email ?? 'anon@ymous.com'
 	const description = bio?.description ?? ''
 	const photo = bio?.photo ?? null
@@ -67,10 +65,7 @@ const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
 }
 
 const generateDefaultRoles = (roles: Partial<UserRoles>): UserRoles => {
-	return {
-		isStranerdAdmin: roles?.isStranerdAdmin ?? false,
-		isStranerdTutor: roles?.isStranerdTutor ?? false
-	}
+	return roles ?? {}
 }
 
 export const generateDefaultUser = (user: Partial<EmbeddedUser>): EmbeddedUser => {
