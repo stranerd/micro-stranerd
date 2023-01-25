@@ -1,9 +1,10 @@
-export type RefreshUser = { id: string } & Record<string, any>
-export type AuthUser = {
+export interface RefreshUser {
 	id: string
-	email: string
-	authTypes: AuthTypes[]
-} & Record<string, any>
+}
+
+export interface AuthUser {
+	id: string
+}
 
 export enum AuthTypes {
 	google = 'google',
