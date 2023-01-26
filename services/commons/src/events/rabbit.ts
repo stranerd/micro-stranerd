@@ -6,6 +6,11 @@ export const pubAndSub = async () => {
 	const column = Instance.getInstance().settings.rabbitColumnName
 	const con = await amqp.connect(Instance.getInstance().settings.rabbitURI)
 
+	con.on('error', (err) => {
+		Instance.getInstance().logger.error('Amqp error:', err.message)
+		process.exit(1)
+	})
+
 	const channel = await con.createChannel()
 
 	addWaitBeforeExit(channel.close)
