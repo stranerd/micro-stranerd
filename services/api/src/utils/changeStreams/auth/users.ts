@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks, deleteCachedAccessToken, EmailsList, readEmailFromPug } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { publishers } from '@utils/events'
 import { AuthUserEntity, UserFromModel } from '@modules/auth'
 import { subscribeToMailingList } from '@utils/mailing'
@@ -28,7 +27,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 
 		const emailContent = await readEmailFromPug('emails/newUser.pug', {})
 
-		await publishers[EventTypes.SENDMAIL].publish({
+		await publishers.SENDMAIL.publish({
 			to: after.email,
 			subject: 'Welcome To Stranerd',
 			from: EmailsList.NO_REPLY,
@@ -37,7 +36,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (changes.photo && before.photo) await publishers.DELETEFILE.publish(before.photo)
 
 		const updatedBio = AuthUserEntity.bioKeys().some((key) => changes[key])
 		if (updatedBio) await UsersUseCases.updateWithBio({
@@ -63,7 +62,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Aut
 		})
 	},
 	deleted: async ({ before }) => {
-		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (before.photo) await publishers.DELETEFILE.publish(before.photo)
 		await UsersUseCases.markDeleted({ id: before.id, timestamp: Date.now() })
 		await TokensUseCases.delete(before.id)
 	}

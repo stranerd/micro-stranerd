@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { FileEntity, FileFromModel, SetSaved, SetsUseCases } from '@modules/study'
 import { getSocketEmitter } from '@index'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
@@ -19,7 +18,7 @@ export const FileChangeStreamCallbacks: ChangeStreamCallbacks<FileFromModel, Fil
 	updated: async ({ after, before, changes }) => {
 		await getSocketEmitter().emitUpdated('study/files', after)
 		await getSocketEmitter().emitUpdated(`study/files/${after.id}`, after)
-		if (changes.media) await publishers[EventTypes.DELETEFILE].publish(before.media)
+		if (changes.media) await publishers.DELETEFILE.publish(before.media)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('study/files', before)
@@ -32,6 +31,6 @@ export const FileChangeStreamCallbacks: ChangeStreamCallbacks<FileFromModel, Fil
 			amount: -ScoreRewards.NewFile
 		})
 		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.files })
-		await publishers[EventTypes.DELETEFILE].publish(before.media)
+		await publishers.DELETEFILE.publish(before.media)
 	}
 }

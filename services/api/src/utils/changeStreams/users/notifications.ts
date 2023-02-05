@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks, EmailsList, readEmailFromPug } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { NotificationEntity, NotificationFromModel, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
 import { sendPushNotification } from '@utils/modules/push'
@@ -26,7 +25,7 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 				const content = await readEmailFromPug('emails/newNotification.pug', {
 					notification: after, meta: { link: clientDomain }
 				})
-				await publishers[EventTypes.SENDMAIL].publish({
+				await publishers.SENDMAIL.publish({
 					from: EmailsList.NO_REPLY, to: user.bio.email, subject: after.title,
 					content, data: {}
 				})

@@ -19,4 +19,4 @@ export enum AuthTypes {
 	microsoft = 'microsoft'
 }
 
-export interface AuthRoles extends Partial<Record<keyof IAuthRole, boolean>> {}
+export interface AuthRoles extends Partial<Record<IAuthRole[keyof IAuthRole], boolean>> {}

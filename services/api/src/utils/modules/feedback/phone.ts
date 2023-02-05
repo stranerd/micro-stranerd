@@ -2,14 +2,9 @@ import axios from 'axios'
 import { isDev, termiiAPIKey } from '@utils/environment'
 import { appInstance } from '@utils/app/types'
 import { PhoneErrorsUseCases } from '@modules/feedback'
+import { PhoneText } from '@utils/app/package'
 
-type Text = {
-	to: string
-	from: string
-	content: string
-}
-
-export const sendText = async (text: Text) => {
+export const sendText = async (text: PhoneText) => {
 	await axios.post('https://termii.com/api/sms/send', {
 		to: text.to,
 		from: text.from,
@@ -22,7 +17,7 @@ export const sendText = async (text: Text) => {
 	})
 }
 
-export const sendTextAndCatchError = async (text: Text) => {
+export const sendTextAndCatchError = async (text: PhoneText) => {
 	try {
 		if (isDev) await appInstance.logger.info(text.to, text.content)
 		else await sendText(text)

@@ -8,7 +8,6 @@ import {
 } from '@modules/teachers'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
-import { EventTypes } from '@utils/app/types'
 
 export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFromModel, AssignmentEntity> = {
 	created: async ({ after }) => {
@@ -41,7 +40,7 @@ export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFr
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
-				oldAttachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+				oldAttachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 			)
 		}
 	},
@@ -56,7 +55,7 @@ export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFr
 			posts.map((post) => PostsUseCases.delete({ id: post.id, userId: post.user.id, courseId: post.courseId }))
 		])
 		await Promise.all(
-			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)
 	}
 }

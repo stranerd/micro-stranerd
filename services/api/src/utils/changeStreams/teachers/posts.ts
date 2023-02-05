@@ -2,7 +2,6 @@ import { ChangeStreamCallbacks } from '@utils/app/package'
 import { PostEntity, PostFromModel } from '@modules/teachers'
 import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
-import { EventTypes } from '@utils/app/types'
 
 export const PostChangeStreamCallbacks: ChangeStreamCallbacks<PostFromModel, PostEntity> = {
 	created: async ({ after }) => {
@@ -15,7 +14,7 @@ export const PostChangeStreamCallbacks: ChangeStreamCallbacks<PostFromModel, Pos
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
-				oldAttachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+				oldAttachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 			)
 		}
 	},
@@ -23,7 +22,7 @@ export const PostChangeStreamCallbacks: ChangeStreamCallbacks<PostFromModel, Pos
 		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/posts`, before)
 		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/posts/${before.id}`, before)
 		await Promise.all(
-			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)
 	}
 }

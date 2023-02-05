@@ -5,6 +5,7 @@ dotenv.config()
 export * from './bull/types'
 export * from './emails'
 export * from './enums'
+export { Events } from './events/events'
 export * from './errors'
 export * from './exit'
 export * from './express'

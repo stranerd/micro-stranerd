@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import {
 	AnnouncementsUseCases,
 	ClassEntity,
@@ -48,13 +47,13 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 				title: after.name, sendEmail: false
 			})
 		}
-		if (changes.photo && before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (changes.photo && before.photo) await publishers.DELETEFILE.publish(before.photo)
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('classes/classes', before)
 		await getSocketEmitter().emitDeleted(`classes/classes/${before.id}`, before)
 
-		if (before.photo) await publishers[EventTypes.DELETEFILE].publish(before.photo)
+		if (before.photo) await publishers.DELETEFILE.publish(before.photo)
 		await Promise.all([GroupsUseCases.deleteClassGroups, AnnouncementsUseCases.deleteClassAnnouncements].map((useCase) => useCase(before.id)))
 	}
 }

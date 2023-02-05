@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks, Validation } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
 import { getSocketEmitter } from '@index'
 import {
@@ -95,7 +94,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
-				oldAttachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+				oldAttachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 			)
 		}
 	},
@@ -122,7 +121,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		])
 
 		await Promise.all(
-			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)
 
 		await BadgesUseCases.recordCountStreak({

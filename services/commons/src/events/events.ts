@@ -1,4 +1,7 @@
+import { IEventTypes } from '../enums/types'
 import { pubAndSub } from './rabbit'
+
+export interface Events extends Record<IEventTypes[keyof IEventTypes], { topic: IEventTypes[keyof IEventTypes], data: any }> { }
 
 export class EventBus {
 	ps: ReturnType<typeof pubAndSub>
@@ -7,7 +10,7 @@ export class EventBus {
 		this.ps = pubAndSub()
 	}
 
-	createPublisher<Event extends { topic: string, data: any }> (topic: Event['topic']) {
+	createPublisher<Event extends Events[keyof Events]> (topic: Event['topic']) {
 		const { ps } = this
 
 		const publish = async (data: Event['data']) => {
@@ -17,7 +20,7 @@ export class EventBus {
 		return { publish }
 	}
 
-	createSubscriber<Event extends { topic: string, data: any }> (topic: Event['topic'], onMessage: (data: Event['data']) => void) {
+	createSubscriber<Event extends Events[keyof Events]> (topic: Event['topic'], onMessage: (data: Event['data']) => void) {
 		const { ps } = this
 
 		const subscribe = async () => {

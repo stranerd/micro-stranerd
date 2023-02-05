@@ -1,7 +1,6 @@
 export * from './bull/types'
-export * from './events/eventTypes'
-export * from './events/types/auth'
-export * from './events/types/push'
+export * from './events/auth'
+export * from './events/push'
 
 // @ts-ignore
 import { getEnvOrFail, Instance } from '../commons'

@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { getSocketEmitter } from '@index'
 import { PastQuestionEntity, PastQuestionFromModel, PastQuestionType } from '@modules/school'
 import { publishers } from '@utils/events'
@@ -23,7 +22,7 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 
 		const removed = oldMedia.filter((t) => t && !newMedia?.find((a) => a?.path === t.path))
 
-		await Promise.all(removed.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
+		await Promise.all(removed.map(async (attachment) => await publishers.DELETEFILE.publish(attachment)))
 	},
 	deleted: async ({ before }) => {
 		await getSocketEmitter().emitDeleted('school/pastQuestions', before)
@@ -34,6 +33,6 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 		else oldMedia = oldMedia.concat(before.data.answerMedia)
 
 		await Promise.all(oldMedia.filter((t) => t)
-			.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment)))
+			.map(async (attachment) => await publishers.DELETEFILE.publish(attachment)))
 	}
 }

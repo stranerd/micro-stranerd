@@ -1,6 +1,5 @@
 import { EmailsList, readEmailFromPug } from '@utils/app/package'
 import { publishers } from '@utils/events'
-import { EventTypes } from '@utils/app/types'
 
 export enum MessageType {
 	student = 'student',
@@ -44,7 +43,7 @@ export const sendNewMessageEmail = async (message: Message) => {
 	const content = await readEmailFromPug('emails/newFormMessage.pug', {
 		message: makeEmailBody(message)
 	})
-	await publishers[EventTypes.SENDMAIL].publish({
+	await publishers.SENDMAIL.publish({
 		from: EmailsList.NO_REPLY,
 		to: 'support@stranerd.com',
 		subject: 'New Message',

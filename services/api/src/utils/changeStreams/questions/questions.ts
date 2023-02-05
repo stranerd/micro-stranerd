@@ -1,5 +1,4 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
-import { EventTypes } from '@utils/app/types'
 import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
 import { getSocketEmitter } from '@index'
@@ -34,7 +33,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
-				oldAttachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+				oldAttachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 			)
 		}
 	},
@@ -53,7 +52,7 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		await UsersUseCases.incrementMeta({ id: before.user.id, value: -1, property: UserMeta.questions })
 
 		await Promise.all(
-			before.attachments.map(async (attachment) => await publishers[EventTypes.DELETEFILE].publish(attachment))
+			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)
 
 		await BadgesUseCases.recordCountStreak({

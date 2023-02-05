@@ -16,7 +16,7 @@ import {
 	signinWithGoogle,
 	ValidationError
 } from '@utils/app/package'
-import { appInstance, EventTypes } from '@utils/app/types'
+import { appInstance } from '@utils/app/types'
 import { UserMapper } from '../mappers/users'
 
 const TOKENS_TTL_IN_SECS = 60 * 60
@@ -67,7 +67,7 @@ export class AuthRepository implements IAuthRepository {
 
 		// send verification mail
 		const emailContent = await readEmailFromPug('emails/sendOTP.pug', { token })
-		await publishers[EventTypes.SENDMAIL].publish({
+		await publishers.SENDMAIL.publish({
 			to: email,
 			subject: 'Verify Your Email',
 			from: EmailsList.NO_REPLY,
@@ -98,7 +98,7 @@ export class AuthRepository implements IAuthRepository {
 		await appInstance.cache.set('phone-verification-token-' + token, number.concat(id).join('|'), TOKENS_TTL_IN_SECS)
 
 		// send verification text
-		await publishers[EventTypes.SENDTEXT].publish({
+		await publishers.SENDTEXT.publish({
 			to: number.join(''),
 			content: `Your Stranerd API verification code is: ${token}`,
 			from: 'Stranerd'
@@ -129,7 +129,7 @@ export class AuthRepository implements IAuthRepository {
 
 		// send reset password mail
 		const emailContent = await readEmailFromPug('emails/sendOTP.pug', { token })
-		await publishers[EventTypes.SENDMAIL].publish({
+		await publishers.SENDMAIL.publish({
 			to: email,
 			subject: 'Reset Your Password',
 			from: EmailsList.NO_REPLY,
