@@ -6,6 +6,7 @@ import { UserFromModel, UserToModel } from '../models/users'
 import {
 	AuthTypes,
 	BadRequestError,
+	EmailsList,
 	Hash,
 	MediaOutput,
 	mongoose,
@@ -15,7 +16,7 @@ import {
 	signinWithGoogle,
 	ValidationError
 } from '@utils/app/package'
-import { appInstance, EmailsList, EventTypes } from '@utils/app/types'
+import { appInstance, EventTypes } from '@utils/app/types'
 import { UserMapper } from '../mappers/users'
 
 const TOKENS_TTL_IN_SECS = 60 * 60

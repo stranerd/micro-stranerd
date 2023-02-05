@@ -1,5 +1,4 @@
 export * from './bull/types'
-export * from './emails/'
 export * from './events/eventTypes'
 export * from './events/types/auth'
 export * from './events/types/push'

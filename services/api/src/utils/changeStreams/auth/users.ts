@@ -1,5 +1,5 @@
-import { ChangeStreamCallbacks, deleteCachedAccessToken, readEmailFromPug } from '@utils/app/package'
-import { EmailsList, EventTypes } from '@utils/app/types'
+import { ChangeStreamCallbacks, deleteCachedAccessToken, EmailsList, readEmailFromPug } from '@utils/app/package'
+import { EventTypes } from '@utils/app/types'
 import { publishers } from '@utils/events'
 import { AuthUserEntity, UserFromModel } from '@modules/auth'
 import { subscribeToMailingList } from '@utils/mailing'

@@ -7,12 +7,18 @@ const Ar = makeEnum({
 	isStranerdTutor: 'isStranerdTutor',
 	isSuperAdmin: 'isSuperAdmin',
 	isSubscribed: 'isSubscribed'
-})
+} as const)
 
-setEnums({ AuthRole: Ar })
+const El = makeEnum({
+	NO_REPLY: 'no-reply@stranerd.com'
+} as const)
+
+setEnums({ AuthRole: Ar, EmailsList: El })
 
 // @ts-ignore
 declare module '@utils/app/commons/enums/types' {
 	type TAr = typeof Ar
+	type TEl = typeof El
     interface IAuthRole extends TAr {}
+    interface IEmailsList extends TEl {}
 }

@@ -1,12 +1,13 @@
+import { IEmailsList } from '../enums/types'
 import pug from 'pug'
 import path from 'path'
 
-export type Email<EmailEnum, Data = {}> = {
+export type Email = {
 	to: string
 	subject: string
 	content: string
-	from: EmailEnum
-	data: Data
+	from: IEmailsList[keyof IEmailsList]
+	data: {}
 }
 
 export const readEmailFromPug = async (filePath: string, data: Record<string, any>) => {

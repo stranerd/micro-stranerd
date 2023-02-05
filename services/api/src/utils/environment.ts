@@ -1,5 +1,4 @@
-import { getEnvOrFail } from '@utils/app/package'
-import { EmailsList } from '@utils/app/types'
+import { EmailsList, getEnvOrFail } from '@utils/app/package'
 
 const useSSL = parseInt(getEnvOrFail('USE_SSL'))
 export const baseDomain = `http${useSSL ? 's' : ''}://` + getEnvOrFail('BASE_DOMAIN')

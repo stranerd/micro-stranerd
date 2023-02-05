@@ -1,6 +1,5 @@
-import { TypedEmail } from '../emails'
 // @ts-ignore
-import { CronTypes, MediaOutput } from '../../commons'
+import { CronTypes, Email, MediaOutput } from '../../commons'
 import { PushNotification } from './types/push'
 
 export enum EventTypes {
@@ -18,7 +17,7 @@ interface Event<Data> {
 export interface Events extends Record<EventTypes, Event<any>> {
 	SENDMAIL: {
 		topic: typeof EventTypes.SENDMAIL,
-		data: TypedEmail
+		data: Email
 	},
 	DELETEFILE: {
 		topic: typeof EventTypes.DELETEFILE,
