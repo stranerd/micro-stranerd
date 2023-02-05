@@ -1,11 +1,11 @@
 import {
+	AuthRole,
 	makeMiddleware,
 	NotAuthenticatedError,
 	NotAuthorizedError,
 	requireAuthUser,
 	requireRefreshUser
 } from '@utils/app/package'
-import { AuthRole } from '@utils/app/types'
 
 export const isAuthenticatedButIgnoreVerified = makeMiddleware(
 	async (request) => {

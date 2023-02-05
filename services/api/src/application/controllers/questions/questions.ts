@@ -3,6 +3,7 @@ import { PlanDataType, WalletsUseCases } from '@modules/payment'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import {
+	AuthRole,
 	BadRequestError,
 	NotAuthorizedError,
 	QueryKeys,
@@ -11,7 +12,6 @@ import {
 	validate,
 	Validation
 } from '@utils/app/package'
-import { AuthRole } from '@utils/app/types'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {

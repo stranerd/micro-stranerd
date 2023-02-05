@@ -1,12 +1,13 @@
 export * from './bull/types'
 export * from './emails/'
-export * from './utils/authUser'
 export * from './events/eventTypes'
 export * from './events/types/auth'
 export * from './events/types/push'
 
 // @ts-ignore
 import { getEnvOrFail, Instance } from '../commons'
+import './enums'
+
 
 Instance.initialize({
 	isDev: getEnvOrFail('ENVIRONMENT') === 'local',

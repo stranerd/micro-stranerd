@@ -1,6 +1,5 @@
-import { MediaOutput } from '@utils/app/package'
-import { AuthRoles } from '@utils/app/types'
 import { Phone } from '@modules/auth'
+import { AuthRoles, MediaOutput } from '@utils/app/package'
 
 export * from './badges'
 export * from './notifications'

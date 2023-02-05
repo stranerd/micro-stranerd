@@ -1,5 +1,4 @@
-import { AuthTypes, MediaOutput } from '@utils/app/package'
-import { AuthRoles } from '@utils/app/types'
+import { AuthRoles, AuthTypes, MediaOutput } from '@utils/app/package'
 import { Phone } from '../../domain/types'
 
 export interface UserFromModel extends UserToModel {

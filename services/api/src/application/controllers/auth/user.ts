@@ -1,7 +1,6 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { UploaderUseCases } from '@modules/storage'
-import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
-import { AuthRole } from '@utils/app/types'
+import { AuthRole, BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
 import { superAdminEmail } from '@utils/environment'
 import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
 

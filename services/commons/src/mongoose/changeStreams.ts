@@ -1,7 +1,7 @@
-import { mongoose } from './index'
-import { BaseEntity } from '../structure'
-import { Instance } from '../instance'
 import { addWaitBeforeExit } from '../exit'
+import { Instance } from '../instance'
+import { BaseEntity } from '../structure'
+import { mongoose } from './index'
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
 

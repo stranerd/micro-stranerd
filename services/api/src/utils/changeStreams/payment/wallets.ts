@@ -1,8 +1,8 @@
 import { getSocketEmitter } from '@index'
 import { AuthUsersUseCases } from '@modules/auth'
 import { WalletEntity, WalletFromModel } from '@modules/payment'
-import { ChangeStreamCallbacks } from '@utils/app/package'
-import { appInstance, AuthRole } from '@utils/app/types'
+import { AuthRole, ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const WalletChangeStreamCallbacks: ChangeStreamCallbacks<WalletFromModel, WalletEntity> = {
 	created: async ({ after }) => {

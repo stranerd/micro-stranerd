@@ -1,9 +1,12 @@
+import { IAuthRole } from '../enums/types'
+
 export interface RefreshUser {
 	id: string
 }
 
 export interface AuthUser {
 	id: string
+	roles: AuthRoles
 }
 
 export enum AuthTypes {
@@ -15,3 +18,5 @@ export enum AuthTypes {
 	github = 'github',
 	microsoft = 'microsoft'
 }
+
+export interface AuthRoles extends Partial<Record<keyof IAuthRole, boolean>> {}
