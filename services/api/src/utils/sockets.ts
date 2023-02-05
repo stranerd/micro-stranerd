@@ -1,19 +1,19 @@
-import { OnJoinFn } from '@utils/app/package'
-import { ClassesUseCases } from '@modules/classes'
 import { getSocketEmitter } from '@index'
-import { SupportedAuthRoles } from '@utils/app/types'
+import { ClassesUseCases } from '@modules/classes'
 import { CoursesUseCases } from '@modules/teachers'
+import { OnJoinFn } from '@utils/app/package'
+import { AuthRole } from '@utils/app/types'
 
 export const registerSockets = () => {
 	const isAdmin: OnJoinFn = async ({
 		                                 user,
 		                                 channel
-	                                 }) => user?.roles?.[SupportedAuthRoles.isStranerdAdmin] ? channel : null
+	                                 }) => user?.roles?.[AuthRole.isStranerdAdmin] ? channel : null
 	const isMine: OnJoinFn = async ({ channel, user }) => user ? `${channel}/${user.id}` : null
 	const isSubbed: OnJoinFn = async ({
 		                                  channel,
 		                                  user
-	                                  }) => user?.roles[SupportedAuthRoles.isSubscribed] ? channel : null
+	                                  }) => user?.roles[AuthRole.isSubscribed] ? channel : null
 	const isOpen: OnJoinFn = async ({ channel }) => channel
 	const classJoinCb: OnJoinFn = async (data, params) => {
 		const { classId = null } = params

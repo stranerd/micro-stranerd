@@ -1,11 +1,11 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
-import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
-import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
-import { superAdminEmail } from '@utils/environment'
 import { UploaderUseCases } from '@modules/storage'
-import { SupportedAuthRoles } from '@utils/app/types'
+import { BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
+import { AuthRole } from '@utils/app/types'
+import { superAdminEmail } from '@utils/environment'
+import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
 
-const roles = [SupportedAuthRoles.isStranerdAdmin, SupportedAuthRoles.isStranerdTutor]
+const roles = [AuthRole.isStranerdAdmin, AuthRole.isStranerdTutor]
 
 export class UserController {
 	static async findUser (req: Request) {
@@ -69,8 +69,8 @@ export class UserController {
 		return await AuthUsersUseCases.updateUserRole({
 			userId: user.id,
 			roles: {
-				[SupportedAuthRoles.isStranerdAdmin]: true,
-				[SupportedAuthRoles.isSuperAdmin]: true
+				[AuthRole.isStranerdAdmin]: true,
+				[AuthRole.isSuperAdmin]: true
 			}
 		})
 	}

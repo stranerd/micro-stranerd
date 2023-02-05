@@ -1,3 +1,5 @@
+import { TagsUseCases, TagTypes } from '@modules/interactions'
+import { PlanDataType, WalletsUseCases } from '@modules/payment'
 import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { UsersUseCases } from '@modules/users'
 import {
@@ -9,9 +11,7 @@ import {
 	validate,
 	Validation
 } from '@utils/app/package'
-import { TagsUseCases, TagTypes } from '@modules/interactions'
-import { PlanDataType, WalletsUseCases } from '@modules/payment'
-import { SupportedAuthRoles } from '@utils/app/types'
+import { AuthRole } from '@utils/app/types'
 
 export class QuestionController {
 	static async FindQuestion (req: Request) {
@@ -20,7 +20,7 @@ export class QuestionController {
 
 	static async GetQuestion (req: Request) {
 		const query = req.query as QueryParams
-		if (!req.authUser?.roles[SupportedAuthRoles.isStranerdTutor]) {
+		if (!req.authUser?.roles[AuthRole.isStranerdTutor]) {
 			query.auth = [{ field: 'isPrivate', value: false }]
 			if (req.authUser) {
 				query.authType = QueryKeys.or
