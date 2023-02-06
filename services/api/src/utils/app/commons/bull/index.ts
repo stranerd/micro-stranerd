@@ -1,6 +1,6 @@
 import Bull from 'bull'
 import { Instance } from '../instance'
-import { CronTypes } from './types'
+import { CronTypes, CronLikeJobEvent, DelayedJobEvent } from './types'
 import { Random } from '../utils/utils'
 
 enum JobNames {
@@ -9,9 +9,9 @@ enum JobNames {
 	DelayedJob = 'DelayedJob'
 }
 
-type DelayedJobCallback<Event> = (data: Event) => Promise<void>
+type DelayedJobCallback = (data: DelayedJobEvent) => Promise<void>
 type CronCallback = (name: CronTypes) => Promise<void>
-type CronLikeCallback<Event> = (data: Event) => Promise<void>
+type CronLikeCallback = (data: CronLikeJobEvent) => Promise<void>
 
 export class BullJob {
 	private queue: Bull.Queue
@@ -24,7 +24,7 @@ export class BullJob {
 		return [Date.now(), Random.string()].join(':')
 	}
 
-	async addDelayedJob<Event> (data: Event, delayInMs: number): Promise<string> {
+	async addDelayedJob (data: DelayedJobEvent, delayInMs: number): Promise<string> {
 		const job = await this.queue.add(JobNames.DelayedJob, data, {
 			jobId: BullJob.getNewId(),
 			delay: delayInMs,
@@ -35,7 +35,7 @@ export class BullJob {
 		return job.id.toString()
 	}
 
-	async addCronLikeJob<Event> (data: Event, cron: string, tz?: string): Promise<string> {
+	async addCronLikeJob (data: CronLikeJobEvent, cron: string, tz?: string): Promise<string> {
 		const job = await this.queue.add(JobNames.CronLikeJob, data, {
 			jobId: BullJob.getNewId(),
 			repeat: { cron, ...(tz ? { tz } : {}) },
@@ -60,15 +60,16 @@ export class BullJob {
 		await Promise.all(failedJobs.map((job) => job.retry()))
 	}
 
-	async startProcessingQueues<DelayedJobEvent, CronLikeEvent> (crons: { name: CronTypes | string, cron: string }[], callbacks: { onDelayed?: DelayedJobCallback<DelayedJobEvent>, onCron?: CronCallback, onCronLike?: CronLikeCallback<CronLikeEvent> }) {
+	async startProcessingQueues (crons: { name: CronTypes | string, cron: string }[],
+		callbacks: { onDelayed?: DelayedJobCallback, onCron?: CronCallback, onCronLike?: CronLikeCallback }) {
 		await this.cleanup()
 		await Promise.all(
 			crons.map(({ cron, name }) => this.addCronJob(name, cron))
 		)
 		await Promise.all([
-			this.queue.process(JobNames.DelayedJob, async (job) => await callbacks.onDelayed?.(job.data)),
-			this.queue.process(JobNames.CronJob, async (job) => await callbacks.onCron?.(job.data.type as CronTypes)),
-			this.queue.process(JobNames.CronLikeJob, async (job) => await callbacks.onCronLike?.(job.data))
+			this.queue.process(JobNames.DelayedJob, async (job) => await (callbacks.onDelayed as any)?.(job.data)),
+			this.queue.process(JobNames.CronJob, async (job) => await (callbacks.onCron as any)?.(job.data.type)),
+			this.queue.process(JobNames.CronLikeJob, async (job) => await (callbacks.onCronLike as any)?.(job.data))
 		])
 	}
 

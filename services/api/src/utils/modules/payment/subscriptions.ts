@@ -10,13 +10,13 @@ import {
 } from '@modules/payment'
 import { UserEntity, UsersUseCases } from '@modules/users'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
-import { BadRequestError } from '@utils/app/package'
-import { appInstance, DelayedEvent, DelayedJobs } from '@utils/app/types'
+import { BadRequestError, DelayedJobs } from '@utils/app/package'
+import { appInstance  } from '@utils/app/types'
 
 const activateSub = async (userId: string, walletId: string, subscription: PlanEntity, successful: boolean) => {
 	const now = Date.now()
 	const renewedAt = subscription.getNextCharge(now)
-	const jobId = await appInstance.job.addDelayedJob<DelayedEvent>({
+	const jobId = await appInstance.job.addDelayedJob({
 		type: DelayedJobs.RenewSubscription, data: { userId }
 	}, renewedAt - now)
 	return await WalletsUseCases.updateSubscription({

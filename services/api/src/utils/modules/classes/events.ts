@@ -1,6 +1,6 @@
 import { EventEntity, EventsUseCases, EventType } from '@modules/classes'
 import { appInstance } from '@utils/app/types'
-import { CronLikeEvent, CronLikeJobs, DelayedEvent, DelayedJobs } from '@utils/app/types'
+import { CronLikeJobs, DelayedJobs } from '@utils/app/package'
 import { addCron, getCronString } from '@utils/modules/classes'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
@@ -15,7 +15,7 @@ export const scheduleEvent = async (event: EventEntity) => {
 	if (event.data.type === EventType.timetable) {
 		const { start } = event.data
 		await Promise.all([0, 15, 30].map(async (timeInMin) => {
-			const id = await appInstance.job.addCronLikeJob<CronLikeEvent>({
+			const id = await appInstance.job.addCronLikeJob({
 				type: CronLikeJobs.ClassEvent,
 				data: { eventId: event.id, timeInMin }
 			}, getCronString(addCron(start, 0 - timeInMin)), start.tz)
@@ -26,7 +26,7 @@ export const scheduleEvent = async (event: EventEntity) => {
 		await Promise.all([0, 5, 30]
 			.filter((timeInMin) => delay - (timeInMin * 60 * 1000) >= 0)
 			.map(async (timeInMin) => {
-				const id = await appInstance.job.addDelayedJob<DelayedEvent>({
+				const id = await appInstance.job.addDelayedJob({
 					type: DelayedJobs.ClassEvent,
 					data: { eventId: event.id, timeInMin }
 				}, delay - (timeInMin * 60 * 1000))
