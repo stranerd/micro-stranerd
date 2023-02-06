@@ -1,30 +1,32 @@
 import { IAuthRole, ICronLikeJobs, ICronTypes, IDelayedJobs, IEmailsList, IEventTypes } from './types'
 
-export const makeEnum = <T extends Record<string, any>> (obj: T) => {
-	return Object.freeze(obj)
-}
-
-export let AuthRole: IAuthRole = makeEnum({}) as any
-export let EmailsList: IEmailsList = makeEnum({}) as any
-export let EventTypes: IEventTypes = makeEnum({}) as any
-export let DelayedJobs: IDelayedJobs = makeEnum({}) as any
-export let CronLikeJobs: ICronLikeJobs = makeEnum({}) as any
-export let CronTypes: ICronTypes = makeEnum({}) as any
-
-type Param = Partial<{
+type Keys = keyof {
     AuthRole: IAuthRole
 	EmailsList: IEmailsList
 	EventTypes: IEventTypes
 	DelayedJobs: IDelayedJobs
 	CronLikeJobs: ICronLikeJobs
 	CronTypes: ICronTypes
-}>
+}
 
-export const setEnums = (data: Param) => {
-	if (data.AuthRole) AuthRole = data.AuthRole
-	if (data.EmailsList) EmailsList = data.EmailsList
-	if (data.EventTypes) EventTypes = data.EventTypes
-	if (data.DelayedJobs) DelayedJobs = data.DelayedJobs
-	if (data.CronLikeJobs) CronLikeJobs = data.CronLikeJobs
-	if (data.CronTypes) CronTypes = data.CronTypes
+export let AuthRole: IAuthRole = {} as any
+export let EmailsList: IEmailsList = {} as any
+export let EventTypes: IEventTypes = {} as any
+export let DelayedJobs: IDelayedJobs = {} as any
+export let CronLikeJobs: ICronLikeJobs = {} as any
+export let CronTypes: ICronTypes = {
+	hourly: 'hourly',
+	daily: 'daily',
+	weekly: 'weekly',
+	monthly: 'monthly'
+} as any
+
+export const makeEnum = <T extends Record<string, any>> (key: Keys, obj: T) :Readonly<T> => {
+	if (key === 'AuthRole') return AuthRole = { ...AuthRole, ...obj }
+	if (key === 'EmailsList') return EmailsList = { ...EmailsList, ...obj }
+	if (key === 'EventTypes') return EventTypes = { ...EventTypes, ...obj }
+	if (key === 'DelayedJobs') return DelayedJobs = { ...DelayedJobs, ...obj }
+	if (key === 'CronLikeJobs') return CronLikeJobs = { ...CronLikeJobs, ...obj }
+	if (key === 'CronTypes') return CronTypes = { ...CronTypes, ...obj }
+	return obj
 }

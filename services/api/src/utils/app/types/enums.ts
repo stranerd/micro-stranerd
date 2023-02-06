@@ -1,45 +1,35 @@
 // @ts-ignore
-import { makeEnum, setEnums } from '../commons'
+import { makeEnum } from '../commons'
 
 
-const Ar = makeEnum({
+const Ar = makeEnum('AuthRole', {
 	isStranerdAdmin: 'isStranerdAdmin',
 	isStranerdTutor: 'isStranerdTutor',
 	isSuperAdmin: 'isSuperAdmin',
 	isSubscribed: 'isSubscribed'
 } as const)
 
-const El = makeEnum({
+const El = makeEnum('EmailsList', {
 	NO_REPLY: 'no-reply@stranerd.com'
 } as const)
 
-const Ev = makeEnum({
+const Ev = makeEnum('EventTypes', {
 	SENDMAIL: 'SENDMAIL',
 	SENDTEXT:'SENDTEXT',
 	DELETEFILE: 'DELETEFILE'
 } as const)
 
-const Dj = makeEnum({
+const Dj = makeEnum('DelayedJobs', {
 	TestTimer: 'TestTimer',
 	RenewSubscription: 'RenewSubscription',
 	ClassEvent: 'ClassEvent'
 } as const)
 
-const Clj = makeEnum({
+const Clj = makeEnum('CronLikeJobs', {
 	ClassEvent: 'ClassEvent'
 } as const)
 
-const Ct = makeEnum({
-	hourly: 'hourly',
-	daily: 'daily',
-	weekly: 'weekly',
-	monthly: 'monthly'
-} as const)
-
-setEnums({
-	AuthRole: Ar, EmailsList: El, EventTypes: Ev,
-	CronTypes: Ct, DelayedJobs: Dj, CronLikeJobs: Clj
-})
+const Ct = makeEnum('CronTypes', {} as const)
 
 // @ts-ignore
 declare module '@utils/app/commons/enums/types' {
