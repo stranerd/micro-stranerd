@@ -1,4 +1,8 @@
-import { IAuthRole, IAuthTypes, ICronLikeJobs, ICronTypes, IDelayedJobs, IEmailsList, IEventTypes } from './types'
+import {
+	DefaultAuthRole, DefaultAuthTypes, DefaultCronLikeJobs, DefaultCronTypes,
+	DefaultDelayedJobs, DefaultEmailsList, DefaultEventTypes, IAuthRole, IAuthTypes,
+	ICronLikeJobs, ICronTypes, IDelayedJobs, IEmailsList, IEventTypes
+} from './types'
 
 type Keys = keyof {
     AuthRole: IAuthRole
@@ -10,25 +14,13 @@ type Keys = keyof {
 	CronTypes: ICronTypes
 }
 
-export let AuthRole: IAuthRole = {} as any
-export let AuthTypes: IAuthTypes = {
-	google: 'google',
-	apple: 'apple',
-	email: 'email',
-	facebook: 'facebook',
-	twitter: 'twitter',
-	github: 'github'
-} as any
-export let EmailsList: IEmailsList = {} as any
-export let EventTypes: IEventTypes = {} as any
-export let DelayedJobs: IDelayedJobs = {} as any
-export let CronLikeJobs: ICronLikeJobs = {} as any
-export let CronTypes: ICronTypes = {
-	hourly: 'hourly',
-	daily: 'daily',
-	weekly: 'weekly',
-	monthly: 'monthly'
-} as any
+export let AuthRole: IAuthRole = DefaultAuthRole as any
+export let AuthTypes: IAuthTypes = DefaultAuthTypes as any
+export let EmailsList: IEmailsList = DefaultEmailsList as any
+export let EventTypes: IEventTypes = DefaultEventTypes as any
+export let DelayedJobs: IDelayedJobs = DefaultDelayedJobs as any
+export let CronLikeJobs: ICronLikeJobs = DefaultCronLikeJobs as any
+export let CronTypes: ICronTypes = DefaultCronTypes as any
 
 export const makeEnum = <T extends Record<string, any>> (key: Keys, obj: T) :Readonly<T> => {
 	if (key === 'AuthRole') return AuthRole = { ...AuthRole, ...obj }
