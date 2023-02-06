@@ -1,6 +1,6 @@
 {
 	"name": "@stranerd/api-commons",
-	"version": "3.24.0",
+	"version": "3.26.0",
 	"private": false,
 	"description": "",
 	"main": "lib/index.js",
