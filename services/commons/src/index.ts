@@ -2,9 +2,9 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export * from './bull/types'
 export * from './emails'
 export * from './enums'
+export { Enum } from './enums/types'
 export { Events } from './events/events'
 export * from './errors'
 export * from './exit'

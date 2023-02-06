@@ -31,6 +31,14 @@ export const startJobs = async () => {
 			if (data.type === CronLikeJobs.ClassEvent) await broadcastEvent(data.data.eventId, data.data.timeInMin)
 		},
 		onCron: async (type) => {
+			if (type === CronTypes.hourly) {
+				const emails = await EmailErrorsUseCases.getAndDeleteAll()
+				await Promise.all(emails.map((e) => sendMailAndCatchError(e as any)))
+				const texts = await PhoneErrorsUseCases.getAndDeleteAll()
+				await Promise.all(texts.map((t) => sendTextAndCatchError(t as any)))
+				await retryTransactions(60 * 60 * 1000)
+				await appInstance.job.retryAllFailedJobs()
+			}
 			if (type === CronTypes.daily) {
 				await UsersUseCases.resetRankings(UserRankings.daily)
 				await deleteUnverifiedUsers()
@@ -42,14 +50,6 @@ export const startJobs = async () => {
 			if (type === CronTypes.monthly) {
 				await UsersUseCases.resetRankings(UserRankings.monthly)
 				await MethodsUseCases.markExpireds()
-			}
-			if (type === CronTypes.hourly) {
-				const emails = await EmailErrorsUseCases.getAndDeleteAll()
-				await Promise.all(emails.map((e) => sendMailAndCatchError(e as any)))
-				const texts = await PhoneErrorsUseCases.getAndDeleteAll()
-				await Promise.all(texts.map((t) => sendTextAndCatchError(t as any)))
-				await retryTransactions(60 * 60 * 1000)
-				await appInstance.job.retryAllFailedJobs()
 			}
 		}
 	})

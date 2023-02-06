@@ -1,4 +1,4 @@
-import { IAuthRole } from '../enums/types'
+import { IAuthRole, Enum } from '../enums/types'
 
 export interface RefreshUser {
 	id: string
@@ -19,4 +19,4 @@ export enum AuthTypes {
 	microsoft = 'microsoft'
 }
 
-export interface AuthRoles extends Partial<Record<IAuthRole[keyof IAuthRole], boolean>> {}
+export interface AuthRoles extends Partial<Record<Enum<IAuthRole>, boolean>> {}

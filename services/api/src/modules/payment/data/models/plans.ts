@@ -1,5 +1,4 @@
-import { Currencies, PlanData } from '../../domain/types'
-import { CronTypes } from '@utils/app/package'
+import { Currencies, PlanData, Interval } from '../../domain/types'
 
 export interface PlanFromModel extends PlanToModel {
 	createdAt: number
@@ -11,7 +10,7 @@ export interface PlanToModel {
 	amount: number
 	currency: Currencies
 	name: string
-	interval: CronTypes
+	interval: Interval
 	active: boolean
 	data: PlanData
 }

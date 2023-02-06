@@ -1,4 +1,4 @@
-import { IAuthRole, IEmailsList, IEventTypes, IDelayedJobs, ICronLikeJobs } from './types'
+import { IAuthRole, ICronLikeJobs, ICronTypes, IDelayedJobs, IEmailsList, IEventTypes } from './types'
 
 export const makeEnum = <T extends Record<string, any>> (obj: T) => {
 	return Object.freeze(obj)
@@ -9,6 +9,7 @@ export let EmailsList: IEmailsList = makeEnum({}) as any
 export let EventTypes: IEventTypes = makeEnum({}) as any
 export let DelayedJobs: IDelayedJobs = makeEnum({}) as any
 export let CronLikeJobs: ICronLikeJobs = makeEnum({}) as any
+export let CronTypes: ICronTypes = makeEnum({}) as any
 
 type Param = Partial<{
     AuthRole: IAuthRole
@@ -16,6 +17,7 @@ type Param = Partial<{
 	EventTypes: IEventTypes
 	DelayedJobs: IDelayedJobs
 	CronLikeJobs: ICronLikeJobs
+	CronTypes: ICronTypes
 }>
 
 export const setEnums = (data: Param) => {
@@ -24,4 +26,5 @@ export const setEnums = (data: Param) => {
 	if (data.EventTypes) EventTypes = data.EventTypes
 	if (data.DelayedJobs) DelayedJobs = data.DelayedJobs
 	if (data.CronLikeJobs) CronLikeJobs = data.CronLikeJobs
+	if (data.CronTypes) CronTypes = data.CronTypes
 }

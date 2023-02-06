@@ -1,27 +1,25 @@
 // @ts-ignore
 import { CronLikeJobs, DelayedJobs } from '../commons'
-import { Clj, Dj } from './enums'
 
-
-declare module '@utils/app/commons/bull/types' {
+declare module '@utils/app/commons/bull' {
     interface DelayedJobEvents {
 		[DelayedJobs.TestTimer]: {
-			type: typeof Dj.TestTimer,
+			type: typeof DelayedJobs.TestTimer,
 			data: { testId: string, userId: string }
 		},
 		[DelayedJobs.RenewSubscription]: {
-			type: typeof Dj.RenewSubscription,
+			type: typeof DelayedJobs.RenewSubscription,
 			data: { userId: string }
 		},
 		[DelayedJobs.ClassEvent]: {
-			type: typeof Dj.ClassEvent,
+			type: typeof DelayedJobs.ClassEvent,
 			data: { eventId: string, timeInMin: number }
 		}
 	}
 
     interface CronLikeJobEvents {
 		[CronLikeJobs.ClassEvent]: {
-			type: typeof Clj.ClassEvent,
+			type: typeof CronLikeJobs.ClassEvent,
 			data: { eventId: string, timeInMin: number }
 		}
 	}

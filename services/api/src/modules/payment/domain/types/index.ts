@@ -1,3 +1,5 @@
+import { CronTypes, Enum } from '@utils/app/package'
+
 export enum Currencies {
 	NGN = 'NGN'
 }
@@ -87,3 +89,5 @@ export type MethodData = {
 	expiredAt: number
 	expired: boolean
 }
+
+export type Interval = Enum<typeof CronTypes>

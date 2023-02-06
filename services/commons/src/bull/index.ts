@@ -1,6 +1,6 @@
 import Bull from 'bull'
+import { ICronLikeJobs, ICronTypes, IDelayedJobs, Enum } from '../enums/types'
 import { Instance } from '../instance'
-import { CronTypes, CronLikeJobEvent, DelayedJobEvent } from './types'
 import { Random } from '../utils/utils'
 
 enum JobNames {
@@ -9,8 +9,17 @@ enum JobNames {
 	DelayedJob = 'DelayedJob'
 }
 
+type Cron = Enum<ICronTypes>
+type Delayed = Enum<IDelayedJobs>
+type CronLike = Enum<ICronLikeJobs>
+
+interface DelayedJobEvents extends Record<Delayed, { type: Delayed, data: any }> {}
+interface CronLikeJobsEvents extends Record<CronLike, { type: CronLike, data: any }> {}
+
+type DelayedJobEvent = DelayedJobEvents[keyof DelayedJobEvents]
+type CronLikeJobEvent = CronLikeJobsEvents[keyof CronLikeJobsEvents]
 type DelayedJobCallback = (data: DelayedJobEvent) => Promise<void>
-type CronCallback = (name: CronTypes) => Promise<void>
+type CronCallback = (name: ICronTypes[keyof ICronTypes]) => Promise<void>
 type CronLikeCallback = (data: CronLikeJobEvent) => Promise<void>
 
 export class BullJob {
@@ -60,7 +69,7 @@ export class BullJob {
 		await Promise.all(failedJobs.map((job) => job.retry()))
 	}
 
-	async startProcessingQueues (crons: { name: CronTypes | string, cron: string }[],
+	async startProcessingQueues (crons: { name: Cron | string, cron: string }[],
 		callbacks: { onDelayed?: DelayedJobCallback, onCron?: CronCallback, onCronLike?: CronLikeCallback }) {
 		await this.cleanup()
 		await Promise.all(
@@ -73,7 +82,7 @@ export class BullJob {
 		])
 	}
 
-	private async addCronJob (type: CronTypes | string, cron: string): Promise<string> {
+	private async addCronJob (type: Cron | string, cron: string): Promise<string> {
 		const job = await this.queue.add(JobNames.CronJob, { type }, {
 			repeat: { cron },
 			removeOnComplete: true,

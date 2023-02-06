@@ -1,7 +1,7 @@
-import { IEventTypes } from '../enums/types'
+import { IEventTypes, Enum } from '../enums/types'
 import { pubAndSub } from './rabbit'
 
-export interface Events extends Record<IEventTypes[keyof IEventTypes], { topic: IEventTypes[keyof IEventTypes], data: any }> { }
+export interface Events extends Record<Enum<IEventTypes>, { topic: Enum<IEventTypes>, data: any }> { }
 
 export class EventBus {
 	ps: ReturnType<typeof pubAndSub>
