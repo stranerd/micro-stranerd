@@ -1,14 +1,14 @@
+import { routes } from '@application/routes'
+import { PlansUseCases } from '@modules/payment'
+import { UsersUseCases } from '@modules/users'
 import { getNewServerInstance } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { appId, port } from '@utils/environment'
 import { subscribers } from '@utils/events'
-import { routes } from '@application/routes'
-import { UsersUseCases } from '@modules/users'
+import { startJobs } from '@utils/jobs'
+import { plansList } from '@utils/modules/payment/plans'
 import { registerSockets } from '@utils/sockets'
 import { initializeApp } from 'firebase-admin/app'
-import { startJobs } from '@utils/jobs'
-import { PlansUseCases } from '@modules/payment'
-import { plansList } from '@utils/modules/payment/plans'
 
 const app = getNewServerInstance(routes, {
 	onConnect: async (userId, socketId) => {

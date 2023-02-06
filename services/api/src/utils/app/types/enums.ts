@@ -1,7 +1,6 @@
 // @ts-ignore
 import { makeEnum } from '../commons'
 
-
 const Ar = makeEnum('AuthRole', {
 	isStranerdAdmin: 'isStranerdAdmin',
 	isStranerdTutor: 'isStranerdTutor',
@@ -29,20 +28,16 @@ const Clj = makeEnum('CronLikeJobs', {
 	ClassEvent: 'ClassEvent'
 } as const)
 
-const Ct = makeEnum('CronTypes', {} as const)
-
 // @ts-ignore
 declare module '@utils/app/commons/enums/types' {
 	type TAr = typeof Ar
 	type TEl = typeof El
 	type TEv = typeof Ev
-	type TCt = typeof Ct
 	type TDj = typeof Dj
 	type TClj = typeof Clj
     interface IAuthRole extends TAr {}
     interface IEmailsList extends TEl {}
     interface IEventTypes extends TEv {}
-    interface ICronTypes extends TCt {}
     interface IDelayedJobs extends TDj {}
     interface ICronLikeJobs extends TClj {}
 }

@@ -1,4 +1,4 @@
-import { AuthRoles, AuthTypes, BaseEntity, MediaOutput } from '@utils/app/package'
+import { AuthRoles, AuthTypes, BaseEntity, Enum, MediaOutput } from '@utils/app/package'
 import { Phone, UserUpdateInput } from '../types'
 
 export class AuthUserEntity extends BaseEntity {
@@ -12,7 +12,7 @@ export class AuthUserEntity extends BaseEntity {
 	public readonly phone: Phone | null
 	public readonly referrer: string | null
 	public readonly isVerified: boolean
-	public readonly authTypes: AuthTypes[]
+	public readonly authTypes: Enum<typeof AuthTypes>[]
 	public readonly roles: AuthRoles
 	public readonly lastSignedInAt: number
 	public readonly signedUpAt: number
@@ -56,7 +56,7 @@ export interface UserConstructorArgs {
 	phone: Phone | null;
 	referrer: string | null;
 	isVerified: boolean;
-	authTypes: AuthTypes[];
+	authTypes: Enum<typeof AuthTypes>[];
 	lastSignedInAt: number;
 	signedUpAt: number
 }

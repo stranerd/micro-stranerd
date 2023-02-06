@@ -1,4 +1,4 @@
-import { AuthRoles, AuthTypes, MediaOutput } from '@utils/app/package'
+import { AuthRoles, AuthTypes, Enum, MediaOutput } from '@utils/app/package'
 import { Phone } from '../../domain/types'
 
 export interface UserFromModel extends UserToModel {
@@ -18,5 +18,5 @@ export interface UserToModel {
 	phone: Phone | null
 	referrer: string | null
 	isVerified: boolean
-	authTypes: AuthTypes[]
+	authTypes: Enum<typeof AuthTypes>[]
 }

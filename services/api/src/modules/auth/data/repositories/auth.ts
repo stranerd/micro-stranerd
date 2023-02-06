@@ -7,6 +7,7 @@ import {
 	AuthTypes,
 	BadRequestError,
 	EmailsList,
+	Enum,
 	Hash,
 	MediaOutput,
 	mongoose,
@@ -35,14 +36,14 @@ export class AuthRepository implements IAuthRepository {
 		return AuthRepository.instance
 	}
 
-	async addNewUser (data: UserToModel, type: AuthTypes) {
+	async addNewUser (data: UserToModel, type: Enum<typeof AuthTypes>) {
 		data.email = data.email.toLowerCase()
 		if (data.password) data.password = await Hash.hash(data.password)
 		const userData = await new User(data).save()
 		return this.signInUser(userData, type)
 	}
 
-	async authenticateUser (details: Credential, passwordValidate: boolean, type: AuthTypes) {
+	async authenticateUser (details: Credential, passwordValidate: boolean, type: Enum<typeof AuthTypes>) {
 		details.email = details.email.toLowerCase()
 		const user = await User.findOne({ email: details.email })
 		if (!user) throw new ValidationError([{ field: 'email', messages: ['No account with such email exists'] }])
@@ -182,7 +183,7 @@ export class AuthRepository implements IAuthRepository {
 		})
 	}
 
-	private async authorizeSocial (type: AuthTypes, data: Pick<UserToModel, 'email' | 'firstName' | 'lastName' | 'photo' | 'isVerified' | 'referrer'>) {
+	private async authorizeSocial (type: Enum<typeof AuthTypes>, data: Pick<UserToModel, 'email' | 'firstName' | 'lastName' | 'photo' | 'isVerified' | 'referrer'>) {
 		const userData = await User.findOne({ email: data.email })
 
 		if (!userData) return await this.addNewUser({
@@ -203,7 +204,7 @@ export class AuthRepository implements IAuthRepository {
 		}, false, type)
 	}
 
-	private async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: AuthTypes) {
+	private async signInUser (user: UserFromModel & mongoose.Document<any, any, UserFromModel>, type: Enum<typeof AuthTypes>) {
 		const userUpdated = await User.findByIdAndUpdate(user._id, {
 			$set: { lastSignedInAt: Date.now() },
 			$addToSet: { authTypes: [type] }
