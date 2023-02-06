@@ -4,6 +4,7 @@ import { BaseEntity } from '../structure'
 import { AuthUser } from '../utils/authUser'
 import { verifyAccessToken } from '../utils/tokens'
 import { StatusCodes } from '../express'
+import { Enum } from '../enums/types'
 
 enum EmitTypes {
 	created = 'created',
@@ -13,7 +14,7 @@ enum EmitTypes {
 
 type LeaveRoomParams = { channel: string }
 type JoinRoomParams = { channel: string, token?: string, app?: string }
-type Callback = (params: { code: StatusCodes, message: string, channel: string }) => void
+type Callback = (params: { code: Enum<typeof StatusCodes>, message: string, channel: string }) => void
 export type OnJoinFn = (data: { channel: string, user: AuthUser | null }, params: Record<string, any>) => Promise<string | null>
 export type SocketCallers = {
 	onConnect: (userId: string, socketId: string) => Promise<void>
