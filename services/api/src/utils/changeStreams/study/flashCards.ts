@@ -1,12 +1,12 @@
 import { ChangeStreamCallbacks } from '@utils/app/package'
 import { FlashCardEntity, FlashCardFromModel, SetSaved, SetsUseCases } from '@modules/study'
-import { getSocketEmitter } from '@index'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
+import { appInstance } from '@utils/app/types'
 
 export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFromModel, FlashCardEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('study/flashCards', after)
-		await getSocketEmitter().emitCreated(`study/flashCards/${after.id}`, after)
+		await appInstance.socketEmitter.emitCreated('study/flashCards', after)
+		await appInstance.socketEmitter.emitCreated(`study/flashCards/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
 			userId: after.user.id,
@@ -15,12 +15,12 @@ export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFrom
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.flashCards })
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated('study/flashCards', after)
-		await getSocketEmitter().emitUpdated(`study/flashCards/${after.id}`, after)
+		await appInstance.socketEmitter.emitUpdated('study/flashCards', after)
+		await appInstance.socketEmitter.emitUpdated(`study/flashCards/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('flashCards', before)
-		await getSocketEmitter().emitDeleted(`flashCards/${before.id}`, before)
+		await appInstance.socketEmitter.emitDeleted('flashCards', before)
+		await appInstance.socketEmitter.emitDeleted(`flashCards/${before.id}`, before)
 
 		await SetsUseCases.removeProp({ prop: SetSaved.flashCards, value: before.id })
 		await UsersUseCases.updateNerdScore({

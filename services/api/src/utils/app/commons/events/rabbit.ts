@@ -1,13 +1,13 @@
 import amqp from 'amqplib'
-import { Instance } from '../instance'
 import { addWaitBeforeExit } from '../exit'
+import { Instance } from '../instance'
 
 export const pubAndSub = async () => {
-	const column = Instance.getInstance().settings.rabbitColumnName
-	const con = await amqp.connect(Instance.getInstance().settings.rabbitURI)
+	const column = Instance.get().settings.rabbitColumnName
+	const con = await amqp.connect(Instance.get().settings.rabbitURI)
 
 	con.on('error', (err) => {
-		Instance.getInstance().logger.error('Amqp error:', err.message)
+		Instance.get().logger.error('Amqp error:', err.message)
 		process.exit(1)
 	})
 
@@ -23,7 +23,7 @@ export const pubAndSub = async () => {
 	}
 
 	const subscribe = async (topic: string, cb: (data: string, topic: string) => void) => {
-		const queue = `${Instance.getInstance().settings.appId}-${topic}`
+		const queue = `${Instance.get().settings.appId}-${topic}`
 		await channel.assertQueue(queue, { durable: true })
 		await channel.bindQueue(queue, column, topic)
 		channel.consume(queue, (msg) => {

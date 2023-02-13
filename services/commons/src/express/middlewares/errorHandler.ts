@@ -1,7 +1,7 @@
-import { makeErrorMiddleware } from '../controllers'
 import { CustomError } from '../../errors'
-import { StatusCodes } from '../statusCodes'
 import { Instance } from '../../instance'
+import { makeErrorMiddleware } from '../controllers'
+import { StatusCodes } from '../statusCodes'
 
 export const errorHandler = makeErrorMiddleware(
 	async (_, err) => {
@@ -12,7 +12,7 @@ export const errorHandler = makeErrorMiddleware(
 				result: error.serializedErrors
 			}
 		} else {
-			await Instance.getInstance().logger.error(err)
+			await Instance.get().logger.error(err)
 			return {
 				status: StatusCodes.BadRequest,
 				result: [{ message: 'Something went wrong', data: err.message }]

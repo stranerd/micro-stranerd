@@ -1,7 +1,6 @@
+import { BadgeEntity, BadgeFromModel, CountStreakBadges, RankTypes } from '@modules/users'
 import { ChangeStreamCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
-import { BadgeEntity, BadgeFromModel, CountStreakBadges, RankTypes } from '@modules/users'
-import { getSocketEmitter } from '@index'
 
 const handleCountBadges = async (activity: CountStreakBadges, newLevels: number[], oldLevels: number[]) => {
 	await appInstance.logger.success(activity, newLevels, oldLevels)
@@ -17,8 +16,8 @@ const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) 
 
 export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`users/badges/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`users/badges/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/badges/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/badges/${after.id}/${after.userId}`, after)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -35,8 +34,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	updated: async ({ after, before }) => {
-		await getSocketEmitter().emitUpdated(`users/badges/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`users/badges/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/badges/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/badges/${after.id}/${after.userId}`, after)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -58,8 +57,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`users/badges/${before.userId}`, before)
-		await getSocketEmitter().emitDeleted(`users/badges/${before.id}/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/badges/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/badges/${before.id}/${before.userId}`, before)
 
 		const funcs = [] as (() => Promise<void>)[]
 

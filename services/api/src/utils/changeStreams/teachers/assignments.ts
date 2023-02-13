@@ -1,4 +1,3 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import {
 	AssignmentEntity,
 	AssignmentFromModel,
@@ -6,13 +5,14 @@ import {
 	PostsUseCases,
 	PostType
 } from '@modules/teachers'
-import { getSocketEmitter } from '@index'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
 export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFromModel, AssignmentEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`teachers/${after.courseId}/assignments`, after)
-		await getSocketEmitter().emitCreated(`teachers/${after.courseId}/assignments/${after.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/assignments`, after)
+		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/assignments/${after.id}`, after)
 		await PostsUseCases.add({
 			title: after.title,
 			description: after.description,
@@ -24,8 +24,8 @@ export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFr
 		})
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated(`teachers/${after.courseId}/assignments`, after)
-		await getSocketEmitter().emitUpdated(`teachers/${after.courseId}/assignments/${after.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/assignments`, after)
+		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/assignments/${after.id}`, after)
 		if (changes.title || changes.description || changes.attachments) {
 			const { results: posts } = await PostsUseCases.get({
 				where: [{ field: 'data.assignmentId', value: after.id }]
@@ -45,8 +45,8 @@ export const AssignmentChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentFr
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/assignments`, before)
-		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/assignments/${before.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/assignments`, before)
+		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/assignments/${before.id}`, before)
 		await AssignmentSubmissionsUseCases.deleteAssignmentSubmissions(before.id)
 		const { results: posts } = await PostsUseCases.get({
 			where: [{ field: 'data.assignmentId', value: before.id }]

@@ -1,4 +1,3 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import {
 	AssignmentSubmissionsUseCases,
 	AssignmentsUseCases,
@@ -8,16 +7,17 @@ import {
 	FilesUseCases,
 	PostsUseCases
 } from '@modules/teachers'
-import { getSocketEmitter } from '@index'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel, CourseEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('teachers/courses', after)
-		await getSocketEmitter().emitCreated(`teachers/courses/${after.id}`, after)
+		await appInstance.socketEmitter.emitCreated('teachers/courses', after)
+		await appInstance.socketEmitter.emitCreated(`teachers/courses/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated('teachers/courses', after)
-		await getSocketEmitter().emitUpdated(`teachers/courses/${after.id}`, after)
+		await appInstance.socketEmitter.emitUpdated('teachers/courses', after)
+		await appInstance.socketEmitter.emitUpdated(`teachers/courses/${after.id}`, after)
 		await Promise.all([
 			FilesUseCases.updateMembers({ courseId: after.id, members: after.members }),
 			AttendancesUseCases.updateMembers({ courseId: after.id, members: after.members }),
@@ -27,8 +27,8 @@ export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel,
 		])
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('teachers/courses', before)
-		await getSocketEmitter().emitDeleted(`teachers/courses/${before.id}`, before)
+		await appInstance.socketEmitter.emitDeleted('teachers/courses', before)
+		await appInstance.socketEmitter.emitDeleted(`teachers/courses/${before.id}`, before)
 		await Promise.all([
 			FilesUseCases.deleteCourseFiles(before.id),
 			AttendancesUseCases.deleteCourseAttendances(before.id),

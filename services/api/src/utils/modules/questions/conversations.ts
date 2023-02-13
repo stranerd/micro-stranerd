@@ -16,7 +16,7 @@ export const getConversationResponse = async (prompt: string) => {
 		})
 		return response.data.choices.at(0)?.text ?? 'No answer found'
 	} catch (err: any) {
-		await Instance.getInstance().logger.error(err.message)
+		await Instance.get().logger.error(err.message)
 		throw new BadRequestError('failed to fetch answer')
 	}
 }

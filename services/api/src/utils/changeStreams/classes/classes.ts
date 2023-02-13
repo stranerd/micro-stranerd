@@ -7,19 +7,19 @@ import {
 	GroupsUseCases,
 	SchemesUseCases
 } from '@modules/classes'
-import { getSocketEmitter } from '@index'
 import { publishers } from '@utils/events'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
+import { appInstance } from '@utils/app/types'
 
 export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('classes/classes', after)
-		await getSocketEmitter().emitCreated(`classes/classes/${after.id}`, after)
+		await appInstance.socketEmitter.emitCreated('classes/classes', after)
+		await appInstance.socketEmitter.emitCreated(`classes/classes/${after.id}`, after)
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated('classes/classes', after)
-		await getSocketEmitter().emitUpdated(`classes/classes/${after.id}`, after)
+		await appInstance.socketEmitter.emitUpdated('classes/classes', after)
+		await appInstance.socketEmitter.emitUpdated(`classes/classes/${after.id}`, after)
 
 		if (changes.users || changes.requests) {
 			await Promise.all([AnnouncementsUseCases, EventsUseCases, GroupsUseCases, EventsUseCases, SchemesUseCases].map((u) => u.updateUsers({
@@ -50,8 +50,8 @@ export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, C
 		if (changes.photo && before.photo) await publishers.DELETEFILE.publish(before.photo)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('classes/classes', before)
-		await getSocketEmitter().emitDeleted(`classes/classes/${before.id}`, before)
+		await appInstance.socketEmitter.emitDeleted('classes/classes', before)
+		await appInstance.socketEmitter.emitDeleted(`classes/classes/${before.id}`, before)
 
 		if (before.photo) await publishers.DELETEFILE.publish(before.photo)
 		await Promise.all([GroupsUseCases.deleteClassGroups, AnnouncementsUseCases.deleteClassAnnouncements].map((useCase) => useCase(before.id)))

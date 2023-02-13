@@ -1,10 +1,10 @@
-import io from 'socket.io'
 import { match as Match } from 'path-to-regexp'
+import io from 'socket.io'
+import { Enum } from '../enums/types'
+import { StatusCodes } from '../express'
 import { BaseEntity } from '../structure'
 import { AuthUser } from '../utils/authUser'
 import { verifyAccessToken } from '../utils/tokens'
-import { StatusCodes } from '../express'
-import { Enum } from '../enums/types'
 
 enum EmitTypes {
 	created = 'created',
@@ -22,52 +22,62 @@ export type SocketCallers = {
 }
 
 export class SocketEmitter {
-	private readonly socket
-	private readonly routes = {} as Record<string, OnJoinFn>
+	#socket: io.Server
+	#callers: SocketCallers
+	#routes = {} as Record<string, OnJoinFn>
 
 	constructor (socket: io.Server, callers: SocketCallers) {
-		this.socket = socket
-		this.setupSocketConnection(this.socket, callers)
+		this.#socket = socket
+		this.#callers = callers
+		this.#setupSocketConnection()
 	}
 
 	async emitCreated (channel: string, data: BaseEntity) {
-		await this.emit(channel, EmitTypes.created, data)
+		await this.#emit(channel, EmitTypes.created, data)
 	}
 
 	async emitUpdated (channel: string, data: BaseEntity) {
-		await this.emit(channel, EmitTypes.updated, data)
+		await this.#emit(channel, EmitTypes.updated, data)
 	}
 
 	async emitDeleted (channel: string, data: BaseEntity) {
-		await this.emit(channel, EmitTypes.deleted, data)
+		await this.#emit(channel, EmitTypes.deleted, data)
+	}
+
+	set callers (callers: SocketCallers) {
+		this.#callers = callers
+		this.#setupSocketConnection()
 	}
 
 	register (channel: string, onJoin?: OnJoinFn) {
 		if (!onJoin) onJoin = async ({ channel }) => channel
-		this.routes[channel] = onJoin
-		this.routes[channel + '/:id'] = onJoin
+		this.#routes[channel] = onJoin
+		this.#routes[channel + '/:id'] = onJoin
+		return this
 	}
 
-	private getJoinCb (channel: string) {
+	#getJoinCb (channel: string) {
 		const matcher = (key: string) => Match(key, { encode: encodeURI, decode: decodeURIComponent })(channel)
-		const matchedChannel = Object.keys(this.routes).find(matcher) ?? null
+		const matchedChannel = Object.keys(this.#routes).find(matcher) ?? null
 		if (!matchedChannel) return null
 		const match = matcher(matchedChannel)
 		if (!match) return null
 		return {
-			onJoin: this.routes[matchedChannel],
+			onJoin: this.#routes[matchedChannel],
 			params: JSON.parse(JSON.stringify(match.params))
 		}
 	}
 
-	private async emit (channel: string, type: EmitTypes, data: any) {
-		this.socket.to(channel).emit(channel, {
+	async #emit (channel: string, type: EmitTypes, data: any) {
+		this.#socket.to(channel).emit(channel, {
 			type, data, channel
 		})
 	}
 
-	private setupSocketConnection = (socketInstance: io.Server, callers: SocketCallers) => {
-		socketInstance.on('connection', async (socket) => {
+	#setupSocketConnection = () => {
+		const event = 'connection'
+		this.#socket.removeAllListeners(event)
+		this.#socket.on(event, async (socket) => {
 			const socketId = socket.id
 			let user = null as AuthUser | null
 			if (socket.handshake.auth.token) user = await verifyAccessToken(socket.handshake.auth.token ?? '').catch(() => null)
@@ -91,7 +101,7 @@ export class SocketEmitter {
 					channel: ''
 				})
 				const channel = data.channel
-				const route = this.getJoinCb(channel) ?? null
+				const route = this.#getJoinCb(channel) ?? null
 				if (!route) return typeof (callback) === 'function' && callback({
 					code: StatusCodes.BadRequest,
 					message: 'unknown channel',
@@ -110,9 +120,9 @@ export class SocketEmitter {
 					channel: newChannel
 				})
 			})
-			if (user) await callers.onConnect(user.id, socketId)
+			if (user) await this.#callers.onConnect(user.id, socketId)
 			socket.on('disconnect', async () => {
-				if (user) await callers.onDisconnect(user.id, socketId)
+				if (user) await this.#callers.onDisconnect(user.id, socketId)
 			})
 		})
 	}

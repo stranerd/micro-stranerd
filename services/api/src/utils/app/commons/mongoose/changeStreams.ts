@@ -37,7 +37,7 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 			// @ts-ignore
 			const streamId = data._id._data
 			const cacheName = `streams-${streamId}`
-			const cached = await Instance.getInstance().cache.setInTransaction(cacheName, streamId, 15)
+			const cached = await Instance.get().cache.setInTransaction(cacheName, streamId, 15)
 			if (cached[0]) return
 			addWaitBeforeExit((async () => {
 				await getStreamTokens().findOneAndUpdate({ _id: dbName }, { $set: { resumeToken: data._id } }, { upsert: true })
@@ -91,13 +91,13 @@ const startChangeStream = async <Model extends { _id: string }, Entity extends B
 			})())
 		})
 		.on('error', async (err) => {
-			await Instance.getInstance().logger.error(`Change Stream errored out: ${dbName}: ${err.message}`)
+			await Instance.get().logger.error(`Change Stream errored out: ${dbName}: ${err.message}`)
 			changeStream.close()
 			return startChangeStream(collection, callbacks, mapper, true)
 		})
 	addWaitBeforeExit(() => changeStream.close())
 
-	await Instance.getInstance().logger.info(`${dbName} changestream started`)
+	await Instance.get().logger.info(`${dbName} changestream started`)
 }
 
 export const generateChangeStreams = async <Model extends { _id: string }, Entity extends BaseEntity> (

@@ -1,14 +1,13 @@
-import { ChangeStreamCallbacks, Conditions, DelayedJobs, Validation } from '@utils/app/package'
-import { appInstance  } from '@utils/app/types'
-import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
-import { getSocketEmitter } from '@index'
+import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { ScoreRewards, UsersUseCases } from '@modules/users'
+import { ChangeStreamCallbacks, Conditions, DelayedJobs, Validation } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`study/tests/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`study/tests/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`study/tests/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`study/tests/${after.id}/${after.userId}`, after)
 
 		if (after.data.type === TestType.timed) {
 			const delay = after.data.time * 60 * 1000
@@ -20,8 +19,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated(`study/tests/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`study/tests/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`study/tests/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`study/tests/${after.id}/${after.userId}`, after)
 
 		if (changes.done && !before.done && after.done) {
 			if (after.data.type === TestType.timed) await UsersUseCases.updateNerdScore({
@@ -49,8 +48,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`study/tests/${before.userId}`, before)
-		await getSocketEmitter().emitDeleted(`study/tests/${before.id}/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`study/tests/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`study/tests/${before.id}/${before.userId}`, before)
 
 		await Promise.all(before.taskIds.map(appInstance.job.removeDelayedJob))
 	}

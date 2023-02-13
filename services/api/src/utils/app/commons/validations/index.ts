@@ -1,11 +1,11 @@
 import * as Validate from '@stranerd/validate'
 import * as bcrypt from 'bcryptjs'
 import { ValidationError } from '../errors'
-import { StorageFile } from '../storage'
 import { Instance } from '../instance'
+import { StorageFile } from '../storage'
 
 const isNotTruncated = (file?: StorageFile, error?: string) => {
-	error = error ?? `is larger than allowed limit of ${Instance.getInstance().settings.maxFileUploadSizeInMb}mb`
+	error = error ?? `is larger than allowed limit of ${Instance.get().settings.maxFileUploadSizeInMb}mb`
 	const valid = file ? !file.isTruncated : true
 	return valid ? Validate.isValid() : Validate.isInvalid(error)
 }
@@ -44,7 +44,7 @@ export const validate = <Keys extends Record<string, any>> (data: Keys, rules: R
 const hash = async (password: string) => {
 	password = password.trim()
 	if (!password) return ''
-	return await bcrypt.hash(password, Instance.getInstance().settings.hashSaltRounds)
+	return await bcrypt.hash(password, Instance.get().settings.hashSaltRounds)
 }
 
 const compare = async (plainPassword: string, hashed: string) => {

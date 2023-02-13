@@ -1,5 +1,5 @@
-export * from './controllers/request'
+export type { Route } from './app'
 export * from './controllers'
+export * from './controllers/request'
 export * from './middlewares'
-export * from './app'
 export * from './statusCodes'

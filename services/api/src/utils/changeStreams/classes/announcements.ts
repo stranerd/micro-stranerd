@@ -1,13 +1,13 @@
+import { appInstance } from '@utils/app/types'
 import { ChangeStreamCallbacks } from '@utils/app/package'
 import { AnnouncementEntity, AnnouncementFromModel, EventsUseCases, EventType } from '@modules/classes'
-import { getSocketEmitter } from '@index'
 import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
 
 export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`classes/${after.classId}/announcements`, after)
-		await getSocketEmitter().emitCreated(`classes/${after.classId}/announcements/${after.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`classes/${after.classId}/announcements`, after)
+		await appInstance.socketEmitter.emitCreated(`classes/${after.classId}/announcements/${after.id}`, after)
 
 		await sendNotification(after.getAllUsers().filter((userId) => userId !== after.user.id), {
 			title: 'New announcement!',
@@ -21,8 +21,8 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		})
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated(`classes/${after.classId}/announcements`, after)
-		await getSocketEmitter().emitUpdated(`classes/${after.classId}/announcements/${after.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`classes/${after.classId}/announcements`, after)
+		await appInstance.socketEmitter.emitUpdated(`classes/${after.classId}/announcements/${after.id}`, after)
 
 		if (before.reminder && (changes.reminder || changes.body)) {
 			const { results } = await EventsUseCases.get({
@@ -42,8 +42,8 @@ export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<Announceme
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`classes/${before.classId}/announcements`, before)
-		await getSocketEmitter().emitDeleted(`classes/${before.classId}/announcements/${before.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`classes/${before.classId}/announcements`, before)
+		await appInstance.socketEmitter.emitDeleted(`classes/${before.classId}/announcements/${before.id}`, before)
 
 		if (before.reminder) {
 			const { results } = await EventsUseCases.get({

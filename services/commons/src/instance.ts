@@ -1,10 +1,11 @@
-import { ConsoleLogger, Logger } from './logger'
 import { BullJob } from './bull'
 import { Cache } from './cache/cache'
 import { RedisCache } from './cache/types/redis-cache'
 import { EventBus } from './events/events'
-import { mongoose, startAllChangeStreams } from './mongoose'
 import { addWaitBeforeExit } from './exit'
+import { Server } from './express/app'
+import { ConsoleLogger, Logger } from './logger'
+import { mongoose, startAllChangeStreams } from './mongoose'
 
 type Settings = {
 	isDev: boolean
@@ -55,64 +56,74 @@ const setting: Settings = {
 }
 
 export class Instance {
-	private static hasInitialized = false
-	private static instance: Instance
-	private static setting: Settings = setting
-	private log: Logger | null = null
-	private bullJob: BullJob | null = null
-	private cacher: Cache | null = null
-	private event: EventBus | null = null
+	static #initialized = false
+	static #instance: Instance
+	static #settings: Settings = setting
+	#logger: Logger | null = null
+	#job: BullJob | null = null
+	#cache: Cache | null = null
+	#eventBus: EventBus | null = null
+	#server: Server | null = null
 
 	private constructor () {
 	}
 
 	get logger () {
-		if (!this.log) this.log = new ConsoleLogger()
-		return this.log
+		if (!this.#logger) this.#logger = new ConsoleLogger()
+		return this.#logger
 	}
 
 	get job () {
-		if (!this.bullJob) this.bullJob = new BullJob()
-		return this.bullJob
+		if (!this.#job) this.#job = new BullJob()
+		return this.#job
 	}
 
 	get cache () {
-		if (!this.cacher) this.cacher = new RedisCache(this.settings.redisURI)
-		return this.cacher
+		if (!this.#cache) this.#cache = new RedisCache(this.settings.redisURI)
+		return this.#cache
 	}
 
 	get eventBus () {
-		if (!this.event) this.event = new EventBus()
-		return this.event
+		if (!this.#eventBus) this.#eventBus = new EventBus()
+		return this.#eventBus
+	}
+
+	get server () {
+		if (!this.#server) this.#server = new Server()
+		return this.#server
+	}
+
+	get socketEmitter () {
+		return this.server.socketEmitter
 	}
 
 	get settings () {
-		return Instance.setting
+		return Instance.#settings
 	}
 
 	static initialize (settings: Partial<Settings>) {
-		Object.entries(settings).forEach(([key, value]) => this.setting[key] = value)
-		Instance.hasInitialized = true
+		Object.entries(settings).forEach(([key, value]) => this.#settings[key] = value)
+		Instance.#initialized = true
 	}
 
-	static getInstance () {
-		if (!this.hasInitialized) {
+	static get () {
+		if (!this.#initialized) {
 			// eslint-disable-next-line no-console
 			console.error('Has not been initialized. Make sure initialize is called before you get an instance')
 			process.exit(1)
 		}
-		if (!Instance.instance) Instance.instance = new Instance()
-		return Instance.instance
+		if (!Instance.#instance) Instance.#instance = new Instance()
+		return Instance.#instance
 	}
 
 	async startDbConnection () {
 		try {
 			await mongoose.connect(this.settings.mongoDbURI)
-			await Instance.getInstance().cache.connect()
+			await Instance.get().cache.connect()
 			await startAllChangeStreams()
 			addWaitBeforeExit(mongoose.disconnect)
 		} catch (error) {
-			await Instance.getInstance().logger.error('MongoDb failed with error:', error)
+			await Instance.get().logger.error('MongoDb failed with error:', error)
 			process.exit(1)
 		}
 	}

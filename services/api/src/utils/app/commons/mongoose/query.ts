@@ -1,5 +1,5 @@
-import { mongoose } from './index'
 import { Instance } from '../instance'
+import { mongoose } from './index'
 
 export enum QueryKeys { and = 'and', or = 'or' }
 
@@ -51,7 +51,7 @@ export const parseQueryParams = async <Model> (collection: mongoose.Model<Model 
 	const all = params.all ?? false
 
 	// Handle limit clause
-	const settings = Instance.getInstance().settings
+	const settings = Instance.get().settings
 	const limit = Number(params.limit) <= settings.paginationDefaultLimit ? Number(params.limit) : settings.paginationDefaultLimit
 
 	// Handle offset clause

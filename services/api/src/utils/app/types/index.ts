@@ -16,4 +16,4 @@ Instance.initialize({
 	bullQueueName: 'task-queues',
 	rabbitColumnName: 'StranerdExchangeColumn'
 })
-export const appInstance = Instance.getInstance()
+export const appInstance = Instance.get()

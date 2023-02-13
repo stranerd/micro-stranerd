@@ -1,5 +1,5 @@
 import Bull from 'bull'
-import { ICronLikeJobs, ICronTypes, IDelayedJobs, Enum } from '../enums/types'
+import { Enum, ICronLikeJobs, ICronTypes, IDelayedJobs } from '../enums/types'
 import { Instance } from '../instance'
 import { Random } from '../utils/utils'
 
@@ -26,7 +26,7 @@ export class BullJob {
 	private queue: Bull.Queue
 
 	constructor () {
-		this.queue = new Bull(Instance.getInstance().settings.bullQueueName, Instance.getInstance().settings.redisURI)
+		this.queue = new Bull(Instance.get().settings.bullQueueName, Instance.get().settings.redisURI)
 	}
 
 	private static getNewId () {

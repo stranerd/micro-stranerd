@@ -1,14 +1,14 @@
 import { ChangeStreamCallbacks, EmailsList, readEmailFromPug } from '@utils/app/package'
 import { NotificationEntity, NotificationFromModel, UsersUseCases } from '@modules/users'
-import { getSocketEmitter } from '@index'
 import { sendPushNotification } from '@utils/modules/push'
 import { clientDomain } from '@utils/environment'
 import { publishers } from '@utils/events'
+import { appInstance } from '@utils/app/types'
 
 export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<NotificationFromModel, NotificationEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`users/notifications/${after.userId}`, after)
-		await getSocketEmitter().emitCreated(`users/notifications/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/notifications/${after.userId}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/notifications/${after.id}/${after.userId}`, after)
 
 		await sendPushNotification({
 			userIds: [after.userId],
@@ -33,11 +33,11 @@ export const NotificationChangeStreamCallbacks: ChangeStreamCallbacks<Notificati
 		}
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated(`users/notifications/${after.userId}`, after)
-		await getSocketEmitter().emitUpdated(`users/notifications/${after.id}/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/notifications/${after.userId}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/notifications/${after.id}/${after.userId}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`users/notifications/${before.userId}`, before)
-		await getSocketEmitter().emitDeleted(`users/notifications/${before.id}/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/notifications/${before.userId}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/notifications/${before.id}/${before.userId}`, before)
 	}
 }

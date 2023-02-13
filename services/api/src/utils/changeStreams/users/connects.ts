@@ -7,16 +7,16 @@ import {
 	UserMeta,
 	UsersUseCases
 } from '@modules/users'
-import { getSocketEmitter } from '@index'
 import { ChatMetasUseCases, ChatType } from '@modules/messaging'
 import { sendNotification } from '@utils/modules/users/notifications'
+import { appInstance } from '@utils/app/types'
 
 export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromModel, ConnectEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`users/connects/${after.from.id}`, after)
-		await getSocketEmitter().emitCreated(`users/connects/${after.to.id}`, after)
-		await getSocketEmitter().emitCreated(`users/connects/${after.id}/${after.from.id}`, after)
-		await getSocketEmitter().emitCreated(`users/connects/${after.id}/${after.to.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/connects/${after.from.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/connects/${after.to.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/connects/${after.id}/${after.from.id}`, after)
+		await appInstance.socketEmitter.emitCreated(`users/connects/${after.id}/${after.to.id}`, after)
 		await sendNotification([after.to.id], {
 			title: `${after.from.bio.fullName} is requesting to connect`,
 			sendEmail: false,
@@ -25,10 +25,10 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 		})
 	},
 	updated: async ({ after, changes }) => {
-		await getSocketEmitter().emitUpdated(`users/connects/${after.from.id}`, after)
-		await getSocketEmitter().emitUpdated(`users/connects/${after.to.id}`, after)
-		await getSocketEmitter().emitUpdated(`users/connects/${after.id}/${after.from.id}`, after)
-		await getSocketEmitter().emitUpdated(`users/connects/${after.id}/${after.to.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/connects/${after.from.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/connects/${after.to.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/connects/${after.id}/${after.from.id}`, after)
+		await appInstance.socketEmitter.emitUpdated(`users/connects/${after.id}/${after.to.id}`, after)
 
 		if (changes.pending && !after.pending) await Promise.all([
 			after.accepted && ChatMetasUseCases.add({
@@ -62,10 +62,10 @@ export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromMode
 		])
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`users/connects/${before.from.id}`, before)
-		await getSocketEmitter().emitDeleted(`users/connects/${before.to.id}`, before)
-		await getSocketEmitter().emitDeleted(`users/connects/${before.id}/${before.from.id}`, before)
-		await getSocketEmitter().emitDeleted(`users/connects/${before.id}/${before.to.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/connects/${before.from.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/connects/${before.to.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/connects/${before.id}/${before.from.id}`, before)
+		await appInstance.socketEmitter.emitDeleted(`users/connects/${before.id}/${before.to.id}`, before)
 
 		if (before.accepted) await Promise.all([
 			UsersUseCases.incrementMeta({ id: before.from.id, property: UserMeta.connects, value: -1 }),
