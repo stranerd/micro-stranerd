@@ -28,7 +28,7 @@ export class ChatController {
 		const { body, media: mediaFile, to  } = validateReq({
 			body: Schema.string(),
 			to: Schema.string().min(1),
-			media: Schema.file().addRule(Validation.isNotTruncated()).nullable()
+			media: Schema.file().nullable()
 		}, {
 			...req.body, media: req.files.media?.[0] ?? null,
 		})

@@ -1,3 +1,4 @@
+import { UploaderUseCases } from '@modules/storage'
 import { AssignmentSubmissionsUseCases, AssignmentsUseCases } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
@@ -6,10 +7,8 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
-import { UploaderUseCases } from '@modules/storage'
 
 export class AssignmentSubmissionController {
 	static async FindAssignmentSubmission (req: Request) {
@@ -27,15 +26,13 @@ export class AssignmentSubmissionController {
 	}
 
 	static async SubmitAssignment (req: Request) {
-		const { assignmentId, attachments: attachmentFiles } = validate({
+		const { assignmentId, attachments: attachmentFiles } = validateReq({
+			assignmentId: Schema.string().min(1),
+			attachments: Schema.array(Schema.file().image()).max(5)
+		}, {
+			...req.body,
 			assignmentId: req.params.assignmentId,
 			attachments: req.files.attachments ?? []
-		}, {
-			assignmentId: { required: true, rules: [Validation.isString()] },
-			attachments: {
-				required: true,
-				rules: [Validation.isArrayOf((cur) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
-			}
 		})
 
 		const userId = req.authUser!.id

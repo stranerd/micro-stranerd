@@ -1,3 +1,4 @@
+import { UploaderUseCases } from '@modules/storage'
 import { AssignmentsUseCases, CoursesUseCases } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
@@ -6,10 +7,8 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
-import { UploaderUseCases } from '@modules/storage'
 
 export class AssignmentController {
 	static async FindAssignment (req: Request) {
@@ -27,21 +26,16 @@ export class AssignmentController {
 	}
 
 	static async CreateAssignment (req: Request) {
-		const { title, courseId, description, deadline, attachments: attachmentFiles } = validate({
-			title: req.body.title,
-			description: req.body.description,
-			deadline: req.body.deadline,
+		const { title, courseId, description, deadline, attachments: attachmentFiles } = validateReq({
+			title: Schema.string().min(1),
+			description: Schema.string().min(1),
+			deadline: Schema.number().gt(0).nullable(),
+			courseId: Schema.string().min(1),
+			attachments: Schema.array(Schema.file().image()).max(5)
+		}, {
+			...req.body,
 			courseId: req.params.courseId,
 			attachments: req.files.attachments ?? []
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			deadline: { required: true, nullable: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
-			courseId: { required: true, rules: [Validation.isString()] },
-			attachments: {
-				required: true,
-				rules: [Validation.isArrayOf((cur) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
-			}
 		})
 
 		const userId = req.authUser!.id

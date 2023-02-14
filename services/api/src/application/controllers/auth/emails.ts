@@ -30,7 +30,7 @@ export class EmailsController {
 			}),
 			password: Schema.string().min(8).max(16),
 			description: Schema.string(),
-			photo: Schema.file().image().addRule(Validation.isNotTruncated()).nullable(),
+			photo: Schema.file().image().nullable(),
 			firstName: Schema.string().min(3),
 			lastName: Schema.string().min(3),
 			referrer: Schema.string().nullable()

@@ -2104,10 +2104,10 @@ entities@~2.1.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.1.0.tgz#992d3129cf7df6870b96c57858c249a120f8b8b5"
   integrity sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==
 
-equipped@^4.0.0-alpha.7:
-  version "4.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/equipped/-/equipped-4.0.0-alpha.7.tgz#37e7a26450e518f81088cebbac8aaa83a67cd2dc"
-  integrity sha512-qr93/cG3P4Zj02KCtAXuzb7U4s8lqweHVQahrcAgQhbVO7YpOfsy/0DzpZvbEnm0hMspfCJDGhrPk34wKvQJWA==
+equipped@^4.0.0-alpha.8:
+  version "4.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/equipped/-/equipped-4.0.0-alpha.8.tgz#ff71ac8dc78e66139e37157694a547c1939e96a2"
+  integrity sha512-WJrCAMxotvvCiGLx8k56q1XraGO9aznML5lkOVZz9GIwV41++lR4fPSxkCzAkbhdWpiLRmX0vxcyE+fkCNQdHQ==
   dependencies:
     amqplib "^0.10.3"
     axios "^1.3.3"

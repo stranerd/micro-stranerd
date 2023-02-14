@@ -1,15 +1,15 @@
+import { UploaderUseCases } from '@modules/storage'
 import { CoursesUseCases, FilesUseCases } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
 	BadRequestError,
+	MediaOutput,
 	NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
-import { UploaderUseCases } from '@modules/storage'
 
 export class FileController {
 	static async FindFile (req: Request) {
@@ -26,23 +26,20 @@ export class FileController {
 		return await FilesUseCases.get(query)
 	}
 
-	static async UpdateFile (req: Request) {
+	static async UpdateFile(req: Request) {
 		const authUserId = req.authUser!.id
 		const uploadedMedia = req.files.media?.[0] ?? null
 		const changedMedia = !!uploadedMedia || req.body.photo === null
 
-		const data = validate({
-			title: req.body.title,
-			media: uploadedMedia as any
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			media: { required: true, nullable: true, rules: [Validation.isFile(), Validation.isNotTruncated()] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+			media: Schema.file().nullable()
+		}, { ...req.body, media: uploadedMedia })
 
-		if (uploadedMedia) data.media = await UploaderUseCases.upload('teachers/files', uploadedMedia)
+		let media = undefined as MediaOutput | undefined
+		if (uploadedMedia) media = await UploaderUseCases.upload('teachers/files', uploadedMedia)
 		const validateData = {
-			title: data.title,
-			...(changedMedia ? { media: data.media } : {})
+			title: data.title, ...(changedMedia ? { media } : {})
 		}
 
 		const updatedFile = await FilesUseCases.update({
@@ -57,14 +54,14 @@ export class FileController {
 	}
 
 	static async CreateFile (req: Request) {
-		const { title, courseId, media: fileMedia } = validate({
-			title: req.body.title,
+		const { title, courseId, media: fileMedia } = validateReq({
+			title: Schema.string().min(1),
+			courseId: Schema.string().min(1),
+			media: Schema.file()
+		}, {
+			...req.body,
 			courseId: req.params.courseId,
 			media: req.files.media?.[0] ?? null
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			courseId: { required: true, rules: [Validation.isString()] },
-			media: { required: true, rules: [Validation.isFile(), Validation.isNotTruncated()] }
 		})
 
 		const userId = req.authUser!.id
