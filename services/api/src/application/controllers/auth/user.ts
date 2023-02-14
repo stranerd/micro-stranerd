@@ -1,8 +1,8 @@
 import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { UploaderUseCases } from '@modules/storage'
-import { AuthRole, BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
+import { AuthRole, BadRequestError, NotFoundError, Request, Validation, verifyAccessToken, validateReq, Schema } from '@utils/app/package'
 import { superAdminEmail } from '@utils/environment'
-import { generateAuthOutput, isValidPhone, signOutUser } from '@utils/modules/auth'
+import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
 
 const roles = [AuthRole.isStranerdAdmin, AuthRole.isStranerdTutor]
 
@@ -16,17 +16,12 @@ export class UserController {
 		const userId = req.authUser!.id
 		const uploadedPhoto = req.files.photo?.[0] ?? null
 		const changedPhoto = !!uploadedPhoto || req.body.photo === null
-		const data = validate({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			description: req.body.description,
-			photo: uploadedPhoto as any
-		}, {
-			firstName: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			lastName: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			description: { required: true, rules: [Validation.isString()] },
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated(), Validation.isImage()] }
-		})
+		const data = validateReq({
+			firstName: Schema.string().min(3),
+			lastName: Schema.string().min(3),
+			description: Schema.string(),
+			photo: Schema.any().nullable().addRule(Validation.isValidPhone())
+		}, { ...req.body, photo: uploadedPhoto })
 		const { firstName, lastName, description } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
 		const validateData = {
@@ -38,18 +33,11 @@ export class UserController {
 	}
 
 	static async updateUserRole (req: Request) {
-		const { role, userId, value } = validate({
-			role: req.body.role,
-			userId: req.body.userId,
-			value: req.body.value
-		}, {
-			role: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(roles, (cur, val) => cur === val)]
-			},
-			value: { required: true, rules: [Validation.isBoolean()] },
-			userId: { required: true, rules: [Validation.isString()] }
-		})
+		const { role, userId, value } = validateReq({
+			role: Schema.string().in(roles, (cur, val) => cur === val),
+			userId: Schema.string().min(1),
+			value: Schema.boolean()
+		}, req.body)
 		if (req.authUser!.id === userId) throw new BadRequestError('You cannot modify your own roles')
 
 		return await AuthUsersUseCases.updateUserRole({
@@ -82,11 +70,9 @@ export class UserController {
 	}
 
 	static async sendVerificationText (req: Request) {
-		const { phone } = validate({
-			phone: req.body.phone
-		}, {
-			phone: { required: true, rules: [isValidPhone] }
-		})
+		const { phone } = validateReq({
+			phone: Schema.any().addRule(Validation.isValidPhone())
+		}, req.body)
 
 		return await AuthUseCases.sendVerificationText({
 			id: req.authUser!.id, phone
@@ -94,11 +80,9 @@ export class UserController {
 	}
 
 	static async verifyPhone (req: Request) {
-		const { token } = validate({
-			token: req.body.token
-		}, {
-			token: { required: true, rules: [Validation.isString()] }
-		})
+		const { token } = validateReq({
+			token: Schema.string()
+		}, req.body)
 
 		const data = await AuthUseCases.verifyPhone(token)
 		return await generateAuthOutput(data)

@@ -1,5 +1,5 @@
 import { NotificationsUseCases } from '@modules/users'
-import { QueryParams, Request, validate, Validation } from '@utils/app/package'
+import { QueryParams, Request, Schema, validate, validateReq } from '@utils/app/package'
 
 export class NotificationsController {
 	static async getNotifications (req: Request) {
@@ -15,11 +15,9 @@ export class NotificationsController {
 	}
 
 	static async markNotificationSeen (req: Request) {
-		const data = validate({
-			seen: req.body.seen
-		}, {
-			seen: { required: true, rules: [Validation.isBoolean()] }
-		})
+		const data = validateReq({
+			seen: Schema.boolean()
+		}, req.body)
 
 		await NotificationsUseCases.markSeen({
 			ids: [req.params.id],
@@ -32,10 +30,8 @@ export class NotificationsController {
 
 	static async markAllNotificationsSeen (req: Request) {
 		const data = validate({
-			seen: req.body.seen
-		}, {
-			seen: { required: true, rules: [Validation.isBoolean()] }
-		})
+			seen: Schema.boolean()
+		}, req.body)
 
 		await NotificationsUseCases.markSeen({
 			userId: req.authUser!.id,

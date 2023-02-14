@@ -5,8 +5,7 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
 
 export class ConnectsController {
@@ -31,11 +30,9 @@ export class ConnectsController {
 	}
 
 	static async create (req: Request) {
-		const { to } = validate({
-			to: req.body.to
-		}, {
-			to: { required: true, rules: [Validation.isString()] }
-		})
+		const { to } = validateReq({
+			to: Schema.string()
+		}, req.body)
 		const fromUser = await UsersUseCases.find(req.authUser!.id)
 		if (!fromUser || fromUser.isDeleted()) throw new BadRequestError('profile not found')
 		const toUser = await UsersUseCases.find(to)
@@ -48,11 +45,9 @@ export class ConnectsController {
 	}
 
 	static async accept (req: Request) {
-		const { accept } = validate({
-			accept: req.body.accept
-		}, {
-			accept: { required: true, rules: [Validation.isBoolean()] }
-		})
+		const { accept } = validateReq({
+			accept: Schema.boolean()
+		}, req.body)
 		const isUpdated = await ConnectsUseCases.accept({
 			id: req.params.id, userId: req.authUser!.id, accept
 		})
