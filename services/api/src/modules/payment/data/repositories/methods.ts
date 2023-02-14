@@ -1,7 +1,7 @@
 import { IMethodRepository } from '../../domain/irepositories/methods'
 import { MethodMapper } from '../mappers/methods'
 import { MethodFromModel, MethodToModel } from '../models/methods'
-import { BadRequestError, mongoose, parseQueryParams, QueryParams } from '@utils/app/commons'
+import { BadRequestError, mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { Method } from '../mongooseModels/methods'
 
 export class MethodRepository implements IMethodRepository {

@@ -34,10 +34,10 @@ export class SchemeController {
 			start: req.body.start,
 			end: req.body.end
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			topic: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			start: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			end: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(req.body.start)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			topic: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			start: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
+			end: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(req.body.start)] }
 		})
 
 		const classInst = await ClassesUseCases.find(req.params.classId)
@@ -70,11 +70,11 @@ export class SchemeController {
 			start: req.body.start,
 			end: req.body.end
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			classId: { required: true, rules: [Validation.isString] },
-			topic: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			start: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			end: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(req.body.start)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			classId: { required: true, rules: [Validation.isString()] },
+			topic: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			start: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
+			end: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(req.body.start)] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)

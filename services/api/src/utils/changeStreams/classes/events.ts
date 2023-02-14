@@ -1,14 +1,14 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { EventEntity, EventFromModel, EventsUseCases, EventType } from '@modules/classes'
+import { NotificationType } from '@modules/users'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { scheduleEvent, unScheduleEvent } from '@utils/modules/classes/events'
 import { sendNotification } from '@utils/modules/users/notifications'
-import { NotificationType } from '@modules/users'
-import { appInstance } from '@utils/app/types'
 
 export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, EventEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated(`classes/${after.classId}/events`, after)
-		await appInstance.socketEmitter.emitCreated(`classes/${after.classId}/events/${after.id}`, after)
+		await appInstance.listener.created(`classes/${after.classId}/events`, after)
+		await appInstance.listener.created(`classes/${after.classId}/events/${after.id}`, after)
 		await scheduleEvent(after)
 		if (after.data.type === EventType.timetable) await sendNotification(after.getAllUsers(), {
 			title: `${after.title} timetable updated`,
@@ -23,8 +23,8 @@ export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, E
 		})
 	},
 	updated: async ({ after, before, changes }) => {
-		await appInstance.socketEmitter.emitUpdated(`classes/${after.classId}/events`, after)
-		await appInstance.socketEmitter.emitUpdated(`classes/${after.classId}/events/${after.id}`, after)
+		await appInstance.listener.updated(`classes/${after.classId}/events`, after)
+		await appInstance.listener.updated(`classes/${after.classId}/events/${after.id}`, after)
 
 		if (changes.data) {
 			await unScheduleEvent(before)
@@ -47,8 +47,8 @@ export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, E
 		})
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted(`classes/${before.classId}/events`, before)
-		await appInstance.socketEmitter.emitDeleted(`classes/${before.classId}/events/${before.id}`, before)
+		await appInstance.listener.deleted(`classes/${before.classId}/events`, before)
+		await appInstance.listener.deleted(`classes/${before.classId}/events/${before.id}`, before)
 		await unScheduleEvent(before)
 		if (before.data.type === EventType.timetable) await sendNotification(before.getAllUsers(), {
 			title: `${before.title} timetable updated`,

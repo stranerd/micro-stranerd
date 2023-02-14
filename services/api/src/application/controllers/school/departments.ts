@@ -16,8 +16,8 @@ export class DepartmentController {
 			name: req.body.name,
 			facultyId: req.body.facultyId
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			facultyId: { required: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			facultyId: { required: true, rules: [Validation.isString()] }
 		})
 		const faculty = await FacultiesUseCases.find(data.facultyId)
 		if (!faculty) throw new BadRequestError('faculty not found')
@@ -29,7 +29,7 @@ export class DepartmentController {
 		const data = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
 		})
 
 		const updatedDepartment = await DepartmentsUseCases.update({ id: req.params.id, data })

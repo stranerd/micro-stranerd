@@ -5,12 +5,12 @@ import { publishers } from '@utils/events'
 
 export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuestionFromModel, PastQuestionEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('school/pastQuestions', after)
-		await appInstance.socketEmitter.emitCreated(`school/pastQuestions/${after.id}`, after)
+		await appInstance.listener.created('school/pastQuestions', after)
+		await appInstance.listener.created(`school/pastQuestions/${after.id}`, after)
 	},
 	updated: async ({ after, before }) => {
-		await appInstance.socketEmitter.emitUpdated('school/pastQuestions', after)
-		await appInstance.socketEmitter.emitUpdated(`school/pastQuestions/${after.id}`, after)
+		await appInstance.listener.updated('school/pastQuestions', after)
+		await appInstance.listener.updated(`school/pastQuestions/${after.id}`, after)
 
 		let oldMedia = [...before.questionMedia]
 		if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))
@@ -25,8 +25,8 @@ export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuesti
 		await Promise.all(removed.map(async (attachment) => await publishers.DELETEFILE.publish(attachment)))
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('school/pastQuestions', before)
-		await appInstance.socketEmitter.emitDeleted(`school/pastQuestions/${before.id}`, before)
+		await appInstance.listener.deleted('school/pastQuestions', before)
+		await appInstance.listener.deleted(`school/pastQuestions/${before.id}`, before)
 
 		let oldMedia = [...before.questionMedia]
 		if (before.data.type === PastQuestionType.objective) oldMedia = oldMedia.concat(before.data.explanationMedia, before.data.optionsMedia.flat(1))

@@ -35,12 +35,12 @@ export class AnnouncementController {
 			classId: req.params.classId,
 			reminder: req.body.reminder
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			classId: { required: true, rules: [Validation.isString] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			classId: { required: true, rules: [Validation.isString()] },
 			reminder: {
 				required: true,
 				nullable: true,
-				rules: [Validation.isNumber, Validation.isMoreThanX(Date.now(), 'is less than the current date')]
+				rules: [Validation.isNumber(), Validation.isMoreThan(Date.now(), 'is less than the current date')]
 			}
 		})
 

@@ -31,9 +31,9 @@ export class NoteController {
 			content: req.body.content,
 			isPrivate: req.body.isPrivate
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			content: { required: true, rules: [Validation.isString] },
-			isPrivate: { required: true, rules: [Validation.isBoolean] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			content: { required: true, rules: [Validation.isString()] },
+			isPrivate: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -53,9 +53,9 @@ export class NoteController {
 			content: req.body.content,
 			isPrivate: req.body.isPrivate
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			content: { required: true, rules: [Validation.isString] },
-			isPrivate: { required: true, rules: [Validation.isBoolean] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			content: { required: true, rules: [Validation.isString()] },
+			isPrivate: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)

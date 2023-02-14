@@ -31,7 +31,7 @@ export class AttendanceController {
 		const data = validate({
 			title: req.body.title
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const updatedAttendance = await AttendancesUseCases.update({
@@ -50,8 +50,8 @@ export class AttendanceController {
 			title: req.body.title,
 			courseId: req.params.courseId
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			courseId: { required: true, rules: [Validation.isString()] }
 		})
 
 		const userId = req.authUser!.id
@@ -105,7 +105,7 @@ export class AttendanceController {
 		const { token } = validate({
 			token: req.body.token
 		}, {
-			token: { required: true, rules: [Validation.isString] }
+			token: { required: true, rules: [Validation.isString()] }
 		})
 		const ticked = await AttendancesUseCases.tick({
 			courseId: req.params.courseId, id: req.params.id,

@@ -21,10 +21,10 @@ export class LikesController {
 		}, {
 			entityType: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(InteractionEntities), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(InteractionEntities), (cur, val) => cur === val)]
 			},
-			entityId: { required: true, rules: [Validation.isString] },
-			value: { required: true, rules: [Validation.isBoolean] }
+			entityId: { required: true, rules: [Validation.isString()] },
+			value: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		await verifyInteractionEntity(entityType, entityId, value ? 'likes' : 'dislikes')

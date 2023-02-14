@@ -2,7 +2,7 @@ import { IWalletRepository } from '../../domain/irepositories/wallets'
 import { WalletMapper } from '../mappers/wallets'
 import { Wallet } from '../mongooseModels/wallets'
 import { AccountDetails, PlanDataType, SubscriptionModel } from '../../domain/types'
-import { BadRequestError, mongoose } from '@utils/app/commons'
+import { BadRequestError, mongoose } from '@utils/app/package'
 
 export class WalletRepository implements IWalletRepository {
 	private static instance: WalletRepository

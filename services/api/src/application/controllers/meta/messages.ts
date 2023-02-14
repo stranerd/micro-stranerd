@@ -18,23 +18,23 @@ export class MessageController {
 			school: req.body.data?.school,
 			position: req.body.data?.position
 		}, {
-			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			email: { required: true, rules: [Validation.isEmail] },
+			firstName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			lastName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			email: { required: true, rules: [Validation.isEmail()] },
 			phone: {
-				required: true, rules: [Validation.isString, (phone: any) => {
-					const isValidPhone = phone?.startsWith('+') && Validation.isNumber(parseInt(phone?.split('+')?.[1])).valid
-					return isValidPhone ? Validation.isValid() : Validation.isInvalid('invalid phone')
+				required: true, rules: [Validation.isString(), (phone: any) => {
+					const isValidPhone = phone?.startsWith('+') && Validation.isNumber()(parseInt(phone?.split('+')?.[1])).valid
+					return isValidPhone ? Validation.isValid(phone) : Validation.isInvalid(['invalid phone'], phone)
 				}]
 			},
-			country: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			country: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			message: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(MessageType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(MessageType), (cur, val) => cur === val)]
 			},
-			school: { required: isSchoolType, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			position: { required: isSchoolType, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			school: { required: isSchoolType, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			position: { required: isSchoolType, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		await sendNewMessageEmail({

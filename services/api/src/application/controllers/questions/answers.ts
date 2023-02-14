@@ -17,10 +17,10 @@ export class AnswerController {
 			body: req.body.body,
 			attachments: req.body.attachments
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3, true)] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur: any) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 
@@ -37,11 +37,11 @@ export class AnswerController {
 			questionId: req.body.questionId,
 			attachments: req.body.attachments
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			questionId: { required: true, rules: [Validation.isString] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3, true)] },
+			questionId: { required: true, rules: [Validation.isString()] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur: any) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 

@@ -22,10 +22,10 @@ export class UserController {
 			description: req.body.description,
 			photo: uploadedPhoto as any
 		}, {
-			firstName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			lastName: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString] },
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
+			firstName: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			lastName: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			description: { required: true, rules: [Validation.isString()] },
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated(), Validation.isImage()] }
 		})
 		const { firstName, lastName, description } = data
 		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
@@ -45,10 +45,10 @@ export class UserController {
 		}, {
 			role: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(roles, (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(roles, (cur, val) => cur === val)]
 			},
-			value: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isString] }
+			value: { required: true, rules: [Validation.isBoolean()] },
+			userId: { required: true, rules: [Validation.isString()] }
 		})
 		if (req.authUser!.id === userId) throw new BadRequestError('You cannot modify your own roles')
 
@@ -86,14 +86,17 @@ export class UserController {
 			phone: req.body.phone
 		}, {
 			phone: {
-				required: true, rules: [(phone: { code: string, number: string }) => {
+				required: true, rules: [Validation.makeRule<{ code: string, number: string }>((value) => {
+					const phone = value as { code: string, number: string }
 					const { code = '', number = '' } = phone ?? {}
-					const isValidCode = Validation.isString(code).valid && code.startsWith('+') && Validation.isNumber(parseInt(code.slice(1))).valid
-					const isValidNumber = Validation.isNumber(parseInt(number)).valid
-					if (!isValidCode) return Validation.isInvalid('invalid phone code')
-					if (!isValidNumber) return Validation.isInvalid('invalid phone number')
-					return Validation.isValid()
-				}]
+					const isValidCode = Validation.isString()(code).valid &&
+						code.startsWith('+') &&
+						Validation.isNumber()(parseInt(code.slice(1))).valid
+					const isValidNumber = Validation.isNumber()(parseInt(number)).valid
+					if (!isValidCode) return Validation.isInvalid(['invalid phone code'], phone)
+					if (!isValidNumber) return Validation.isInvalid(['invalid phone number'], phone)
+					return Validation.isValid(phone)
+				})]
 			}
 		})
 
@@ -106,7 +109,7 @@ export class UserController {
 		const { token } = validate({
 			token: req.body.token
 		}, {
-			token: { required: true, rules: [Validation.isString] }
+			token: { required: true, rules: [Validation.isString()] }
 		})
 
 		const data = await AuthUseCases.verifyPhone(token)

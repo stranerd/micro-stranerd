@@ -18,7 +18,7 @@ export class NotificationsController {
 		const data = validate({
 			seen: req.body.seen
 		}, {
-			seen: { required: true, rules: [Validation.isBoolean] }
+			seen: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		await NotificationsUseCases.markSeen({
@@ -34,7 +34,7 @@ export class NotificationsController {
 		const data = validate({
 			seen: req.body.seen
 		}, {
-			seen: { required: true, rules: [Validation.isBoolean] }
+			seen: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		await NotificationsUseCases.markSeen({

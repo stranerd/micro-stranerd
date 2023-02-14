@@ -36,16 +36,16 @@ export class PostController {
 			attachments: req.body.attachments,
 			type: req.body.data.type
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			deadline: { required: true, nullable: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			deadline: { required: true, nullable: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
+			courseId: { required: true, rules: [Validation.isString()] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			},
 			type: {
-				required: true, rules: [Validation.arrayContainsX(acceptableTypes, (cur, val) => cur === val)]
+				required: true, rules: [Validation.arrayContains(acceptableTypes, (cur, val) => cur === val)]
 			}
 		})
 

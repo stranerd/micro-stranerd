@@ -11,7 +11,7 @@ const subscribeDevice: Route = {
 			const { token } = validate({
 				token: req.body.token
 			}, {
-				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+				token: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 			})
 			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: true })
 			return {
@@ -31,7 +31,7 @@ const unsubscribeDevice: Route = {
 			const { token } = validate({
 				token: req.body.token
 			}, {
-				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+				token: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 			})
 			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: false })
 			return {

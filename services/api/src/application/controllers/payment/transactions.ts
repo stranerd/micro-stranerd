@@ -30,7 +30,7 @@ export class TransactionsController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(types, (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(types, (cur, val) => cur === val)]
 			}
 		})
 

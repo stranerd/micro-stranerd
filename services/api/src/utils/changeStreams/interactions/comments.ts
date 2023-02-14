@@ -13,8 +13,8 @@ import { sendNotification } from '@utils/modules/users/notifications'
 
 export const CommentChangeStreamCallbacks: ChangeStreamCallbacks<CommentFromModel, CommentEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('interactions/comments', after)
-		await appInstance.socketEmitter.emitCreated(`interactions/comments/${after.id}`, after)
+		await appInstance.listener.created('interactions/comments', after)
+		await appInstance.listener.created(`interactions/comments/${after.id}`, after)
 		if (after.entity.type === InteractionEntities.questions) {
 			await QuestionsUseCases.updateMeta({
 				id: after.entity.id,
@@ -61,12 +61,12 @@ export const CommentChangeStreamCallbacks: ChangeStreamCallbacks<CommentFromMode
 		})
 	},
 	updated: async ({ after }) => {
-		await appInstance.socketEmitter.emitUpdated('interactions/comments', after)
-		await appInstance.socketEmitter.emitUpdated(`interactions/comments/${after.id}`, after)
+		await appInstance.listener.updated('interactions/comments', after)
+		await appInstance.listener.updated(`interactions/comments/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('interactions/comments', before)
-		await appInstance.socketEmitter.emitDeleted(`interactions/comments/${before.id}`, before)
+		await appInstance.listener.deleted('interactions/comments', before)
+		await appInstance.listener.deleted(`interactions/comments/${before.id}`, before)
 		await CommentsUseCases.deleteEntityComments({ type: InteractionEntities.comments, id: before.id })
 		if (before.entity.type === InteractionEntities.questions) await QuestionsUseCases.updateMeta({
 			id: before.entity.id,

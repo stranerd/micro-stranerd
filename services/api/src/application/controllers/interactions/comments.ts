@@ -19,12 +19,12 @@ export class CommentsController {
 			entityType: req.body.entity?.type,
 			entityId: req.body.entity?.id
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			entityType: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(InteractionEntities), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(InteractionEntities), (cur, val) => cur === val)]
 			},
-			entityId: { required: true, rules: [Validation.isString] }
+			entityId: { required: true, rules: [Validation.isString()] }
 		})
 
 		await verifyInteractionEntity(entityType, entityId, 'comments')
@@ -41,7 +41,7 @@ export class CommentsController {
 		const { body } = validate({
 			body: req.body.body
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const updated = await CommentsUseCases.update({

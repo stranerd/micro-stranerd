@@ -19,8 +19,8 @@ export class CourseController {
 			title: req.body.title,
 			level: req.body.level
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			level: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			level: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const updatedCourse = await CoursesUseCases.update({ id: req.params.id, userId: authUserId, data })
@@ -34,8 +34,8 @@ export class CourseController {
 			title: req.body.title,
 			level: req.body.level
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			level: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			level: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const user = await UsersUseCases.find(req.authUser!.id)
@@ -56,7 +56,7 @@ export class CourseController {
 		const { join } = validate({
 			join: req.body.join
 		}, {
-			join: { required: true, rules: [Validation.isBoolean] }
+			join: { required: true, rules: [Validation.isBoolean()] }
 		})
 		const isJoined = await CoursesUseCases.join({ courseId: req.params.id, userId, join })
 		if (isJoined) return isJoined

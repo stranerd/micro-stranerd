@@ -9,11 +9,11 @@ const uploadFile: Route = {
 			const file = req.files.file?.[0]
 			const { path } = req.body
 			const data = validate({ path, file }, {
-				path: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+				path: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 				file: {
-					required: true, rules: [Validation.isFile, (_) => {
-						if (file?.isTruncated) return Validation.isInvalid('is larger than allowed limit')
-						else return Validation.isValid()
+					required: true, rules: [Validation.isFile(), (val) => {
+						if (file?.isTruncated) return Validation.isInvalid(['is larger than allowed limit'], val)
+						else return Validation.isValid(val)
 					}]
 				}
 			})
@@ -33,12 +33,12 @@ const uploadFiles: Route = {
 		makeController(async (req) => {
 			const files = req.files.file ?? []
 			const data = validate({ path: req.body.path, files }, {
-				path: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+				path: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 				files: {
 					required: true,
 					rules: [
-						Validation.isArrayOfX((cur: StorageFile) => Validation.isFile(cur).valid, 'files'),
-						Validation.isArrayOfX((cur: StorageFile) => !cur?.isTruncated, 'less than the allowed limit')
+						Validation.isArrayOf((cur: StorageFile) => Validation.isFile()(cur).valid, 'files'),
+						Validation.isArrayOf((cur: StorageFile) => !cur?.isTruncated, 'less than the allowed limit')
 					]
 				}
 			})

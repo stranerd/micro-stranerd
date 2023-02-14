@@ -21,15 +21,16 @@ const isValidTimeZone = (tz: string) => {
 	}
 }
 
-const isCronValid = (val: any) => {
-	const isDayValid = Validation.isNumber(val?.day).valid && Validation.isMoreThanOrEqualTo(val?.day, 0).valid && Validation.isLessThan(val?.day, 7).valid
-	const isHourValid = Validation.isNumber(val?.hour).valid && Validation.isMoreThanOrEqualTo(val?.hour, 0).valid && Validation.isLessThan(val?.hour, 24).valid
-	const isMinuteValid = Validation.isNumber(val?.minute).valid && Validation.isMoreThanOrEqualTo(val?.minute, 0).valid && Validation.isLessThan(val?.minute, 60).valid
+const isCronValid = Validation.makeRule((value) => {
+	const val = value as any
+	const isDayValid = Validation.isNumber()(val?.day).valid && Validation.isMoreThanOrEqualTo(0)(val?.day).valid && Validation.isLessThan(7)(val?.day).valid
+	const isHourValid = Validation.isNumber()(val?.hour).valid && Validation.isMoreThanOrEqualTo(0)(val?.hour).valid && Validation.isLessThan(24)(val?.hour).valid
+	const isMinuteValid = Validation.isNumber()(val?.minute).valid && Validation.isMoreThanOrEqualTo(0)(val?.minute).valid && Validation.isLessThan(60)(val?.minute).valid
 	const isValidTz = isValidTimeZone(val?.tz)
-	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid() : Validation.isInvalid('not a valid cron object')
-}
+	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid(val) : Validation.isInvalid(['not a valid cron object'], val)
+})
 
-const isCronMore = (start: any) => (val: any) => getCronOrder(val) >= getCronOrder(start) ? Validation.isValid() : Validation.isInvalid('must be after start')
+const isCronMore = (start: any) => (val: any) => getCronOrder(val) >= getCronOrder(start) ? Validation.isValid(val) : Validation.isInvalid(['must be after start'], val)
 
 export class EventController {
 	static async FindEvent (req: Request) {
@@ -56,13 +57,13 @@ export class EventController {
 			end: req.body.data?.end,
 			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			type: {
-				required: true, rules: [Validation.isString, Validation.isShallowEqualToX(EventType.timetable)]
+				required: true, rules: [Validation.isString(), Validation.isShallowEqualTo(EventType.timetable)]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
 			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
-			lecturer: { required: isTimetable, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			lecturer: { required: isTimetable, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		if (isTimetable) {
@@ -99,14 +100,14 @@ export class EventController {
 			end: req.body.data?.end,
 			lecturer: req.body.data?.lecturer
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			classId: { required: true, rules: [Validation.isString] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			classId: { required: true, rules: [Validation.isString()] },
 			type: {
-				required: true, rules: [Validation.isString, Validation.isShallowEqualToX(EventType.timetable)]
+				required: true, rules: [Validation.isString(), Validation.isShallowEqualTo(EventType.timetable)]
 			},
 			start: { required: isTimetable, rules: [isCronValid] },
 			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
-			lecturer: { required: isTimetable, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			lecturer: { required: isTimetable, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)

@@ -16,8 +16,8 @@ const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) 
 
 export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated(`users/badges/${after.userId}`, after)
-		await appInstance.socketEmitter.emitCreated(`users/badges/${after.id}/${after.userId}`, after)
+		await appInstance.listener.created(`users/badges/${after.userId}`, after)
+		await appInstance.listener.created(`users/badges/${after.id}/${after.userId}`, after)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -34,8 +34,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	updated: async ({ after, before }) => {
-		await appInstance.socketEmitter.emitUpdated(`users/badges/${after.userId}`, after)
-		await appInstance.socketEmitter.emitUpdated(`users/badges/${after.id}/${after.userId}`, after)
+		await appInstance.listener.updated(`users/badges/${after.userId}`, after)
+		await appInstance.listener.updated(`users/badges/${after.id}/${after.userId}`, after)
 
 		const funcs = [] as (() => Promise<void>)[]
 
@@ -57,8 +57,8 @@ export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, B
 		await Promise.all(funcs.map(async (func) => await func()))
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted(`users/badges/${before.userId}`, before)
-		await appInstance.socketEmitter.emitDeleted(`users/badges/${before.id}/${before.userId}`, before)
+		await appInstance.listener.deleted(`users/badges/${before.userId}`, before)
+		await appInstance.listener.deleted(`users/badges/${before.id}/${before.userId}`, before)
 
 		const funcs = [] as (() => Promise<void>)[]
 

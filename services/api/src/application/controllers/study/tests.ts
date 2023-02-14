@@ -25,15 +25,15 @@ export class TestController {
 			type: req.body.data?.type,
 			time: req.body.data?.time
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			prepId: { required: true, rules: [Validation.isString] },
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			prepId: { required: true, rules: [Validation.isString()] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(TestType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(TestType), (cur, val) => cur === val)]
 			},
 			time: {
 				required: isTimed,
-				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
+				rules: [Validation.isNumber(), Validation.isMoreThan(0)]
 			}
 		})
 
@@ -65,7 +65,7 @@ export class TestController {
 			questionId: req.body.questionId,
 			answer: req.body.answer
 		}, {
-			questionId: { required: true, rules: [Validation.isString] },
+			questionId: { required: true, rules: [Validation.isString()] },
 			answer: { required: true, rules: [] }
 		})
 

@@ -8,8 +8,8 @@ export class IdentitiesController {
 			idToken: req.body.idToken,
 			referrer: req.body.referrer ?? null
 		}, {
-			idToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: true, nullable: true, rules: [Validation.isString] }
+			idToken: { required: true, rules: [Validation.isString()] },
+			referrer: { required: true, nullable: true, rules: [Validation.isString()] }
 		})
 
 		const data = await AuthUseCases.googleSignIn({
@@ -27,11 +27,11 @@ export class IdentitiesController {
 			idToken: req.body.idToken,
 			referrer: req.body.referrer ?? null
 		}, {
-			firstName: { required: true, nullable: true, rules: [Validation.isString] },
-			lastName: { required: true, nullable: true, rules: [Validation.isString] },
-			email: { required: true, nullable: true, rules: [Validation.isString] },
-			idToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: true, nullable: true, rules: [Validation.isString] }
+			firstName: { required: true, nullable: true, rules: [Validation.isString()] },
+			lastName: { required: true, nullable: true, rules: [Validation.isString()] },
+			email: { required: true, nullable: true, rules: [Validation.isString()] },
+			idToken: { required: true, rules: [Validation.isString()] },
+			referrer: { required: true, nullable: true, rules: [Validation.isString()] }
 		})
 
 		const data = await AuthUseCases.appleSignIn({

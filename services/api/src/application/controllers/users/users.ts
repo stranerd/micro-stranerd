@@ -26,18 +26,18 @@ export class UsersController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(UserSchoolType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(UserSchoolType), (cur, val) => cur === val)]
 			},
-			departmentId: { required: isCollege, rules: [Validation.isString] },
+			departmentId: { required: isCollege, rules: [Validation.isString()] },
 			exams: {
 				required: isAspirant,
 				rules: [
-					Validation.isArrayOfX((exam: any) => {
-						const matches = [Validation.isString(exam?.institutionId).valid]
-						matches.push(Validation.isNumber(exam?.startDate).valid)
-						matches.push(Validation.isNumber(exam?.endDate).valid)
-						matches.push(Validation.isMoreThanOrEqualTo(exam?.endDate, exam?.startDate).valid)
-						matches.push(Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'courses')(exam?.courseIds).valid)
+					Validation.isArrayOf((exam: any) => {
+						const matches = [Validation.isString()(exam?.institutionId).valid]
+						matches.push(Validation.isNumber()(exam?.startDate).valid)
+						matches.push(Validation.isNumber()(exam?.endDate).valid)
+						matches.push(Validation.isMoreThanOrEqualTo(exam?.startDate)(exam?.endDate).valid)
+						matches.push(Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'courses')(exam?.courseIds).valid)
 						return matches.every((m) => m)
 					}, 'array of exams')
 				]

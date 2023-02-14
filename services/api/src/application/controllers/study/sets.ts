@@ -16,7 +16,7 @@ export class SetController {
 		const { name } = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
 		})
 
 		const authUserId = req.authUser!.id
@@ -30,7 +30,7 @@ export class SetController {
 		const { name } = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
 		})
 
 		const data = { name }
@@ -48,13 +48,13 @@ export class SetController {
 		}, {
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(SetSaved), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(SetSaved), (cur, val) => cur === val)]
 			},
 			propIds: {
 				required: true,
-				rules: [Validation.isArrayOfX((item) => Validation.isString(item).valid, 'strings')]
+				rules: [Validation.isArrayOf((item) => Validation.isString()(item).valid, 'strings')]
 			},
-			add: { required: true, rules: [Validation.isBoolean] }
+			add: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		const updated = await SetsUseCases.updateProp({

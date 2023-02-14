@@ -30,7 +30,7 @@ export class GroupController {
 		const { name } = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
 		})
 
 		const data = { name }
@@ -55,8 +55,8 @@ export class GroupController {
 			name: req.body.name,
 			classId: req.params.classId
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			classId: { required: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			classId: { required: true, rules: [Validation.isString()] }
 		})
 
 		const classInst = await ClassesUseCases.find(classId)

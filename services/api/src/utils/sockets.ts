@@ -29,7 +29,7 @@ export const registerSockets = () => {
 		return await isOpen(data, params)
 	}
 
-	appInstance.server.socketEmitter.register('classes/classes', isOpen)
+	appInstance.listener.register('classes/classes', isOpen)
 		.register('classes/:classId/announcements', classJoinCb)
 		.register('classes/:classId/groups', classJoinCb)
 		.register('classes/:classId/events', classJoinCb)

@@ -17,9 +17,9 @@ export class CourseController {
 			institutionId: req.body.institutionId,
 			departmentId: req.body.departmentId
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			institutionId: { required: true, rules: [Validation.isString] },
-			departmentId: { required: true, nullable: true, rules: [Validation.isString] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			institutionId: { required: true, rules: [Validation.isString()] },
+			departmentId: { required: true, nullable: true, rules: [Validation.isString()] }
 		})
 		const institution = await InstitutionsUseCases.find(data.institutionId)
 		const department = !data.departmentId ? null : await DepartmentsUseCases.find(data.departmentId)
@@ -40,7 +40,7 @@ export class CourseController {
 		const data = validate({
 			name: req.body.name
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
 		})
 
 		const updatedCourse = await CoursesUseCases.update({ id: req.params.id, data })

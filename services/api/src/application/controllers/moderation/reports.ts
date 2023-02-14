@@ -33,12 +33,12 @@ export class ReportController {
 			id: req.body.entity?.id,
 			message: req.body.message
 		}, {
-			message: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			message: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values<string>(ReportType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values<string>(ReportType), (cur, val) => cur === val)]
 			},
-			id: { required: true, rules: [Validation.isString] }
+			id: { required: true, rules: [Validation.isString()] }
 		})
 
 		const reporter = await UsersUseCases.find(req.authUser!.id)

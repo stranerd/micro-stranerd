@@ -31,13 +31,13 @@ export class ChatController {
 			to: req.body.to
 		}, {
 			body: {
-				required: true, rules: [Validation.isString]
+				required: true, rules: [Validation.isString()]
 			},
 			media: {
 				required: true, nullable: true,
-				rules: [Validation.isNotTruncated, Validation.isFile]
+				rules: [Validation.isNotTruncated(), Validation.isFile()]
 			},
-			to: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			to: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const media = mediaFile ? await UploaderUseCases.upload('messaging/chats', mediaFile) : null
@@ -82,7 +82,7 @@ export class ChatController {
 		const data = validate({
 			to: req.body.to
 		}, {
-			to: { required: true, rules: [Validation.isString] }
+			to: { required: true, rules: [Validation.isString()] }
 		})
 
 		const authUserId = req.authUser!.id

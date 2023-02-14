@@ -7,7 +7,7 @@ export class PasswordsController {
 		const { email } = validate({
 			email: req.body.email
 		}, {
-			email: { required: true, rules: [Validation.isEmail] }
+			email: { required: true, rules: [Validation.isEmail()] }
 		})
 
 		const user = await AuthUsersUseCases.findUserByEmail(email)
@@ -21,10 +21,10 @@ export class PasswordsController {
 			token: req.body.token,
 			password: req.body.password
 		}, {
-			token: { required: true, rules: [Validation.isString] },
+			token: { required: true, rules: [Validation.isString()] },
 			password: {
 				required: true,
-				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+				rules: [Validation.isString(), Validation.isMinOf(8), Validation.isMaxOf(16)]
 			}
 		})
 
@@ -38,10 +38,10 @@ export class PasswordsController {
 			oldPassword: req.body.oldPassword,
 			password: req.body.password
 		}, {
-			oldPassword: { required: true, rules: [Validation.isString] },
+			oldPassword: { required: true, rules: [Validation.isString()] },
 			password: {
 				required: true,
-				rules: [Validation.isString, Validation.isLongerThanX(7), Validation.isShorterThanX(17)]
+				rules: [Validation.isString(), Validation.isMinOf(8), Validation.isMaxOf(16)]
 			}
 		})
 

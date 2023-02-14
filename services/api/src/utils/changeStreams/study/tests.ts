@@ -6,8 +6,8 @@ import { appInstance } from '@utils/app/types'
 
 export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated(`study/tests/${after.userId}`, after)
-		await appInstance.socketEmitter.emitCreated(`study/tests/${after.id}/${after.userId}`, after)
+		await appInstance.listener.created(`study/tests/${after.userId}`, after)
+		await appInstance.listener.created(`study/tests/${after.id}/${after.userId}`, after)
 
 		if (after.data.type === TestType.timed) {
 			const delay = after.data.time * 60 * 1000
@@ -19,8 +19,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	updated: async ({ after, before, changes }) => {
-		await appInstance.socketEmitter.emitUpdated(`study/tests/${after.userId}`, after)
-		await appInstance.socketEmitter.emitUpdated(`study/tests/${after.id}/${after.userId}`, after)
+		await appInstance.listener.updated(`study/tests/${after.userId}`, after)
+		await appInstance.listener.updated(`study/tests/${after.id}/${after.userId}`, after)
 
 		if (changes.done && !before.done && after.done) {
 			if (after.data.type === TestType.timed) await UsersUseCases.updateNerdScore({
@@ -48,8 +48,8 @@ export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, Tes
 		}
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted(`study/tests/${before.userId}`, before)
-		await appInstance.socketEmitter.emitDeleted(`study/tests/${before.id}/${before.userId}`, before)
+		await appInstance.listener.deleted(`study/tests/${before.userId}`, before)
+		await appInstance.listener.deleted(`study/tests/${before.id}/${before.userId}`, before)
 
 		await Promise.all(before.taskIds.map(appInstance.job.removeDelayedJob))
 	}

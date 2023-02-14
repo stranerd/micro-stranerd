@@ -5,8 +5,8 @@ import { appInstance } from '@utils/app/types'
 
 export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('study/sets', after)
-		await appInstance.socketEmitter.emitCreated(`study/sets/${after.id}`, after)
+		await appInstance.listener.created('study/sets', after)
+		await appInstance.listener.created(`study/sets/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
 			userId: after.user.id,
@@ -15,12 +15,12 @@ export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEn
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.sets })
 	},
 	updated: async ({ after }) => {
-		await appInstance.socketEmitter.emitUpdated('study/sets', after)
-		await appInstance.socketEmitter.emitUpdated(`study/sets/${after.id}`, after)
+		await appInstance.listener.updated('study/sets', after)
+		await appInstance.listener.updated(`study/sets/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('study/sets', before)
-		await appInstance.socketEmitter.emitDeleted(`study/sets/${before.id}`, before)
+		await appInstance.listener.deleted('study/sets', before)
+		await appInstance.listener.deleted(`study/sets/${before.id}`, before)
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.user.id,

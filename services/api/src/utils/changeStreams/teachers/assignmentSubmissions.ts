@@ -5,12 +5,12 @@ import { publishers } from '@utils/events'
 
 export const AssignmentSubmissionChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentSubmissionFromModel, AssignmentSubmissionEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/assignmentSubmissions`, after)
-		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/assignmentSubmissions/${after.id}`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/assignmentSubmissions`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/assignmentSubmissions/${after.id}`, after)
 	},
 	updated: async ({ after, before, changes }) => {
-		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/assignmentSubmissions`, after)
-		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/assignmentSubmissions/${after.id}`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/assignmentSubmissions`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/assignmentSubmissions/${after.id}`, after)
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
@@ -19,8 +19,8 @@ export const AssignmentSubmissionChangeStreamCallbacks: ChangeStreamCallbacks<As
 		}
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/assignmentSubmissions`, before)
-		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/assignmentSubmissions/${before.id}`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/assignmentSubmissions`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/assignmentSubmissions/${before.id}`, before)
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)

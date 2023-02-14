@@ -1,4 +1,4 @@
-import { BadRequestError, Instance } from '@utils/app/commons'
+import { BadRequestError, Instance } from '@utils/app/package'
 import { openAIKey } from '@utils/environment'
 
 const { Configuration, OpenAIApi } = require('openai')

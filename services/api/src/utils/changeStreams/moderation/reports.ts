@@ -4,15 +4,15 @@ import { appInstance } from '@utils/app/types'
 
 export const ReportChangeStreamCallbacks: ChangeStreamCallbacks<ReportFromModel, ReportEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('moderation/reports', after)
-		await appInstance.socketEmitter.emitCreated(`moderation/reports/${after.id}`, after)
+		await appInstance.listener.created('moderation/reports', after)
+		await appInstance.listener.created(`moderation/reports/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await appInstance.socketEmitter.emitUpdated('moderation/reports', after)
-		await appInstance.socketEmitter.emitUpdated(`moderation/reports/${after.id}`, after)
+		await appInstance.listener.updated('moderation/reports', after)
+		await appInstance.listener.updated(`moderation/reports/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('moderation/reports', before)
-		await appInstance.socketEmitter.emitDeleted(`moderation/reports/${before.id}`, before)
+		await appInstance.listener.deleted('moderation/reports', before)
+		await appInstance.listener.deleted(`moderation/reports/${before.id}`, before)
 	}
 }

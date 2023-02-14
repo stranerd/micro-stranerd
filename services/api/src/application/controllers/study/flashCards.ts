@@ -13,19 +13,31 @@ export class FlashCardController {
 	}
 
 	static async UpdateFlashCard (req: Request) {
-		const data = validate({
-			title: req.body.title,
-			set: req.body.set?.filter((x) => x.question && x.answer)
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			set: {
-				required: true,
-				rules: [
-					Validation.isArrayOfX((cur: any) => Validation.isString(cur?.question).valid && Validation.isString(cur?.answer).valid, 'questions'),
-					Validation.hasMoreThanX(0)
-				]
+		const data = validate(
+			{
+				title: req.body.title,
+				set: req.body.set?.filter((x) => x.question && x.answer)
+			},
+			{
+				title: {
+					required: true,
+					rules: [Validation.isString(), Validation.isMinOf(1)]
+				},
+				set: {
+					required: true,
+					rules: [
+						Validation.isArrayOf(
+							(cur: any) =>
+								Validation.isString()(cur?.question).valid &&
+								Validation.isString()(cur?.answer).valid,
+							'questions'
+						),
+						Validation.hasMinOf(1),
+						Validation.hasMaxOf(128)
+					]
+				}
 			}
-		})
+		)
 
 		const authUserId = req.authUser!.id
 
@@ -39,12 +51,12 @@ export class FlashCardController {
 			title: req.body.title,
 			set: req.body.set?.filter((x) => x.question && x.answer)
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			set: {
 				required: true,
 				rules: [
-					Validation.isArrayOfX((cur: any) => Validation.isString(cur?.question).valid && Validation.isString(cur?.answer).valid, 'questions'),
-					Validation.hasMoreThanX(0), Validation.hasLessThanOrEqualToX(128)
+					Validation.isArrayOf((cur: any) => Validation.isString()(cur?.question).valid && Validation.isString()(cur?.answer).valid, 'questions'),
+					Validation.hasMinOf(1), Validation.hasMaxOf(128)
 				]
 			}
 		})
@@ -65,7 +77,7 @@ export class FlashCardController {
 		const data = validate({
 			time: req.body.time
 		}, {
-			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] }
+			time: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] }
 		})
 
 		return await FlashCardsUseCases.saveMatch({

@@ -7,8 +7,8 @@ import { sendPushNotification } from '@utils/modules/push'
 export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
 		await Promise.all(after.data.members.map(async (userId) => {
-			await appInstance.socketEmitter.emitCreated(`messaging/chats/${userId}`, after)
-			await appInstance.socketEmitter.emitCreated(`messaging/chats/${after.id}/${userId}`, after)
+			await appInstance.listener.created(`messaging/chats/${userId}`, after)
+			await appInstance.listener.created(`messaging/chats/${after.id}/${userId}`, after)
 		}))
 		const body = after.media ? 'Shared a file' : after.body
 		await sendPushNotification({
@@ -22,16 +22,16 @@ export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, Cha
 	},
 	updated: async ({ after, before, changes }) => {
 		await Promise.all(after.data.members.map(async (userId) => {
-			await appInstance.socketEmitter.emitUpdated(`messaging/chats/${userId}`, after)
-			await appInstance.socketEmitter.emitUpdated(`messaging/chats/${after.id}/${userId}`, after)
+			await appInstance.listener.updated(`messaging/chats/${userId}`, after)
+			await appInstance.listener.updated(`messaging/chats/${after.id}/${userId}`, after)
 		}))
 		await ChatMetasUseCases.updateLastChat({ ...after, _id: after.id, id: undefined } as any)
 		if (changes.media && before.media) await publishers.DELETEFILE.publish(before.media)
 	},
 	deleted: async ({ before }) => {
 		await Promise.all(before.data.members.map(async (userId) => {
-			await appInstance.socketEmitter.emitDeleted(`messaging/chats/${userId}`, before)
-			await appInstance.socketEmitter.emitDeleted(`messaging/chats/${before.id}/${userId}`, before)
+			await appInstance.listener.deleted(`messaging/chats/${userId}`, before)
+			await appInstance.listener.deleted(`messaging/chats/${before.id}/${userId}`, before)
 		}))
 		if (before.media) await publishers.DELETEFILE.publish(before.media)
 	}

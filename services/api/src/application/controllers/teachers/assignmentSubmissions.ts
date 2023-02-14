@@ -31,10 +31,10 @@ export class AssignmentSubmissionController {
 			assignmentId: req.params.assignmentId,
 			attachments: req.files.attachments ?? []
 		}, {
-			assignmentId: { required: true, rules: [Validation.isString] },
+			assignmentId: { required: true, rules: [Validation.isString()] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 

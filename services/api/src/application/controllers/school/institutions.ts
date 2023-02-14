@@ -16,8 +16,8 @@ export class InstitutionController {
 			name: req.body.name,
 			isGateway: req.body.isGateway
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isGateway: { required: true, rules: [Validation.isBoolean] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			isGateway: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		return await InstitutionsUseCases.add(data)
@@ -28,8 +28,8 @@ export class InstitutionController {
 			name: req.body.name,
 			isGateway: req.body.isGateway
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			isGateway: { required: true, rules: [Validation.isBoolean] }
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			isGateway: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		const updatedInstitution = await InstitutionsUseCases.update({ id: req.params.id, data })

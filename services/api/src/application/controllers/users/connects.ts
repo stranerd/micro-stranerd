@@ -34,7 +34,7 @@ export class ConnectsController {
 		const { to } = validate({
 			to: req.body.to
 		}, {
-			to: { required: true, rules: [Validation.isString] }
+			to: { required: true, rules: [Validation.isString()] }
 		})
 		const fromUser = await UsersUseCases.find(req.authUser!.id)
 		if (!fromUser || fromUser.isDeleted()) throw new BadRequestError('profile not found')
@@ -51,7 +51,7 @@ export class ConnectsController {
 		const { accept } = validate({
 			accept: req.body.accept
 		}, {
-			accept: { required: true, rules: [Validation.isBoolean] }
+			accept: { required: true, rules: [Validation.isBoolean()] }
 		})
 		const isUpdated = await ConnectsUseCases.accept({
 			id: req.params.id, userId: req.authUser!.id, accept

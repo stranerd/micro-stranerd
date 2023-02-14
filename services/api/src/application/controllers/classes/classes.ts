@@ -33,13 +33,13 @@ export class ClassController {
 			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: uploadedPhoto as any
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
 			courses: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				rules: [Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'strings')]
 			},
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated(), Validation.isImage()] }
 		})
 
 		const { name, description, courses } = data
@@ -68,15 +68,15 @@ export class ClassController {
 			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
 			photo: req.files.photo?.[0] ?? null
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			departmentId: { required: true, rules: [Validation.isString] },
-			year: { required: true, rules: [Validation.isNumber] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
+			departmentId: { required: true, rules: [Validation.isString()] },
+			year: { required: true, rules: [Validation.isNumber()] },
+			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
 			courses: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
+				rules: [Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'strings')]
 			},
-			photo: { required: true, nullable: true, rules: [Validation.isImage] }
+			photo: { required: true, nullable: true, rules: [Validation.isImage()] }
 		})
 
 		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
@@ -106,7 +106,7 @@ export class ClassController {
 		const { request } = validate({
 			request: req.body.request
 		}, {
-			request: { required: true, rules: [Validation.isBoolean] }
+			request: { required: true, rules: [Validation.isBoolean()] }
 		})
 
 		const requested = await ClassesUseCases.requestClass({
@@ -132,8 +132,8 @@ export class ClassController {
 			accept: req.body.accept,
 			userId: req.body.userId
 		}, {
-			accept: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isString] }
+			accept: { required: true, rules: [Validation.isBoolean()] },
+			userId: { required: true, rules: [Validation.isString()] }
 		})
 
 		const accepted = await ClassesUseCases.acceptRequest({
@@ -150,10 +150,10 @@ export class ClassController {
 			add: req.body.add,
 			userIds: req.body.userIds
 		}, {
-			add: { required: true, rules: [Validation.isBoolean] },
+			add: { required: true, rules: [Validation.isBoolean()] },
 			userIds: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0)]
+				rules: [Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'strings'), Validation.hasMinOf(1)]
 			}
 		})
 
@@ -181,11 +181,11 @@ export class ClassController {
 			userId: req.body.userId,
 			role: req.body.role
 		}, {
-			add: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isString] },
+			add: { required: true, rules: [Validation.isBoolean()] },
+			userId: { required: true, rules: [Validation.isString()] },
 			role: {
 				required: true,
-				rules: [Validation.arrayContainsX(Object.values(ClassUsers), (cur, val) => cur === val)]
+				rules: [Validation.arrayContains(Object.values(ClassUsers), (cur, val) => cur === val)]
 			}
 		})
 

@@ -1,5 +1,5 @@
 export { EmbeddedUser } from '@modules/users'
-export { MediaOutput as Media } from '@utils/app/commons'
+export { MediaOutput as Media } from '@utils/app/package'
 
 export enum PostType {
 	discussions = 'discussions',

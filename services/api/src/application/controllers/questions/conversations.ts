@@ -8,9 +8,9 @@ export class ConversationsController {
 		}, {
 			messages: {
 				required: true, rules: [
-					Validation.hasMoreThanX(0),
-					Validation.isArrayOfX((v: string) => Validation.isString(v).valid && Validation.isLongerThan(v, 0).valid, 'strings'),
-					(val) => val.length % 2 != 0 ? Validation.isValid() : Validation.isInvalid('needs a question at the end')
+					Validation.hasMinOf(1),
+					Validation.isArrayOf((v: string) => Validation.isString()(v).valid && Validation.isMinOf(1)(v).valid, 'strings'),
+					(val: any) => val.length % 2 != 0 ? Validation.isValid(val) : Validation.isInvalid(['needs a question at the end'], val)
 				]
 			}
 		})

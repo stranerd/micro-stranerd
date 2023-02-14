@@ -35,8 +35,8 @@ export class FileController {
 			title: req.body.title,
 			media: uploadedMedia as any
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			media: { required: true, nullable: true, rules: [Validation.isFile, Validation.isNotTruncated] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			media: { required: true, nullable: true, rules: [Validation.isFile(), Validation.isNotTruncated()] }
 		})
 
 		if (uploadedMedia) data.media = await UploaderUseCases.upload('teachers/files', uploadedMedia)
@@ -62,9 +62,9 @@ export class FileController {
 			courseId: req.params.courseId,
 			media: req.files.media?.[0] ?? null
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] },
-			media: { required: true, rules: [Validation.isFile, Validation.isNotTruncated] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			courseId: { required: true, rules: [Validation.isString()] },
+			media: { required: true, rules: [Validation.isFile(), Validation.isNotTruncated()] }
 		})
 
 		const userId = req.authUser!.id

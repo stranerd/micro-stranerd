@@ -23,7 +23,7 @@ const start = async () => {
 	await registerSockets()
 	await UsersUseCases.resetAllUsersStatus()
 	await PlansUseCases.init(plansList)
-	appInstance.socketEmitter.callers = {
+	appInstance.listener.callers = {
 		onConnect: async (userId, socketId) => {
 			await UsersUseCases.updateStatus({
 				userId, socketId, add: true

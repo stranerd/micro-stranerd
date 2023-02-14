@@ -34,13 +34,13 @@ export class AssignmentController {
 			courseId: req.params.courseId,
 			attachments: req.files.attachments ?? []
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			deadline: { required: true, nullable: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			deadline: { required: true, nullable: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
+			courseId: { required: true, rules: [Validation.isString()] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 

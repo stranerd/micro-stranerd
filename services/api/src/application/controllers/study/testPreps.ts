@@ -24,24 +24,24 @@ export class TestPrepController {
 			courseId: req.body.data?.courseId,
 			year: req.body.data?.year
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			questions: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
+			time: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(PrepType), (cur, val) => cur === val)]
 			},
 			questionType: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
 				required: isPastQuestionsType,
-				rules: [Validation.isString, Validation.isLongerThanX(0)]
+				rules: [Validation.isString(), Validation.isMinOf(1)]
 			},
 			year: {
 				required: isPastQuestionsType,
-				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
+				rules: [Validation.isNumber(), Validation.isMoreThan(0)]
 			}
 		})
 
@@ -74,24 +74,24 @@ export class TestPrepController {
 			courseId: req.body.data?.courseId,
 			year: req.body.data?.year
 		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
+			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
+			questions: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(1)] },
+			time: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(PrepType), (cur, val) => cur === val)]
 			},
 			questionType: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(PastQuestionType), (cur, val) => cur === val)]
 			},
 			courseId: {
 				required: isPastQuestionsType,
-				rules: [Validation.isString, Validation.isLongerThanX(0)]
+				rules: [Validation.isString(), Validation.isMinOf(1)]
 			},
 			year: {
 				required: isPastQuestionsType,
-				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
+				rules: [Validation.isNumber(), Validation.isMinOf(1)]
 			}
 		})
 

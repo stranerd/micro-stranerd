@@ -16,8 +16,8 @@ import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('questions/answers', after)
-		await appInstance.socketEmitter.emitCreated(`questions/answers/${after.id}`, after)
+		await appInstance.listener.created('questions/answers', after)
+		await appInstance.listener.created(`questions/answers/${after.id}`, after)
 
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.answers })
 		await QuestionsUseCases.updateAnswers({
@@ -36,7 +36,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		if (question) {
 			await sendNotification([question.user.id], {
 				title: `${question.user.bio.fullName} answered your question`,
-				body: Validation.extractTextFromHTML(after.body),
+				body: Validation.stripHTML(after.body),
 				data: { type: NotificationType.NewAnswer, questionId: after.questionId, answerId: after.id },
 				sendEmail: true
 			})
@@ -49,8 +49,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await appInstance.socketEmitter.emitUpdated('questions/answers', after)
-		await appInstance.socketEmitter.emitUpdated(`questions/answers/${after.id}`, after)
+		await appInstance.listener.updated('questions/answers', after)
+		await appInstance.listener.updated(`questions/answers/${after.id}`, after)
 
 		if (changes.best) {
 			const question = await QuestionsUseCases.find(after.questionId)
@@ -99,8 +99,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('questions/answers', before)
-		await appInstance.socketEmitter.emitDeleted(`questions/answers/${before.id}`, before)
+		await appInstance.listener.deleted('questions/answers', before)
+		await appInstance.listener.deleted(`questions/answers/${before.id}`, before)
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.user.id,

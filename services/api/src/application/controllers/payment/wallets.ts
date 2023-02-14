@@ -12,7 +12,7 @@ export class WalletsController {
 		const { planId } = validate({
 			planId: req.body.planId
 		}, {
-			planId: { required: true, rules: [Validation.isString] }
+			planId: { required: true, rules: [Validation.isString()] }
 		})
 
 		return await subscribeToPlan(req.authUser!.id, planId)
@@ -37,10 +37,10 @@ export class WalletsController {
 		}, {
 			country: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(CurrencyCountries), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.values(CurrencyCountries), (cur, val) => cur === val)]
 			},
-			number: { required: true, rules: [Validation.isString] },
-			bankCode: { required: true, rules: [Validation.isString] }
+			number: { required: true, rules: [Validation.isString()] },
+			bankCode: { required: true, rules: [Validation.isString()] }
 		})
 		const banks = await FlutterwavePayment.getBanks(country)
 		const bank = banks.find((b) => b.code === bankCode)

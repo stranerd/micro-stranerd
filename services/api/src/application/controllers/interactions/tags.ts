@@ -15,7 +15,7 @@ export class TagController {
 		const data = validate({
 			title: req.body.title
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] }
 		})
 
 		const updatedTag = await TagsUseCases.update({ id: req.params.id, data })
@@ -30,12 +30,12 @@ export class TagController {
 			type: req.body.type,
 			parent: req.body.parent
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
+			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			type: {
 				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.keys(TagTypes), (cur, val) => cur === val)]
+				rules: [Validation.isString(), Validation.arrayContains(Object.keys(TagTypes), (cur, val) => cur === val)]
 			},
-			parent: { required: true, nullable: true, rules: [Validation.isString] }
+			parent: { required: true, nullable: true, rules: [Validation.isString()] }
 		})
 
 		if (data.parent !== null) {

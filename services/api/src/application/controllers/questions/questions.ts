@@ -37,10 +37,10 @@ export class QuestionController {
 			body: req.body.body,
 			attachments: req.body.attachments
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3, true)] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur: any) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 
@@ -57,12 +57,12 @@ export class QuestionController {
 			isPrivate: req.body.isPrivate,
 			attachments: req.body.attachments
 		}, {
-			body: { required: true, rules: [Validation.isString, Validation.isExtractedHTMLLongerThanX(2)] },
-			tagId: { required: true, rules: [Validation.isString] },
-			isPrivate: { required: true, rules: [Validation.isBoolean] },
+			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3, true)] },
+			tagId: { required: true, rules: [Validation.isString()] },
+			isPrivate: { required: true, rules: [Validation.isBoolean()] },
 			attachments: {
 				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
+				rules: [Validation.isArrayOf((cur: any) => Validation.isImage()(cur).valid, 'images'), Validation.hasMaxOf(5)]
 			}
 		})
 
@@ -82,7 +82,7 @@ export class QuestionController {
 		const { answerId } = validate({
 			answerId: req.body.answerId
 		}, {
-			answerId: { required: true, rules: [Validation.isString] }
+			answerId: { required: true, rules: [Validation.isString()] }
 		})
 
 		const question = await QuestionsUseCases.find(req.params.id)

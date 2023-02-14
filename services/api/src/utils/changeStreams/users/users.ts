@@ -24,14 +24,14 @@ import { appInstance } from '@utils/app/types'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated('users/users', after)
-		await appInstance.socketEmitter.emitCreated(`users/users/${after.id}`, after)
+		await appInstance.listener.created('users/users', after)
+		await appInstance.listener.created(`users/users/${after.id}`, after)
 
 		await SetsUseCases.add({ name: '', user: after.getEmbedded() })
 	},
 	updated: async ({ before, after, changes }) => {
-		await appInstance.socketEmitter.emitUpdated('users/users', after)
-		await appInstance.socketEmitter.emitUpdated(`users/users/${after.id}`, after)
+		await appInstance.listener.updated('users/users', after)
+		await appInstance.listener.updated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
@@ -65,7 +65,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		}
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted('users/users', before)
-		await appInstance.socketEmitter.emitDeleted(`users/users/${before.id}`, before)
+		await appInstance.listener.deleted('users/users', before)
+		await appInstance.listener.deleted(`users/users/${before.id}`, before)
 	}
 }

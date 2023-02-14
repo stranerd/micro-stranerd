@@ -5,17 +5,17 @@ import { publishers } from '@utils/events'
 
 export const FileChangeStreamCallbacks: ChangeStreamCallbacks<FileFromModel, FileEntity> = {
 	created: async ({ after }) => {
-		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/files`, after)
-		await appInstance.socketEmitter.emitCreated(`teachers/${after.courseId}/files/${after.id}`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/files`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/files/${after.id}`, after)
 	},
 	updated: async ({ after, before, changes }) => {
-		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/files`, after)
-		await appInstance.socketEmitter.emitUpdated(`teachers/${after.courseId}/files/${after.id}`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/files`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/files/${after.id}`, after)
 		if (changes.media) await publishers.DELETEFILE.publish(before.media)
 	},
 	deleted: async ({ before }) => {
-		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/files`, before)
-		await appInstance.socketEmitter.emitDeleted(`teachers/${before.courseId}/files/${before.id}`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/files`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/files/${before.id}`, before)
 		await publishers.DELETEFILE.publish(before.media)
 	}
 }
