@@ -1,6 +1,7 @@
 import { TestToModel } from '../../data/models/tests'
 import { ITestRepository } from '../irepositories/tests'
 import { QueryParams } from '@utils/app/package'
+import { AnswerType } from '../types'
 
 export class TestsUseCase {
 	private repository: ITestRepository
@@ -33,7 +34,7 @@ export class TestsUseCase {
 		return await this.repository.deletePrepTests(prepId)
 	}
 
-	async updateAnswer (input: { id: string, userId: string, questionId: string, answer: number }) {
+	async updateAnswer(input: { id: string, userId: string, questionId: string, answer: AnswerType }) {
 		return await this.repository.updateAnswer(input.id, input.userId, input.questionId, input.answer)
 	}
 

@@ -9,8 +9,7 @@ type TimedType = {
 }
 
 type UnTimedType = {
-	type: TestType.timed
-	time: number
+	type: TestType.unTimed
 }
 
 export type AnswerType = number | string

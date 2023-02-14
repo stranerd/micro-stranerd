@@ -1,43 +1,36 @@
-import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
 import { PastQuestionsUseCases } from '@modules/school'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
+import { TestPrepsUseCases, TestsUseCases, TestType } from '@modules/study'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, Schema, validateReq, Validation } from '@utils/app/package'
 
 export class TestController {
-	static async FindTest (req: Request) {
+	static async FindTest(req: Request) {
 		const test = await TestsUseCases.find(req.params.id)
 		if (!test || test.userId !== req.authUser!.id) return null
 		return test
 	}
 
-	static async GetTests (req: Request) {
+	static async GetTests(req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'userId', value: req.authUser!.id }]
 		return await TestsUseCases.get(query)
 	}
 
-	static async CreateTest (req: Request) {
-		const isTimed = req.body.data?.type === TestType.timed
-		const isUnTimed = req.body.data?.type === TestType.unTimed
+	static async CreateTest(req: Request) {
+		const data = validateReq({
+			name: Schema.string().min(1),
+			prepId: Schema.string().min(1),
+			data: Schema.or([
+				Schema.object({
+					type: Schema.any<TestType.unTimed>().eq(TestType.unTimed)
+				}),
+				Schema.object({
+					type: Schema.any<TestType.timed>().eq(TestType.timed),
+					time: Schema.number().gt(0)
+				})
+			])
+		}, req.body)
 
-		const { name, prepId, type, time } = validate({
-			name: req.body.name,
-			prepId: req.body.prepId,
-			type: req.body.data?.type,
-			time: req.body.data?.time
-		}, {
-			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			prepId: { required: true, rules: [Validation.isString()] },
-			type: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(Object.values(TestType), (cur, val) => cur === val)]
-			},
-			time: {
-				required: isTimed,
-				rules: [Validation.isNumber(), Validation.isMoreThan(0)]
-			}
-		})
-
-		const prep = await TestPrepsUseCases.find(prepId)
+		const prep = await TestPrepsUseCases.find(data.prepId)
 		if (!prep) throw new BadRequestError('test prep not found')
 		const { results } = await PastQuestionsUseCases.get({
 			where: [
@@ -49,25 +42,20 @@ export class TestController {
 			all: true
 		})
 		if (results.length < prep.questions) throw new BadRequestError('Not enough questions to take this test')
-		const questions = Validation.getRandomSample(results, isUnTimed ? results.length : prep.questions).map((q) => q.id)
+		const questions = Validation.getRandomSample(results, data.data.type === TestType.unTimed ? results.length : prep.questions).map((q) => q.id)
 
-		const data = {
-			name, score: 0, questions, answers: {}, prepId, userId: req.authUser!.id, done: false,
-			questionType: prep.data.questionType,
-			data: isTimed ? { type, time } : isUnTimed ? { type } : ({} as any)
-		}
 
-		return await TestsUseCases.add(data)
+		return await TestsUseCases.add({
+			...data, questionType: prep.data.questionType,
+			score: 0, questions, answers: {}, userId: req.authUser!.id, done: false
+		})
 	}
 
-	static async UpdateAnswer (req: Request) {
-		const data = validate({
-			questionId: req.body.questionId,
-			answer: req.body.answer
-		}, {
-			questionId: { required: true, rules: [Validation.isString()] },
-			answer: { required: true, rules: [] }
-		})
+	static async UpdateAnswer(req: Request) {
+		const data = validateReq({
+			questionId: Schema.string().min(1),
+			answer: Schema.or([Schema.string(), Schema.number()])
+		}, req.body)
 
 		const updated = await TestsUseCases.updateAnswer({
 			id: req.params.id,
@@ -80,7 +68,7 @@ export class TestController {
 		throw new NotAuthorizedError()
 	}
 
-	static async MarkTestDone (req: Request) {
+	static async MarkTestDone(req: Request) {
 		const updated = await TestsUseCases.update({
 			id: req.params.id,
 			userId: req.authUser!.id,

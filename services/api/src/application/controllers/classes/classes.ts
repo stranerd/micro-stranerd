@@ -39,12 +39,12 @@ export class ClassController {
 
 		const { name, description, courses } = data
 		const photo = uploadedPhoto ? await UploaderUseCases.upload('classes/photos', uploadedPhoto) : undefined
-		const validateData = {
-			name, description, courses,
-			...(changedPhoto ? { photo } : {})
-		}
 
-		const updatedClass = await ClassesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedClass = await ClassesUseCases.update({
+			id: req.params.id, userId: authUserId, data: {
+				name, description, courses,
+				...(changedPhoto ? { photo } : {})
+			} })
 
 		if (updatedClass) return updatedClass
 		throw new NotAuthorizedError()

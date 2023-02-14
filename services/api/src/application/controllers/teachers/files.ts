@@ -35,15 +35,14 @@ export class FileController {
 		}, { ...req.body, media: uploadedMedia })
 
 		const media = uploadedMedia ? await UploaderUseCases.upload('teachers/files', uploadedMedia) : undefined
-		const validateData = {
-			title: data.title, ...(changedMedia ? { media } : {})
-		}
 
 		const updatedFile = await FilesUseCases.update({
 			courseId: req.params.courseId,
 			id: req.params.id,
 			userId: authUserId,
-			data: validateData
+			data: {
+				title: data.title, ...(changedMedia ? { media } : {})
+			}
 		})
 
 		if (updatedFile) return updatedFile
