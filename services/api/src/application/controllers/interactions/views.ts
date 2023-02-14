@@ -1,6 +1,6 @@
 import { InteractionEntities, ViewsUseCases } from '@modules/interactions'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { UsersUseCases } from '@modules/users'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 import { verifyInteractionEntity } from '@utils/modules/interactions'
 
 export class ViewsController {
@@ -14,27 +14,18 @@ export class ViewsController {
 	}
 
 	static async createView (req: Request) {
-		const { entityType, entityId } = validate({
-			body: req.body.body,
-			entityType: req.body.entity?.type,
-			entityId: req.body.entity?.id
-		}, {
-			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			entityType: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(Object.values(InteractionEntities), (cur, val) => cur === val)]
-			},
-			entityId: { required: true, rules: [Validation.isString()] }
-		})
+		const { entity } = validateReq({
+			entity: Schema.object({
+				id: Schema.string().min(1),
+				type: Schema.any<InteractionEntities>().in(Object.values(InteractionEntities), (cur, val) => cur === val)
+			})
+		}, req.body)
 
-		await verifyInteractionEntity(entityType, entityId, 'views')
+		await verifyInteractionEntity(entity.type, entity.id, 'views')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
-		return await ViewsUseCases.create({
-			entity: { id: entityId, type: entityType },
-			user: user.getEmbedded()
-		})
+		return await ViewsUseCases.create({ entity, user: user.getEmbedded() })
 	}
 
 	static async deleteView (req: Request) {

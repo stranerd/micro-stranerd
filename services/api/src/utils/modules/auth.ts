@@ -5,8 +5,7 @@ import {
 	deleteCachedRefreshToken,
 	exchangeOldForNewTokens,
 	makeAccessToken,
-	makeRefreshToken,
-	Validation
+	makeRefreshToken
 } from '@utils/app/package'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
@@ -58,15 +57,3 @@ const getUnverifiedUsers = async () => {
 	})
 	return users
 }
-
-export const isValidPhone = Validation.makeRule<{ code: string, number: string }>((value) => {
-	const phone = value as { code: string, number: string }
-	const { code = '', number = '' } = phone ?? {}
-	const isValidCode = Validation.isString()(code).valid &&
-		code.startsWith('+') &&
-		Validation.isNumber()(parseInt(code.slice(1))).valid
-	const isValidNumber = Validation.isNumber()(parseInt(number)).valid
-	if (!isValidCode) return Validation.isInvalid(['invalid phone code'], phone)
-	if (!isValidNumber) return Validation.isInvalid(['invalid phone number'], phone)
-	return Validation.isValid(phone)
-})

@@ -1,42 +1,28 @@
-import { Request, validate, Validation } from '@utils/app/package'
-import { isValidPhone } from '@utils/modules/auth'
+import { Request, Schema, validateReq, Validation } from '@utils/app/package'
 import { MessageType, sendNewMessageEmail } from '@utils/modules/meta/messages'
 
 export class MessageController {
 	static async createMessage (req: Request) {
-		const isSchoolType = req.body.data?.type === MessageType.school
-		const {
-			firstName, lastName, email, country, phone, message,
-			school, position
-		} = validate({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			email: req.body.email,
-			phone: req.body.phone,
-			country: req.body.country,
-			message: req.body.message,
-			type: req.body.data?.type,
-			school: req.body.data?.school,
-			position: req.body.data?.position
-		}, {
-			firstName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			lastName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			email: { required: true, rules: [Validation.isEmail()] },
-			phone: { required: true, rules: [isValidPhone] },
-			country: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			message: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			type: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(Object.values(MessageType), (cur, val) => cur === val)]
-			},
-			school: { required: isSchoolType, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			position: { required: isSchoolType, rules: [Validation.isString(), Validation.isMinOf(1)] }
-		})
+		const data = validateReq({
+			firstName: Schema.string().min(1),
+			lastName: Schema.string().min(1),
+			email: Schema.string().email(),
+			phone: Schema.any().addRule(Validation.isValidPhone()),
+			country: Schema.string().min(1),
+			message: Schema.string().min(1),
+			data: Schema.or([
+				Schema.object({
+					type: Schema.any<typeof MessageType.student>().eq(MessageType.student),
+				}),
+				Schema.object({
+					type: Schema.any<typeof MessageType.school>().eq(MessageType.school),
+					school: Schema.string().min(1),
+					position: Schema.string().min(1),
+				})
+			])
+		}, req.body)
 
-		await sendNewMessageEmail({
-			firstName, lastName, email, phone, country, message,
-			data: isSchoolType ? { type: MessageType.school, school, position } : { type: MessageType.student }
-		})
+		await sendNewMessageEmail(data)
 
 		return true
 	}

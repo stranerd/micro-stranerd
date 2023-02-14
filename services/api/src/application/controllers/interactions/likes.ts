@@ -1,6 +1,6 @@
 import { InteractionEntities, LikesUseCases } from '@modules/interactions'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { UsersUseCases } from '@modules/users'
+import { BadRequestError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 import { verifyInteractionEntity } from '@utils/modules/interactions'
 
 export class LikesController {
@@ -9,31 +9,23 @@ export class LikesController {
 		return await LikesUseCases.get(query)
 	}
 
-	static async findLike (req: Request) {
+	static async findLike (req: Request)  {
 		return await LikesUseCases.find(req.params.id)
 	}
 
 	static async createLike (req: Request) {
-		const { entityType, entityId, value } = validate({
-			entityType: req.body.entity?.type,
-			entityId: req.body.entity?.id,
-			value: req.body.value
-		}, {
-			entityType: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(Object.values(InteractionEntities), (cur, val) => cur === val)]
-			},
-			entityId: { required: true, rules: [Validation.isString()] },
-			value: { required: true, rules: [Validation.isBoolean()] }
-		})
+		const { entity, value } = validateReq({
+			value: Schema.boolean(),
+			entity: Schema.object({
+				id: Schema.string().min(1),
+				type: Schema.any<InteractionEntities>().in(Object.values(InteractionEntities), (cur, val) => cur === val)
+			})
+		}, req.body)
 
-		await verifyInteractionEntity(entityType, entityId, value ? 'likes' : 'dislikes')
+		await verifyInteractionEntity(entity.type, entity.id, value ? 'likes' : 'dislikes')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted()) throw new BadRequestError('profile not found')
 
-		return await LikesUseCases.like({
-			value, entity: { id: entityId, type: entityType },
-			user: user.getEmbedded()
-		})
+		return await LikesUseCases.like({ value, entity, user: user.getEmbedded() })
 	}
 }

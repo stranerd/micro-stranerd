@@ -1,9 +1,9 @@
-import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { ReportsUseCases, ReportType } from '@modules/moderation'
-import { UsersUseCases } from '@modules/users'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
 import { PastQuestionsUseCases } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
 import { FlashCardsUseCases } from '@modules/study'
+import { UsersUseCases } from '@modules/users'
+import { BadRequestError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 
 const finders = {
 	[ReportType.users]: UsersUseCases,
@@ -28,28 +28,23 @@ export class ReportController {
 	}
 
 	static async CreateReport (req: Request) {
-		const { type, id, message } = validate({
-			type: req.body.entity?.type,
-			id: req.body.entity?.id,
-			message: req.body.message
-		}, {
-			message: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			type: {
-				required: true,
-				rules: [Validation.isString(), Validation.arrayContains(Object.values<string>(ReportType), (cur, val) => cur === val)]
-			},
-			id: { required: true, rules: [Validation.isString()] }
-		})
+		const { entity, message } = validateReq({
+			message: Schema.string().min(1),
+			entity: Schema.object({
+				id: Schema.string().min(1),
+				type: Schema.any<ReportType>().in(Object.values(ReportType), (cur, val) => cur === val)
+			})
+		}, req.body)
 
 		const reporter = await UsersUseCases.find(req.authUser!.id)
 		if (!reporter || reporter.isDeleted()) throw new BadRequestError('reporter not found')
 
-		const finder = finders[type]
+		const finder = finders[entity.type]
 		if (!finder) throw new BadRequestError('entity cannot be reported')
-		if (!(await finder.find(id))) throw new BadRequestError('entity not found')
+		if (!(await finder.find(entity.id))) throw new BadRequestError('entity not found')
 
 		return await ReportsUseCases.create({
-			message, entity: { type, id }, user: reporter.getEmbedded()
+			message, entity, user: reporter.getEmbedded()
 		})
 	}
 }
