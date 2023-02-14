@@ -1,4 +1,5 @@
 import { Request, validate, Validation } from '@utils/app/package'
+import { isValidPhone } from '@utils/modules/auth'
 import { MessageType, sendNewMessageEmail } from '@utils/modules/meta/messages'
 
 export class MessageController {
@@ -21,12 +22,7 @@ export class MessageController {
 			firstName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			lastName: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			email: { required: true, rules: [Validation.isEmail()] },
-			phone: {
-				required: true, rules: [Validation.isString(), (phone: any) => {
-					const isValidPhone = phone?.startsWith('+') && Validation.isNumber()(parseInt(phone?.split('+')?.[1])).valid
-					return isValidPhone ? Validation.isValid(phone) : Validation.isInvalid(['invalid phone'], phone)
-				}]
-			},
+			phone: { required: true, rules: [isValidPhone] },
 			country: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			message: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
 			type: {

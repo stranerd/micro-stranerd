@@ -2,7 +2,7 @@ import { AuthUseCases, AuthUsersUseCases } from '@modules/auth'
 import { UploaderUseCases } from '@modules/storage'
 import { AuthRole, BadRequestError, NotFoundError, Request, validate, Validation, verifyAccessToken } from '@utils/app/package'
 import { superAdminEmail } from '@utils/environment'
-import { generateAuthOutput, signOutUser } from '@utils/modules/auth'
+import { generateAuthOutput, isValidPhone, signOutUser } from '@utils/modules/auth'
 
 const roles = [AuthRole.isStranerdAdmin, AuthRole.isStranerdTutor]
 
@@ -85,19 +85,7 @@ export class UserController {
 		const { phone } = validate({
 			phone: req.body.phone
 		}, {
-			phone: {
-				required: true, rules: [Validation.makeRule<{ code: string, number: string }>((value) => {
-					const phone = value as { code: string, number: string }
-					const { code = '', number = '' } = phone ?? {}
-					const isValidCode = Validation.isString()(code).valid &&
-						code.startsWith('+') &&
-						Validation.isNumber()(parseInt(code.slice(1))).valid
-					const isValidNumber = Validation.isNumber()(parseInt(number)).valid
-					if (!isValidCode) return Validation.isInvalid(['invalid phone code'], phone)
-					if (!isValidNumber) return Validation.isInvalid(['invalid phone number'], phone)
-					return Validation.isValid(phone)
-				})]
-			}
+			phone: { required: true, rules: [isValidPhone] }
 		})
 
 		return await AuthUseCases.sendVerificationText({

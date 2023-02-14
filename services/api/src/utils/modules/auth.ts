@@ -1,12 +1,13 @@
+import { AuthOutput, AuthUserEntity, AuthUsersUseCases } from '@modules/auth'
 import {
 	BadRequestError,
 	deleteCachedAccessToken,
 	deleteCachedRefreshToken,
 	exchangeOldForNewTokens,
 	makeAccessToken,
-	makeRefreshToken
+	makeRefreshToken,
+	Validation
 } from '@utils/app/package'
-import { AuthOutput, AuthUserEntity, AuthUsersUseCases } from '@modules/auth'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
 	await deleteCachedAccessToken(userId)
@@ -57,3 +58,15 @@ const getUnverifiedUsers = async () => {
 	})
 	return users
 }
+
+export const isValidPhone = Validation.makeRule<{ code: string, number: string }>((value) => {
+	const phone = value as { code: string, number: string }
+	const { code = '', number = '' } = phone ?? {}
+	const isValidCode = Validation.isString()(code).valid &&
+		code.startsWith('+') &&
+		Validation.isNumber()(parseInt(code.slice(1))).valid
+	const isValidNumber = Validation.isNumber()(parseInt(number)).valid
+	if (!isValidCode) return Validation.isInvalid(['invalid phone code'], phone)
+	if (!isValidNumber) return Validation.isInvalid(['invalid phone number'], phone)
+	return Validation.isValid(phone)
+})
