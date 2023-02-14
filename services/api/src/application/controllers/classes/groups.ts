@@ -6,8 +6,7 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
 
 export class GroupController {
@@ -27,13 +26,9 @@ export class GroupController {
 
 	static async UpdateGroup (req: Request) {
 		const authUserId = req.authUser!.id
-		const { name } = validate({
-			name: req.body.name
-		}, {
-			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] }
-		})
-
-		const data = { name }
+		const data = validateReq({
+			name: Schema.string().min(3)
+		}, req.body)
 
 		const updatedGroup = await GroupsUseCases.update({
 			id: req.params.id,
@@ -51,24 +46,19 @@ export class GroupController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const { name, classId } = validate({
-			name: req.body.name,
-			classId: req.params.classId
-		}, {
-			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			classId: { required: true, rules: [Validation.isString()] }
-		})
+		const data = validateReq({
+			name: Schema.string().min(3),
+			classId: Schema.string().min(1)
+		}, { ...req.body, classId: req.params.classId })
 
-		const classInst = await ClassesUseCases.find(classId)
+		const classInst = await ClassesUseCases.find(data.classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
-		const data = {
-			name, classId, user: user.getEmbedded(),
+		return await GroupsUseCases.add({
+			...data, user: user.getEmbedded(),
 			users: classInst.users
-		}
-
-		return await GroupsUseCases.add(data)
+		})
 	}
 
 	static async DeleteGroup (req: Request) {

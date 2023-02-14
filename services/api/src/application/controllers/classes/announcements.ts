@@ -6,8 +6,7 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
 
 export class AnnouncementController {
@@ -30,30 +29,20 @@ export class AnnouncementController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const { body, classId, reminder } = validate({
-			body: req.body.body,
-			classId: req.params.classId,
-			reminder: req.body.reminder
-		}, {
-			body: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			classId: { required: true, rules: [Validation.isString()] },
-			reminder: {
-				required: true,
-				nullable: true,
-				rules: [Validation.isNumber(), Validation.isMoreThan(Date.now(), 'is less than the current date')]
-			}
-		})
+		const data = validateReq({
+			body: Schema.string().min(3),
+			classId: Schema.string().min(1),
+			reminder: Schema.time().min(Date.now()).asStamp().nullable()
+		}, { ...req.body, classId: req.params.classId })
 
-		const classInst = await ClassesUseCases.find(classId)
+		const classInst = await ClassesUseCases.find(data.classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
 
-		const data = {
-			body, classId, user: user.getEmbedded(),
-			users: classInst.users, reminder
-		}
-
-		return await AnnouncementsUseCases.add(data)
+		return await AnnouncementsUseCases.add({
+			...data, user: user.getEmbedded(),
+			users: classInst.users
+		})
 	}
 
 	static async DeleteAnnouncement (req: Request) {

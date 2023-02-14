@@ -17,7 +17,7 @@ export class FileController {
 	static async UpdateFile (req: Request) {
 		const authUserId = req.authUser!.id
 		const uploadedMedia = req.files.media?.[0] ?? null
-		const changedPhoto = !!uploadedMedia || req.body.photo === null
+		const changedMedia = !!uploadedMedia || req.body.media === null
 		const data = validate({
 			title: req.body.title,
 			media: uploadedMedia as any
@@ -27,10 +27,10 @@ export class FileController {
 		})
 
 		const { title } = data
-		if (uploadedMedia) data.media = await UploaderUseCases.upload('study/files', uploadedMedia)
+		const media = uploadedMedia ?  await UploaderUseCases.upload('study/files', uploadedMedia) : undefined
 		const validateData = {
 			title,
-			...(changedPhoto ? { media: data.media } : {})
+			...(changedMedia ? { media } : {})
 		}
 
 		const updatedFile = await FilesUseCases.update({

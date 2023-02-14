@@ -6,9 +6,7 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation,
-	ValidationError
+	Schema, validateReq, ValidationError
 } from '@utils/app/package'
 
 export class SchemeController {
@@ -28,21 +26,16 @@ export class SchemeController {
 
 	static async UpdateScheme (req: Request) {
 		const authUserId = req.authUser!.id
-		const { title, topic, start, end } = validate({
-			title: req.body.title,
-			topic: req.body.topic,
-			start: req.body.start,
-			end: req.body.end
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			topic: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			start: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
-			end: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(req.body.start)] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+			topic: Schema.string().min(1),
+			start: Schema.time().asStamp(),
+			end: Schema.time().min(req.body.start).asStamp()
+		}, req.body)
 
 		const classInst = await ClassesUseCases.find(req.params.classId)
 		if (!classInst) throw new BadRequestError('class not found')
-		if (!classInst.courses.includes(title)) throw new ValidationError([{
+		if (!classInst.courses.includes(data.title)) throw new ValidationError([{
 			messages: ['is not a class course'],
 			field: 'title'
 		}])
@@ -51,7 +44,7 @@ export class SchemeController {
 			id: req.params.id,
 			classId: req.params.classId,
 			userId: authUserId,
-			data: { title, topic, start, end }
+			data
 		})
 
 		if (updatedScheme) return updatedScheme
@@ -63,30 +56,24 @@ export class SchemeController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const { title, classId, topic, start, end } = validate({
-			title: req.body.title,
-			classId: req.params.classId,
-			topic: req.body.topic,
-			start: req.body.start,
-			end: req.body.end
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			classId: { required: true, rules: [Validation.isString()] },
-			topic: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			start: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(0)] },
-			end: { required: true, rules: [Validation.isNumber(), Validation.isMoreThan(req.body.start)] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+			classId: Schema.string().min(1),
+			topic: Schema.string().min(1),
+			start: Schema.time().asStamp(),
+			end: Schema.time().min(req.body.start).asStamp()
+		}, { ...req.body, classId: req.params.classId })
 
-		const classInst = await ClassesUseCases.find(classId)
+		const classInst = await ClassesUseCases.find(data.classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
-		if (!classInst.courses.includes(title)) throw new ValidationError([{
+		if (!classInst.courses.includes(data.title)) throw new ValidationError([{
 			messages: ['is not a class course'],
 			field: 'title'
 		}])
 
 		return await SchemesUseCases.add({
-			title, topic, start, end, classId,
+			...data,
 			users: classInst.users, user: user.getEmbedded()
 		})
 	}

@@ -6,7 +6,9 @@ import {
 	NotAuthorizedError,
 	QueryParams,
 	Request,
+	Schema,
 	validate,
+	validateReq,
 	Validation
 } from '@utils/app/package'
 import { ClassUsers } from '@modules/classes/domain/types'
@@ -27,26 +29,19 @@ export class ClassController {
 		const authUserId = req.authUser!.id
 		const uploadedPhoto = req.files.photo?.[0] ?? null
 		const changedPhoto = !!uploadedPhoto || req.body.photo === null
-		const data = validate({
-			name: req.body.name,
-			description: req.body.description,
-			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
-			photo: uploadedPhoto as any
-		}, {
-			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			courses: {
-				required: true,
-				rules: [Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'strings')]
-			},
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated(), Validation.isImage()] }
-		})
+
+		const data = validateReq({
+			name: Schema.string().min(3),
+			description: Schema.string().min(3),
+			photo: Schema.file().image().nullable(),
+			courses: Schema.array(Schema.string().min(1)).set(),
+		}, { ...req.body, photo: uploadedPhoto })
 
 		const { name, description, courses } = data
-		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
+		const photo = uploadedPhoto ? await UploaderUseCases.upload('classes/photos', uploadedPhoto) : undefined
 		const validateData = {
 			name, description, courses,
-			...(changedPhoto ? { photo: data.photo } : {})
+			...(changedPhoto ? { photo } : {})
 		}
 
 		const updatedClass = await ClassesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
@@ -60,38 +55,30 @@ export class ClassController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const { name, departmentId, year, description, courses, photo: classPhoto } = validate({
-			name: req.body.name,
-			departmentId: req.body.school?.departmentId,
-			year: req.body.school?.year,
-			description: req.body.description,
-			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
-			photo: req.files.photo?.[0] ?? null
-		}, {
-			name: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			departmentId: { required: true, rules: [Validation.isString()] },
-			year: { required: true, rules: [Validation.isNumber()] },
-			description: { required: true, rules: [Validation.isString(), Validation.isMinOf(3)] },
-			courses: {
-				required: true,
-				rules: [Validation.isArrayOf((cur) => Validation.isString()(cur).valid, 'strings')]
-			},
-			photo: { required: true, nullable: true, rules: [Validation.isImage()] }
-		})
+		const data = validateReq({
+			name: Schema.string().min(3),
+			description: Schema.string().min(3),
+			photo: Schema.file().image().nullable(),
+			courses: Schema.array(Schema.string().min(1)).set(),
+			school: Schema.object({
+				departmentId: Schema.string().min(1),
+				year: Schema.number().gt(0)
+			})
+		},{ ...req.body, photo: req.files.photo?.[0] ?? null })
 
-		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
-		const department = await DepartmentsUseCases.find(departmentId)
+		const photo = data.photo ? await UploaderUseCases.upload('classes/photos', data.photo) : null
+		const department = await DepartmentsUseCases.find(data.school.departmentId)
 		if (!department) throw new BadRequestError('department not found')
 
 		return await ClassesUseCases.add({
-			name, description, photo,
+			...data, photo,
 			school: {
+				...data.school,
 				departmentId: department.id,
 				facultyId: department.facultyId,
-				institutionId: department.institutionId,
-				year
+				institutionId: department.institutionId
 			},
-			user: user.getEmbedded(), courses
+			user: user.getEmbedded()
 		})
 	}
 

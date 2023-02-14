@@ -6,11 +6,12 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
+	Schema, validateReq,
 	Validation,
 	ValidationError
 } from '@utils/app/package'
 import { getCronOrder } from '@utils/modules/classes/events'
+import { Cron } from '@modules/classes'
 
 const isValidTimeZone = (tz: string) => {
 	try {
@@ -21,8 +22,8 @@ const isValidTimeZone = (tz: string) => {
 	}
 }
 
-const isCronValid = Validation.makeRule((value) => {
-	const val = value as any
+const isCronValid = () => Validation.makeRule<Cron>((value) => {
+	const val = value as Cron
 	const isDayValid = Validation.isNumber()(val?.day).valid && Validation.isMoreThanOrEqualTo(0)(val?.day).valid && Validation.isLessThan(7)(val?.day).valid
 	const isHourValid = Validation.isNumber()(val?.hour).valid && Validation.isMoreThanOrEqualTo(0)(val?.hour).valid && Validation.isLessThan(24)(val?.hour).valid
 	const isMinuteValid = Validation.isNumber()(val?.minute).valid && Validation.isMoreThanOrEqualTo(0)(val?.minute).valid && Validation.isLessThan(60)(val?.minute).valid
@@ -30,7 +31,8 @@ const isCronValid = Validation.makeRule((value) => {
 	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid(val) : Validation.isInvalid(['not a valid cron object'], val)
 })
 
-const isCronMore = (start: any) => (val: any) => getCronOrder(val) >= getCronOrder(start) ? Validation.isValid(val) : Validation.isInvalid(['must be after start'], val)
+const isCronMore = (start: any) => Validation.makeRule<Cron>((val: any) =>
+	getCronOrder(val) >= getCronOrder(start) ? Validation.isValid(val) : Validation.isInvalid(['must be after start'], val))
 
 export class EventController {
 	static async FindEvent (req: Request) {
@@ -49,27 +51,22 @@ export class EventController {
 
 	static async UpdateEvent (req: Request) {
 		const authUserId = req.authUser!.id
-		const isTimetable = req.body.data?.type === EventType.timetable
-		const { title, type, start, end, lecturer } = validate({
-			title: req.body.title,
-			type: req.body.data?.type,
-			start: req.body.data?.start,
-			end: req.body.data?.end,
-			lecturer: req.body.data?.lecturer
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			type: {
-				required: true, rules: [Validation.isString(), Validation.isShallowEqualTo(EventType.timetable)]
-			},
-			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
-			lecturer: { required: isTimetable, rules: [Validation.isString(), Validation.isMinOf(1)] }
-		})
 
-		if (isTimetable) {
+		const data = validateReq({
+			title: Schema.string().min(1),
+			classId: Schema.string().min(1),
+			data: Schema.object({
+				type: Schema.any<EventType.timetable>().eq(EventType.timetable),
+				start: Schema.any<Cron>().addRule(isCronValid()),
+				end: Schema.any<Cron>().addRule(isCronValid()).addRule(isCronMore(req.body.data?.start)),
+				lecturer: Schema.string().min(1)
+			})
+		}, { ...req.body, classId: req.params.classId })
+
+		if (data.data.type === EventType.timetable) {
 			const classInst = await ClassesUseCases.find(req.params.classId)
 			if (!classInst) throw new BadRequestError('class not found')
-			if (!classInst.courses.includes(title)) throw new ValidationError([{
+			if (!classInst.courses.includes(data.title)) throw new ValidationError([{
 				messages: ['is not a class course'],
 				field: 'title'
 			}])
@@ -79,7 +76,7 @@ export class EventController {
 			id: req.params.id,
 			classId: req.params.classId,
 			userId: authUserId,
-			data: { title, data: { type, start, end, lecturer } }
+			data
 		})
 
 		if (updatedEvent) return updatedEvent
@@ -91,36 +88,28 @@ export class EventController {
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const isTimetable = req.body.data?.type === EventType.timetable
-		const { title, classId, type, start, end, lecturer } = validate({
-			title: req.body.title,
-			classId: req.params.classId,
-			type: req.body.data?.type,
-			start: req.body.data?.start,
-			end: req.body.data?.end,
-			lecturer: req.body.data?.lecturer
-		}, {
-			title: { required: true, rules: [Validation.isString(), Validation.isMinOf(1)] },
-			classId: { required: true, rules: [Validation.isString()] },
-			type: {
-				required: true, rules: [Validation.isString(), Validation.isShallowEqualTo(EventType.timetable)]
-			},
-			start: { required: isTimetable, rules: [isCronValid] },
-			end: { required: isTimetable, rules: [isCronValid, isCronMore(req.body.data?.start)] },
-			lecturer: { required: isTimetable, rules: [Validation.isString(), Validation.isMinOf(1)] }
-		})
 
-		const classInst = await ClassesUseCases.find(classId)
+		const data = validateReq({
+			title: Schema.string().min(1),
+			classId: Schema.string().min(1),
+			data: Schema.object({
+				type: Schema.any<EventType.timetable>().eq(EventType.timetable),
+				start: Schema.any<Cron>().addRule(isCronValid()),
+				end: Schema.any<Cron>().addRule(isCronValid()).addRule(isCronMore(req.body.data?.start)),
+				lecturer: Schema.string().min(1)
+			})
+		}, { ...req.body, classId: req.params.classId })
+
+		const classInst = await ClassesUseCases.find(data.classId)
 		if (!classInst) throw new BadRequestError('class not found')
 		if (!classInst!.users[ClassUsers.admins].includes(authUserId)) throw new BadRequestError('not a class admin')
-		if (isTimetable && !classInst.courses.includes(title)) throw new ValidationError([{
+		if (data.data.type === EventType.timetable && !classInst.courses.includes(data.title)) throw new ValidationError([{
 			messages: ['is not a class course'],
 			field: 'title'
 		}])
 
 		return await EventsUseCases.add({
-			title, classId, users: classInst.users, user: user.getEmbedded(),
-			data: { type, start, end, lecturer }
+			...data, users: classInst.users, user: user.getEmbedded()
 		})
 	}
 

@@ -2,9 +2,7 @@ import { UploaderUseCases } from '@modules/storage'
 import { CoursesUseCases, FilesUseCases } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
-	BadRequestError,
-	MediaOutput,
-	NotAuthorizedError,
+	BadRequestError, NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
 	Request,
@@ -36,8 +34,7 @@ export class FileController {
 			media: Schema.file().nullable()
 		}, { ...req.body, media: uploadedMedia })
 
-		let media = undefined as MediaOutput | undefined
-		if (uploadedMedia) media = await UploaderUseCases.upload('teachers/files', uploadedMedia)
+		const media = uploadedMedia ? await UploaderUseCases.upload('teachers/files', uploadedMedia) : undefined
 		const validateData = {
 			title: data.title, ...(changedMedia ? { media } : {})
 		}

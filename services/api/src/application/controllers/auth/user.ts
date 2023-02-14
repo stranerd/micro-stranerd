@@ -23,10 +23,10 @@ export class UserController {
 			photo: Schema.any().nullable().addRule(Validation.isValidPhone())
 		}, { ...req.body, photo: uploadedPhoto })
 		const { firstName, lastName, description } = data
-		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('profiles/photos', uploadedPhoto)
+		const photo = uploadedPhoto ? await UploaderUseCases.upload('profiles/photos', uploadedPhoto) : undefined
 		const validateData = {
 			firstName, lastName, description,
-			...(changedPhoto ? { photo: data.photo } : {})
+			...(changedPhoto ? { photo } : {})
 		}
 
 		return await AuthUsersUseCases.updateUserProfile({ userId, data: validateData as any })
