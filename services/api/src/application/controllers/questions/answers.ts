@@ -32,7 +32,7 @@ export class AnswerController {
 		const updatedAnswer = await AnswersUseCases.update({
 			id: req.params.id,
 			userId: authUserId,
-			data: { ...data, attachments: data.attachments as any }
+			data
 		})
 
 		if (updatedAnswer) return updatedAnswer
@@ -58,7 +58,6 @@ export class AnswerController {
 			throw new BadRequestError('user not found')
 		return await AnswersUseCases.add({
 			...data,
-			attachments: data.attachments as any,
 			user: user.getEmbedded(),
 			tagId: question.tagId
 		})

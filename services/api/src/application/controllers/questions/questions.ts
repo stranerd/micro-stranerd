@@ -44,7 +44,7 @@ export class QuestionController {
 		const updatedQuestion = await QuestionsUseCases.update({
 			id: req.params.id,
 			userId: authUserId,
-			data: { ...data, attachments: data.attachments as any }
+			data
 		})
 
 		if (updatedQuestion) return updatedQuestion
@@ -74,7 +74,6 @@ export class QuestionController {
 
 		return await QuestionsUseCases.add({
 			...data,
-			attachments: data.attachments as any,
 			user: user.getEmbedded()
 		})
 	}

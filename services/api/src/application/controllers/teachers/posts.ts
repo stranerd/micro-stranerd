@@ -24,16 +24,13 @@ export class PostController {
 	}
 
 	static async CreatePost (req: Request) {
-		const acceptableTypes = Object.keys(PostType)
-			.filter((type) => type !== PostType.assignments) as PostType[]
-
 		const { title, courseId, description, attachments, data } = validateReq({
 			title: Schema.string().min(1),
 			description: Schema.string().min(1),
 			deadline: Schema.number().gt(0).nullable(),
 			courseId: Schema.string().min(1),
 			data: Schema.object({
-				type: Schema.any<PostType>().in(acceptableTypes, (cur, val) => cur === val),
+				type: Schema.any<PostType.announcements | PostType.discussions>().in([PostType.announcements, PostType.discussions], (cur, val) => cur === val),
 			}),
 			attachments: Schema.array(Schema.file().image())
 		}, {
@@ -48,7 +45,7 @@ export class PostController {
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		return await PostsUseCases.add({
-			courseId: course.id, members: course.members, data: data as any,
+			courseId: course.id, members: course.members, data,
 			title, description, attachments: attachments as any, user: user.getEmbedded()
 		})
 	}

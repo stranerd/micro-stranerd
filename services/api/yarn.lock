@@ -2104,10 +2104,10 @@ entities@~2.1.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.1.0.tgz#992d3129cf7df6870b96c57858c249a120f8b8b5"
   integrity sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==
 
-equipped@^4.0.0-alpha.8:
-  version "4.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/equipped/-/equipped-4.0.0-alpha.8.tgz#ff71ac8dc78e66139e37157694a547c1939e96a2"
-  integrity sha512-WJrCAMxotvvCiGLx8k56q1XraGO9aznML5lkOVZz9GIwV41++lR4fPSxkCzAkbhdWpiLRmX0vxcyE+fkCNQdHQ==
+equipped@^4.0.0-alpha.9:
+  version "4.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/equipped/-/equipped-4.0.0-alpha.9.tgz#ba8348d799359823221e0bb369edf964d52be454"
+  integrity sha512-lW5LYXYV8C1S7DOaovFJfwta9T/naQWQtpxcSz6Ks10AKzJaxao7L003n/vD/IkSKEH05YhPsh7hX76PI4jNhA==
   dependencies:
     amqplib "^0.10.3"
     axios "^1.3.3"
@@ -2130,7 +2130,7 @@ equipped@^4.0.0-alpha.8:
     pug "^3.0.2"
     redis "^4.6.4"
     socket.io "4.6.0"
-    valleyed "^4.0.4-alpha.1"
+    valleyed "^4.0.4-alpha.2"
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -4796,10 +4796,10 @@ validator@5.7.0:
   resolved "https://registry.yarnpkg.com/validator/-/validator-5.7.0.tgz#7a87a58146b695ac486071141c0c49d67da05e5c"
   integrity sha512-kHes0AATXms5NVgbJ4aDELR91O7+X+cxAS9d6I2z49MBhcAw6DYW4UCI8qv9NkL4+Mgx8jklt7gkCht+UHaZ+g==
 
-valleyed@^4.0.4-alpha.1:
-  version "4.0.4-alpha.1"
-  resolved "https://registry.yarnpkg.com/valleyed/-/valleyed-4.0.4-alpha.1.tgz#cab910e29cda137cd0a4a7d38b262d752ad356bb"
-  integrity sha512-YYAW9w0i2q023T5gq4uRrShv+k7qcv6iQEEu9CxRWKNfPStGyTr3ZY6w1dmBKICtMbquHkqY1Tr1cY7n/sim/A==
+valleyed@^4.0.4-alpha.2:
+  version "4.0.4-alpha.2"
+  resolved "https://registry.yarnpkg.com/valleyed/-/valleyed-4.0.4-alpha.2.tgz#b22b978e82a5a38d34e05781ae6efec36850b937"
+  integrity sha512-N+Dqx+3Ve8G6i29GC+EKCYILKo0ThcUYumc1kK9xSdHWzWAoC1UWforswp//+kmnE1tSXhZYH9snUbg9hsCeTw==
   dependencies:
     url-regex-safe "^3.0.0"
 

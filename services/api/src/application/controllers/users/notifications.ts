@@ -1,20 +1,20 @@
 import { NotificationsUseCases } from '@modules/users'
-import { QueryParams, Request, Schema, validate, validateReq } from '@utils/app/package'
+import { QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 
 export class NotificationsController {
-	static async getNotifications (req: Request) {
+	static async getNotifications(req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'userId', value: req.authUser!.id }]
 		return await NotificationsUseCases.get(query)
 	}
 
-	static async findNotification (req: Request) {
+	static async findNotification(req: Request) {
 		const notification = await NotificationsUseCases.find(req.params.id)
 		if (!notification || notification.userId !== req.authUser!.id) return null
 		return notification
 	}
 
-	static async markNotificationSeen (req: Request) {
+	static async markNotificationSeen(req: Request) {
 		const data = validateReq({
 			seen: Schema.boolean()
 		}, req.body)
@@ -28,14 +28,13 @@ export class NotificationsController {
 		return true
 	}
 
-	static async markAllNotificationsSeen (req: Request) {
-		const data = validate({
+	static async markAllNotificationsSeen(req: Request) {
+		const { seen } = validateReq({
 			seen: Schema.boolean()
 		}, req.body)
 
 		await NotificationsUseCases.markSeen({
-			userId: req.authUser!.id,
-			seen: !!data.seen
+			userId: req.authUser!.id, seen
 		})
 
 		return true
