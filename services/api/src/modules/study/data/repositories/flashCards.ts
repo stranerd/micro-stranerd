@@ -1,4 +1,5 @@
-import { Instance, parseQueryParams, QueryParams } from '@utils/app/package'
+import { parseQueryParams, QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IFlashCardRepository } from '../../domain/irepositories/flashCards'
 import { EmbeddedUser } from '../../domain/types'
 import { FlashCardMapper } from '../mappers/flashCards'
@@ -58,10 +59,10 @@ export class FlashCardRepository implements IFlashCardRepository {
 	async saveMatch (flashCardId: string, userId: string, time: number) {
 		time = Number(time.toFixed(1))
 		const key = `flashcard-matches-${flashCardId}-${userId}`
-		const value = await Instance.get().cache.get(key)
+		const value = await appInstance.cache.get(key)
 		const cachedTime = Number(value ?? '0')
 		if (cachedTime && time >= cachedTime) return { time: cachedTime, record: false }
-		await Instance.get().cache.set(key, time.toString(), -1)
+		await appInstance.cache.set(key, time.toString(), -1)
 		return { time, record: true }
 	}
 }

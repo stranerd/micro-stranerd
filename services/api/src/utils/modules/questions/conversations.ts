@@ -1,4 +1,5 @@
-import { BadRequestError, Instance } from '@utils/app/package'
+import { BadRequestError } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { openAIKey } from '@utils/environment'
 
 const { Configuration, OpenAIApi } = require('openai')
@@ -16,7 +17,7 @@ export const getConversationResponse = async (prompt: string) => {
 		})
 		return response.data.choices.at(0)?.text ?? 'No answer found'
 	} catch (err: any) {
-		await Instance.get().logger.error(err.message)
+		await appInstance.logger.error(err.message)
 		throw new BadRequestError('failed to fetch answer')
 	}
 }

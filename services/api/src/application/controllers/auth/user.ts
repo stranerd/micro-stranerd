@@ -20,7 +20,7 @@ export class UserController {
 			firstName: Schema.string().min(3),
 			lastName: Schema.string().min(3),
 			description: Schema.string(),
-			photo: Schema.any().nullable().addRule(Validation.isValidPhone())
+			photo: Schema.file().image().nullable()
 		}, { ...req.body, photo: uploadedPhoto })
 		const { firstName, lastName, description } = data
 		const photo = uploadedPhoto ? await UploaderUseCases.upload('profiles/photos', uploadedPhoto) : undefined
