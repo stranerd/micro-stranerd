@@ -18,7 +18,7 @@ export class LikesController {
 			value: Schema.boolean(),
 			entity: Schema.object({
 				id: Schema.string().min(1),
-				type: Schema.any<InteractionEntities>().in(Object.values(InteractionEntities), (cur, val) => cur === val)
+				type: Schema.any<InteractionEntities>().in(Object.values(InteractionEntities))
 			})
 		}, req.body)
 

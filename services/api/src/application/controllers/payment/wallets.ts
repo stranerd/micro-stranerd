@@ -28,7 +28,7 @@ export class WalletsController {
 
 	static async updateAccount (req: Request) {
 		const { country, bankCode, number } = validateReq({
-			country: Schema.any<CurrencyCountries>().in(Object.values(CurrencyCountries), (cur, val) => cur === val),
+			country: Schema.any<CurrencyCountries>().in(Object.values(CurrencyCountries)),
 			number: Schema.string(),
 			bankCode: Schema.string()
 		}, req.body)

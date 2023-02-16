@@ -153,7 +153,7 @@ export class ClassController {
 		const { add, userId, role } = validateReq({
 			add: Schema.boolean(),
 			userId: Schema.string().min(1),
-			role: Schema.any<ClassUsers>().in(Object.values(ClassUsers), (cur, val) => cur === val)
+			role: Schema.any<ClassUsers>().in(Object.values(ClassUsers))
 		}, req.body)
 
 		const added = await ClassesUseCases.changeMemberRole({

@@ -27,7 +27,7 @@ export class TransactionsController {
 
 		const { data: { type } } = validateReq({
 			data: Schema.object({
-				type: Schema.any<TransactionType>().in(types, (cur, val) => cur === val)
+				type: Schema.any<TransactionType>().in(types)
 			})
 		}, req.body)
 

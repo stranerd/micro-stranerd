@@ -25,7 +25,7 @@ export class TagController {
 	static async CreateTag (req: Request) {
 		const data = validateReq({
 			title: Schema.string().min(1),
-			type: Schema.any<TagTypes>().in(Object.values(TagTypes), (cur, val) => cur === val),
+			type: Schema.any<TagTypes>().in(Object.values(TagTypes)),
 			parent: Schema.string().nullable()
 		}, req.body)
 

@@ -30,7 +30,7 @@ export class PostController {
 			deadline: Schema.number().gt(0).nullable(),
 			courseId: Schema.string().min(1),
 			data: Schema.object({
-				type: Schema.any<PostType.announcements | PostType.discussions>().in([PostType.announcements, PostType.discussions], (cur, val) => cur === val),
+				type: Schema.any<PostType.announcements | PostType.discussions>().in([PostType.announcements, PostType.discussions]),
 			}),
 			attachments: Schema.array(Schema.file().image())
 		}, {

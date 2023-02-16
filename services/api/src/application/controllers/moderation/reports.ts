@@ -32,7 +32,7 @@ export class ReportController {
 			message: Schema.string().min(1),
 			entity: Schema.object({
 				id: Schema.string().min(1),
-				type: Schema.any<ReportType>().in(Object.values(ReportType), (cur, val) => cur === val)
+				type: Schema.any<ReportType>().in(Object.values(ReportType))
 			})
 		}, req.body)
 

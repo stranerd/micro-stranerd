@@ -3,16 +3,16 @@ import { UsersUseCases } from '@modules/users'
 import { BadRequestError, NotAuthorizedError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 
 export class SetController {
-	static async FindSet(req: Request) {
+	static async FindSet (req: Request) {
 		return await SetsUseCases.find(req.params.id)
 	}
 
-	static async GetSets(req: Request) {
+	static async GetSets (req: Request) {
 		const query = req.query as QueryParams
 		return await SetsUseCases.get(query)
 	}
 
-	static async CreateSet(req: Request) {
+	static async CreateSet (req: Request) {
 		const data = validateReq({
 			name: Schema.string().min(3),
 		}, req.body)
@@ -24,7 +24,7 @@ export class SetController {
 		return await SetsUseCases.add({ ...data, user: user.getEmbedded() })
 	}
 
-	static async UpdateSet(req: Request) {
+	static async UpdateSet (req: Request) {
 		const data = validateReq({
 			name: Schema.string().min(3),
 		}, req.body)
@@ -34,9 +34,9 @@ export class SetController {
 		throw new NotAuthorizedError()
 	}
 
-	static async SaveProp(req: Request) {
+	static async SaveProp (req: Request) {
 		const data = validateReq({
-			type: Schema.any<SetSaved>().in(Object.values(SetSaved), (cur, val) => cur === val),
+			type: Schema.any<SetSaved>().in(Object.values(SetSaved)),
 			propIds: Schema.array(Schema.string().min(1)),
 			add: Schema.boolean()
 		}, req.body)
@@ -53,7 +53,7 @@ export class SetController {
 		throw new NotAuthorizedError()
 	}
 
-	static async DeleteSet(req: Request) {
+	static async DeleteSet (req: Request) {
 		const isDeleted = await SetsUseCases.delete({ id: req.params.id, userId: req.authUser!.id })
 
 		if (isDeleted) return isDeleted

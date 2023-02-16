@@ -20,7 +20,7 @@ export class PastQuestionController {
 			data: Schema.or([
 				Schema.object({
 					type: Schema.any<PastQuestionType.theory | PastQuestionType.practical | PastQuestionType.german>()
-						.in([PastQuestionType.theory, PastQuestionType.practical, PastQuestionType.german], (cur, val) => cur === val),
+						.in([PastQuestionType.theory, PastQuestionType.practical, PastQuestionType.german]),
 					answer: Schema.string(),
 					answerMedia: Schema.array(Schema.file().image()),
 				}),
@@ -55,7 +55,7 @@ export class PastQuestionController {
 			data: Schema.or([
 				Schema.object({
 					type: Schema.any<PastQuestionType.theory | PastQuestionType.practical | PastQuestionType.german>()
-						.in([PastQuestionType.theory, PastQuestionType.practical, PastQuestionType.german], (cur, val) => cur === val),
+						.in([PastQuestionType.theory, PastQuestionType.practical, PastQuestionType.german]),
 					answer: Schema.string(),
 					answerMedia: Schema.array(Schema.file().image()),
 				}),

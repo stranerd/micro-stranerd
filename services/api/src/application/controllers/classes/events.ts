@@ -13,22 +13,22 @@ import {
 import { getCronOrder } from '@utils/modules/classes/events'
 import { Cron } from '@modules/classes'
 
-const isValidTimeZone = (tz: string) => {
-	try {
-		Intl.DateTimeFormat(undefined, { timeZone: tz })
-		return true
-	} catch (ex) {
-		return false
-	}
-}
-
 const isCronValid = () => Validation.makeRule<Cron>((value) => {
 	const val = value as Cron
-	const isDayValid = Validation.isNumber()(val?.day).valid && Validation.isMoreThanOrEqualTo(0)(val?.day).valid && Validation.isLessThan(7)(val?.day).valid
-	const isHourValid = Validation.isNumber()(val?.hour).valid && Validation.isMoreThanOrEqualTo(0)(val?.hour).valid && Validation.isLessThan(24)(val?.hour).valid
-	const isMinuteValid = Validation.isNumber()(val?.minute).valid && Validation.isMoreThanOrEqualTo(0)(val?.minute).valid && Validation.isLessThan(60)(val?.minute).valid
-	const isValidTz = isValidTimeZone(val?.tz)
-	return [isDayValid, isHourValid, isMinuteValid, isValidTz].every((e) => e) ? Validation.isValid(val) : Validation.isInvalid(['not a valid cron object'], val)
+	const { valid } = Schema.object({
+		day: Schema.number().gte(0).lte(6),
+		hour: Schema.number().gte(0).lte(23),
+		minute: Schema.number().gte(0).lte(59),
+		tz: Schema.string().custom((tz: string) => {
+			try {
+				Intl.DateTimeFormat(undefined, { timeZone: tz })
+				return true
+			} catch (ex) {
+				return false
+			}
+		})
+	}).parse(val)
+	return valid ? Validation.isValid(val) : Validation.isInvalid(['not a valid cron object'], val)
 })
 
 const isCronMore = (start: any) => Validation.makeRule<Cron>((val: any) =>

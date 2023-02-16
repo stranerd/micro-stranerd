@@ -20,7 +20,7 @@ export class TestPrepController {
 			data: Schema.or([
 				Schema.object({
 					type: Schema.any<PrepType.pastQuestion>().eq(PrepType.pastQuestion),
-					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType), (cur, val) => cur === val),
+					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType)),
 					courseId: Schema.string().min(1),
 					year: Schema.number().gt(1)
 				})
@@ -46,7 +46,7 @@ export class TestPrepController {
 			data: Schema.or([
 				Schema.object({
 					type: Schema.any<PrepType.pastQuestion>().eq(PrepType.pastQuestion),
-					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType), (cur, val) => cur === val),
+					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType)),
 					courseId: Schema.string().min(1),
 					year: Schema.number().gt(1)
 				})
