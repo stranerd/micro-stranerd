@@ -1,18 +1,18 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { PlanEntity, PlanFromModel } from '@modules/payment'
-import { getSocketEmitter } from '@index'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const PlanChangeStreamCallbacks: ChangeStreamCallbacks<PlanFromModel, PlanEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('payment/plans', after)
-		await getSocketEmitter().emitCreated(`payment/plans/${after.id}`, after)
+		await appInstance.listener.created('payment/plans', after)
+		await appInstance.listener.created(`payment/plans/${after.id}`, after)
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated('payment/plans', after)
-		await getSocketEmitter().emitUpdated(`payment/plans/${after.id}`, after)
+		await appInstance.listener.updated('payment/plans', after)
+		await appInstance.listener.updated(`payment/plans/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('payment/plans', before)
-		await getSocketEmitter().emitDeleted(`payment/plans/${before.id}`, before)
+		await appInstance.listener.deleted('payment/plans', before)
+		await appInstance.listener.deleted(`payment/plans/${before.id}`, before)
 	}
 }

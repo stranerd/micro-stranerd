@@ -1,15 +1,15 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
-import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
-import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
-import { getSocketEmitter } from '@index'
-import { publishers } from '@utils/events'
-import { SetSaved, SetsUseCases } from '@modules/study'
 import { PlanDataType, WalletsUseCases } from '@modules/payment'
+import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
+import { SetSaved, SetsUseCases } from '@modules/study'
+import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { publishers } from '@utils/events'
 
 export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('questions/questions', after)
-		await getSocketEmitter().emitCreated(`questions/questions/${after.id}`, after)
+		await appInstance.listener.created('questions/questions', after)
+		await appInstance.listener.created(`questions/questions/${after.id}`, after)
 
 		await WalletsUseCases.updateSubscriptionData({ userId: after.user.id, key: PlanDataType.questions, value: -1 })
 
@@ -27,8 +27,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated('questions/questions', after)
-		await getSocketEmitter().emitUpdated(`questions/questions/${after.id}`, after)
+		await appInstance.listener.updated('questions/questions', after)
+		await appInstance.listener.updated(`questions/questions/${after.id}`, after)
 
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
@@ -38,8 +38,8 @@ export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromMo
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('questions/questions', before)
-		await getSocketEmitter().emitDeleted(`questions/questions/${before.id}`, before)
+		await appInstance.listener.deleted('questions/questions', before)
+		await appInstance.listener.deleted(`questions/questions/${before.id}`, before)
 		await SetsUseCases.removeProp({ prop: SetSaved.questions, value: before.id })
 
 		await AnswersUseCases.deleteQuestionAnswers(before.id)

@@ -6,16 +6,16 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
+	Schema, validateReq,
 	Validation
 } from '@utils/app/package'
 
 export class NoteController {
-	static async FindNote (req: Request) {
+	static async FindNote(req: Request) {
 		return await NotesUseCases.find(req.params.id)
 	}
 
-	static async GetNote (req: Request) {
+	static async GetNote(req: Request) {
 		const query = req.query as QueryParams
 		query.auth = [{ field: 'isPrivate', value: false }]
 		if (req.authUser) {
@@ -25,16 +25,12 @@ export class NoteController {
 		return await NotesUseCases.get(query)
 	}
 
-	static async UpdateNote (req: Request) {
-		const data = validate({
-			title: req.body.title,
-			content: req.body.content,
-			isPrivate: req.body.isPrivate
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			content: { required: true, rules: [Validation.isString] },
-			isPrivate: { required: true, rules: [Validation.isBoolean] }
-		})
+	static async UpdateNote(req: Request) {
+		const data = validateReq({
+			title: Schema.string().min(1),
+			content: Schema.string().min(1),
+			isPrivate: Schema.boolean()
+		}, req.body)
 
 		const authUserId = req.authUser!.id
 		const updatedNote = await NotesUseCases.update({
@@ -47,16 +43,12 @@ export class NoteController {
 		throw new NotAuthorizedError()
 	}
 
-	static async CreateNote (req: Request) {
-		const data = validate({
-			title: req.body.title,
-			content: req.body.content,
-			isPrivate: req.body.isPrivate
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			content: { required: true, rules: [Validation.isString] },
-			isPrivate: { required: true, rules: [Validation.isBoolean] }
-		})
+	static async CreateNote(req: Request) {
+		const data = validateReq({
+			title: Schema.string().min(1),
+			content: Schema.string().min(1),
+			isPrivate: Schema.boolean()
+		}, req.body)
 
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
@@ -66,7 +58,7 @@ export class NoteController {
 		})
 	}
 
-	static async DeleteNote (req: Request) {
+	static async DeleteNote(req: Request) {
 		const authUserId = req.authUser!.id
 		const isDeleted = await NotesUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted

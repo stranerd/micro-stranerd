@@ -1,13 +1,13 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { SchemeEntity, SchemeFromModel } from '@modules/classes'
-import { getSocketEmitter } from '@index'
-import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel, SchemeEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`classes/${after.classId}/schemes`, after)
-		await getSocketEmitter().emitCreated(`classes/${after.classId}/schemes/${after.id}`, after)
+		await appInstance.listener.created(`classes/${after.classId}/schemes`, after)
+		await appInstance.listener.created(`classes/${after.classId}/schemes/${after.id}`, after)
 		await sendNotification(after.getAllUsers(), {
 			title: `${after.title} course outline updated`,
 			sendEmail: false,
@@ -16,8 +16,8 @@ export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel,
 		})
 	},
 	updated: async ({ after, changes }) => {
-		await getSocketEmitter().emitUpdated(`classes/${after.classId}/schemes`, after)
-		await getSocketEmitter().emitUpdated(`classes/${after.classId}/schemes/${after.id}`, after)
+		await appInstance.listener.updated(`classes/${after.classId}/schemes`, after)
+		await appInstance.listener.updated(`classes/${after.classId}/schemes/${after.id}`, after)
 		if (changes.title || changes.topic || changes.start || changes.end) await sendNotification(after.getAllUsers(), {
 			title: `${after.title} course outline updated`,
 			sendEmail: false,
@@ -26,8 +26,8 @@ export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel,
 		})
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`classes/${before.classId}/schemes`, before)
-		await getSocketEmitter().emitDeleted(`classes/${before.classId}/schemes/${before.id}`, before)
+		await appInstance.listener.deleted(`classes/${before.classId}/schemes`, before)
+		await appInstance.listener.deleted(`classes/${before.classId}/schemes/${before.id}`, before)
 		await sendNotification(before.getAllUsers(), {
 			title: `${before.title} course outline updated`,
 			sendEmail: false,

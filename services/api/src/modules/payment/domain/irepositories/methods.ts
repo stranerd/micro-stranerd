@@ -1,6 +1,6 @@
+import { QueryParams, QueryResults } from '@utils/app/package'
 import { MethodToModel } from '../../data/models/methods'
 import { MethodEntity } from '../entities/methods'
-import { QueryParams, QueryResults } from '@utils/app/commons'
 
 export interface IMethodRepository {
 	create: (data: MethodToModel) => Promise<MethodEntity>

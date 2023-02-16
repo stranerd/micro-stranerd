@@ -1,13 +1,11 @@
 import { CoursesUseCases, PostsUseCases, PostType } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
 import {
-	BadRequestError,
-	NotAuthorizedError,
+	BadRequestError, NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
 
 export class PostController {
@@ -26,27 +24,17 @@ export class PostController {
 	}
 
 	static async CreatePost (req: Request) {
-		const acceptableTypes = Object.keys(PostType).filter((type) => type !== PostType.assignments)
-
-		const { title, courseId, description, attachments, type } = validate({
-			title: req.body.title,
-			description: req.body.description,
-			deadline: req.body.deadline,
-			courseId: req.params.courseId,
-			attachments: req.body.attachments,
-			type: req.body.data.type
+		const { title, courseId, description, attachments, data } = validateReq({
+			title: Schema.string().min(1),
+			description: Schema.string().min(1),
+			deadline: Schema.number().gt(0).nullable(),
+			courseId: Schema.string().min(1),
+			data: Schema.object({
+				type: Schema.any<PostType.announcements | PostType.discussions>().in([PostType.announcements, PostType.discussions]),
+			}),
+			attachments: Schema.array(Schema.file().image())
 		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			deadline: { required: true, nullable: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] },
-			attachments: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isImage(cur).valid, 'images'), Validation.hasLessThanX(6)]
-			},
-			type: {
-				required: true, rules: [Validation.arrayContainsX(acceptableTypes, (cur, val) => cur === val)]
-			}
+			...req.body, courseId: req.params.courseId
 		})
 
 		const userId = req.authUser!.id
@@ -57,9 +45,8 @@ export class PostController {
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
 		return await PostsUseCases.add({
-			courseId: course.id, members: course.members,
-			title, description, attachments, user: user.getEmbedded(),
-			data: { type }
+			courseId: course.id, members: course.members, data,
+			title, description, attachments: attachments as any, user: user.getEmbedded()
 		})
 	}
 

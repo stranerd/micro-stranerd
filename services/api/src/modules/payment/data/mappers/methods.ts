@@ -1,4 +1,4 @@
-import { BaseMapper } from '@utils/app/commons'
+import { BaseMapper } from '@utils/app/package'
 import { MethodEntity } from '../../domain/entities/methods'
 import { MethodFromModel, MethodToModel } from '../models/methods'
 

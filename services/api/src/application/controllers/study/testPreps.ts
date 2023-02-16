@@ -1,120 +1,74 @@
-import { PrepType, TestPrepsUseCases } from '@modules/study'
 import { CoursesUseCases, PastQuestionType } from '@modules/school'
-import { BadRequestError, QueryParams, Request, validate, Validation } from '@utils/app/package'
+import { PrepType, TestPrepsUseCases } from '@modules/study'
+import { BadRequestError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 
 export class TestPrepController {
-	static async FindTestPrep (req: Request) {
+	static async FindTestPrep(req: Request) {
 		return await TestPrepsUseCases.find(req.params.id)
 	}
 
-	static async GetTestPreps (req: Request) {
+	static async GetTestPreps(req: Request) {
 		const query = req.query as QueryParams
 		return await TestPrepsUseCases.get(query)
 	}
 
-	static async CreateTestPrep (req: Request) {
-		const isPastQuestionsType = req.body.data?.type === PrepType.pastQuestion
+	static async CreateTestPrep(req: Request) {
+		const data = validateReq({
+			name: Schema.string().min(1),
+			questions: Schema.number().gt(0),
+			time: Schema.number().gt(0),
+			data: Schema.or([
+				Schema.object({
+					type: Schema.any<PrepType.pastQuestion>().eq(PrepType.pastQuestion),
+					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType)),
+					courseId: Schema.string().min(1),
+					year: Schema.number().gt(1)
+				})
+			])
+		}, req.body)
 
-		const { name, questions, time, type, questionType, courseId, year } = validate({
-			name: req.body.name,
-			questions: req.body.questions,
-			time: req.body.time,
-			type: req.body.data?.type,
-			questionType: req.body.data?.questionType,
-			courseId: req.body.data?.courseId,
-			year: req.body.data?.year
-		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
-			},
-			questionType: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
-			},
-			courseId: {
-				required: isPastQuestionsType,
-				rules: [Validation.isString, Validation.isLongerThanX(0)]
-			},
-			year: {
-				required: isPastQuestionsType,
-				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
-			}
-		})
-
-		const course = await CoursesUseCases.find(courseId)
+		const course = await CoursesUseCases.find(data.data.courseId)
 		if (!course) throw new BadRequestError('course not found')
 
-		const data = {
-			name, questions, time,
-			data: isPastQuestionsType ? {
-				type,
-				questionType,
-				courseId,
-				year,
+		return await TestPrepsUseCases.add({
+			...data, data: {
+				...data.data,
 				institutionId: course.institutionId
-			} : ({} as any)
-		}
-
-		return await TestPrepsUseCases.add(data)
+			}
+		})
 	}
 
-	static async UpdateTestPrep (req: Request) {
-		const isPastQuestionsType = req.body.data?.type === PrepType.pastQuestion
+	static async UpdateTestPrep(req: Request) {
+		const data = validateReq({
+			name: Schema.string().min(1),
+			questions: Schema.number().gt(0),
+			time: Schema.number().gt(0),
+			data: Schema.or([
+				Schema.object({
+					type: Schema.any<PrepType.pastQuestion>().eq(PrepType.pastQuestion),
+					questionType: Schema.any<PastQuestionType>().in(Object.values(PastQuestionType)),
+					courseId: Schema.string().min(1),
+					year: Schema.number().gt(1)
+				})
+			])
+		}, req.body)
 
-		const { name, questions, time, type, questionType, courseId, year } = validate({
-			name: req.body.name,
-			questions: req.body.questions,
-			time: req.body.time,
-			type: req.body.data?.type,
-			questionType: req.body.data?.questionType,
-			courseId: req.body.data?.courseId,
-			year: req.body.data?.year
-		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			questions: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			time: { required: true, rules: [Validation.isNumber, Validation.isMoreThanX(0)] },
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PrepType), (cur, val) => cur === val)]
-			},
-			questionType: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(PastQuestionType), (cur, val) => cur === val)]
-			},
-			courseId: {
-				required: isPastQuestionsType,
-				rules: [Validation.isString, Validation.isLongerThanX(0)]
-			},
-			year: {
-				required: isPastQuestionsType,
-				rules: [Validation.isNumber, Validation.isMoreThanX(0)]
-			}
-		})
-
-		const course = await CoursesUseCases.find(courseId)
+		const course = await CoursesUseCases.find(data.data.courseId)
 		if (!course) throw new BadRequestError('course not found')
 
-		const data = {
-			name, questions, time,
-			data: isPastQuestionsType ? {
-				type,
-				questionType,
-				courseId,
-				year,
-				institutionId: course.institutionId
-			} : ({} as any)
-		}
-
-		const updatedTestPrep = await TestPrepsUseCases.update({ id: req.params.id, data })
+		const updatedTestPrep = await TestPrepsUseCases.update({
+			id: req.params.id, data: {
+				...data, data: {
+					...data.data,
+					institutionId: course.institutionId
+				}
+			}
+		})
 		if (updatedTestPrep) return updatedTestPrep
 		throw new BadRequestError('test prep not found')
 	}
 
-	static async DeleteTestPrep (req: Request) {
+	static async DeleteTestPrep(req: Request) {
 		const isDeleted = await TestPrepsUseCases.delete(req.params.id)
 		if (isDeleted) return isDeleted
 		throw new BadRequestError('test prep not found')

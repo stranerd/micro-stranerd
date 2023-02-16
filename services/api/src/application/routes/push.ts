@@ -1,6 +1,6 @@
-import { makeController, Route, StatusCodes, validate, Validation } from '@utils/app/package'
-import { TokensUseCases } from '@modules/push'
 import { isAuthenticated } from '@application/middlewares'
+import { TokensUseCases } from '@modules/push'
+import { makeController, Route, Schema, StatusCodes, validateReq } from '@utils/app/package'
 
 const subscribeDevice: Route = {
 	path: '/push/devices/subscribe',
@@ -8,11 +8,9 @@ const subscribeDevice: Route = {
 	controllers: [
 		isAuthenticated,
 		makeController(async (req) => {
-			const { token } = validate({
-				token: req.body.token
-			}, {
-				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
-			})
+			const { token } = validateReq({
+				token: Schema.string().min(1)
+			}, req.body)
 			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: true })
 			return {
 				status: StatusCodes.Ok,
@@ -28,11 +26,9 @@ const unsubscribeDevice: Route = {
 	controllers: [
 		isAuthenticated,
 		makeController(async (req) => {
-			const { token } = validate({
-				token: req.body.token
-			}, {
-				token: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
-			})
+			const { token } = validateReq({
+				token: Schema.string().min(1)
+			}, req.body)
 			const res = await TokensUseCases.update({ userId: req.authUser!.id, tokens: [token], add: false })
 			return {
 				status: StatusCodes.Ok,

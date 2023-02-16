@@ -1,4 +1,7 @@
 import { ClassesUseCases } from '@modules/classes'
+import { ClassUsers } from '@modules/classes/domain/types'
+import { DepartmentsUseCases } from '@modules/school'
+import { UploaderUseCases } from '@modules/storage'
 import { UsersUseCases } from '@modules/users'
 import {
 	BadRequestError,
@@ -6,108 +9,88 @@ import {
 	NotAuthorizedError,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
-import { ClassUsers } from '@modules/classes/domain/types'
-import { UploaderUseCases } from '@modules/storage'
-import { DepartmentsUseCases } from '@modules/school'
 
 export class ClassController {
-	static async FindClass (req: Request) {
+	static async FindClass(req: Request) {
 		return await ClassesUseCases.find(req.params.id)
 	}
 
-	static async GetClass (req: Request) {
+	static async GetClass(req: Request) {
 		const query = req.query as QueryParams
 		return await ClassesUseCases.get(query)
 	}
 
-	static async UpdateClass (req: Request) {
+	static async UpdateClass(req: Request) {
 		const authUserId = req.authUser!.id
 		const uploadedPhoto = req.files.photo?.[0] ?? null
 		const changedPhoto = !!uploadedPhoto || req.body.photo === null
-		const data = validate({
-			name: req.body.name,
-			description: req.body.description,
-			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
-			photo: uploadedPhoto as any
-		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courses: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
-			photo: { required: true, nullable: true, rules: [Validation.isNotTruncated, Validation.isImage] }
-		})
+
+		const data = validateReq({
+			name: Schema.string().min(3),
+			description: Schema.string().min(3),
+			photo: Schema.file().image().nullable(),
+			courses: Schema.array(Schema.string().min(1)).set(),
+		}, { ...req.body, photo: uploadedPhoto })
 
 		const { name, description, courses } = data
-		if (uploadedPhoto) data.photo = await UploaderUseCases.upload('classes/photos', uploadedPhoto)
-		const validateData = {
-			name, description, courses,
-			...(changedPhoto ? { photo: data.photo } : {})
-		}
+		const photo = uploadedPhoto ? await UploaderUseCases.upload('classes/photos', uploadedPhoto) : undefined
 
-		const updatedClass = await ClassesUseCases.update({ id: req.params.id, userId: authUserId, data: validateData })
+		const updatedClass = await ClassesUseCases.update({
+			id: req.params.id, userId: authUserId, data: {
+				name, description, courses,
+				...(changedPhoto ? { photo } : {})
+			}
+		})
 
 		if (updatedClass) return updatedClass
 		throw new NotAuthorizedError()
 	}
 
-	static async CreateClass (req: Request) {
+	static async CreateClass(req: Request) {
 		const authUserId = req.authUser!.id
 		const user = await UsersUseCases.find(authUserId)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
 
-		const { name, departmentId, year, description, courses, photo: classPhoto } = validate({
-			name: req.body.name,
-			departmentId: req.body.school?.departmentId,
-			year: req.body.school?.year,
-			description: req.body.description,
-			courses: [...new Set<string>(req.body.courses)].filter((c) => c),
-			photo: req.files.photo?.[0] ?? null
-		}, {
-			name: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			departmentId: { required: true, rules: [Validation.isString] },
-			year: { required: true, rules: [Validation.isNumber] },
-			description: { required: true, rules: [Validation.isString, Validation.isLongerThanX(2)] },
-			courses: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings')]
-			},
-			photo: { required: true, nullable: true, rules: [Validation.isImage] }
-		})
+		const data = validateReq({
+			name: Schema.string().min(3),
+			description: Schema.string().min(3),
+			photo: Schema.file().image().nullable(),
+			courses: Schema.array(Schema.string().min(1)).set(),
+			school: Schema.object({
+				departmentId: Schema.string().min(1),
+				year: Schema.number().gt(0)
+			})
+		}, { ...req.body, photo: req.files.photo?.[0] ?? null })
 
-		const photo = classPhoto ? await UploaderUseCases.upload('classes/photos', classPhoto) : null
-		const department = await DepartmentsUseCases.find(departmentId)
+		const photo = data.photo ? await UploaderUseCases.upload('classes/photos', data.photo) : null
+		const department = await DepartmentsUseCases.find(data.school.departmentId)
 		if (!department) throw new BadRequestError('department not found')
 
 		return await ClassesUseCases.add({
-			name, description, photo,
+			...data, photo,
 			school: {
+				...data.school,
 				departmentId: department.id,
 				facultyId: department.facultyId,
-				institutionId: department.institutionId,
-				year
+				institutionId: department.institutionId
 			},
-			user: user.getEmbedded(), courses
+			user: user.getEmbedded()
 		})
 	}
 
-	static async DeleteClass (req: Request) {
+	static async DeleteClass(req: Request) {
 		const authUserId = req.authUser!.id
 		const isDeleted = await ClassesUseCases.delete({ id: req.params.id, userId: authUserId })
 		if (isDeleted) return isDeleted
 		throw new NotAuthorizedError()
 	}
 
-	static async RequestClass (req: Request) {
-		const { request } = validate({
-			request: req.body.request
-		}, {
-			request: { required: true, rules: [Validation.isBoolean] }
-		})
+	static async RequestClass(req: Request) {
+		const { request } = validateReq({
+			request: Schema.boolean()
+		}, req.body)
 
 		const requested = await ClassesUseCases.requestClass({
 			classId: req.params.id,
@@ -118,7 +101,7 @@ export class ClassController {
 		throw new NotAuthorizedError()
 	}
 
-	static async LeaveClass (req: Request) {
+	static async LeaveClass(req: Request) {
 		const left = await ClassesUseCases.leaveClass({
 			classId: req.params.id,
 			userId: req.authUser!.id
@@ -127,14 +110,11 @@ export class ClassController {
 		throw new NotAuthorizedError()
 	}
 
-	static async AcceptRequest (req: Request) {
-		const { accept, userId } = validate({
-			accept: req.body.accept,
-			userId: req.body.userId
-		}, {
-			accept: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isString] }
-		})
+	static async AcceptRequest(req: Request) {
+		const { accept, userId } = validateReq({
+			accept: Schema.boolean(),
+			userId: Schema.string().min(1)
+		}, req.body)
 
 		const accepted = await ClassesUseCases.acceptRequest({
 			classId: req.params.id,
@@ -145,17 +125,11 @@ export class ClassController {
 		throw new NotAuthorizedError()
 	}
 
-	static async AddMembers (req: Request) {
-		const { add, userIds } = validate({
-			add: req.body.add,
-			userIds: req.body.userIds
-		}, {
-			add: { required: true, rules: [Validation.isBoolean] },
-			userIds: {
-				required: true,
-				rules: [Validation.isArrayOfX((cur) => Validation.isString(cur).valid, 'strings'), Validation.hasMoreThanX(0)]
-			}
-		})
+	static async AddMembers(req: Request) {
+		const { add, userIds } = validateReq({
+			add: Schema.boolean(),
+			userIds: Schema.array(Schema.string().min(1)).set().min(1)
+		}, req.body)
 
 		if (add) {
 			const { results: users } = await UsersUseCases.get({
@@ -163,7 +137,7 @@ export class ClassController {
 				all: true
 			})
 			const allUserIds = users.map((user) => user.id)
-			if (allUserIds.length !== userIds) throw new BadRequestError('user profiles not found')
+			if (allUserIds.length !== userIds.length) throw new BadRequestError('user profiles not found')
 		}
 
 		const added = await ClassesUseCases.addMembers({
@@ -175,19 +149,12 @@ export class ClassController {
 		throw new NotAuthorizedError()
 	}
 
-	static async ChangeMemberRole (req: Request) {
-		const { add, userId, role } = validate({
-			add: req.body.add,
-			userId: req.body.userId,
-			role: req.body.role
-		}, {
-			add: { required: true, rules: [Validation.isBoolean] },
-			userId: { required: true, rules: [Validation.isString] },
-			role: {
-				required: true,
-				rules: [Validation.arrayContainsX(Object.values(ClassUsers), (cur, val) => cur === val)]
-			}
-		})
+	static async ChangeMemberRole(req: Request) {
+		const { add, userId, role } = validateReq({
+			add: Schema.boolean(),
+			userId: Schema.string().min(1),
+			role: Schema.any<ClassUsers>().in(Object.values(ClassUsers))
+		}, req.body)
 
 		const added = await ClassesUseCases.changeMemberRole({
 			classId: req.params.id,

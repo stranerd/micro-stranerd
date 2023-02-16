@@ -1,3 +1,4 @@
+import { Phone } from '@modules/auth'
 import { EmailsList, readEmailFromPug } from '@utils/app/package'
 import { publishers } from '@utils/events'
 
@@ -10,7 +11,7 @@ type Message = {
 	firstName: string
 	lastName: string
 	email: string
-	phone: string
+	phone: Phone
 	message: string
 	country: string
 	data: StudentData | SchoolData
@@ -28,7 +29,7 @@ type SchoolData = {
 
 const makeEmailBody = (message: Message) => {
 	let body = `<h2>${message.firstName} ${message.lastName}</h2>
-<h3>${message.email}(${message.phone})</h3>
+<h3>${message.email}(${message.phone.code}${message.phone.number})</h3>
 <h4>${message.country}</h4>
 `
 	if (message.data.type === MessageType.school) body += `

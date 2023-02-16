@@ -1,6 +1,6 @@
-import { ChangeStreamCallbacks, Validation } from '@utils/app/package'
+import { CommentsUseCases, InteractionEntities, LikesUseCases } from '@modules/interactions'
+import { Currencies, TransactionStatus, TransactionsUseCases, TransactionType } from '@modules/payment'
 import { AnswerEntity, AnswerFromModel, QuestionsUseCases } from '@modules/questions'
-import { getSocketEmitter } from '@index'
 import {
 	BadgesUseCases,
 	CountStreakBadges,
@@ -9,15 +9,15 @@ import {
 	UserMeta,
 	UsersUseCases
 } from '@modules/users'
-import { sendNotification } from '@utils/modules/users/notifications'
+import { ChangeStreamCallbacks, Validation } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
-import { CommentsUseCases, InteractionEntities, LikesUseCases } from '@modules/interactions'
-import { Currencies, TransactionStatus, TransactionsUseCases, TransactionType } from '@modules/payment'
+import { sendNotification } from '@utils/modules/users/notifications'
 
 export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('questions/answers', after)
-		await getSocketEmitter().emitCreated(`questions/answers/${after.id}`, after)
+		await appInstance.listener.created('questions/answers', after)
+		await appInstance.listener.created(`questions/answers/${after.id}`, after)
 
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.answers })
 		await QuestionsUseCases.updateAnswers({
@@ -36,7 +36,7 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		if (question) {
 			await sendNotification([question.user.id], {
 				title: `${question.user.bio.fullName} answered your question`,
-				body: Validation.extractTextFromHTML(after.body),
+				body: Validation.stripHTML(after.body),
 				data: { type: NotificationType.NewAnswer, questionId: after.questionId, answerId: after.id },
 				sendEmail: true
 			})
@@ -49,8 +49,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		})
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated('questions/answers', after)
-		await getSocketEmitter().emitUpdated(`questions/answers/${after.id}`, after)
+		await appInstance.listener.updated('questions/answers', after)
+		await appInstance.listener.updated(`questions/answers/${after.id}`, after)
 
 		if (changes.best) {
 			const question = await QuestionsUseCases.find(after.questionId)
@@ -99,8 +99,8 @@ export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel,
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('questions/answers', before)
-		await getSocketEmitter().emitDeleted(`questions/answers/${before.id}`, before)
+		await appInstance.listener.deleted('questions/answers', before)
+		await appInstance.listener.deleted(`questions/answers/${before.id}`, before)
 
 		await UsersUseCases.updateNerdScore({
 			userId: before.user.id,

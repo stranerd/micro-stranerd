@@ -1,6 +1,6 @@
-import { QueryParams } from '@utils/app/commons'
-import { IMethodRepository } from '../irepositories/methods'
+import { QueryParams } from '@utils/app/package'
 import { MethodToModel } from '../../data/models/methods'
+import { IMethodRepository } from '../irepositories/methods'
 
 export class MethodsUseCase {
 	repository: IMethodRepository

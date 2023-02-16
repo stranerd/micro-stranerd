@@ -6,8 +6,7 @@ import {
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
-	Validation
+	Schema, validateReq
 } from '@utils/app/package'
 
 export class AttendanceController {
@@ -28,11 +27,9 @@ export class AttendanceController {
 	static async UpdateAttendance (req: Request) {
 		const authUserId = req.authUser!.id
 
-		const data = validate({
-			title: req.body.title
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+		}, req.body)
 
 		const updatedAttendance = await AttendancesUseCases.update({
 			courseId: req.params.courseId,
@@ -46,13 +43,10 @@ export class AttendanceController {
 	}
 
 	static async CreateAttendance (req: Request) {
-		const { title, courseId } = validate({
-			title: req.body.title,
-			courseId: req.params.courseId
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			courseId: { required: true, rules: [Validation.isString] }
-		})
+		const { title, courseId } = validateReq({
+			title: Schema.string().min(1),
+			courseId: Schema.string().min(1),
+		}, { ...req.body, courseId: req.params.courseId })
 
 		const userId = req.authUser!.id
 		const course = await CoursesUseCases.find(courseId)
@@ -102,11 +96,9 @@ export class AttendanceController {
 
 	static async TickAttendance (req: Request) {
 		const authUserId = req.authUser!.id
-		const { token } = validate({
-			token: req.body.token
-		}, {
-			token: { required: true, rules: [Validation.isString] }
-		})
+		const { token } = validateReq({
+			token: Schema.string()
+		}, req.body)
 		const ticked = await AttendancesUseCases.tick({
 			courseId: req.params.courseId, id: req.params.id,
 			token, userId: authUserId

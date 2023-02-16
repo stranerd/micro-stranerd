@@ -1,16 +1,13 @@
 import { AuthUseCases } from '@modules/auth'
-import { Request, validate, Validation } from '@utils/app/package'
+import { Request, Schema, validateReq } from '@utils/app/package'
 import { generateAuthOutput, verifyReferrer } from '@utils/modules/auth'
 
 export class IdentitiesController {
 	static async googleSignIn (req: Request) {
-		const validatedData = validate({
-			idToken: req.body.idToken,
-			referrer: req.body.referrer ?? null
-		}, {
-			idToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: true, nullable: true, rules: [Validation.isString] }
-		})
+		const validatedData = validateReq({
+			idToken: Schema.string(),
+			referrer: Schema.string().nullable().default(null),
+		}, req.body)
 
 		const data = await AuthUseCases.googleSignIn({
 			...validatedData,
@@ -20,19 +17,13 @@ export class IdentitiesController {
 	}
 
 	static async appleSignIn (req: Request) {
-		const { firstName, lastName, email, idToken, referrer } = validate({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			email: req.body.email,
-			idToken: req.body.idToken,
-			referrer: req.body.referrer ?? null
-		}, {
-			firstName: { required: true, nullable: true, rules: [Validation.isString] },
-			lastName: { required: true, nullable: true, rules: [Validation.isString] },
-			email: { required: true, nullable: true, rules: [Validation.isString] },
-			idToken: { required: true, rules: [Validation.isString] },
-			referrer: { required: true, nullable: true, rules: [Validation.isString] }
-		})
+		const { firstName, lastName, email, idToken, referrer } = validateReq({
+			firstName: Schema.string().nullable(),
+			lastName: Schema.string().nullable(),
+			email: Schema.string().nullable(),
+			idToken: Schema.string(),
+			referrer: Schema.string().nullable().default(null),
+		}, req.body)
 
 		const data = await AuthUseCases.appleSignIn({
 			data: { idToken, email, firstName, lastName },

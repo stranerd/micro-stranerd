@@ -1,6 +1,6 @@
 import { CoursesUseCases } from '@modules/teachers'
 import { UsersUseCases } from '@modules/users'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 
 export class CourseController {
 	static async FindCourse (req: Request) {
@@ -15,13 +15,10 @@ export class CourseController {
 	static async UpdateCourse (req: Request) {
 		const authUserId = req.authUser!.id
 
-		const data = validate({
-			title: req.body.title,
-			level: req.body.level
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			level: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+			level: Schema.string().min(1)
+		}, req.body)
 
 		const updatedCourse = await CoursesUseCases.update({ id: req.params.id, userId: authUserId, data })
 
@@ -30,13 +27,10 @@ export class CourseController {
 	}
 
 	static async CreateCourse (req: Request) {
-		const data = validate({
-			title: req.body.title,
-			level: req.body.level
-		}, {
-			title: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] },
-			level: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
-		})
+		const data = validateReq({
+			title: Schema.string().min(1),
+			level: Schema.string().min(1)
+		}, req.body)
 
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted()) throw new BadRequestError('user not found')
@@ -53,11 +47,10 @@ export class CourseController {
 
 	static async JoinCourse (req: Request) {
 		const userId = req.authUser!.id
-		const { join } = validate({
-			join: req.body.join
-		}, {
-			join: { required: true, rules: [Validation.isBoolean] }
-		})
+		const { join } = validateReq({
+			join: Schema.boolean()
+		}, req.body)
+
 		const isJoined = await CoursesUseCases.join({ courseId: req.params.id, userId, join })
 		if (isJoined) return isJoined
 		throw new NotAuthorizedError()

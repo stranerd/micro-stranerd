@@ -3,7 +3,7 @@ import { LikeMapper } from '../mappers/likes'
 import { LikeFromModel, LikeToModel } from '../models/likes'
 import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Like } from '../mongooseModels/likes'
-import { InteractionEntity } from '../../domain/types'
+import { Interaction } from '../../domain/types'
 
 export class LikeRepository implements ILikeRepository {
 	private static instance: LikeRepository
@@ -43,7 +43,7 @@ export class LikeRepository implements ILikeRepository {
 		return this.mapper.mapFrom(like)
 	}
 
-	async deleteEntityLikes ({ type, id }: InteractionEntity) {
+	async deleteEntityLikes ({ type, id }: Interaction) {
 		const likes = await Like.deleteMany({ 'entity.type': type, 'entity.id': id })
 		return !!likes.acknowledged
 	}

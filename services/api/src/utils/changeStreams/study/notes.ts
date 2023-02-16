@@ -1,12 +1,12 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { NoteEntity, NoteFromModel, SetSaved, SetsUseCases } from '@modules/study'
-import { getSocketEmitter } from '@index'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, NoteEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('study/notes', after)
-		await getSocketEmitter().emitCreated(`study/notes/${after.id}`, after)
+		await appInstance.listener.created('study/notes', after)
+		await appInstance.listener.created(`study/notes/${after.id}`, after)
 
 		await UsersUseCases.updateNerdScore({
 			userId: after.user.id,
@@ -15,12 +15,12 @@ export const NoteChangeStreamCallbacks: ChangeStreamCallbacks<NoteFromModel, Not
 		await UsersUseCases.incrementMeta({ id: after.user.id, value: 1, property: UserMeta.notes })
 	},
 	updated: async ({ after }) => {
-		await getSocketEmitter().emitUpdated('study/notes', after)
-		await getSocketEmitter().emitUpdated(`study/notes/${after.id}`, after)
+		await appInstance.listener.updated('study/notes', after)
+		await appInstance.listener.updated(`study/notes/${after.id}`, after)
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('study/notes', before)
-		await getSocketEmitter().emitDeleted(`study/notes/${before.id}`, before)
+		await appInstance.listener.deleted('study/notes', before)
+		await appInstance.listener.deleted(`study/notes/${before.id}`, before)
 
 		await SetsUseCases.removeProp({ prop: SetSaved.notes, value: before.id })
 

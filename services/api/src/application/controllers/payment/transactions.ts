@@ -1,7 +1,7 @@
 import { Currencies, TransactionStatus, TransactionsUseCases, TransactionType } from '@modules/payment'
-import { BadRequestError, NotAuthorizedError, QueryParams, Request, validate, Validation } from '@utils/app/package'
-import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
+import { BadRequestError, NotAuthorizedError, QueryParams, Request, Schema, validateReq } from '@utils/app/package'
 import { flutterwaveConfig } from '@utils/environment'
+import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
 
 export class TransactionsController {
 	static async getSecrets (_: Request) {
@@ -25,14 +25,11 @@ export class TransactionsController {
 		const types = [TransactionType.NewCard]
 		const authUser = req.authUser!
 
-		const { type } = validate({
-			type: req.body.data?.type
-		}, {
-			type: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(types, (cur, val) => cur === val)]
-			}
-		})
+		const { data: { type } } = validateReq({
+			data: Schema.object({
+				type: Schema.any<TransactionType>().in(types)
+			})
+		}, req.body)
 
 		const dynamics = { title: '', amount: 0 }
 

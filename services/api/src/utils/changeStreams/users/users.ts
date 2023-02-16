@@ -1,9 +1,3 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
-import { BadgesUseCases, ConnectsUseCases, UserEntity, UserFromModel } from '@modules/users'
-import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
-import { ChatMetasUseCases, ChatsUseCases } from '@modules/messaging'
-import { FilesUseCases, FlashCardsUseCases, NotesUseCases, SetsUseCases } from '@modules/study'
-import { ReportsUseCases } from '@modules/moderation'
 import {
 	AnnouncementsUseCases,
 	ClassesUseCases,
@@ -11,8 +5,11 @@ import {
 	GroupsUseCases,
 	SchemesUseCases
 } from '@modules/classes'
-import { getSocketEmitter } from '@index'
 import { CommentsUseCases, LikesUseCases, ViewsUseCases } from '@modules/interactions'
+import { ChatMetasUseCases, ChatsUseCases } from '@modules/messaging'
+import { ReportsUseCases } from '@modules/moderation'
+import { AnswersUseCases, QuestionsUseCases } from '@modules/questions'
+import { FilesUseCases, FlashCardsUseCases, NotesUseCases, SetsUseCases } from '@modules/study'
 import {
 	AssignmentSubmissionsUseCases,
 	AssignmentsUseCases,
@@ -21,17 +18,20 @@ import {
 	FilesUseCases as CoursesFilesUseCases,
 	PostsUseCases
 } from '@modules/teachers'
+import { BadgesUseCases, ConnectsUseCases, UserEntity, UserFromModel } from '@modules/users'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('users/users', after)
-		await getSocketEmitter().emitCreated(`users/users/${after.id}`, after)
+		await appInstance.listener.created('users/users', after)
+		await appInstance.listener.created(`users/users/${after.id}`, after)
 
 		await SetsUseCases.add({ name: '', user: after.getEmbedded() })
 	},
 	updated: async ({ before, after, changes }) => {
-		await getSocketEmitter().emitUpdated('users/users', after)
-		await getSocketEmitter().emitUpdated(`users/users/${after.id}`, after)
+		await appInstance.listener.updated('users/users', after)
+		await appInstance.listener.updated(`users/users/${after.id}`, after)
 		const updatedBioOrRoles = !!changes.bio || !!changes.roles
 		if (updatedBioOrRoles) await Promise.all([
 			ChatMetasUseCases, ChatsUseCases, ConnectsUseCases,
@@ -65,7 +65,7 @@ export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, Use
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('users/users', before)
-		await getSocketEmitter().emitDeleted(`users/users/${before.id}`, before)
+		await appInstance.listener.deleted('users/users', before)
+		await appInstance.listener.deleted(`users/users/${before.id}`, before)
 	}
 }

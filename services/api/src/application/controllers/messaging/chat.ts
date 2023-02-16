@@ -1,15 +1,15 @@
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
+import { UploaderUseCases } from '@modules/storage'
+import { UsersUseCases } from '@modules/users'
 import {
 	BadRequestError, Conditions,
 	NotAuthorizedError,
 	QueryKeys,
 	QueryParams,
 	Request,
-	validate,
+	Schema, validateReq,
 	Validation
 } from '@utils/app/package'
-import { UploaderUseCases } from '@modules/storage'
-import { UsersUseCases } from '@modules/users'
 
 export class ChatController {
 	static async getChats (req: Request) {
@@ -25,19 +25,12 @@ export class ChatController {
 	}
 
 	static async addChat (req: Request) {
-		const { body, media: mediaFile, to } = validate({
-			body: req.body.body,
-			media: req.files.media?.[0] ?? null,
-			to: req.body.to
+		const { body, media: mediaFile, to  } = validateReq({
+			body: Schema.string(),
+			to: Schema.string().min(1),
+			media: Schema.file().nullable()
 		}, {
-			body: {
-				required: true, rules: [Validation.isString]
-			},
-			media: {
-				required: true, nullable: true,
-				rules: [Validation.isNotTruncated, Validation.isFile]
-			},
-			to: { required: true, rules: [Validation.isString, Validation.isLongerThanX(0)] }
+			...req.body, media: req.files.media?.[0] ?? null,
 		})
 
 		const media = mediaFile ? await UploaderUseCases.upload('messaging/chats', mediaFile) : null
@@ -79,11 +72,9 @@ export class ChatController {
 	}
 
 	static async markChatRead (req: Request) {
-		const data = validate({
-			to: req.body.to
-		}, {
-			to: { required: true, rules: [Validation.isString] }
-		})
+		const data = validateReq({
+			to: Schema.string()
+		}, req.body)
 
 		const authUserId = req.authUser!.id
 		return await ChatsUseCases.markRead({

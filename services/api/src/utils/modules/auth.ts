@@ -1,3 +1,4 @@
+import { AuthOutput, AuthUserEntity, AuthUsersUseCases } from '@modules/auth'
 import {
 	BadRequestError,
 	deleteCachedAccessToken,
@@ -6,7 +7,6 @@ import {
 	makeAccessToken,
 	makeRefreshToken
 } from '@utils/app/package'
-import { AuthOutput, AuthUserEntity, AuthUsersUseCases } from '@modules/auth'
 
 export const signOutUser = async (userId: string): Promise<boolean> => {
 	await deleteCachedAccessToken(userId)

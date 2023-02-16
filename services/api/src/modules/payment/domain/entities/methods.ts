@@ -1,4 +1,4 @@
-import { BaseEntity } from '@utils/app/commons'
+import { BaseEntity } from '@utils/app/package'
 import { MethodData } from '../types'
 
 export class MethodEntity extends BaseEntity {

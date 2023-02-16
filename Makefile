@@ -1,6 +1,5 @@
 APPS = api
-COMMONS = commons
-ALL_FOLDERS = ${APPS} ${COMMONS}
+ALL_FOLDERS = ${APPS}
 args = $(filter-out $@,$(MAKECMDGOALS))
 
 SETUP_FOLDER = /c/data/docker/mstranerd/traefik
@@ -47,19 +46,9 @@ lint-all:
 build-all:
 	$(foreach folder, $(ALL_FOLDERS), yarn --cwd ./services/$(folder) build &&) echo
 
-publish-commons:
-	yarn --cwd ./services/${COMMONS} pub;
-
-pub-and-inst: publish-commons install-commons
-	echo "Done"
-
-install-commons:
-	$(foreach app, $(APPS), yarn --cwd ./services/$(app) add @stranerd/api-commons@latest &&) echo
-
 link-commons:
 	$(foreach app, $(APPS),\
 	rm -r ./services/$(app)/src/utils/app &&\
 	mkdir -p ./services/$(app)/src/utils/app/commons &&\
-	cp -al ./services/commons/links/* ./services/$(app)/src/utils/app/ &&\
-	cp -al ./services/commons/src/* ./services/$(app)/src/utils/app/commons &&\
+	cp -al ./services/links/* ./services/$(app)/src/utils/app/ &&\
 ) echo

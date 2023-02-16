@@ -54,9 +54,9 @@ type UserConstructorArgs = {
 }
 
 const generateDefaultBio = (bio: Partial<UserBio>): UserBio => {
-	const firstName = Validation.capitalizeText(bio?.firstName ?? 'Anon')
-	const lastName = Validation.capitalizeText(bio?.lastName ?? 'Ymous')
-	const fullName = Validation.capitalizeText(bio?.fullName ?? (firstName + ' ' + lastName))
+	const firstName = Validation.capitalize(bio?.firstName ?? 'Anon')
+	const lastName = Validation.capitalize(bio?.lastName ?? 'Ymous')
+	const fullName = Validation.capitalize(bio?.fullName ?? (firstName + ' ' + lastName))
 	const email = bio?.email ?? 'anon@ymous.com'
 	const description = bio?.description ?? ''
 	const photo = bio?.photo ?? null

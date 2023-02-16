@@ -1,16 +1,16 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { PostEntity, PostFromModel } from '@modules/teachers'
-import { getSocketEmitter } from '@index'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
 export const PostChangeStreamCallbacks: ChangeStreamCallbacks<PostFromModel, PostEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated(`teachers/${after.courseId}/posts`, after)
-		await getSocketEmitter().emitCreated(`teachers/${after.courseId}/posts/${after.id}`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/posts`, after)
+		await appInstance.listener.created(`teachers/${after.courseId}/posts/${after.id}`, after)
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated(`teachers/${after.courseId}/posts`, after)
-		await getSocketEmitter().emitUpdated(`teachers/${after.courseId}/posts/${after.id}`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/posts`, after)
+		await appInstance.listener.updated(`teachers/${after.courseId}/posts/${after.id}`, after)
 		if (changes.attachments) {
 			const oldAttachments = before.attachments.filter((t) => !after.attachments.find((a) => a.path === t.path))
 			await Promise.all(
@@ -19,8 +19,8 @@ export const PostChangeStreamCallbacks: ChangeStreamCallbacks<PostFromModel, Pos
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/posts`, before)
-		await getSocketEmitter().emitDeleted(`teachers/${before.courseId}/posts/${before.id}`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/posts`, before)
+		await appInstance.listener.deleted(`teachers/${before.courseId}/posts/${before.id}`, before)
 		await Promise.all(
 			before.attachments.map(async (attachment) => await publishers.DELETEFILE.publish(attachment))
 		)

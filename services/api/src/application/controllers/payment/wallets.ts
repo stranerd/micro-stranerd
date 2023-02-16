@@ -1,7 +1,7 @@
 import { CurrencyCountries, WalletsUseCases } from '@modules/payment'
-import { BadRequestError, Request, validate, Validation, ValidationError } from '@utils/app/package'
-import { cancelSubscription, subscribeToPlan } from '@utils/modules/payment/subscriptions'
+import { BadRequestError, Request, Schema, validateReq, ValidationError } from '@utils/app/package'
 import { FlutterwavePayment } from '@utils/modules/payment/flutterwave'
+import { cancelSubscription, subscribeToPlan } from '@utils/modules/payment/subscriptions'
 
 export class WalletsController {
 	static async get (req: Request) {
@@ -9,12 +9,9 @@ export class WalletsController {
 	}
 
 	static async subscribeToPlan (req: Request) {
-		const { planId } = validate({
-			planId: req.body.planId
-		}, {
-			planId: { required: true, rules: [Validation.isString] }
-		})
-
+		const { planId } = validateReq({
+			planId: Schema.string().min(1)
+		}, req.body)
 		return await subscribeToPlan(req.authUser!.id, planId)
 	}
 
@@ -30,18 +27,11 @@ export class WalletsController {
 	}
 
 	static async updateAccount (req: Request) {
-		const { country, bankCode, number } = validate({
-			country: req.body.country,
-			number: req.body.number,
-			bankCode: req.body.bankCode
-		}, {
-			country: {
-				required: true,
-				rules: [Validation.isString, Validation.arrayContainsX(Object.values(CurrencyCountries), (cur, val) => cur === val)]
-			},
-			number: { required: true, rules: [Validation.isString] },
-			bankCode: { required: true, rules: [Validation.isString] }
-		})
+		const { country, bankCode, number } = validateReq({
+			country: Schema.any<CurrencyCountries>().in(Object.values(CurrencyCountries)),
+			number: Schema.string(),
+			bankCode: Schema.string()
+		}, req.body)
 		const banks = await FlutterwavePayment.getBanks(country)
 		const bank = banks.find((b) => b.code === bankCode)
 		if (!bank) throw new ValidationError([{ field: 'bankCode', messages: ['is not a supported bank'] }])

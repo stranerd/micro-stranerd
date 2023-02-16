@@ -1,12 +1,12 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { InteractionEntities, LikeEntity, LikeFromModel } from '@modules/interactions'
-import { getSocketEmitter } from '@index'
 import { AnswerMetaType, AnswersUseCases } from '@modules/questions'
+import { ChangeStreamCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
 export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, LikeEntity> = {
 	created: async ({ after }) => {
-		await getSocketEmitter().emitCreated('interactions/likes', after)
-		await getSocketEmitter().emitCreated(`interactions/likes/${after.id}`, after)
+		await appInstance.listener.created('interactions/likes', after)
+		await appInstance.listener.created(`interactions/likes/${after.id}`, after)
 		if (after.entity.type === InteractionEntities.answers) await AnswersUseCases.updateMeta({
 			id: after.entity.id,
 			property: after.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
@@ -14,8 +14,8 @@ export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, Lik
 		})
 	},
 	updated: async ({ after, before, changes }) => {
-		await getSocketEmitter().emitUpdated('interactions/likes', after)
-		await getSocketEmitter().emitUpdated(`interactions/likes/${after.id}`, after)
+		await appInstance.listener.updated('interactions/likes', after)
+		await appInstance.listener.updated(`interactions/likes/${after.id}`, after)
 		if (changes.value && after.entity.type === InteractionEntities.answers) {
 			await AnswersUseCases.updateMeta({
 				id: after.entity.id,
@@ -30,8 +30,8 @@ export const LikeChangeStreamCallbacks: ChangeStreamCallbacks<LikeFromModel, Lik
 		}
 	},
 	deleted: async ({ before }) => {
-		await getSocketEmitter().emitDeleted('interactions/likes', before)
-		await getSocketEmitter().emitDeleted(`interactions/likes/${before.id}`, before)
+		await appInstance.listener.deleted('interactions/likes', before)
+		await appInstance.listener.deleted(`interactions/likes/${before.id}`, before)
 		if (before.entity.type === InteractionEntities.answers) await AnswersUseCases.updateMeta({
 			id: before.entity.id,
 			property: before.value ? AnswerMetaType.likes : AnswerMetaType.dislikes,
