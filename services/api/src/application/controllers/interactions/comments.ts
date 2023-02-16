@@ -32,14 +32,14 @@ export class CommentsController {
 			req.body
 		)
 
-		await verifyInteractionEntity(entity.type, entity.id, 'comments')
+		const userId = await verifyInteractionEntity(entity.type, entity.id, 'comments')
 		const user = await UsersUseCases.find(req.authUser!.id)
 		if (!user || user.isDeleted())
 			throw new BadRequestError('profile not found')
 
 		return await CommentsUseCases.create({
 			body,
-			entity,
+			entity: { ...entity, userId },
 			user: user.getEmbedded()
 		})
 	}
