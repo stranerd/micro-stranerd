@@ -2,11 +2,11 @@ import { PlanDataType, WalletsUseCases } from '@modules/payment'
 import { AnswersUseCases, QuestionEntity, QuestionFromModel } from '@modules/questions'
 import { SetSaved, SetsUseCases } from '@modules/study'
 import { BadgesUseCases, CountStreakBadges, ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
-export const QuestionChangeStreamCallbacks: ChangeStreamCallbacks<QuestionFromModel, QuestionEntity> = {
+export const QuestionDbChangeCallbacks: DbChangeCallbacks<QuestionFromModel, QuestionEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('questions/questions', after)
 		await appInstance.listener.created(`questions/questions/${after.id}`, after)

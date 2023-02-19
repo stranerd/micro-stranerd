@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { TestPrepFromModel } from '../models/testPreps'
-import { TestPrepChangeStreamCallbacks } from '@utils/changeStreams/study/testPreps'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { TestPrepDbChangeCallbacks } from '@utils/changeStreams/study/testPreps'
 import { TestPrepEntity } from '../../domain/entities/testPreps'
 import { TestPrepMapper } from '../mappers/testPreps'
+import { TestPrepFromModel } from '../models/testPreps'
 
 const Schema = new mongoose.Schema<TestPrepFromModel>({
 	_id: {
@@ -40,4 +41,5 @@ const Schema = new mongoose.Schema<TestPrepFromModel>({
 
 export const TestPrep = mongoose.model<TestPrepFromModel>('StranerdStudyTestPrep', Schema)
 
-generateChangeStreams<TestPrepFromModel, TestPrepEntity>(TestPrep, TestPrepChangeStreamCallbacks, new TestPrepMapper().mapFrom).then()
+export const TestPrepChange = appInstance.db
+	.generateDbChange<TestPrepFromModel, TestPrepEntity>(TestPrep, TestPrepDbChangeCallbacks, new TestPrepMapper().mapFrom)

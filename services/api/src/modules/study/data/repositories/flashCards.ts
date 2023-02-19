@@ -1,4 +1,4 @@
-import { parseQueryParams, QueryParams } from '@utils/app/package'
+import { QueryParams } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { IFlashCardRepository } from '../../domain/irepositories/flashCards'
 import { EmbeddedUser } from '../../domain/types'
@@ -20,7 +20,7 @@ export class FlashCardRepository implements IFlashCardRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<FlashCardFromModel>(FlashCard, query)
+		const data = await appInstance.db.parseQueryParams<FlashCardFromModel>(FlashCard, query)
 
 		return {
 			...data,

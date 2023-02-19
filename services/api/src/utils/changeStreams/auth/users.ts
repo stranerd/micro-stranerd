@@ -1,12 +1,12 @@
-import { ChangeStreamCallbacks, deleteCachedAccessToken, EmailsList, readEmailFromPug } from '@utils/app/package'
-import { publishers } from '@utils/events'
 import { AuthUserEntity, UserFromModel } from '@modules/auth'
-import { subscribeToMailingList } from '@utils/mailing'
-import { isProd } from '@utils/environment'
-import { ReferralsUseCases, UsersUseCases } from '@modules/users'
 import { TokensUseCases } from '@modules/push'
+import { ReferralsUseCases, UsersUseCases } from '@modules/users'
+import { DbChangeCallbacks, deleteCachedAccessToken, EmailsList, readEmailFromPug } from '@utils/app/package'
+import { isProd } from '@utils/environment'
+import { publishers } from '@utils/events'
+import { subscribeToMailingList } from '@utils/mailing'
 
-export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, AuthUserEntity> = {
+export const UserDbChangeCallbacks: DbChangeCallbacks<UserFromModel, AuthUserEntity> = {
 	created: async ({ after }) => {
 		await UsersUseCases.createWithBio({
 			id: after.id,

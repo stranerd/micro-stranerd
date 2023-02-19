@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IFileRepository } from '../../domain/irepositories/files'
+import { EmbeddedUser } from '../../domain/types'
 import { FileMapper } from '../mappers/files'
 import { FileFromModel, FileToModel } from '../models/files'
 import { File } from '../mongooseModels/files'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser } from '../../domain/types'
 
 export class FileRepository implements IFileRepository {
 	private static instance: FileRepository
@@ -19,7 +20,7 @@ export class FileRepository implements IFileRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<FileFromModel>(File, query)
+		const data = await appInstance.db.parseQueryParams<FileFromModel>(File, query)
 
 		return {
 			...data,

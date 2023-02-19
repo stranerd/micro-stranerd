@@ -1,9 +1,9 @@
 import { TagEntity, TagFromModel, TagTypes } from '@modules/interactions'
 import { QuestionsUseCases } from '@modules/questions'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const TagChangeStreamCallbacks: ChangeStreamCallbacks<TagFromModel, TagEntity> = {
+export const TagDbChangeCallbacks: DbChangeCallbacks<TagFromModel, TagEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('interactions/tags', after)
 		await appInstance.listener.created(`interactions/tags/${after.id}`, after)

@@ -1,10 +1,10 @@
 import { PastQuestionsUseCases, PastQuestionType } from '@modules/school'
 import { TestEntity, TestFromModel, TestsUseCases, TestType } from '@modules/study'
 import { ScoreRewards, UsersUseCases } from '@modules/users'
-import { ChangeStreamCallbacks, Conditions, DelayedJobs, Validation } from '@utils/app/package'
+import { Conditions, DbChangeCallbacks, DelayedJobs, Validation } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const TestChangeStreamCallbacks: ChangeStreamCallbacks<TestFromModel, TestEntity> = {
+export const TestDbChangeCallbacks: DbChangeCallbacks<TestFromModel, TestEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`study/tests/${after.userId}`, after)
 		await appInstance.listener.created(`study/tests/${after.id}/${after.userId}`, after)

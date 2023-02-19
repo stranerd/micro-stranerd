@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { DepartmentEntity } from '../../domain/entities/departments'
 import { IDepartmentRepository } from '../../domain/irepositories/departments'
 import { DepartmentMapper } from '../mappers/departments'
 import { DepartmentFromModel, DepartmentToModel } from '../models/departments'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Department } from '../mongooseModels/departments'
 
 export class DepartmentRepository implements IDepartmentRepository {
@@ -19,7 +20,7 @@ export class DepartmentRepository implements IDepartmentRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<DepartmentFromModel>(Department, query)
+		const data = await appInstance.db.parseQueryParams<DepartmentFromModel>(Department, query)
 
 		return {
 			...data,

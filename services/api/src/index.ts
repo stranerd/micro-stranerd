@@ -12,7 +12,7 @@ import { initializeApp } from 'firebase-admin/app'
 
 const start = async () => {
 	initializeApp()
-	await appInstance.startDbConnection()
+	await appInstance.startConnections()
 	await Promise.all(
 		Object.values(subscribers)
 			.map(async (subscriber) => {

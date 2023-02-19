@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { PastQuestionFromModel } from '../models/pastQuestions'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { PastQuestionDbChangeCallbacks } from '@utils/changeStreams/school/pastQuestions'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
-import { PastQuestionChangeStreamCallbacks } from '@utils/changeStreams/school/pastQuestions'
 import { PastQuestionMapper } from '../mappers/pastQuestions'
+import { PastQuestionFromModel } from '../models/pastQuestions'
 
 const Schema = new mongoose.Schema<PastQuestionFromModel>({
 	_id: {
@@ -49,4 +50,5 @@ const Schema = new mongoose.Schema<PastQuestionFromModel>({
 
 export const PastQuestion = mongoose.model<PastQuestionFromModel>('StranerdSchoolPastQuestion', Schema)
 
-generateChangeStreams<PastQuestionFromModel, PastQuestionEntity>(PastQuestion, PastQuestionChangeStreamCallbacks, new PastQuestionMapper().mapFrom).then()
+export const PastQuestionChange = appInstance.db
+	.generateDbChange<PastQuestionFromModel, PastQuestionEntity>(PastQuestion, PastQuestionDbChangeCallbacks, new PastQuestionMapper().mapFrom)

@@ -1,8 +1,8 @@
 import { MethodEntity, MethodFromModel } from '@modules/payment'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const MethodChangeStreamCallbacks: ChangeStreamCallbacks<MethodFromModel, MethodEntity> = {
+export const MethodDbChangeCallbacks: DbChangeCallbacks<MethodFromModel, MethodEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`payment/methods/${after.userId}`, after)
 		await appInstance.listener.created(`payment/methods/${after.id}/${after.userId}`, after)

@@ -1,10 +1,10 @@
 import { ChatEntity, ChatFromModel, ChatMetasUseCases } from '@modules/messaging'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 import { sendPushNotification } from '@utils/modules/push'
 
-export const ChatChangeStreamCallbacks: ChangeStreamCallbacks<ChatFromModel, ChatEntity> = {
+export const ChatDbChangeCallbacks: DbChangeCallbacks<ChatFromModel, ChatEntity> = {
 	created: async ({ after }) => {
 		await Promise.all(after.data.members.map(async (userId) => {
 			await appInstance.listener.created(`messaging/chats/${userId}`, after)

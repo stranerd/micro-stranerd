@@ -1,10 +1,10 @@
+import { QueryParams, Random } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IAttendanceRepository } from '../../domain/irepositories/attendances'
+import { EmbeddedUser } from '../../domain/types'
 import { AttendanceMapper } from '../mappers/attendances'
 import { AttendanceFromModel, AttendanceToModel } from '../models/attendances'
 import { Attendance } from '../mongooseModels/attendances'
-import { parseQueryParams, QueryParams, Random } from '@utils/app/package'
-import { EmbeddedUser } from '../../domain/types'
-import { appInstance } from '@utils/app/types'
 
 export class AttendanceRepository implements IAttendanceRepository {
 	private static instance: AttendanceRepository
@@ -20,7 +20,7 @@ export class AttendanceRepository implements IAttendanceRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<AttendanceFromModel>(Attendance, query)
+		const data = await appInstance.db.parseQueryParams<AttendanceFromModel>(Attendance, query)
 
 		return {
 			...data,

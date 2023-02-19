@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { WalletFromModel } from '../models/wallets'
-import { WalletChangeStreamCallbacks } from '@utils/changeStreams/payment/wallets'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { WalletDbChangeCallbacks } from '@utils/changeStreams/payment/wallets'
 import { WalletEntity } from '../../domain/entities/wallets'
-import { WalletMapper } from '../mappers/wallets'
 import { Currencies, PlanDataType } from '../../domain/types'
+import { WalletMapper } from '../mappers/wallets'
+import { WalletFromModel } from '../models/wallets'
 
 const WalletSchema = new mongoose.Schema<WalletFromModel>({
 	_id: {
@@ -69,4 +70,5 @@ const WalletSchema = new mongoose.Schema<WalletFromModel>({
 
 export const Wallet = mongoose.model<WalletFromModel>('StranerdPaymentWallet', WalletSchema)
 
-generateChangeStreams<WalletFromModel, WalletEntity>(Wallet, WalletChangeStreamCallbacks, new WalletMapper().mapFrom).then()
+export const WalletChange = appInstance.db
+	.generateDbChange<WalletFromModel, WalletEntity>(Wallet, WalletDbChangeCallbacks, new WalletMapper().mapFrom)

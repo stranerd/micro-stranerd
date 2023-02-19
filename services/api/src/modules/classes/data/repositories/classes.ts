@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IClassRepository } from '../../domain/irepositories/classes'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 import { ClassMapper } from '../mappers/classes'
 import { ClassFromModel, ClassToModel } from '../models/classes'
 import { Class } from '../mongooseModels/classes'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class ClassRepository implements IClassRepository {
 	private static instance: ClassRepository
@@ -19,7 +20,7 @@ export class ClassRepository implements IClassRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<ClassFromModel>(Class, query)
+		const data = await appInstance.db.parseQueryParams<ClassFromModel>(Class, query)
 
 		return {
 			...data,

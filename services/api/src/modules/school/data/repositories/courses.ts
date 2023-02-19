@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { CourseEntity } from '../../domain/entities/courses'
 import { ICourseRepository } from '../../domain/irepositories/courses'
 import { CourseMapper } from '../mappers/courses'
 import { CourseFromModel, CourseToModel } from '../models/courses'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Course } from '../mongooseModels/courses'
 
 export class CourseRepository implements ICourseRepository {
@@ -19,7 +20,7 @@ export class CourseRepository implements ICourseRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<CourseFromModel>(Course, query)
+		const data = await appInstance.db.parseQueryParams<CourseFromModel>(Course, query)
 
 		return {
 			...data,

@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { FacultyEntity } from '../../domain/entities/faculties'
 import { IFacultyRepository } from '../../domain/irepositories/faculties'
 import { FacultyMapper } from '../mappers/faculties'
 import { FacultyFromModel, FacultyToModel } from '../models/faculties'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Faculty } from '../mongooseModels/faculties'
 
 export class FacultyRepository implements IFacultyRepository {
@@ -19,7 +20,7 @@ export class FacultyRepository implements IFacultyRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<FacultyFromModel>(Faculty, query)
+		const data = await appInstance.db.parseQueryParams<FacultyFromModel>(Faculty, query)
 
 		return {
 			...data,

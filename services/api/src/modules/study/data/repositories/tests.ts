@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ITestRepository } from '../../domain/irepositories/tests'
+import { AnswerType } from '../../domain/types'
 import { TestMapper } from '../mappers/tests'
 import { TestFromModel, TestToModel } from '../models/tests'
 import { Test } from '../mongooseModels/tests'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { AnswerType } from '../../domain/types'
 
 export class TestRepository implements ITestRepository {
 	private static instance: TestRepository
@@ -19,7 +20,7 @@ export class TestRepository implements ITestRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<TestFromModel>(Test, query)
+		const data = await appInstance.db.parseQueryParams<TestFromModel>(Test, query)
 
 		return {
 			...data,
@@ -39,7 +40,7 @@ export class TestRepository implements ITestRepository {
 	}
 
 	async find (id: string) {
-		const test = await Test.findById(id )
+		const test = await Test.findById(id)
 		return this.mapper.mapFrom(test)
 	}
 

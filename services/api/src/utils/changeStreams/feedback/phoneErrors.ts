@@ -1,8 +1,8 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
-import { appInstance } from '@utils/app/types'
 import { PhoneErrorEntity, PhoneErrorFromModel } from '@modules/feedback'
+import { DbChangeCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 
-export const PhoneErrorChangeStreamCallbacks: ChangeStreamCallbacks<PhoneErrorFromModel, PhoneErrorEntity> = {
+export const PhoneErrorDbChangeCallbacks: DbChangeCallbacks<PhoneErrorFromModel, PhoneErrorEntity> = {
 	created: async ({ after }) => {
 		await appInstance.logger.error(after.error)
 	}

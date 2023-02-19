@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { AssignmentFromModel } from '../models/assignments'
-import { AssignmentChangeStreamCallbacks } from '@utils/changeStreams/teachers/assignments'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { AssignmentDbChangeCallbacks } from '@utils/changeStreams/teachers/assignments'
 import { AssignmentEntity } from '../../domain/entities/assignments'
 import { AssignmentMapper } from '../mappers/assignments'
+import { AssignmentFromModel } from '../models/assignments'
 
 const Schema = new mongoose.Schema<AssignmentFromModel>({
 	_id: {
@@ -60,4 +61,5 @@ const Schema = new mongoose.Schema<AssignmentFromModel>({
 
 export const Assignment = mongoose.model<AssignmentFromModel>('StranerdTeachersAssignment', Schema)
 
-generateChangeStreams<AssignmentFromModel, AssignmentEntity>(Assignment, AssignmentChangeStreamCallbacks, new AssignmentMapper().mapFrom).then()
+export const AssignmentChange = appInstance.db
+	.generateDbChange<AssignmentFromModel, AssignmentEntity>(Assignment, AssignmentDbChangeCallbacks, new AssignmentMapper().mapFrom)

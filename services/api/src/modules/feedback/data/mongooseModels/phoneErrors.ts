@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { PhoneErrorFromModel } from '../models/phoneErrors'
-import { PhoneErrorChangeStreamCallbacks } from '@utils/changeStreams/feedback/phoneErrors'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { PhoneErrorDbChangeCallbacks } from '@utils/changeStreams/feedback/phoneErrors'
 import { PhoneErrorEntity } from '../../domain/entities/phoneErrors'
 import { PhoneErrorMapper } from '../mappers/phoneErrors'
+import { PhoneErrorFromModel } from '../models/phoneErrors'
 
 const Schema = new mongoose.Schema<PhoneErrorFromModel>({
 	_id: {
@@ -39,4 +40,5 @@ const Schema = new mongoose.Schema<PhoneErrorFromModel>({
 
 export const PhoneError = mongoose.model<PhoneErrorFromModel>('StranerdFeedbackPhoneError', Schema)
 
-generateChangeStreams<PhoneErrorFromModel, PhoneErrorEntity>(PhoneError, PhoneErrorChangeStreamCallbacks, new PhoneErrorMapper().mapFrom).then()
+export const PhoneErrorChange = appInstance.db
+	.generateDbChange<PhoneErrorFromModel, PhoneErrorEntity>(PhoneError, PhoneErrorDbChangeCallbacks, new PhoneErrorMapper().mapFrom)

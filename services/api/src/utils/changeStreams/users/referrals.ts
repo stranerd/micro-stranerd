@@ -1,8 +1,8 @@
 import { ReferralEntity, ReferralFromModel } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const ReferralChangeStreamCallbacks: ChangeStreamCallbacks<ReferralFromModel, ReferralEntity> = {
+export const ReferralDbChangeCallbacks: DbChangeCallbacks<ReferralFromModel, ReferralEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`users/referrals/${after.userId}`, after)
 		await appInstance.listener.created(`users/referrals/${after.id}/${after.userId}`, after)

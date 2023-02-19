@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ILikeRepository } from '../../domain/irepositories/likes'
+import { Interaction } from '../../domain/types'
 import { LikeMapper } from '../mappers/likes'
 import { LikeFromModel, LikeToModel } from '../models/likes'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Like } from '../mongooseModels/likes'
-import { Interaction } from '../../domain/types'
 
 export class LikeRepository implements ILikeRepository {
 	private static instance: LikeRepository
@@ -19,7 +20,7 @@ export class LikeRepository implements ILikeRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<LikeFromModel>(Like, query)
+		const data = await appInstance.db.parseQueryParams<LikeFromModel>(Like, query)
 
 		return {
 			...data,

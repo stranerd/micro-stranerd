@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { CourseFromModel } from '../models/courses'
-import { CourseChangeStreamCallbacks } from '@utils/changeStreams/school/courses'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { CourseDbChangeCallbacks } from '@utils/changeStreams/school/courses'
 import { CourseEntity } from '../../domain/entities/courses'
 import { CourseMapper } from '../mappers/courses'
+import { CourseFromModel } from '../models/courses'
 
 const Schema = new mongoose.Schema<CourseFromModel>({
 	_id: {
@@ -41,4 +42,5 @@ const Schema = new mongoose.Schema<CourseFromModel>({
 
 export const Course = mongoose.model<CourseFromModel>('StranerdSchoolCourse', Schema)
 
-generateChangeStreams<CourseFromModel, CourseEntity>(Course, CourseChangeStreamCallbacks, new CourseMapper().mapFrom).then()
+export const CourseChange = appInstance.db
+	.generateDbChange<CourseFromModel, CourseEntity>(Course, CourseDbChangeCallbacks, new CourseMapper().mapFrom)

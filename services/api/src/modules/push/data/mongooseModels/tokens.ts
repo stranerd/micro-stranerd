@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { TokenFromModel } from '../models/tokens'
-import { TokenChangeStreamCallbacks } from '@utils/changeStreams/push/tokens'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { TokenDbChangeCallbacks } from '@utils/changeStreams/push/tokens'
 import { TokenEntity } from '../../domain/entities/tokens'
 import { TokenMapper } from '../mappers/tokens'
+import { TokenFromModel } from '../models/tokens'
 
 const Schema = new mongoose.Schema<TokenFromModel>({
 	_id: {
@@ -32,4 +33,5 @@ const Schema = new mongoose.Schema<TokenFromModel>({
 
 export const Token = mongoose.model<TokenFromModel>('StranerdPushToken', Schema)
 
-generateChangeStreams<TokenFromModel, TokenEntity>(Token, TokenChangeStreamCallbacks, new TokenMapper().mapFrom).then()
+export const TokenChange = appInstance.db
+	.generateDbChange<TokenFromModel, TokenEntity>(Token, TokenDbChangeCallbacks, new TokenMapper().mapFrom)

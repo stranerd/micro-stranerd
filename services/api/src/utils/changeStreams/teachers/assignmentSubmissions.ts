@@ -1,9 +1,9 @@
 import { AssignmentSubmissionEntity, AssignmentSubmissionFromModel } from '@modules/teachers'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
-export const AssignmentSubmissionChangeStreamCallbacks: ChangeStreamCallbacks<AssignmentSubmissionFromModel, AssignmentSubmissionEntity> = {
+export const AssignmentSubmissionDbChangeCallbacks: DbChangeCallbacks<AssignmentSubmissionFromModel, AssignmentSubmissionEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`teachers/${after.courseId}/assignmentSubmissions`, after)
 		await appInstance.listener.created(`teachers/${after.courseId}/assignmentSubmissions/${after.id}`, after)

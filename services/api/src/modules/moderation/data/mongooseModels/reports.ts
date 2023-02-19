@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ReportFromModel, ReportToModel } from '../models/reports'
-import { ReportMapper } from '../mappers/reports'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ReportDbChangeCallbacks } from '@utils/changeStreams/moderation/reports'
 import { ReportEntity } from '../../domain/entities/reports'
-import { ReportChangeStreamCallbacks } from '@utils/changeStreams/moderation/reports'
+import { ReportMapper } from '../mappers/reports'
+import { ReportFromModel, ReportToModel } from '../models/reports'
 
 const ReportSchema = new mongoose.Schema<ReportFromModel>({
 	_id: {
@@ -35,4 +36,5 @@ const ReportSchema = new mongoose.Schema<ReportFromModel>({
 
 export const Report = mongoose.model<ReportFromModel>('StranerdModerationReport', ReportSchema)
 
-generateChangeStreams<ReportFromModel, ReportEntity>(Report, ReportChangeStreamCallbacks, new ReportMapper().mapFrom).then()
+export const ReportChange = appInstance.db
+	.generateDbChange<ReportFromModel, ReportEntity>(Report, ReportDbChangeCallbacks, new ReportMapper().mapFrom)

@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { FlashCardFromModel } from '../models/flashCards'
-import { FlashCardChangeStreamCallbacks } from '@utils/changeStreams/study/flashCards'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { FlashCardDbChangeCallbacks } from '@utils/changeStreams/study/flashCards'
 import { FlashCardEntity } from '../../domain/entities/flashCards'
 import { FlashCardMapper } from '../mappers/flashCards'
+import { FlashCardFromModel } from '../models/flashCards'
 
 const Schema = new mongoose.Schema<FlashCardFromModel>({
 	_id: {
@@ -35,4 +36,5 @@ const Schema = new mongoose.Schema<FlashCardFromModel>({
 
 export const FlashCard = mongoose.model<FlashCardFromModel>('StranerdStudyFlashCard', Schema)
 
-generateChangeStreams<FlashCardFromModel, FlashCardEntity>(FlashCard, FlashCardChangeStreamCallbacks, new FlashCardMapper().mapFrom).then()
+export const FlashCardChange = appInstance.db
+	.generateDbChange<FlashCardFromModel, FlashCardEntity>(FlashCard, FlashCardDbChangeCallbacks, new FlashCardMapper().mapFrom)

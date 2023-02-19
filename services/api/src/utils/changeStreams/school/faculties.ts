@@ -1,8 +1,8 @@
 import { DepartmentsUseCases, FacultyEntity, FacultyFromModel } from '@modules/school'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const FacultyChangeStreamCallbacks: ChangeStreamCallbacks<FacultyFromModel, FacultyEntity> = {
+export const FacultyDbChangeCallbacks: DbChangeCallbacks<FacultyFromModel, FacultyEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('school/faculties', after)
 		await appInstance.listener.created(`school/faculties/${after.id}`, after)

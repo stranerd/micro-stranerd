@@ -7,12 +7,12 @@ import {
 	SchemesUseCases
 } from '@modules/classes'
 import { NotificationType } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const ClassChangeStreamCallbacks: ChangeStreamCallbacks<ClassFromModel, ClassEntity> = {
+export const ClassDbChangeCallbacks: DbChangeCallbacks<ClassFromModel, ClassEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('classes/classes', after)
 		await appInstance.listener.created(`classes/classes/${after.id}`, after)

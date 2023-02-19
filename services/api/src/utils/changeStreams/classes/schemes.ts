@@ -1,10 +1,10 @@
 import { SchemeEntity, SchemeFromModel } from '@modules/classes'
 import { NotificationType } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const SchemeChangeStreamCallbacks: ChangeStreamCallbacks<SchemeFromModel, SchemeEntity> = {
+export const SchemeDbChangeCallbacks: DbChangeCallbacks<SchemeFromModel, SchemeEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`classes/${after.classId}/schemes`, after)
 		await appInstance.listener.created(`classes/${after.classId}/schemes/${after.id}`, after)

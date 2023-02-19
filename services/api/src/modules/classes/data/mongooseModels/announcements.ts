@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { AnnouncementFromModel } from '../models/announcements'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { AnnouncementDbChangeCallbacks } from '@utils/changeStreams/classes/announcements'
 import { AnnouncementEntity } from '../../domain/entities/announcements'
-import { AnnouncementChangeStreamCallbacks } from '@utils/changeStreams/classes/announcements'
-import { AnnouncementMapper } from '../mappers/announcements'
 import { ClassUsers } from '../../domain/types'
+import { AnnouncementMapper } from '../mappers/announcements'
+import { AnnouncementFromModel } from '../models/announcements'
 
 const Schema = new mongoose.Schema<AnnouncementFromModel>({
 	_id: {
@@ -51,4 +52,5 @@ const Schema = new mongoose.Schema<AnnouncementFromModel>({
 
 export const Announcement = mongoose.model<AnnouncementFromModel>('StranerdClassesAnnouncement', Schema)
 
-generateChangeStreams<AnnouncementFromModel, AnnouncementEntity>(Announcement, AnnouncementChangeStreamCallbacks, new AnnouncementMapper().mapFrom).then()
+export const AnnouncementChange = appInstance.db
+	.generateDbChange<AnnouncementFromModel, AnnouncementEntity>(Announcement, AnnouncementDbChangeCallbacks, new AnnouncementMapper().mapFrom)

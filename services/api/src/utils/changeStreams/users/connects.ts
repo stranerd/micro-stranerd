@@ -7,11 +7,11 @@ import {
 	UserMeta,
 	UsersUseCases
 } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const ConnectChangeStreamCallbacks: ChangeStreamCallbacks<ConnectFromModel, ConnectEntity> = {
+export const ConnectDbChangeCallbacks: DbChangeCallbacks<ConnectFromModel, ConnectEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`users/connects/${after.from.id}`, after)
 		await appInstance.listener.created(`users/connects/${after.to.id}`, after)

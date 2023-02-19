@@ -1,7 +1,8 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IPlanRepository } from '../../domain/irepositories/plans'
 import { PlanMapper } from '../mappers/plans'
 import { PlanFromModel, PlanToModel } from '../models/plans'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Plan } from '../mongooseModels/plans'
 
 export class PlanRepository implements IPlanRepository {
@@ -18,7 +19,7 @@ export class PlanRepository implements IPlanRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<PlanFromModel>(Plan, query)
+		const data = await appInstance.db.parseQueryParams<PlanFromModel>(Plan, query)
 
 		return {
 			...data,

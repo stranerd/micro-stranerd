@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IAssignmentRepository } from '../../domain/irepositories/assignments'
+import { EmbeddedUser } from '../../domain/types'
 import { AssignmentMapper } from '../mappers/assignments'
 import { AssignmentFromModel, AssignmentToModel } from '../models/assignments'
 import { Assignment } from '../mongooseModels/assignments'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser } from '../../domain/types'
 
 export class AssignmentRepository implements IAssignmentRepository {
 	private static instance: AssignmentRepository
@@ -19,7 +20,7 @@ export class AssignmentRepository implements IAssignmentRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<AssignmentFromModel>(Assignment, query)
+		const data = await appInstance.db.parseQueryParams<AssignmentFromModel>(Assignment, query)
 
 		return {
 			...data,

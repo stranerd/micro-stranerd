@@ -1,9 +1,9 @@
 import { FlashCardEntity, FlashCardFromModel, SetSaved, SetsUseCases } from '@modules/study'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const FlashCardChangeStreamCallbacks: ChangeStreamCallbacks<FlashCardFromModel, FlashCardEntity> = {
+export const FlashCardDbChangeCallbacks: DbChangeCallbacks<FlashCardFromModel, FlashCardEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('study/flashCards', after)
 		await appInstance.listener.created(`study/flashCards/${after.id}`, after)

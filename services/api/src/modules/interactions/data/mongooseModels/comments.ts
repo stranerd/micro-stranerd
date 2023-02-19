@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { CommentFromModel } from '../models/comments'
-import { CommentChangeStreamCallbacks } from '@utils/changeStreams/interactions/comments'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { CommentDbChangeCallbacks } from '@utils/changeStreams/interactions/comments'
 import { CommentEntity } from '../../domain/entities/comments'
-import { CommentMapper } from '../mappers/comments'
 import { CommentMetaType } from '../../domain/types'
+import { CommentMapper } from '../mappers/comments'
+import { CommentFromModel } from '../models/comments'
 
 const CommentSchema = new mongoose.Schema<CommentFromModel>({
 	_id: {
@@ -43,4 +44,5 @@ const CommentSchema = new mongoose.Schema<CommentFromModel>({
 
 export const Comment = mongoose.model<CommentFromModel>('StranerdInteractionsComment', CommentSchema)
 
-generateChangeStreams<CommentFromModel, CommentEntity>(Comment, CommentChangeStreamCallbacks, new CommentMapper().mapFrom).then()
+export const CommentChange = appInstance.db
+	.generateDbChange<CommentFromModel, CommentEntity>(Comment, CommentDbChangeCallbacks, new CommentMapper().mapFrom)

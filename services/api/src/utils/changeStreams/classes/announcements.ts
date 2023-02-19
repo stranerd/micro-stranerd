@@ -1,10 +1,10 @@
-import { appInstance } from '@utils/app/types'
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { AnnouncementEntity, AnnouncementFromModel, EventsUseCases, EventType } from '@modules/classes'
-import { sendNotification } from '@utils/modules/users/notifications'
 import { NotificationType } from '@modules/users'
+import { DbChangeCallbacks } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { sendNotification } from '@utils/modules/users/notifications'
 
-export const AnnouncementChangeStreamCallbacks: ChangeStreamCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
+export const AnnouncementDbChangeCallbacks: DbChangeCallbacks<AnnouncementFromModel, AnnouncementEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`classes/${after.classId}/announcements`, after)
 		await appInstance.listener.created(`classes/${after.classId}/announcements/${after.id}`, after)

@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ChatMetaFromModel } from '../models/chatMeta'
-import { ChatMetaChangeStreamCallbacks } from '@utils/changeStreams/messaging/chatMetas'
-import { ChatMetaMapper } from '../mappers/chatMeta'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ChatMetaDbChangeCallbacks } from '@utils/changeStreams/messaging/chatMetas'
 import { ChatMetaEntity } from '../../domain/entities/chatMeta'
+import { ChatMetaMapper } from '../mappers/chatMeta'
+import { ChatMetaFromModel } from '../models/chatMeta'
 
 const Schema = new mongoose.Schema<ChatMetaFromModel>({
 	_id: {
@@ -41,4 +42,5 @@ const Schema = new mongoose.Schema<ChatMetaFromModel>({
 
 export const ChatMeta = mongoose.model<ChatMetaFromModel>('StranerdMessagingChatMeta', Schema)
 
-generateChangeStreams<ChatMetaFromModel, ChatMetaEntity>(ChatMeta, ChatMetaChangeStreamCallbacks, new ChatMetaMapper().mapFrom).then()
+export const ChatMetaChange = appInstance.db
+	.generateDbChange<ChatMetaFromModel, ChatMetaEntity>(ChatMeta, ChatMetaDbChangeCallbacks, new ChatMetaMapper().mapFrom)

@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IReferralRepository } from '../../domain/irepositories/referrals'
 import { ReferralMapper } from '../mappers/referrals'
-import { Referral } from '../mongooseModels/referrals'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { ReferralFromModel, ReferralToModel } from '../models/referrals'
+import { Referral } from '../mongooseModels/referrals'
 
 export class ReferralRepository implements IReferralRepository {
 	private static instance: ReferralRepository
@@ -14,7 +15,7 @@ export class ReferralRepository implements IReferralRepository {
 	}
 
 	async getReferrals (query: QueryParams) {
-		const data = await parseQueryParams<ReferralFromModel>(Referral, query)
+		const data = await appInstance.db.parseQueryParams<ReferralFromModel>(Referral, query)
 		return {
 			...data,
 			results: data.results.map((n) => this.mapper.mapFrom(n)!)

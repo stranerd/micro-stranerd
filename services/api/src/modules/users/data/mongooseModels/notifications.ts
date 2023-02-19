@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { NotificationFromModel } from '../models/notifications'
-import { NotificationChangeStreamCallbacks } from '@utils/changeStreams/users/notifications'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { NotificationDbChangeCallbacks } from '@utils/changeStreams/users/notifications'
 import { NotificationEntity } from '../../domain/entities/notifications'
 import { NotificationMapper } from '../mappers/notifications'
+import { NotificationFromModel } from '../models/notifications'
 
 const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 	_id: {
@@ -51,4 +52,5 @@ const NotificationSchema = new mongoose.Schema<NotificationFromModel>({
 
 export const Notification = mongoose.model<NotificationFromModel>('StranerdUsersNotification', NotificationSchema)
 
-generateChangeStreams<NotificationFromModel, NotificationEntity>(Notification, NotificationChangeStreamCallbacks, new NotificationMapper().mapFrom).then()
+export const NotificationChange = appInstance.db
+	.generateDbChange<NotificationFromModel, NotificationEntity>(Notification, NotificationDbChangeCallbacks, new NotificationMapper().mapFrom)

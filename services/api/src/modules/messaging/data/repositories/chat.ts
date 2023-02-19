@@ -1,10 +1,11 @@
-import { ChatMapper } from '../mappers/chat'
+import { mongoose, QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IChatRepository } from '../../domain/irepositories/chat'
+import { ChatType, EmbeddedUser } from '../../domain/types'
+import { ChatMapper } from '../mappers/chat'
 import { ChatFromModel, ChatToModel } from '../models/chat'
 import { Chat } from '../mongooseModels/chat'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { ChatMeta } from '../mongooseModels/chatMeta'
-import { ChatType, EmbeddedUser } from '../../domain/types'
 
 const getChatMetaCondition = (from: string, to: string) => ({
 	members: from,
@@ -48,7 +49,7 @@ export class ChatRepository implements IChatRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<ChatFromModel>(Chat, query)
+		const data = await appInstance.db.parseQueryParams<ChatFromModel>(Chat, query)
 
 		return {
 			...data,

@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IEventRepository } from '../../domain/irepositories/events'
+import { ClassUsers, EmbeddedUser, EventType } from '../../domain/types'
 import { EventMapper } from '../mappers/events'
 import { EventFromModel, EventToModel } from '../models/events'
 import { Event } from '../mongooseModels/events'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { ClassUsers, EmbeddedUser, EventType } from '../../domain/types'
 
 export class EventRepository implements IEventRepository {
 	private static instance: EventRepository
@@ -19,7 +20,7 @@ export class EventRepository implements IEventRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<EventFromModel>(Event, query)
+		const data = await appInstance.db.parseQueryParams<EventFromModel>(Event, query)
 
 		return {
 			...data,

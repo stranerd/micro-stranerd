@@ -2,8 +2,9 @@ import { IUserRepository } from '../../domain/irepositories/users'
 import { RegisterInput, RoleInput, UserUpdateInput } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
 import { UserFromModel } from '../models/users'
-import { AuthTypes, Hash, NotFoundError, parseQueryParams, QueryParams } from '@utils/app/package'
+import { AuthTypes, Hash, NotFoundError, QueryParams } from '@utils/app/package'
 import User from '../mongooseModels/users'
+import { appInstance } from '@utils/app/types'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
@@ -24,7 +25,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async getUsers (query: QueryParams) {
-		const data = await parseQueryParams<UserFromModel>(User, query)
+		const data = await appInstance.db.parseQueryParams<UserFromModel>(User, query)
 		return {
 			...data,
 			results: data.results.map((u) => this.mapper.mapFrom(u)!)

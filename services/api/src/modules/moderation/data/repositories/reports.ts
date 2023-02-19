@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IReportRepository } from '../../domain/irepositories/reports'
-import { ReportMapper } from '../mappers/reports'
-import { Report } from '../mongooseModels/reports'
-import { ReportFromModel, ReportToModel } from '../models/reports'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { EmbeddedUser } from '../../domain/types'
+import { ReportMapper } from '../mappers/reports'
+import { ReportFromModel, ReportToModel } from '../models/reports'
+import { Report } from '../mongooseModels/reports'
 
 export class ReportRepository implements IReportRepository {
 	private static instance: ReportRepository
@@ -15,7 +16,7 @@ export class ReportRepository implements IReportRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<ReportFromModel>(Report, query)
+		const data = await appInstance.db.parseQueryParams<ReportFromModel>(Report, query)
 		return {
 			...data,
 			results: data.results.map((n) => this.mapper.mapFrom(n)!)

@@ -1,5 +1,5 @@
 import { BadgeEntity, BadgeFromModel, CountStreakBadges, RankTypes } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
 const handleCountBadges = async (activity: CountStreakBadges, newLevels: number[], oldLevels: number[]) => {
@@ -14,7 +14,7 @@ const handleRankBadges = async (newLevels: RankTypes[], oldLevels: RankTypes[]) 
 	await appInstance.logger.success(newLevels, oldLevels)
 }
 
-export const BadgeChangeStreamCallbacks: ChangeStreamCallbacks<BadgeFromModel, BadgeEntity> = {
+export const BadgeDbChangeCallbacks: DbChangeCallbacks<BadgeFromModel, BadgeEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`users/badges/${after.userId}`, after)
 		await appInstance.listener.created(`users/badges/${after.id}/${after.userId}`, after)

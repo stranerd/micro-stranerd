@@ -7,10 +7,10 @@ import {
 	FilesUseCases,
 	PostsUseCases
 } from '@modules/teachers'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const CourseChangeStreamCallbacks: ChangeStreamCallbacks<CourseFromModel, CourseEntity> = {
+export const CourseDbChangeCallbacks: DbChangeCallbacks<CourseFromModel, CourseEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('teachers/courses', after)
 		await appInstance.listener.created(`teachers/courses/${after.id}`, after)

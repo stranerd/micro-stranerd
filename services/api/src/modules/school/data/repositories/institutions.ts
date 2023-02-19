@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { InstitutionEntity } from '../../domain/entities/institutions'
 import { IInstitutionRepository } from '../../domain/irepositories/institutions'
 import { InstitutionMapper } from '../mappers/institutions'
 import { InstitutionFromModel, InstitutionToModel } from '../models/institutions'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { Institution } from '../mongooseModels/institutions'
 
 export class InstitutionRepository implements IInstitutionRepository {
@@ -19,7 +20,7 @@ export class InstitutionRepository implements IInstitutionRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<InstitutionFromModel>(Institution, query)
+		const data = await appInstance.db.parseQueryParams<InstitutionFromModel>(Institution, query)
 
 		return {
 			...data,

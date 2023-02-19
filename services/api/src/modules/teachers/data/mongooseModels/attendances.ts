@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { AttendanceFromModel } from '../models/attendances'
-import { AttendanceChangeStreamCallbacks } from '@utils/changeStreams/teachers/attendances'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { AttendanceDbChangeCallbacks } from '@utils/changeStreams/teachers/attendances'
 import { AttendanceEntity } from '../../domain/entities/attendances'
 import { AttendanceMapper } from '../mappers/attendances'
+import { AttendanceFromModel } from '../models/attendances'
 
 const Schema = new mongoose.Schema<AttendanceFromModel>({
 	_id: {
@@ -50,4 +51,5 @@ const Schema = new mongoose.Schema<AttendanceFromModel>({
 
 export const Attendance = mongoose.model<AttendanceFromModel>('StranerdTeachersAttendance', Schema)
 
-generateChangeStreams<AttendanceFromModel, AttendanceEntity>(Attendance, AttendanceChangeStreamCallbacks, new AttendanceMapper().mapFrom).then()
+export const AttendanceChange = appInstance.db
+	.generateDbChange<AttendanceFromModel, AttendanceEntity>(Attendance, AttendanceDbChangeCallbacks, new AttendanceMapper().mapFrom)

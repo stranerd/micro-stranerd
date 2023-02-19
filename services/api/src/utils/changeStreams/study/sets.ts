@@ -1,9 +1,9 @@
 import { SetEntity, SetFromModel } from '@modules/study'
 import { ScoreRewards, UserMeta, UsersUseCases } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const SetChangeStreamCallbacks: ChangeStreamCallbacks<SetFromModel, SetEntity> = {
+export const SetDbChangeCallbacks: DbChangeCallbacks<SetFromModel, SetEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('study/sets', after)
 		await appInstance.listener.created(`study/sets/${after.id}`, after)

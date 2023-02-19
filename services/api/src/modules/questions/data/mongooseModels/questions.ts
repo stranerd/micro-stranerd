@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { QuestionFromModel } from '../models/questions'
-import { QuestionChangeStreamCallbacks } from '@utils/changeStreams/questions/questions'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { QuestionDbChangeCallbacks } from '@utils/changeStreams/questions/questions'
 import { QuestionEntity } from '../../domain/entities/questions'
-import { QuestionMapper } from '../mappers/questions'
 import { QuestionMetaType } from '../../domain/types'
+import { QuestionMapper } from '../mappers/questions'
+import { QuestionFromModel } from '../models/questions'
 
 const Schema = new mongoose.Schema<QuestionFromModel>({
 	_id: {
@@ -64,4 +65,5 @@ const Schema = new mongoose.Schema<QuestionFromModel>({
 
 export const Question = mongoose.model<QuestionFromModel>('StranerdQuestion', Schema)
 
-generateChangeStreams<QuestionFromModel, QuestionEntity>(Question, QuestionChangeStreamCallbacks, new QuestionMapper().mapFrom).then()
+export const QuestionChange = appInstance.db
+	.generateDbChange<QuestionFromModel, QuestionEntity>(Question, QuestionDbChangeCallbacks, new QuestionMapper().mapFrom)

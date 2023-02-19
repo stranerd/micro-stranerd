@@ -19,10 +19,10 @@ import {
 	PostsUseCases
 } from '@modules/teachers'
 import { BadgesUseCases, ConnectsUseCases, UserEntity, UserFromModel } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const UserChangeStreamCallbacks: ChangeStreamCallbacks<UserFromModel, UserEntity> = {
+export const UserDbChangeCallbacks: DbChangeCallbacks<UserFromModel, UserEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('users/users', after)
 		await appInstance.listener.created(`users/users/${after.id}`, after)

@@ -1,8 +1,8 @@
 import { ChatMetaEntity, ChatMetaFromModel } from '@modules/messaging'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const ChatMetaChangeStreamCallbacks: ChangeStreamCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
+export const ChatMetaDbChangeCallbacks: DbChangeCallbacks<ChatMetaFromModel, ChatMetaEntity> = {
 	created: async ({ after }) => {
 		await Promise.all(after.members.map(async (userId) => {
 			await appInstance.listener.created(`messaging/chatMetas/${userId}`, after)

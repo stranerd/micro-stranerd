@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { UserFromModel } from '../models/users'
-import { UserChangeStreamCallbacks } from '@utils/changeStreams/users/users'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { UserDbChangeCallbacks } from '@utils/changeStreams/users/users'
 import { UserEntity } from '../../domain/entities/users'
-import { UserMapper } from '../mappers/users'
 import { UserMeta, UserRankings } from '../../domain/types'
+import { UserMapper } from '../mappers/users'
+import { UserFromModel } from '../models/users'
 
 const Meta = Object.fromEntries(
 	Object.keys(UserMeta).map((key) => [key, {
@@ -103,4 +104,5 @@ const UserSchema = new mongoose.Schema<UserFromModel>({
 
 export const User = mongoose.model<UserFromModel>('StranerdUser', UserSchema)
 
-generateChangeStreams<UserFromModel, UserEntity>(User, UserChangeStreamCallbacks, new UserMapper().mapFrom).then()
+export const UserChange = appInstance.db
+	.generateDbChange<UserFromModel, UserEntity>(User, UserDbChangeCallbacks, new UserMapper().mapFrom)

@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ReferralFromModel } from '../models/referrals'
-import { ReferralChangeStreamCallbacks } from '@utils/changeStreams/users/referrals'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ReferralDbChangeCallbacks } from '@utils/changeStreams/users/referrals'
 import { ReferralEntity } from '../../domain/entities/referrals'
 import { ReferralMapper } from '../mappers/referrals'
+import { ReferralFromModel } from '../models/referrals'
 
 const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 	_id: {
@@ -31,4 +32,5 @@ const ReferralSchema = new mongoose.Schema<ReferralFromModel>({
 
 export const Referral = mongoose.model<ReferralFromModel>('StranerdUsersReferral', ReferralSchema)
 
-generateChangeStreams<ReferralFromModel, ReferralEntity>(Referral, ReferralChangeStreamCallbacks, new ReferralMapper().mapFrom).then()
+export const ReferralChange = appInstance.db
+	.generateDbChange<ReferralFromModel, ReferralEntity>(Referral, ReferralDbChangeCallbacks, new ReferralMapper().mapFrom)

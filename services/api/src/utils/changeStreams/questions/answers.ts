@@ -9,12 +9,12 @@ import {
 	UserMeta,
 	UsersUseCases
 } from '@modules/users'
-import { ChangeStreamCallbacks, Validation } from '@utils/app/package'
+import { DbChangeCallbacks, Validation } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const AnswerChangeStreamCallbacks: ChangeStreamCallbacks<AnswerFromModel, AnswerEntity> = {
+export const AnswerDbChangeCallbacks: DbChangeCallbacks<AnswerFromModel, AnswerEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('questions/answers', after)
 		await appInstance.listener.created(`questions/answers/${after.id}`, after)

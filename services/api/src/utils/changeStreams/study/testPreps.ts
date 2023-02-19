@@ -1,8 +1,8 @@
 import { SetSaved, SetsUseCases, TestPrepEntity, TestPrepFromModel, TestsUseCases } from '@modules/study'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const TestPrepChangeStreamCallbacks: ChangeStreamCallbacks<TestPrepFromModel, TestPrepEntity> = {
+export const TestPrepDbChangeCallbacks: DbChangeCallbacks<TestPrepFromModel, TestPrepEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('study/testPreps', after)
 		await appInstance.listener.created(`study/testPreps/${after.id}`, after)

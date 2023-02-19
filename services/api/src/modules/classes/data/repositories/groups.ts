@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IGroupRepository } from '../../domain/irepositories/groups'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 import { GroupMapper } from '../mappers/groups'
 import { GroupFromModel, GroupToModel } from '../models/groups'
 import { Group } from '../mongooseModels/groups'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class GroupRepository implements IGroupRepository {
 	private static instance: GroupRepository
@@ -19,7 +20,7 @@ export class GroupRepository implements IGroupRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<GroupFromModel>(Group, query)
+		const data = await appInstance.db.parseQueryParams<GroupFromModel>(Group, query)
 
 		return {
 			...data,

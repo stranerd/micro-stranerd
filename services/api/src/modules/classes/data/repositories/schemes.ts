@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ISchemeRepository } from '../../domain/irepositories/schemes'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 import { SchemeMapper } from '../mappers/schemes'
 import { SchemeFromModel, SchemeToModel } from '../models/schemes'
 import { Scheme } from '../mongooseModels/schemes'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class SchemeRepository implements ISchemeRepository {
 	private static instance: SchemeRepository
@@ -19,7 +20,7 @@ export class SchemeRepository implements ISchemeRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<SchemeFromModel>(Scheme, query)
+		const data = await appInstance.db.parseQueryParams<SchemeFromModel>(Scheme, query)
 
 		return {
 			...data,

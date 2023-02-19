@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { FileFromModel } from '../models/files'
-import { FileChangeStreamCallbacks } from '@utils/changeStreams/study/files'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { FileDbChangeCallbacks } from '@utils/changeStreams/study/files'
 import { FileEntity } from '../../domain/entities/files'
 import { FileMapper } from '../mappers/files'
+import { FileFromModel } from '../models/files'
 
 const Schema = new mongoose.Schema<FileFromModel>({
 	_id: {
@@ -35,4 +36,5 @@ const Schema = new mongoose.Schema<FileFromModel>({
 
 export const File = mongoose.model<FileFromModel>('StranerdStudyFile', Schema)
 
-generateChangeStreams<FileFromModel, FileEntity>(File, FileChangeStreamCallbacks, new FileMapper().mapFrom).then()
+export const FileChange = appInstance.db
+	.generateDbChange<FileFromModel, FileEntity>(File, FileDbChangeCallbacks, new FileMapper().mapFrom)

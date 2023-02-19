@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { INoteRepository } from '../../domain/irepositories/notes'
+import { EmbeddedUser } from '../../domain/types'
 import { NoteMapper } from '../mappers/notes'
 import { NoteFromModel, NoteToModel } from '../models/notes'
 import { Note } from '../mongooseModels/notes'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser } from '../../domain/types'
 
 export class NoteRepository implements INoteRepository {
 	private static instance: NoteRepository
@@ -19,7 +20,7 @@ export class NoteRepository implements INoteRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<NoteFromModel>(Note, query)
+		const data = await appInstance.db.parseQueryParams<NoteFromModel>(Note, query)
 
 		return {
 			...data,

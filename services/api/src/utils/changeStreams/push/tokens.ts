@@ -1,4 +1,4 @@
-import { ChangeStreamCallbacks } from '@utils/app/package'
 import { TokenEntity, TokenFromModel } from '@modules/push'
+import { DbChangeCallbacks } from '@utils/app/package'
 
-export const TokenChangeStreamCallbacks: ChangeStreamCallbacks<TokenFromModel, TokenEntity> = {}
+export const TokenDbChangeCallbacks: DbChangeCallbacks<TokenFromModel, TokenEntity> = {}

@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { PostFromModel } from '../models/posts'
-import { PostChangeStreamCallbacks } from '@utils/changeStreams/teachers/posts'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { PostDbChangeCallbacks } from '@utils/changeStreams/teachers/posts'
 import { PostEntity } from '../../domain/entities/posts'
-import { PostMapper } from '../mappers/posts'
 import { PostMetaType } from '../../domain/types'
+import { PostMapper } from '../mappers/posts'
+import { PostFromModel } from '../models/posts'
 
 const Schema = new mongoose.Schema<PostFromModel>({
 	_id: {
@@ -62,4 +63,5 @@ const Schema = new mongoose.Schema<PostFromModel>({
 
 export const Post = mongoose.model<PostFromModel>('StranerdTeachersPost', Schema)
 
-generateChangeStreams<PostFromModel, PostEntity>(Post, PostChangeStreamCallbacks, new PostMapper().mapFrom).then()
+export const PostChange = appInstance.db
+	.generateDbChange<PostFromModel, PostEntity>(Post, PostDbChangeCallbacks, new PostMapper().mapFrom)

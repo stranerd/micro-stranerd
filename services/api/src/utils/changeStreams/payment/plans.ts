@@ -1,8 +1,8 @@
 import { PlanEntity, PlanFromModel } from '@modules/payment'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const PlanChangeStreamCallbacks: ChangeStreamCallbacks<PlanFromModel, PlanEntity> = {
+export const PlanDbChangeCallbacks: DbChangeCallbacks<PlanFromModel, PlanEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('payment/plans', after)
 		await appInstance.listener.created(`payment/plans/${after.id}`, after)

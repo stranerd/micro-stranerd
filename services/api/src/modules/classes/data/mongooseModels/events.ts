@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { EventFromModel } from '../models/events'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { EventDbChangeCallbacks } from '@utils/changeStreams/classes/events'
 import { EventEntity } from '../../domain/entities/events'
-import { EventChangeStreamCallbacks } from '@utils/changeStreams/classes/events'
-import { EventMapper } from '../mappers/events'
 import { ClassUsers } from '../../domain/types'
+import { EventMapper } from '../mappers/events'
+import { EventFromModel } from '../models/events'
 
 const Schema = new mongoose.Schema<EventFromModel>({
 	_id: {
@@ -55,4 +56,5 @@ const Schema = new mongoose.Schema<EventFromModel>({
 
 export const Event = mongoose.model<EventFromModel>('StranerdClassesEvent', Schema)
 
-generateChangeStreams<EventFromModel, EventEntity>(Event, EventChangeStreamCallbacks, new EventMapper().mapFrom).then()
+export const EventChange = appInstance.db
+	.generateDbChange<EventFromModel, EventEntity>(Event, EventDbChangeCallbacks, new EventMapper().mapFrom)

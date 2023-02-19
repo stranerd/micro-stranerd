@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { LikeFromModel } from '../models/likes'
-import { LikeChangeStreamCallbacks } from '@utils/changeStreams/interactions/likes'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { LikeDbChangeCallbacks } from '@utils/changeStreams/interactions/likes'
 import { LikeEntity } from '../../domain/entities/likes'
 import { LikeMapper } from '../mappers/likes'
+import { LikeFromModel } from '../models/likes'
 
 const LikeSchema = new mongoose.Schema<LikeFromModel>({
 	_id: {
@@ -35,4 +36,5 @@ const LikeSchema = new mongoose.Schema<LikeFromModel>({
 
 export const Like = mongoose.model<LikeFromModel>('StranerdInteractionsLike', LikeSchema)
 
-generateChangeStreams<LikeFromModel, LikeEntity>(Like, LikeChangeStreamCallbacks, new LikeMapper().mapFrom).then()
+export const LikeChange = appInstance.db
+	.generateDbChange<LikeFromModel, LikeEntity>(Like, LikeDbChangeCallbacks, new LikeMapper().mapFrom)

@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ClassFromModel } from '../models/classes'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ClassDbChangeCallbacks } from '@utils/changeStreams/classes/classes'
 import { ClassEntity } from '../../domain/entities/classes'
-import { ClassChangeStreamCallbacks } from '@utils/changeStreams/classes/classes'
-import { ClassMapper } from '../mappers/classes'
 import { ClassUsers } from '../../domain/types'
+import { ClassMapper } from '../mappers/classes'
+import { ClassFromModel } from '../models/classes'
 
 const Schema = new mongoose.Schema<ClassFromModel>({
 	_id: {
@@ -61,4 +62,5 @@ const Schema = new mongoose.Schema<ClassFromModel>({
 
 export const Class = mongoose.model<ClassFromModel>('StranerdClass', Schema)
 
-generateChangeStreams<ClassFromModel, ClassEntity>(Class, ClassChangeStreamCallbacks, new ClassMapper().mapFrom).then()
+export const ClassChange = appInstance.db
+	.generateDbChange<ClassFromModel, ClassEntity>(Class, ClassDbChangeCallbacks, new ClassMapper().mapFrom)

@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { InstitutionFromModel } from '../models/institutions'
-import { InstitutionChangeStreamCallbacks } from '@utils/changeStreams/school/institutions'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { InstitutionDbChangeCallbacks } from '@utils/changeStreams/school/institutions'
 import { InstitutionEntity } from '../../domain/entities/institutions'
 import { InstitutionMapper } from '../mappers/institutions'
+import { InstitutionFromModel } from '../models/institutions'
 
 const Schema = new mongoose.Schema<InstitutionFromModel>({
 	_id: {
@@ -32,4 +33,5 @@ const Schema = new mongoose.Schema<InstitutionFromModel>({
 
 export const Institution = mongoose.model<InstitutionFromModel>('StranerdSchoolInstitution', Schema)
 
-generateChangeStreams<InstitutionFromModel, InstitutionEntity>(Institution, InstitutionChangeStreamCallbacks, new InstitutionMapper().mapFrom).then()
+export const InstitutionChange = appInstance.db
+	.generateDbChange<InstitutionFromModel, InstitutionEntity>(Institution, InstitutionDbChangeCallbacks, new InstitutionMapper().mapFrom)

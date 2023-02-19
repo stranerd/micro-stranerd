@@ -1,9 +1,9 @@
+import { appInstance } from '@utils/app/types'
 import { IConnectRepository } from '../../domain/irepositories/connects'
-import { ConnectMapper } from '../mappers/connects'
-import { Connect } from '../mongooseModels/connects'
-import { parseQueryParams } from '@utils/app/package'
-import { ConnectFromModel, ConnectToModel } from '../models/connects'
 import { EmbeddedUser } from '../../domain/types'
+import { ConnectMapper } from '../mappers/connects'
+import { ConnectFromModel, ConnectToModel } from '../models/connects'
+import { Connect } from '../mongooseModels/connects'
 
 export class ConnectRepository implements IConnectRepository {
 	private static instance: ConnectRepository
@@ -20,7 +20,7 @@ export class ConnectRepository implements IConnectRepository {
 	}
 
 	async get (query) {
-		const data = await parseQueryParams<ConnectFromModel>(Connect, query)
+		const data = await appInstance.db.parseQueryParams<ConnectFromModel>(Connect, query)
 		return {
 			...data,
 			results: data.results.map((u) => this.mapper.mapFrom(u)!)

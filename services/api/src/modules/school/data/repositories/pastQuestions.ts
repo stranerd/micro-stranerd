@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { PastQuestionEntity } from '../../domain/entities/pastQuestions'
 import { IPastQuestionRepository } from '../../domain/irepositories/pastQuestions'
 import { PastQuestionMapper } from '../mappers/pastQuestions'
 import { PastQuestionFromModel, PastQuestionToModel } from '../models/pastQuestions'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 import { PastQuestion } from '../mongooseModels/pastQuestions'
 
 export class PastQuestionRepository implements IPastQuestionRepository {
@@ -19,7 +20,7 @@ export class PastQuestionRepository implements IPastQuestionRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<PastQuestionFromModel>(PastQuestion, query)
+		const data = await appInstance.db.parseQueryParams<PastQuestionFromModel>(PastQuestion, query)
 
 		return {
 			...data,

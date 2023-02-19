@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { TagFromModel } from '../models/tags'
-import { TagChangeStreamCallbacks } from '@utils/changeStreams/interactions/tags'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { TagDbChangeCallbacks } from '@utils/changeStreams/interactions/tags'
 import { TagEntity } from '../../domain/entities/tags'
 import { TagMapper } from '../mappers/tags'
+import { TagFromModel } from '../models/tags'
 
 const Schema = new mongoose.Schema<TagFromModel>({
 	_id: {
@@ -36,5 +37,5 @@ const Schema = new mongoose.Schema<TagFromModel>({
 
 export const Tag = mongoose.model<TagFromModel>('StranerdInteractionsTag', Schema)
 
-generateChangeStreams<TagFromModel, TagEntity>(Tag, TagChangeStreamCallbacks, new TagMapper().mapFrom).then()
-
+export const TagChange = appInstance.db
+	.generateDbChange<TagFromModel, TagEntity>(Tag, TagDbChangeCallbacks, new TagMapper().mapFrom)

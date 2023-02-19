@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { NoteFromModel } from '../models/notes'
-import { NoteChangeStreamCallbacks } from '@utils/changeStreams/study/notes'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { NoteDbChangeCallbacks } from '@utils/changeStreams/study/notes'
 import { NoteEntity } from '../../domain/entities/notes'
 import { NoteMapper } from '../mappers/notes'
+import { NoteFromModel } from '../models/notes'
 
 const Schema = new mongoose.Schema<NoteFromModel>({
 	_id: {
@@ -41,4 +42,5 @@ const Schema = new mongoose.Schema<NoteFromModel>({
 
 export const Note = mongoose.model<NoteFromModel>('StranerdStudyNote', Schema)
 
-generateChangeStreams<NoteFromModel, NoteEntity>(Note, NoteChangeStreamCallbacks, new NoteMapper().mapFrom).then()
+export const NoteChange = appInstance.db
+	.generateDbChange<NoteFromModel, NoteEntity>(Note, NoteDbChangeCallbacks, new NoteMapper().mapFrom)

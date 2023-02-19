@@ -1,9 +1,9 @@
 import { GroupEntity, GroupFromModel } from '@modules/classes'
 import { ChatMetasUseCases, ChatsUseCases, ChatType } from '@modules/messaging'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const GroupChangeStreamCallbacks: ChangeStreamCallbacks<GroupFromModel, GroupEntity> = {
+export const GroupDbChangeCallbacks: DbChangeCallbacks<GroupFromModel, GroupEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`classes/${after.classId}/groups`, after)
 		await appInstance.listener.created(`classes/${after.classId}/groups/${after.id}`, after)

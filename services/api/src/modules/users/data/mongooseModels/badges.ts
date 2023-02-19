@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { BadgeFromModel } from '../models/badges'
-import { BadgeChangeStreamCallbacks } from '@utils/changeStreams/users/badges'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { BadgeDbChangeCallbacks } from '@utils/changeStreams/users/badges'
 import { BadgeEntity } from '../../domain/entities/badges'
-import { BadgeMapper } from '../mappers/badges'
 import { CountStreakBadges } from '../../domain/types'
+import { BadgeMapper } from '../mappers/badges'
+import { BadgeFromModel } from '../models/badges'
 
 const data = {
 	count: Object.fromEntries(
@@ -91,4 +92,5 @@ const BadgeSchema = new mongoose.Schema<BadgeFromModel>({
 
 export const Badge = mongoose.model<BadgeFromModel>('StranerdUsersBadge', BadgeSchema)
 
-generateChangeStreams<BadgeFromModel, BadgeEntity>(Badge, BadgeChangeStreamCallbacks, new BadgeMapper().mapFrom).then()
+export const BadgeChange = appInstance.db
+	.generateDbChange<BadgeFromModel, BadgeEntity>(Badge, BadgeDbChangeCallbacks, new BadgeMapper().mapFrom)

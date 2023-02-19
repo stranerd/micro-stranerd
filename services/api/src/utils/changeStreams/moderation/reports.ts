@@ -1,8 +1,8 @@
 import { ReportEntity, ReportFromModel } from '@modules/moderation'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 
-export const ReportChangeStreamCallbacks: ChangeStreamCallbacks<ReportFromModel, ReportEntity> = {
+export const ReportDbChangeCallbacks: DbChangeCallbacks<ReportFromModel, ReportEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('moderation/reports', after)
 		await appInstance.listener.created(`moderation/reports/${after.id}`, after)

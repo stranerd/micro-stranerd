@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { TestFromModel } from '../models/tests'
-import { TestChangeStreamCallbacks } from '@utils/changeStreams/study/tests'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { TestDbChangeCallbacks } from '@utils/changeStreams/study/tests'
 import { TestEntity } from '../../domain/entities/tests'
 import { TestMapper } from '../mappers/tests'
+import { TestFromModel } from '../models/tests'
 
 const Schema = new mongoose.Schema<TestFromModel>({
 	_id: {
@@ -68,4 +69,5 @@ const Schema = new mongoose.Schema<TestFromModel>({
 
 export const Test = mongoose.model<TestFromModel>('StranerdStudyTest', Schema)
 
-generateChangeStreams<TestFromModel, TestEntity>(Test, TestChangeStreamCallbacks, new TestMapper().mapFrom).then()
+export const TestChange = appInstance.db
+	.generateDbChange<TestFromModel, TestEntity>(Test, TestDbChangeCallbacks, new TestMapper().mapFrom)

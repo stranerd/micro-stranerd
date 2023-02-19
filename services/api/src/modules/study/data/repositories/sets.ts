@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ISetRepository } from '../../domain/irepositories/sets'
+import { EmbeddedUser, SetSaved } from '../../domain/types'
 import { SetMapper } from '../mappers/sets'
 import { SetFromModel, SetToModel } from '../models/sets'
 import { Set } from '../mongooseModels/sets'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser, SetSaved } from '../../domain/types'
 
 export class SetRepository implements ISetRepository {
 	private static instance: SetRepository
@@ -19,7 +20,7 @@ export class SetRepository implements ISetRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<SetFromModel>(Set, query)
+		const data = await appInstance.db.parseQueryParams<SetFromModel>(Set, query)
 
 		return {
 			...data,

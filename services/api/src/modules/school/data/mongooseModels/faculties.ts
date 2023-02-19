@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { FacultyFromModel } from '../models/faculties'
-import { FacultyChangeStreamCallbacks } from '@utils/changeStreams/school/faculties'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { FacultyDbChangeCallbacks } from '@utils/changeStreams/school/faculties'
 import { FacultyEntity } from '../../domain/entities/faculties'
 import { FacultyMapper } from '../mappers/faculties'
+import { FacultyFromModel } from '../models/faculties'
 
 const Schema = new mongoose.Schema<FacultyFromModel>({
 	_id: {
@@ -31,4 +32,5 @@ const Schema = new mongoose.Schema<FacultyFromModel>({
 
 export const Faculty = mongoose.model<FacultyFromModel>('StranerdSchoolFaculty', Schema)
 
-generateChangeStreams<FacultyFromModel, FacultyEntity>(Faculty, FacultyChangeStreamCallbacks, new FacultyMapper().mapFrom).then()
+export const FacultyChange = appInstance.db
+	.generateDbChange<FacultyFromModel, FacultyEntity>(Faculty, FacultyDbChangeCallbacks, new FacultyMapper().mapFrom)

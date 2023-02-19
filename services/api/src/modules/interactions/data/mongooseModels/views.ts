@@ -1,8 +1,9 @@
-import { ViewMapper } from './../mappers/views'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ViewDbChangeCallbacks } from '@utils/changeStreams/interactions/views'
 import { ViewEntity } from '../../domain/entities/views'
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ViewChangeStreamCallbacks } from '@utils/changeStreams/interactions/views'
 import { ViewFromModel } from '../models/views'
+import { ViewMapper } from './../mappers/views'
 
 const ViewSchema = new mongoose.Schema<ViewFromModel>({
 	_id: {
@@ -31,4 +32,5 @@ const ViewSchema = new mongoose.Schema<ViewFromModel>({
 
 export const View = mongoose.model<ViewFromModel>('StranerdInteractionsView', ViewSchema)
 
-generateChangeStreams<ViewFromModel, ViewEntity>(View, ViewChangeStreamCallbacks, new ViewMapper().mapFrom).then()
+export const ViewChange = appInstance.db
+	.generateDbChange<ViewFromModel, ViewEntity>(View, ViewDbChangeCallbacks, new ViewMapper().mapFrom)

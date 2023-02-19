@@ -1,4 +1,5 @@
-import { parseQueryParams, QueryParams } from '@utils/app/package'
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ICommentRepository } from '../../domain/irepositories/comments'
 import { CommentMetaType, Interaction } from '../../domain/types'
 import { CommentMapper } from '../mappers/comments'
@@ -19,7 +20,7 @@ export class CommentRepository implements ICommentRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<CommentFromModel>(Comment, query)
+		const data = await appInstance.db.parseQueryParams<CommentFromModel>(Comment, query)
 
 		return {
 			...data,

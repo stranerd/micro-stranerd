@@ -1,8 +1,9 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { ITagRepository } from '../../domain/irepositories/tags'
 import { TagMapper } from '../mappers/tags'
 import { TagFromModel, TagToModel } from '../models/tags'
 import { Tag } from '../mongooseModels/tags'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
 
 export class TagRepository implements ITagRepository {
 	private static instance: TagRepository
@@ -18,7 +19,7 @@ export class TagRepository implements ITagRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<TagFromModel>(Tag, query)
+		const data = await appInstance.db.parseQueryParams<TagFromModel>(Tag, query)
 
 		return {
 			...data,

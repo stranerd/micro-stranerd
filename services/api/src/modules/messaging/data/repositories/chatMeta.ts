@@ -1,10 +1,11 @@
-import { parseQueryParams, QueryParams } from '@utils/app/package'
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IChatMetaRepository } from '../../domain/irepositories/chatMeta'
+import { ChatType, EmbeddedGroup, EmbeddedUser } from '../../domain/types'
 import { ChatMetaMapper } from '../mappers/chatMeta'
+import { ChatFromModel } from '../models/chat'
 import { ChatMetaFromModel, ChatMetaToModel } from '../models/chatMeta'
 import { ChatMeta } from '../mongooseModels/chatMeta'
-import { ChatType, EmbeddedGroup, EmbeddedUser } from '../../domain/types'
-import { ChatFromModel } from '../models/chat'
 
 export class ChatMetaRepository implements IChatMetaRepository {
 	private static instance: ChatMetaRepository
@@ -44,7 +45,7 @@ export class ChatMetaRepository implements IChatMetaRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<ChatMetaFromModel>(ChatMeta, query)
+		const data = await appInstance.db.parseQueryParams<ChatMetaFromModel>(ChatMeta, query)
 
 		return {
 			...data,

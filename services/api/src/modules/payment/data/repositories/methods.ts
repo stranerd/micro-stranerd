@@ -1,7 +1,8 @@
+import { BadRequestError, mongoose, QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IMethodRepository } from '../../domain/irepositories/methods'
 import { MethodMapper } from '../mappers/methods'
 import { MethodFromModel, MethodToModel } from '../models/methods'
-import { BadRequestError, mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
 import { Method } from '../mongooseModels/methods'
 
 export class MethodRepository implements IMethodRepository {
@@ -18,7 +19,7 @@ export class MethodRepository implements IMethodRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<MethodFromModel>(Method, query)
+		const data = await appInstance.db.parseQueryParams<MethodFromModel>(Method, query)
 
 		return {
 			...data,

@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { SetFromModel } from '../models/sets'
-import { SetChangeStreamCallbacks } from '@utils/changeStreams/study/sets'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { SetDbChangeCallbacks } from '@utils/changeStreams/study/sets'
 import { SetEntity } from '../../domain/entities/sets'
-import { SetMapper } from '../mappers/sets'
 import { SetSaved } from '../../domain/types'
+import { SetMapper } from '../mappers/sets'
+import { SetFromModel } from '../models/sets'
 
 const Schema = new mongoose.Schema<SetFromModel>({
 	_id: {
@@ -40,4 +41,5 @@ const Schema = new mongoose.Schema<SetFromModel>({
 
 export const Set = mongoose.model<SetFromModel>('StranerdStudySet', Schema)
 
-generateChangeStreams<SetFromModel, SetEntity>(Set, SetChangeStreamCallbacks, new SetMapper().mapFrom).then()
+export const SetChange = appInstance.db
+	.generateDbChange<SetFromModel, SetEntity>(Set, SetDbChangeCallbacks, new SetMapper().mapFrom)

@@ -1,11 +1,12 @@
+import { mongoose, QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
 import { IQuestionRepository } from '../../domain/irepositories/questions'
+import { EmbeddedUser, QuestionMetaType } from '../../domain/types'
 import { QuestionMapper } from '../mappers/questions'
 import { QuestionFromModel, QuestionToModel } from '../models/questions'
-import { Question } from '../mongooseModels/questions'
 import { Answer } from '../mongooseModels/answers'
-import { mongoose, parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser, QuestionMetaType } from '../../domain/types'
-import { BEST_ANSWERS_COUNT } from '../../domain/entities/questions'
+import { Question } from '../mongooseModels/questions'
 
 export class QuestionRepository implements IQuestionRepository {
 	private static instance: QuestionRepository
@@ -21,7 +22,7 @@ export class QuestionRepository implements IQuestionRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<QuestionFromModel>(Question, query)
+		const data = await appInstance.db.parseQueryParams<QuestionFromModel>(Question, query)
 
 		return {
 			...data,

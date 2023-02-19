@@ -7,11 +7,11 @@ import {
 } from '@modules/interactions'
 import { AnswerMetaType, AnswersUseCases, QuestionMetaType, QuestionsUseCases } from '@modules/questions'
 import { NotificationType } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const CommentChangeStreamCallbacks: ChangeStreamCallbacks<CommentFromModel, CommentEntity> = {
+export const CommentDbChangeCallbacks: DbChangeCallbacks<CommentFromModel, CommentEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('interactions/comments', after)
 		await appInstance.listener.created(`interactions/comments/${after.id}`, after)

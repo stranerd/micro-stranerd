@@ -1,9 +1,9 @@
 import { FileEntity, FileFromModel } from '@modules/teachers'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
-export const FileChangeStreamCallbacks: ChangeStreamCallbacks<FileFromModel, FileEntity> = {
+export const FileDbChangeCallbacks: DbChangeCallbacks<FileFromModel, FileEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`teachers/${after.courseId}/files`, after)
 		await appInstance.listener.created(`teachers/${after.courseId}/files/${after.id}`, after)

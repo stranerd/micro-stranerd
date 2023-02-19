@@ -1,9 +1,9 @@
 import { PastQuestionEntity, PastQuestionFromModel, PastQuestionType } from '@modules/school'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { publishers } from '@utils/events'
 
-export const PastQuestionChangeStreamCallbacks: ChangeStreamCallbacks<PastQuestionFromModel, PastQuestionEntity> = {
+export const PastQuestionDbChangeCallbacks: DbChangeCallbacks<PastQuestionFromModel, PastQuestionEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created('school/pastQuestions', after)
 		await appInstance.listener.created(`school/pastQuestions/${after.id}`, after)

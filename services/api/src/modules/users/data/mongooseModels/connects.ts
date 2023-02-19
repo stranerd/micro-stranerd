@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { ConnectFromModel } from '../models/connects'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { ConnectDbChangeCallbacks } from '@utils/changeStreams/users/connects'
 import { ConnectEntity } from '../../domain/entities/connects'
 import { ConnectMapper } from '../mappers/connects'
-import { ConnectChangeStreamCallbacks } from '@utils/changeStreams/users/connects'
+import { ConnectFromModel } from '../models/connects'
 
 const ConnectSchema = new mongoose.Schema<ConnectFromModel>({
 	_id: {
@@ -41,4 +42,5 @@ const ConnectSchema = new mongoose.Schema<ConnectFromModel>({
 
 export const Connect = mongoose.model<ConnectFromModel>('StranerdUsersConnect', ConnectSchema)
 
-generateChangeStreams<ConnectFromModel, ConnectEntity>(Connect, ConnectChangeStreamCallbacks, new ConnectMapper().mapFrom).then()
+export const ConnectChange = appInstance.db
+	.generateDbChange<ConnectFromModel, ConnectEntity>(Connect, ConnectDbChangeCallbacks, new ConnectMapper().mapFrom)

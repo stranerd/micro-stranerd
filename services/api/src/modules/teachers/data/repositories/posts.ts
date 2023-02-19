@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IPostRepository } from '../../domain/irepositories/posts'
+import { EmbeddedUser, PostMetaType } from '../../domain/types'
 import { PostMapper } from '../mappers/posts'
 import { PostFromModel, PostToModel } from '../models/posts'
 import { Post } from '../mongooseModels/posts'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser, PostMetaType } from '../../domain/types'
 
 export class PostRepository implements IPostRepository {
 	private static instance: PostRepository
@@ -19,7 +20,7 @@ export class PostRepository implements IPostRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<PostFromModel>(Post, query)
+		const data = await appInstance.db.parseQueryParams<PostFromModel>(Post, query)
 
 		return {
 			...data,

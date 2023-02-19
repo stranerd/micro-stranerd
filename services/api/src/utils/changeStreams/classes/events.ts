@@ -1,11 +1,11 @@
 import { EventEntity, EventFromModel, EventsUseCases, EventType } from '@modules/classes'
 import { NotificationType } from '@modules/users'
-import { ChangeStreamCallbacks } from '@utils/app/package'
+import { DbChangeCallbacks } from '@utils/app/package'
 import { appInstance } from '@utils/app/types'
 import { scheduleEvent, unScheduleEvent } from '@utils/modules/classes/events'
 import { sendNotification } from '@utils/modules/users/notifications'
 
-export const EventChangeStreamCallbacks: ChangeStreamCallbacks<EventFromModel, EventEntity> = {
+export const EventDbChangeCallbacks: DbChangeCallbacks<EventFromModel, EventEntity> = {
 	created: async ({ after }) => {
 		await appInstance.listener.created(`classes/${after.classId}/events`, after)
 		await appInstance.listener.created(`classes/${after.classId}/events/${after.id}`, after)

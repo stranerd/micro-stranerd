@@ -1,8 +1,9 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { EmailErrorFromModel } from '../models/emailErrors'
-import { EmailErrorChangeStreamCallbacks } from '@utils/changeStreams/feedback/emailErrors'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { EmailErrorDbChangeCallbacks } from '@utils/changeStreams/feedback/emailErrors'
 import { EmailErrorEntity } from '../../domain/entities/emailErrors'
 import { EmailErrorMapper } from '../mappers/emailErrors'
+import { EmailErrorFromModel } from '../models/emailErrors'
 
 const Schema = new mongoose.Schema<EmailErrorFromModel>({
 	_id: {
@@ -48,4 +49,5 @@ const Schema = new mongoose.Schema<EmailErrorFromModel>({
 
 export const EmailError = mongoose.model<EmailErrorFromModel>('StranerdFeedbackEmailError', Schema)
 
-generateChangeStreams<EmailErrorFromModel, EmailErrorEntity>(EmailError, EmailErrorChangeStreamCallbacks, new EmailErrorMapper().mapFrom).then()
+export const EmailErrorChange = appInstance.db
+	.generateDbChange<EmailErrorFromModel, EmailErrorEntity>(EmailError, EmailErrorDbChangeCallbacks, new EmailErrorMapper().mapFrom)

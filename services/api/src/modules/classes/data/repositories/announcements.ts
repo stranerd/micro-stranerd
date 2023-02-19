@@ -1,9 +1,10 @@
+import { QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IAnnouncementRepository } from '../../domain/irepositories/announcements'
+import { ClassUsers, EmbeddedUser } from '../../domain/types'
 import { AnnouncementMapper } from '../mappers/announcements'
 import { AnnouncementFromModel, AnnouncementToModel } from '../models/announcements'
 import { Announcement } from '../mongooseModels/announcements'
-import { parseQueryParams, QueryParams } from '@utils/app/package'
-import { ClassUsers, EmbeddedUser } from '../../domain/types'
 
 export class AnnouncementRepository implements IAnnouncementRepository {
 	private static instance: AnnouncementRepository
@@ -19,7 +20,7 @@ export class AnnouncementRepository implements IAnnouncementRepository {
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<AnnouncementFromModel>(Announcement, query)
+		const data = await appInstance.db.parseQueryParams<AnnouncementFromModel>(Announcement, query)
 
 		return {
 			...data,

@@ -1,10 +1,11 @@
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { getDateDifference } from '@utils/functions'
 import { IUserRepository } from '../../domain/irepositories/users'
 import { UserAccount, UserBio, UserRankings, UserRoles, UserSchoolData } from '../../domain/types'
 import { UserMapper } from '../mappers/users'
-import { User } from '../mongooseModels/users'
-import { mongoose, parseQueryParams } from '@utils/app/package'
 import { UserFromModel } from '../models/users'
-import { getDateDifference } from '@utils/functions'
+import { User } from '../mongooseModels/users'
 
 export class UserRepository implements IUserRepository {
 	private static instance: UserRepository
@@ -16,7 +17,7 @@ export class UserRepository implements IUserRepository {
 	}
 
 	async getUsers (query) {
-		const data = await parseQueryParams<UserFromModel>(User, query)
+		const data = await appInstance.db.parseQueryParams<UserFromModel>(User, query)
 		return {
 			...data,
 			results: data.results.map((u) => this.mapper.mapFrom(u)!)

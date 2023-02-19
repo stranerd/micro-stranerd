@@ -1,11 +1,12 @@
+import { BadRequestError, mongoose, NotAuthorizedError, QueryParams } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
 import { IAssignmentSubmissionRepository } from '../../domain/irepositories/assignmentSubmissions'
+import { EmbeddedUser } from '../../domain/types'
+import { AssignmentMapper } from '../mappers/assignments'
 import { AssignmentSubmissionMapper } from '../mappers/assignmentSubmissions'
 import { AssignmentSubmissionFromModel, AssignmentSubmissionToModel } from '../models/assignmentSubmissions'
-import { AssignmentSubmission } from '../mongooseModels/assignmentSubmissions'
-import { BadRequestError, mongoose, NotAuthorizedError, parseQueryParams, QueryParams } from '@utils/app/package'
-import { EmbeddedUser } from '../../domain/types'
 import { Assignment } from '../mongooseModels/assignments'
-import { AssignmentMapper } from '../mappers/assignments'
+import { AssignmentSubmission } from '../mongooseModels/assignmentSubmissions'
 
 export class AssignmentSubmissionRepository implements IAssignmentSubmissionRepository {
 	private static instance: AssignmentSubmissionRepository
@@ -48,7 +49,7 @@ export class AssignmentSubmissionRepository implements IAssignmentSubmissionRepo
 	}
 
 	async get (query: QueryParams) {
-		const data = await parseQueryParams<AssignmentSubmissionFromModel>(AssignmentSubmission, query)
+		const data = await appInstance.db.parseQueryParams<AssignmentSubmissionFromModel>(AssignmentSubmission, query)
 
 		return {
 			...data,

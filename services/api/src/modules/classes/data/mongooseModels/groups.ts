@@ -1,9 +1,10 @@
-import { generateChangeStreams, mongoose } from '@utils/app/package'
-import { GroupFromModel } from '../models/groups'
+import { mongoose } from '@utils/app/package'
+import { appInstance } from '@utils/app/types'
+import { GroupDbChangeCallbacks } from '@utils/changeStreams/classes/groups'
 import { GroupEntity } from '../../domain/entities/groups'
-import { GroupChangeStreamCallbacks } from '@utils/changeStreams/classes/groups'
-import { GroupMapper } from '../mappers/groups'
 import { ClassUsers } from '../../domain/types'
+import { GroupMapper } from '../mappers/groups'
+import { GroupFromModel } from '../models/groups'
 
 const Schema = new mongoose.Schema<GroupFromModel>({
 	_id: {
@@ -41,4 +42,5 @@ const Schema = new mongoose.Schema<GroupFromModel>({
 
 export const Group = mongoose.model<GroupFromModel>('StranerdClassesGroup', Schema)
 
-generateChangeStreams<GroupFromModel, GroupEntity>(Group, GroupChangeStreamCallbacks, new GroupMapper().mapFrom).then()
+export const GroupChange = appInstance.db
+	.generateDbChange<GroupFromModel, GroupEntity>(Group, GroupDbChangeCallbacks, new GroupMapper().mapFrom)
