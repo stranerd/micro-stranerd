@@ -81,7 +81,7 @@ export class UserController {
 
 	static async verifyPhone (req: Request) {
 		const { token } = validateReq({
-			token: Schema.string()
+			token: Schema.force.string()
 		}, req.body)
 
 		const data = await AuthUseCases.verifyPhone(token)
